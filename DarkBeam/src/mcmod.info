@@ -1,0 +1,20 @@
+[
+{
+  "modid": "DarkBeam",
+  "name": "Dark Beam",
+  "description": "Dark matter and dark energy on Minecraft!",
+  "version": "@VERSION@",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "Grayal"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]
