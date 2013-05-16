@@ -9,8 +9,8 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-import de.grayal.darkbeam.core.ConfigurationSettings;
 import de.grayal.darkbeam.core.handler.ConfigurationHandler;
+import de.grayal.darkbeam.lib.FConfiguration;
 import de.grayal.darkbeam.lib.FColors;
 import de.grayal.darkbeam.lib.FReferences;
 import de.grayal.darkbeam.lib.FStrings;
@@ -22,7 +22,7 @@ public class VersionHelper implements Runnable {
 	private static final byte ID_MC_VERSION = 5;
 	private static final byte ID_OUTDATED = 2;
 	private static final byte ID_UNINITIALIZED = 0;
-	private static final String REMOTE_VERSION = "https://raw.github.com/grayal/Dark-Beam/master/version.xml";
+	private static final String REMOTE_VERSION = "https://raw.github.com/krakel/Dark-Beam/master/DarkBeam/version.xml";
 	private static String sFoundLocation = null;
 	private static String sFoundVersion = null;
 	private static byte sResult = ID_UNINITIALIZED;
@@ -85,8 +85,8 @@ public class VersionHelper implements Runnable {
 					sResult = ID_ERROR;
 				}
 				if (sFoundVersion != null) {
-					if (!ConfigurationSettings.sLastDiscoveredVersion.equalsIgnoreCase( sFoundVersion)) {
-						ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, ConfigurationSettings.LAST_DISCOVERED_VERSION_CONFIGNAME, sFoundVersion);
+					if (!FConfiguration.sLastDiscoveredVersion.equalsIgnoreCase( sFoundVersion)) {
+						ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_NAME, sFoundVersion);
 					}
 					if (sFoundVersion.equalsIgnoreCase( getVersionForCheck())) {
 						sResult = ID_CURRENT;

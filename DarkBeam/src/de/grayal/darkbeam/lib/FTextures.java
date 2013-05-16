@@ -12,5 +12,6 @@ public final class FTextures {
 //    public static final String VANILLA_ITEM_TEXTURE_SHEET = "/gui/items.png";
 //    public static final String VANILLA_BLOCK_TEXTURE_SHEET = "/terrain.png";
 
-	public static final String BLOCK_TEST = PATH_BLOCKS + "testBlock.png";
+	public static final String ORE_BEAMING_TEXTURE = PATH_BLOCKS + "oreBeaming.png";
+	public static final String ORE_DARKENING_TEXTURE = PATH_BLOCKS + "oreDarkening.png";
 }

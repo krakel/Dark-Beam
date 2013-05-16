@@ -32,7 +32,9 @@ import de.grayal.darkbeam.network.PacketHandler;
 @Mod(
 	modid = FReferences.MOD_ID,
 	name = FReferences.MOD_NAME,
-	version = FReferences.VERSION)
+	version = FReferences.VERSION,
+	dependencies = FReferences.DEPENDENCIES,
+	certificateFingerprint = FReferences.FINGERPRINT)
 @NetworkMod(
 	channels = {
 		FReferences.MOD_CHANNEL
@@ -41,8 +43,6 @@ import de.grayal.darkbeam.network.PacketHandler;
 	serverSideRequired = false,
 	packetHandler = PacketHandler.class)
 public class DarkBeam {
-	public static CreativeTabs sTabDB = new CreativeTabDB( CreativeTabs.getNextID(), FReferences.MOD_ID);
-
 	@Instance( FReferences.MOD_ID)
 	public static DarkBeam sInstance;
 
@@ -50,6 +50,8 @@ public class DarkBeam {
 		clientSide = FReferences.CLASS_CLIENT_PROXY,
 		serverSide = FReferences.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
+
+	public static CreativeTabs sTabDB = new CreativeTabDB( CreativeTabs.getNextID(), FReferences.MOD_ID);
 
 	@Init
 	public void init( FMLInitializationEvent event) {
@@ -82,8 +84,9 @@ public class DarkBeam {
 	public void preInit( FMLPreInitializationEvent event) {
 		LogHelper.init();
 		LocalizationHandler.load();
-		File file = new File( event.getModConfigurationDirectory().getAbsolutePath() + File.separator + FReferences.MOD_CHANNEL + File.separator + FReferences.MOD_ID + ".cfg");
-		ConfigurationHandler.init( file);
+		File confDir = new File( event.getModConfigurationDirectory(), FReferences.MOD_CHANNEL);
+		File confFile = new File( confDir, FReferences.MOD_ID + ".cfg");
+		ConfigurationHandler.init( confFile);
 //		VersionHelper.execute();
 //        TickRegistry.registerTickHandler(new VersionCheckTickHandler(), Side.CLIENT);
 		sProxy.registerRenderTickHandler();

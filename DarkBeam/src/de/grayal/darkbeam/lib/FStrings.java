@@ -13,7 +13,6 @@ public final class FStrings {
 	public static final String VERSION_UNINITIALIZED = "version.uninitialized";
 
 	/* Block name constants */
-	public static final String BLOCK_TEST_NAME = "testBlock";
 	public static final String ORE_BEAMING_NAME = "oreBeaming";
 	public static final String ORE_DARKENING_NAME = "oreDarkening";
 //    String CALCINATOR_NAME = "calcinator";
@@ -24,7 +23,6 @@ public final class FStrings {
 //    String RED_WATER_FLOWING_NAME = "redWaterFlowing";
 
 	/* Container related constants */
-	public static final String BLOCK_TEST_REF = "block." + BLOCK_TEST_NAME;
 	public static final String ORE_BEAMING_REF = "ore." + ORE_BEAMING_NAME;
 	public static final String ORE_DARKENING_REF = "ore." + ORE_DARKENING_NAME;
 //    String CONTAINER_CALCINATOR_NAME = "container." + CALCINATOR_NAME;

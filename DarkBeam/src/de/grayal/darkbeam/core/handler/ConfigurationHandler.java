@@ -14,7 +14,7 @@ import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
 
-import de.grayal.darkbeam.core.ConfigurationSettings;
+import de.grayal.darkbeam.lib.FConfiguration;
 import de.grayal.darkbeam.lib.FBlockIds;
 import de.grayal.darkbeam.lib.FReferences;
 import de.grayal.darkbeam.lib.FStrings;
@@ -35,9 +35,9 @@ public class ConfigurationHandler {
 			sConfig.load();
 
 			/* General configs */
-			ConfigurationSettings.sDisplayVersionResult = sConfig.get( Configuration.CATEGORY_GENERAL, ConfigurationSettings.DISPLAY_VERSION_RESULT_CONFIGNAME, ConfigurationSettings.DISPLAY_VERSION_RESULT_DEFAULT).getBoolean( ConfigurationSettings.DISPLAY_VERSION_RESULT_DEFAULT);
-			ConfigurationSettings.sLastDiscoveredVersion = sConfig.get( Configuration.CATEGORY_GENERAL, ConfigurationSettings.LAST_DISCOVERED_VERSION_CONFIGNAME, ConfigurationSettings.LAST_DISCOVERED_VERSION_DEFAULT).getString();
-			ConfigurationSettings.sLastDiscoveredVersionType = sConfig.get( Configuration.CATEGORY_GENERAL, ConfigurationSettings.LAST_DISCOVERED_VERSION_TYPE_CONFIGNAME, ConfigurationSettings.LAST_DISCOVERED_VERSION_TYPE_DEFAULT).getString();
+			FConfiguration.sDisplayVersionResult = getConfigBoolean( Configuration.CATEGORY_GENERAL, FConfiguration.DISPLAY_VERSION_RESULT_NAME, FConfiguration.DISPLAY_VERSION_RESULT_DEFAULT);
+			FConfiguration.sLastDiscoveredVersion = getConfigString( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_NAME, FConfiguration.LAST_DISCOVERED_VERSION_DEFAULT);
+			FConfiguration.sLastDiscoveredVersionType = getConfigString( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_TYPE_NAME, FConfiguration.LAST_DISCOVERED_VERSION_TYPE_DEFAULT);
 
 			/* Graphic configs */
 //			ConfigurationSettings.ENABLE_PARTICLE_FX = sConfig.get( CAT_GRAPHICS, ConfigurationSettings.ENABLE_PARTICLE_FX_CONFIGNAME, ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT).getBoolean( ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT);
@@ -66,7 +66,8 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.ENABLE_SOUNDS = sConfig.get( CAT_AUDIO, ConfigurationSettings.ENABLE_SOUNDS_CONFIGNAME, ConfigurationSettings.ENABLE_SOUNDS_DEFAULT).getString();
 
 			/* Block configs */
-			FBlockIds.sBlockTestID = sConfig.getBlock( FStrings.BLOCK_TEST_NAME, FBlockIds.BLOCK_TEST_DEFAULT_ID).getInt( FBlockIds.BLOCK_TEST_DEFAULT_ID);
+			FBlockIds.sOreBeamingID = getConfigBlock( FStrings.ORE_BEAMING_NAME, FBlockIds.ORE_BEAMING_DEFAULT_ID);
+			FBlockIds.sOreDarkeningID = getConfigBlock( FStrings.ORE_DARKENING_NAME, FBlockIds.ORE_DARKENING_DEFAULT_ID);
 //			BlockIds.CALCINATOR = sConfig.getBlock( Strings.CALCINATOR_NAME, BlockIds.CALCINATOR_DEFAULT).getInt( BlockIds.CALCINATOR_DEFAULT);
 //			BlockIds.ALUDEL_BASE = sConfig.getBlock( Strings.ALUDEL_NAME, BlockIds.ALUDEL_BASE_DEFAULT).getInt( BlockIds.ALUDEL_BASE_DEFAULT);
 //			BlockIds.ALCHEMICAL_CHEST = sConfig.getBlock( Strings.ALCHEMICAL_CHEST_NAME, BlockIds.ALCHEMICAL_CHEST_DEFAULT).getInt( BlockIds.ALCHEMICAL_CHEST_DEFAULT);
@@ -124,5 +125,17 @@ public class ConfigurationHandler {
 			}
 		}
 		sConfig.save();
+	}
+
+	private static int getConfigBlock( String name, int id) {
+		return sConfig.getBlock( name, id).getInt( id);
+	}
+
+	private static boolean getConfigBoolean( String category, String name, boolean def) {
+		return sConfig.get( category, name, def).getBoolean( def);
+	}
+
+	private static String getConfigString( String category, String name, String def) {
+		return sConfig.get( category, name, def).getString();
 	}
 }
