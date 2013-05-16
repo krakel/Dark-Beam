@@ -1,11 +1,11 @@
-package de.grayal.darkbeam.core.helper;
+package de.krakel.darkbeam.core.helper;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cpw.mods.fml.common.FMLLog;
 
-import de.grayal.darkbeam.lib.FReferences;
+import de.krakel.darkbeam.lib.FReferences;
 
 public class LogHelper {
 	private static Logger sLogger = Logger.getLogger( FReferences.MOD_ID);

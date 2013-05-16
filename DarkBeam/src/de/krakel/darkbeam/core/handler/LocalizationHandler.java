@@ -2,14 +2,13 @@
  * Dark Beam
  * LocalizationHandler
  * 
- * @author Grayal
+ * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.grayal.darkbeam.core.handler;
+package de.krakel.darkbeam.core.handler;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
-
-import de.grayal.darkbeam.lib.FLocalization;
+import de.krakel.darkbeam.lib.FLocalization;
 
 public class LocalizationHandler {
 	public static String get( String key) {

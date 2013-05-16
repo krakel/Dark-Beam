@@ -2,15 +2,14 @@
  * Dark Beam
  * BlockOre
  * 
- * @author Grayal
+ * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.grayal.darkbeam.core.block;
+package de.krakel.darkbeam.core.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-
-import de.grayal.darkbeam.DarkBeam;
+import de.krakel.darkbeam.DarkBeam;
 
 public class BlockOre extends Block {
 	public BlockOre( int id, String name) {
@@ -21,7 +20,6 @@ public class BlockOre extends Block {
 		setUnlocalizedName( name);
 		setCreativeTab( DarkBeam.sTabDB);
 	}
-
 //	@Override
 //	public int damageDropped( int meta) {
 //		return super.damageDropped( meta);

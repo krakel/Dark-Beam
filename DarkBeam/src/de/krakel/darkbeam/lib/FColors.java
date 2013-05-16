@@ -1,4 +1,4 @@
-package de.grayal.darkbeam.lib;
+package de.krakel.darkbeam.lib;
 
 public final class FColors {
 	public static final String PREFIX_GRAY = "\u00a77";

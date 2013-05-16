@@ -2,10 +2,10 @@
  * Dark Beam
  * ConfigurationHandler
  * 
- * @author Grayal
+ * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.grayal.darkbeam.core.handler;
+package de.krakel.darkbeam.core.handler;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -13,11 +13,10 @@ import java.util.logging.Level;
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.FMLLog;
-
-import de.grayal.darkbeam.lib.FConfiguration;
-import de.grayal.darkbeam.lib.FBlockIds;
-import de.grayal.darkbeam.lib.FReferences;
-import de.grayal.darkbeam.lib.FStrings;
+import de.krakel.darkbeam.lib.FBlockIds;
+import de.krakel.darkbeam.lib.FConfiguration;
+import de.krakel.darkbeam.lib.FReferences;
+import de.krakel.darkbeam.lib.FStrings;
 
 public class ConfigurationHandler {
 	public static final String CAT_AUDIO = "audio";
@@ -33,12 +32,10 @@ public class ConfigurationHandler {
 		sConfig = new Configuration( config);
 		try {
 			sConfig.load();
-
 			/* General configs */
 			FConfiguration.sDisplayVersionResult = getConfigBoolean( Configuration.CATEGORY_GENERAL, FConfiguration.DISPLAY_VERSION_RESULT_NAME, FConfiguration.DISPLAY_VERSION_RESULT_DEFAULT);
 			FConfiguration.sLastDiscoveredVersion = getConfigString( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_NAME, FConfiguration.LAST_DISCOVERED_VERSION_DEFAULT);
 			FConfiguration.sLastDiscoveredVersionType = getConfigString( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_TYPE_NAME, FConfiguration.LAST_DISCOVERED_VERSION_TYPE_DEFAULT);
-
 			/* Graphic configs */
 //			ConfigurationSettings.ENABLE_PARTICLE_FX = sConfig.get( CAT_GRAPHICS, ConfigurationSettings.ENABLE_PARTICLE_FX_CONFIGNAME, ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT).getBoolean( ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT);
 //			ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION = sConfig.get( CAT_GRAPHICS, ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_CONFIGNAME, ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_DEFAULT).getBoolean( ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_DEFAULT);
@@ -61,10 +58,8 @@ public class ConfigurationHandler {
 //			catch (Exception e) {
 //				ConfigurationSettings.TARGET_BLOCK_OVERLAY_OPACITY = ConfigurationSettings.TARGET_BLOCK_OVERLAY_OPACITY_DEFAULT;
 //			}
-
 			/* Audio configs */
 //			ConfigurationSettings.ENABLE_SOUNDS = sConfig.get( CAT_AUDIO, ConfigurationSettings.ENABLE_SOUNDS_CONFIGNAME, ConfigurationSettings.ENABLE_SOUNDS_DEFAULT).getString();
-
 			/* Block configs */
 			FBlockIds.sOreBeamingID = getConfigBlock( FStrings.ORE_BEAMING_NAME, FBlockIds.ORE_BEAMING_DEFAULT_ID);
 			FBlockIds.sOreDarkeningID = getConfigBlock( FStrings.ORE_DARKENING_NAME, FBlockIds.ORE_DARKENING_DEFAULT_ID);
@@ -73,17 +68,14 @@ public class ConfigurationHandler {
 //			BlockIds.ALCHEMICAL_CHEST = sConfig.getBlock( Strings.ALCHEMICAL_CHEST_NAME, BlockIds.ALCHEMICAL_CHEST_DEFAULT).getInt( BlockIds.ALCHEMICAL_CHEST_DEFAULT);
 //			BlockIds.GLASS_BELL = sConfig.getBlock( Strings.GLASS_BELL_NAME, BlockIds.GLASS_BELL_DEFAULT).getInt( BlockIds.GLASS_BELL_DEFAULT);
 //			BlockIds.RED_WATER_STILL = sConfig.getBlock( Strings.RED_WATER_STILL_NAME, BlockIds.RED_WATER_STILL_DEFAULT).getInt( BlockIds.RED_WATER_STILL_DEFAULT);
-
 			/* Block property configs */
 //			sConfig.addCustomCategoryComment( CAT_BLOCK_PROPERTIES, "Custom block properties");
-
 			/* Red Water configs */
 //			sConfig.addCustomCategoryComment( CAT_RED_WATER_PROPERTIES, "Configuration settings for various properties of Red Water");
 //			ConfigurationSettings.RED_WATER_DURATION_BASE = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_DURATION_BASE_CONFIGNAME, ConfigurationSettings.RED_WATER_DURATION_BASE_DEFAULT).getInt( ConfigurationSettings.RED_WATER_DURATION_BASE_DEFAULT);
 //			ConfigurationSettings.RED_WATER_DURATION_MODIFIER = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_DURATION_MODIFIER_CONFIGNAME, ConfigurationSettings.RED_WATER_DURATION_MODIFIER_DEFAULT).getInt( ConfigurationSettings.RED_WATER_DURATION_MODIFIER_DEFAULT);
 //			ConfigurationSettings.RED_WATER_RANGE_BASE = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_BASE_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT);
 //			ConfigurationSettings.RED_WATER_RANGE_MODIFIER = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT);
-
 			/* Item configs */
 //			ItemIds.MINIUM_SHARD = sConfig.getItem( Strings.MINIUM_SHARD_NAME, ItemIds.MINIUM_SHARD_DEFAULT).getInt( ItemIds.MINIUM_SHARD_DEFAULT);
 //			ItemIds.INERT_STONE = sConfig.getItem( Strings.INERT_STONE_NAME, ItemIds.INERT_STONE_DEFAULT).getInt( ItemIds.INERT_STONE_DEFAULT);
@@ -91,18 +83,15 @@ public class ConfigurationHandler {
 //			ItemIds.PHILOSOPHERS_STONE = sConfig.getItem( Strings.PHILOSOPHERS_STONE_NAME, ItemIds.PHILOSOPHERS_STONE_DEFAULT).getInt( ItemIds.PHILOSOPHERS_STONE_DEFAULT);
 //			ItemIds.ALCHEMICAL_DUST = sConfig.getItem( Strings.ALCHEMICAL_DUST_NAME, ItemIds.ALCHEMICAL_DUST_DEFAULT).getInt( ItemIds.ALCHEMICAL_DUST_DEFAULT);
 //			ItemIds.ALCHEMICAL_BAG = sConfig.getItem( Strings.ALCHEMICAL_BAG_NAME, ItemIds.ALCHEMICAL_BAG_DEFAULT).getInt( ItemIds.ALCHEMICAL_BAG_DEFAULT);
-
 			/* Item durability configs */
 //			ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY = sConfig.get( CAT_DURABILITY, ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY_CONFIGNAME, ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY_DEFAULT).getInt( ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY_DEFAULT);
 //			ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY = sConfig.get( CAT_DURABILITY, ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY_CONFIGNAME, ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY_DEFAULT).getInt( ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY_DEFAULT);
-
 			/* KeyBinding configs */
 //			sConfig.addCustomCategoryComment( CAT_KEYBIND, "Keybindings for Equivalent Exchange 3. See http://www.minecraftwiki.net/wiki/Key_codes for mapping of key codes to keyboard keys");
 //			EquivalentExchange3.proxy.setKeyBinding( ConfigurationSettings.KEYBINDING_EXTRA, sConfig.get( CAT_KEYBIND, ConfigurationSettings.KEYBINDING_EXTRA, ConfigurationSettings.KEYBINDING_EXTRA_DEFAULT).getInt( ConfigurationSettings.KEYBINDING_EXTRA_DEFAULT));
 //			EquivalentExchange3.proxy.setKeyBinding( ConfigurationSettings.KEYBINDING_CHARGE, sConfig.get( CAT_KEYBIND, ConfigurationSettings.KEYBINDING_CHARGE, ConfigurationSettings.KEYBINDING_CHARGE_DEFAULT).getInt( ConfigurationSettings.KEYBINDING_CHARGE_DEFAULT));
 //			EquivalentExchange3.proxy.setKeyBinding( ConfigurationSettings.KEYBINDING_TOGGLE, sConfig.get( CAT_KEYBIND, ConfigurationSettings.KEYBINDING_TOGGLE, ConfigurationSettings.KEYBINDING_TOGGLE_DEFAULT).getInt( ConfigurationSettings.KEYBINDING_TOGGLE_DEFAULT));
 //			EquivalentExchange3.proxy.setKeyBinding( ConfigurationSettings.KEYBINDING_RELEASE, sConfig.get( CAT_KEYBIND, ConfigurationSettings.KEYBINDING_RELEASE, ConfigurationSettings.KEYBINDING_RELEASE_DEFAULT).getInt( ConfigurationSettings.KEYBINDING_RELEASE_DEFAULT));
-
 			/* Transmutation configs */
 //			ConfigurationSettings.TRANSMUTE_COST_ITEM = sConfig.get( CAT_TRANSMUTATION, ConfigurationSettings.TRANSMUTE_COST_ITEM_CONFIGNAME, ConfigurationSettings.TRANSMUTE_COST_ITEM_DEFAULT).getInt( ConfigurationSettings.TRANSMUTE_COST_ITEM_DEFAULT);
 //			ConfigurationSettings.TRANSMUTE_COST_BLOCK = sConfig.get( CAT_TRANSMUTATION, ConfigurationSettings.TRANSMUTE_COST_BLOCK_CONFIGNAME, ConfigurationSettings.TRANSMUTE_COST_BLOCK_DEFAULT).getInt( ConfigurationSettings.TRANSMUTE_COST_BLOCK_DEFAULT);

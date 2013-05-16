@@ -1,4 +1,4 @@
-package de.grayal.darkbeam.network;
+package de.krakel.darkbeam.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

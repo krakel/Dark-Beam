@@ -1,4 +1,4 @@
-package de.grayal.darkbeam.network;
+package de.krakel.darkbeam.network;
 
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;

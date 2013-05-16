@@ -1,4 +1,4 @@
-package de.grayal.darkbeam.lib;
+package de.krakel.darkbeam.lib;
 
 public final class FBlockIds {
 	private static final int BLOCK_BASE_ID = 2500;

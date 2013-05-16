@@ -1,4 +1,4 @@
-package de.grayal.darkbeam;
+package de.krakel.darkbeam;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -20,14 +20,15 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
-import de.grayal.darkbeam.core.block.ModBlocks;
-import de.grayal.darkbeam.core.handler.ConfigurationHandler;
-import de.grayal.darkbeam.core.handler.LocalizationHandler;
-import de.grayal.darkbeam.core.helper.LogHelper;
-import de.grayal.darkbeam.core.proxy.CommonProxy;
-import de.grayal.darkbeam.lib.FReferences;
-import de.grayal.darkbeam.lib.FStrings;
-import de.grayal.darkbeam.network.PacketHandler;
+
+import de.krakel.darkbeam.core.block.ModBlocks;
+import de.krakel.darkbeam.core.handler.ConfigurationHandler;
+import de.krakel.darkbeam.core.handler.LocalizationHandler;
+import de.krakel.darkbeam.core.helper.LogHelper;
+import de.krakel.darkbeam.core.proxy.CommonProxy;
+import de.krakel.darkbeam.lib.FReferences;
+import de.krakel.darkbeam.lib.FStrings;
+import de.krakel.darkbeam.network.PacketHandler;
 
 @Mod(
 	modid = FReferences.MOD_ID,
@@ -45,12 +46,10 @@ import de.grayal.darkbeam.network.PacketHandler;
 public class DarkBeam {
 	@Instance( FReferences.MOD_ID)
 	public static DarkBeam sInstance;
-
 	@SidedProxy(
 		clientSide = FReferences.CLASS_CLIENT_PROXY,
 		serverSide = FReferences.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
-
 	public static CreativeTabs sTabDB = new CreativeTabDB( CreativeTabs.getNextID(), FReferences.MOD_ID);
 
 	@Init

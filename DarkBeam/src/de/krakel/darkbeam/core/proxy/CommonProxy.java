@@ -1,4 +1,4 @@
-package de.grayal.darkbeam.core.proxy;
+package de.krakel.darkbeam.core.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package de.grayal.darkbeam.lib;
+package de.krakel.darkbeam.lib;
 
 public final class FLocalization {
 	public static final String LANG_LOCATION = "/mods/darkbeam/lang/";

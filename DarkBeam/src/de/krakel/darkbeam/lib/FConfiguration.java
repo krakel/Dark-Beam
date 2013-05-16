@@ -1,4 +1,4 @@
-package de.grayal.darkbeam.lib;
+package de.krakel.darkbeam.lib;
 
 public class FConfiguration {
 	public static final String DISPLAY_VERSION_RESULT_NAME = "version_check.display_results";

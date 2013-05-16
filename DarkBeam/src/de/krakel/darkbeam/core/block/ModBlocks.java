@@ -2,16 +2,15 @@
  * Dark Beam
  * ModBlocks
  * 
- * @author Grayal
+ * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.grayal.darkbeam.core.block;
+package de.krakel.darkbeam.core.block;
 
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import de.grayal.darkbeam.lib.FBlockIds;
-import de.grayal.darkbeam.lib.FStrings;
+import de.krakel.darkbeam.lib.FBlockIds;
+import de.krakel.darkbeam.lib.FStrings;
 
 public class ModBlocks {
 	public static Block sOreBeaming = new BlockOre( FBlockIds.sOreBeamingID, FStrings.ORE_BEAMING_NAME);
