@@ -9,7 +9,11 @@ package de.krakel.darkbeam.core.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.krakel.darkbeam.DarkBeam;
+import de.krakel.darkbeam.lib.FTextures;
 
 public class BlockOre extends Block {
 	public BlockOre( int id, String name) {
@@ -20,6 +24,7 @@ public class BlockOre extends Block {
 		setUnlocalizedName( name);
 		setCreativeTab( DarkBeam.sTabDB);
 	}
+
 //	@Override
 //	public int damageDropped( int meta) {
 //		return super.damageDropped( meta);
@@ -44,4 +49,9 @@ public class BlockOre extends Block {
 //	public int quantityDroppedWithBonus( int meta, Random rnd) {
 //		return super.quantityDroppedWithBonus( meta, rnd);
 //	}
+	@Override
+	@SideOnly( Side.CLIENT)
+	public void registerIcons( IconRegister reg) {
+		blockIcon = reg.registerIcon( FTextures.get( getUnlocalizedName2()));
+	}
 }

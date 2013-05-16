@@ -30,4 +30,7 @@ public final class FLocalization {
 //		"el_GR.properties"
 //@formatter:on
 	};
+
+	private FLocalization() {
+	}
 }

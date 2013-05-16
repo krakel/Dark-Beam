@@ -12,4 +12,7 @@ public final class FReferences {
 	public static final int SHIFTED_ID_RANGE_CORRECTION = 256;
 	public static final int TICKS_PER_SECOND = 20;
 	public static final int VERSION_CHECK_ATTEMPTS = 3;
+
+	private FReferences() {
+	}
 }

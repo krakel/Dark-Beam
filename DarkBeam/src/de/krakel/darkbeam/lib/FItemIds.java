@@ -15,9 +15,12 @@ public final class FItemIds {
 //	public static final int ALCHEMICAL_DUST_DEFAULT = 27004;
 //	public static final int ALCHEMICAL_BAG_DEFAULT = 27005;
 	public static int sMinimumShard;
+
 //	public static int INERT_STONE;
 //	public static int MINIUM_STONE;
 //	public static int PHILOSOPHERS_STONE;
 //	public static int ALCHEMICAL_DUST;
 //	public static int ALCHEMICAL_BAG;
+	private FItemIds() {
+	}
 }

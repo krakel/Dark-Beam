@@ -13,6 +13,7 @@ public final class FStrings {
 	/* Block name constants */
 	public static final String ORE_BEAMING_NAME = "oreBeaming";
 	public static final String ORE_DARKENING_NAME = "oreDarkening";
+
 //    String CALCINATOR_NAME = "calcinator";
 //    String ALUDEL_NAME = "aludel";
 //    String ALCHEMICAL_CHEST_NAME = "alchemicalChest";
@@ -20,8 +21,6 @@ public final class FStrings {
 //    String RED_WATER_STILL_NAME = "redWaterStill";
 //    String RED_WATER_FLOWING_NAME = "redWaterFlowing";
 	/* Container related constants */
-	public static final String ORE_BEAMING_REF = "ore." + ORE_BEAMING_NAME;
-	public static final String ORE_DARKENING_REF = "ore." + ORE_DARKENING_NAME;
 //    String CONTAINER_CALCINATOR_NAME = "container." + CALCINATOR_NAME;
 //    String CONTAINER_ALUDEL_NAME = "container." + ALUDEL_NAME;
 //    String CONTAINER_ALCHEMICAL_CHEST_NAME = "container." + ALCHEMICAL_CHEST_NAME;
@@ -57,4 +56,6 @@ public final class FStrings {
 //    String TRANSMUTATION_COST_ITEM = "item" + TRANSMUTATION_COST;
 //    String TRANSMUTATION_COST_BLOCK = "block" + TRANSMUTATION_COST;
 //    String TRANSMUTATION_COST_MOB = "mob" + TRANSMUTATION_COST;
+	private FStrings() {
+	}
 }

@@ -15,22 +15,18 @@ public class FConfiguration {
 //    public static boolean ENABLE_OVERLAY_WORLD_TRANSMUTATION;
 //    public static final String ENABLE_OVERLAY_WORLD_TRANSMUTATION_CONFIGNAME = "world_transmutation_overlay.enabled";
 //    public static final boolean ENABLE_OVERLAY_WORLD_TRANSMUTATION_DEFAULT = true;
-
 	/* Graphic config settings */
 	// Whether or not EE3 particle fx are enabled
 //    public static boolean ENABLE_PARTICLE_FX;
 //    public static final String ENABLE_PARTICLE_FX_CONFIGNAME = "particle_fx.enabled";
 //    public static final boolean ENABLE_PARTICLE_FX_DEFAULT = true;
-
 	/* Audio config settings */
 //    public static String ENABLE_SOUNDS;
 //    public static final String ENABLE_SOUNDS_CONFIGNAME = "sounds.enabled";
 //    public static final String ENABLE_SOUNDS_DEFAULT = "all";
-
 	// Charge key
 //    public static final String KEYBINDING_CHARGE = "key.charge";
 //    public static final int KEYBINDING_CHARGE_DEFAULT = 47;
-
 	/* Keybinding related config settings */
 	// Extra key
 //    public static final String KEYBINDING_EXTRA = "key.extra";
@@ -43,7 +39,6 @@ public class FConfiguration {
 	// Toggle key
 //    public static final String KEYBINDING_TOGGLE = "key.toggle";
 //    public static final int KEYBINDING_TOGGLE_DEFAULT = 34;
-
 	/* Item related config settings */
 	// The maximum durability for the Minium Stone 
 //    public static int MINIUM_STONE_MAX_DURABILITY;
@@ -55,7 +50,6 @@ public class FConfiguration {
 //
 //    public static final String PHILOSOPHERS_STONE_MAX_DURABILITY_CONFIGNAME = IStrings.PHILOSOPHERS_STONE_NAME;
 //    public static final int PHILOSOPHERS_STONE_MAX_DURABILITY_DEFAULT = 10001;
-
 	/* Block related config settings */
 //    public static int RED_WATER_DURATION_BASE;
 //
@@ -91,15 +85,15 @@ public class FConfiguration {
 //    public static int TRANSMUTE_COST_BLOCK;
 //    public static final String TRANSMUTE_COST_BLOCK_CONFIGNAME = IStrings.TRANSMUTATION_COST_BLOCK;
 //    public static final int TRANSMUTE_COST_BLOCK_DEFAULT = 1;
-
 	/* Transmutation related config settings */
 	// The durability cost for each item transmutation 
 //    public static int TRANSMUTE_COST_ITEM;
 //    public static final String TRANSMUTE_COST_ITEM_CONFIGNAME = IStrings.TRANSMUTATION_COST_ITEM;
 //    public static final int TRANSMUTE_COST_ITEM_DEFAULT = 1;
-
 	// The durability cost for each block transmutation 
 //    public static int TRANSMUTE_COST_MOB;
 //    public static final String TRANSMUTE_COST_MOB_CONFIGNAME = IStrings.TRANSMUTATION_COST_MOB;
 //    public static final int TRANSMUTE_COST_MOB_DEFAULT = 1;
+	private FConfiguration() {
+	}
 }
