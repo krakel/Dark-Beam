@@ -8,8 +8,6 @@ import java.util.logging.Level;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-
-
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.lib.FColors;
 import de.krakel.darkbeam.lib.FConfiguration;
@@ -33,7 +31,7 @@ public class VersionHelper implements Runnable {
 		new Thread( helper).start();
 	}
 
-	public static String getResultMessage() {
+	public static String getMessage() {
 		if (sResult == ID_UNINITIALIZED) {
 			return LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_UNINITIALIZED);
 		}
@@ -76,7 +74,7 @@ public class VersionHelper implements Runnable {
 		return LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_GENERAL_ERROR);
 	}
 
-	public static String getResultMessageForClient() {
+	public static String getMessageForClient() {
 		String res = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_OUTDATED);
 		res = res.replace( "@MOD_NAME@", FColors.PREFIX_YELLOW + FReferences.MOD_NAME + FColors.PREFIX_WHITE);
 		res = res.replace( "@REMOTE_MOD_VERSION@", FColors.PREFIX_YELLOW + sVersion + FColors.PREFIX_WHITE);
@@ -85,12 +83,12 @@ public class VersionHelper implements Runnable {
 		return res;
 	}
 
-	public static boolean isOutdated() {
-		return sResult == ID_OUTDATED;
+	public static boolean isInitialized() {
+		return sResult != ID_UNINITIALIZED && sResult != ID_FINAL;
 	}
 
-	public static boolean isRes1() {
-		return !(sResult == ID_UNINITIALIZED && sResult == ID_FINAL);
+	public static boolean isOutdated() {
+		return sResult == ID_OUTDATED;
 	}
 
 	private static String getVersionForCheck() {
@@ -175,10 +173,10 @@ public class VersionHelper implements Runnable {
 
 	private void logResult() {
 		if (sResult == ID_CURRENT || sResult == ID_OUTDATED) {
-			LogHelper.log( Level.INFO, getResultMessage());
+			LogHelper.log( Level.INFO, getMessage());
 		}
 		else {
-			LogHelper.log( Level.WARNING, getResultMessage());
+			LogHelper.log( Level.WARNING, getMessage());
 		}
 	}
 }

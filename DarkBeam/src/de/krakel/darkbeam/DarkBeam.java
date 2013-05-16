@@ -19,12 +19,14 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-
-
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 import de.krakel.darkbeam.core.block.ModBlocks;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
+import de.krakel.darkbeam.core.handler.VersionCheckTickHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
+import de.krakel.darkbeam.core.helper.VersionHelper;
 import de.krakel.darkbeam.core.proxy.CommonProxy;
 import de.krakel.darkbeam.lib.FReferences;
 import de.krakel.darkbeam.lib.FStrings;
@@ -86,8 +88,8 @@ public class DarkBeam {
 		File confDir = new File( event.getModConfigurationDirectory(), FReferences.MOD_CHANNEL);
 		File confFile = new File( confDir, FReferences.MOD_ID + ".cfg");
 		ConfigurationHandler.init( confFile);
-//		VersionHelper.execute();
-//        TickRegistry.registerTickHandler(new VersionCheckTickHandler(), Side.CLIENT);
+		VersionHelper.execute();
+		TickRegistry.registerTickHandler( new VersionCheckTickHandler(), Side.CLIENT);
 		sProxy.registerRenderTickHandler();
 		sProxy.registerKeyBindingHandler();
 		sProxy.registerSoundHandler();

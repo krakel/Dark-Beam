@@ -6,8 +6,6 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
-
-
 import de.krakel.darkbeam.core.helper.VersionHelper;
 import de.krakel.darkbeam.lib.FConfiguration;
 import de.krakel.darkbeam.lib.FReferences;
@@ -23,14 +21,12 @@ public class VersionCheckTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd( EnumSet<TickType> type, Object... tickData) {
 		if (FConfiguration.sDisplayVersionResult && !sInitialized) {
-			for (TickType tickType : type) {
-				if (tickType == TickType.CLIENT && FMLClientHandler.instance().getClient().currentScreen == null) {
-					if (VersionHelper.isRes1()) {
-						sInitialized = true;
-						if (VersionHelper.isOutdated()) {
-							FMLClientHandler.instance().getClient().ingameGUI.getChatGUI().printChatMessage( VersionHelper.getResultMessageForClient());
-							ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, FConfiguration.DISPLAY_VERSION_RESULT_NAME, Boolean.FALSE.toString());
-						}
+			for (TickType tt : type) {
+				if (tt == TickType.CLIENT && FMLClientHandler.instance().getClient().currentScreen == null && VersionHelper.isInitialized()) {
+					sInitialized = true;
+					if (VersionHelper.isOutdated()) {
+						FMLClientHandler.instance().getClient().ingameGUI.getChatGUI().printChatMessage( VersionHelper.getMessageForClient());
+						ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, FConfiguration.DISPLAY_VERSION_RESULT_NAME, Boolean.FALSE.toString());
 					}
 				}
 			}
