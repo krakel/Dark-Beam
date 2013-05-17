@@ -52,6 +52,6 @@ public class BlockOre extends Block {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
-		blockIcon = reg.registerIcon( FTextures.get( getUnlocalizedName2()));
+		blockIcon = reg.registerIcon( FTextures.PATH_DEFAULT + getUnlocalizedName2());
 	}
 }
