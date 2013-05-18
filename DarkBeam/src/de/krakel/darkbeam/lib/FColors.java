@@ -13,6 +13,6 @@ public final class FColors {
 		if (withColor) {
 			return PREFIX_YELLOW + name + PREFIX_WHITE;
 		}
-		return name;
+		return String.valueOf( name);
 	}
 }
