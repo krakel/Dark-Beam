@@ -1,3 +1,10 @@
+/**
+ * Dark Beam
+ * FColors.java
+ * 
+ * @author krakel
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ */
 package de.krakel.darkbeam.lib;
 
 public final class FColors {

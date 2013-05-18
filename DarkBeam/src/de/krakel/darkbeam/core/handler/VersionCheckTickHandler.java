@@ -1,3 +1,10 @@
+/**
+ * Dark Beam
+ * VersionCheckTickHandler.java
+ * 
+ * @author krakel
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ */
 package de.krakel.darkbeam.core.handler;
 
 import java.util.EnumSet;
@@ -6,6 +13,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
+
 import de.krakel.darkbeam.core.helper.VersionHelper;
 import de.krakel.darkbeam.lib.FConfiguration;
 import de.krakel.darkbeam.lib.FReferences;

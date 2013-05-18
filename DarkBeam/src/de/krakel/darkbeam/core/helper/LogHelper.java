@@ -1,9 +1,17 @@
+/**
+ * Dark Beam
+ * LogHelper.java
+ * 
+ * @author krakel
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ */
 package de.krakel.darkbeam.core.helper;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cpw.mods.fml.common.FMLLog;
+
 import de.krakel.darkbeam.lib.FReferences;
 
 public class LogHelper {

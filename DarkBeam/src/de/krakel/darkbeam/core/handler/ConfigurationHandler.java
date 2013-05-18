@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * ConfigurationHandler
+ * ConfigurationHandler.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -11,6 +11,7 @@ import java.io.File;
 
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
+
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.FBlockIds;
 import de.krakel.darkbeam.lib.FConfiguration;

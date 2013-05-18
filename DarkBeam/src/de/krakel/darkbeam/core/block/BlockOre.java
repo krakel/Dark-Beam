@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * BlockOre
+ * BlockOre.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.lib.FTextures;
 

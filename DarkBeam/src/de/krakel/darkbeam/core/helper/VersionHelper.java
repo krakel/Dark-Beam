@@ -1,3 +1,10 @@
+/**
+ * Dark Beam
+ * VersionHelper.java
+ * 
+ * @author krakel
+ * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
+ */
 package de.krakel.darkbeam.core.helper;
 
 import java.io.InputStream;
@@ -7,6 +14,7 @@ import java.util.Properties;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.lib.FColors;
 import de.krakel.darkbeam.lib.FConfiguration;
