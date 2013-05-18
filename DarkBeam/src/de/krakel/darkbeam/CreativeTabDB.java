@@ -14,6 +14,6 @@ public class CreativeTabDB extends CreativeTabs {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int getTabIconItemIndex() {
-		return FItemIds.sMinimumShard;
+		return FItemIds.sItemDarkeningID;
 	}
 }

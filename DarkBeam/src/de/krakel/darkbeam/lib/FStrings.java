@@ -13,7 +13,6 @@ public final class FStrings {
 	/* Block name constants */
 	public static final String ORE_BEAMING_NAME = "oreBeaming";
 	public static final String ORE_DARKENING_NAME = "oreDarkening";
-
 //    String CALCINATOR_NAME = "calcinator";
 //    String ALUDEL_NAME = "aludel";
 //    String ALCHEMICAL_CHEST_NAME = "alchemicalChest";
@@ -40,6 +39,8 @@ public final class FStrings {
 //    String NBT_TE_CUSTOM_NAME = "CustomName";
 //    String NBT_TE_DIRECTION_KEY = "teDirection";
 	/* Item name constants */
+	public static final String ITEM_DARKENING_NAME = "itemeDarkening";
+
 //    String MINIUM_SHARD_NAME = "shardMinium";
 //    String INERT_STONE_NAME = "stoneInert";
 //    String MINIUM_STONE_NAME = "stoneMinium";

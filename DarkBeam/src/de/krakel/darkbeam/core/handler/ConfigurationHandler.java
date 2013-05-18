@@ -14,6 +14,7 @@ import net.minecraftforge.common.Configuration;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.FBlockIds;
 import de.krakel.darkbeam.lib.FConfiguration;
+import de.krakel.darkbeam.lib.FItemIds;
 import de.krakel.darkbeam.lib.FReferences;
 import de.krakel.darkbeam.lib.FStrings;
 
@@ -60,8 +61,8 @@ public class ConfigurationHandler {
 			/* Audio configs */
 //			ConfigurationSettings.ENABLE_SOUNDS = sConfig.get( CAT_AUDIO, ConfigurationSettings.ENABLE_SOUNDS_CONFIGNAME, ConfigurationSettings.ENABLE_SOUNDS_DEFAULT).getString();
 			/* Block configs */
-			FBlockIds.sOreBeamingID = getConfigBlock( FStrings.ORE_BEAMING_NAME, FBlockIds.ORE_BEAMING_DEFAULT_ID);
 			FBlockIds.sOreDarkeningID = getConfigBlock( FStrings.ORE_DARKENING_NAME, FBlockIds.ORE_DARKENING_DEFAULT_ID);
+			FBlockIds.sOreBeamingID = getConfigBlock( FStrings.ORE_BEAMING_NAME, FBlockIds.ORE_BEAMING_DEFAULT_ID);
 //			BlockIds.CALCINATOR = sConfig.getBlock( Strings.CALCINATOR_NAME, BlockIds.CALCINATOR_DEFAULT).getInt( BlockIds.CALCINATOR_DEFAULT);
 //			BlockIds.ALUDEL_BASE = sConfig.getBlock( Strings.ALUDEL_NAME, BlockIds.ALUDEL_BASE_DEFAULT).getInt( BlockIds.ALUDEL_BASE_DEFAULT);
 //			BlockIds.ALCHEMICAL_CHEST = sConfig.getBlock( Strings.ALCHEMICAL_CHEST_NAME, BlockIds.ALCHEMICAL_CHEST_DEFAULT).getInt( BlockIds.ALCHEMICAL_CHEST_DEFAULT);
@@ -76,6 +77,7 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.RED_WATER_RANGE_BASE = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_BASE_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT);
 //			ConfigurationSettings.RED_WATER_RANGE_MODIFIER = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT);
 			/* Item configs */
+			FItemIds.sItemDarkeningID = getConfigItem( FStrings.ITEM_DARKENING_NAME, FItemIds.ITEM_DARKENING_DEFAULT);
 //			ItemIds.MINIUM_SHARD = sConfig.getItem( Strings.MINIUM_SHARD_NAME, ItemIds.MINIUM_SHARD_DEFAULT).getInt( ItemIds.MINIUM_SHARD_DEFAULT);
 //			ItemIds.INERT_STONE = sConfig.getItem( Strings.INERT_STONE_NAME, ItemIds.INERT_STONE_DEFAULT).getInt( ItemIds.INERT_STONE_DEFAULT);
 //			ItemIds.MINIUM_STONE = sConfig.getItem( Strings.MINIUM_STONE_NAME, ItemIds.MINIUM_STONE_DEFAULT).getInt( ItemIds.MINIUM_STONE_DEFAULT);
@@ -121,6 +123,10 @@ public class ConfigurationHandler {
 
 	private static boolean getConfigBoolean( String category, String name, boolean def) {
 		return sConfig.get( category, name, def).getBoolean( def);
+	}
+
+	private static int getConfigItem( String name, int id) {
+		return sConfig.getItem( name, id).getInt( id);
 	}
 
 	private static String getConfigString( String category, String name, String def) {
