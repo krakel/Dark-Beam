@@ -3,7 +3,6 @@ package de.krakel.darkbeam.core.helper;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
@@ -101,7 +100,7 @@ public class VersionHelper implements Runnable {
 
 	@Override
 	public void run() {
-		LogHelper.log( Level.INFO, LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_CHECK_INIT) + " " + REMOTE_VERSION);
+		LogHelper.info( LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_CHECK_INIT) + " " + REMOTE_VERSION);
 		try {
 			for (int count = 0; count < FReferences.VERSION_CHECK_ATTEMPTS; ++count) {
 				checkVersion();
@@ -173,10 +172,10 @@ public class VersionHelper implements Runnable {
 
 	private void logResult() {
 		if (sResult == ID_CURRENT || sResult == ID_OUTDATED) {
-			LogHelper.log( Level.INFO, getMessage());
+			LogHelper.info( getMessage());
 		}
 		else {
-			LogHelper.log( Level.WARNING, getMessage());
+			LogHelper.warning( getMessage());
 		}
 	}
 }

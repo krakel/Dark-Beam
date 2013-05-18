@@ -1,7 +1,6 @@
 package de.krakel.darkbeam;
 
 import java.io.File;
-import java.util.logging.Level;
 
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
@@ -73,7 +72,7 @@ public class DarkBeam {
 
 	@FingerprintWarning
 	public void invalidFingerprint( FMLFingerprintViolationEvent event) {
-		LogHelper.log( Level.SEVERE, FStrings.INVALID_FINGERPRINT);
+		LogHelper.severe( FStrings.INVALID_FINGERPRINT);
 	}
 
 	@PostInit

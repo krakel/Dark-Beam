@@ -8,11 +8,10 @@
 package de.krakel.darkbeam.core.handler;
 
 import java.io.File;
-import java.util.logging.Level;
 
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
-import cpw.mods.fml.common.FMLLog;
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.FBlockIds;
 import de.krakel.darkbeam.lib.FConfiguration;
 import de.krakel.darkbeam.lib.FReferences;
@@ -98,7 +97,7 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.TRANSMUTE_COST_MOB = sConfig.get( CAT_TRANSMUTATION, ConfigurationSettings.TRANSMUTE_COST_MOB_CONFIGNAME, ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT).getInt( ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT);
 		}
 		catch (Exception ex) {
-			FMLLog.log( Level.SEVERE, ex, FReferences.MOD_NAME + " has had a problem loading its configuration");
+			LogHelper.severe( ex, FReferences.MOD_NAME + " has had a problem loading its configuration");
 		}
 		finally {
 			sConfig.save();
