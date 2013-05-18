@@ -20,7 +20,7 @@ public class VersionHelper implements Runnable {
 	private static final byte ID_OUTDATED = 2;
 	private static final byte ID_ERROR = 3;
 	private static final byte ID_FINAL = 4;
-	private static final byte ID_MC_VERSION = 5;
+	private static final byte ID_MC_NOT_FOUND = 5;
 	private static byte sResult = ID_UNINITIALIZED;
 	private static String sLocation;
 	private static String sVersion;
@@ -30,56 +30,8 @@ public class VersionHelper implements Runnable {
 		new Thread( helper).start();
 	}
 
-	public static String getMessage() {
-		if (sResult == ID_UNINITIALIZED) {
-			return LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_UNINITIALIZED);
-		}
-		if (sResult == ID_CURRENT) {
-			String res = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_CURRENT);
-			res = res.replace( "@MOD_NAME@", FReferences.MOD_NAME);
-			res = res.replace( "@REMOTE_MOD_VERSION@", sVersion);
-			res = res.replace( "@MINECRAFT_VERSION@", Loader.instance().getMCVersionString());
-			return res;
-		}
-		if (sResult == ID_OUTDATED && sVersion != null && sLocation != null) {
-			String res = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_OUTDATED);
-			res = res.replace( "@MOD_NAME@", FReferences.MOD_NAME);
-			res = res.replace( "@REMOTE_MOD_VERSION@", sVersion);
-			res = res.replace( "@MINECRAFT_VERSION@", Loader.instance().getMCVersionString());
-			res = res.replace( "@MOD_UPDATE_LOCATION@", sLocation);
-			return res;
-		}
-		if (sResult == ID_OUTDATED && sVersion != null && sLocation != null) {
-			String res = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_OUTDATED);
-			res = res.replace( "@MOD_NAME@", FReferences.MOD_NAME);
-			res = res.replace( "@REMOTE_MOD_VERSION@", sVersion);
-			res = res.replace( "@MINECRAFT_VERSION@", Loader.instance().getMCVersionString());
-			res = res.replace( "@MOD_UPDATE_LOCATION@", sLocation);
-			return res;
-		}
-		if (sResult == ID_ERROR) {
-			return LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_GENERAL_ERROR);
-		}
-		if (sResult == ID_FINAL) {
-			return LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_FINAL_ERROR);
-		}
-		if (sResult == ID_MC_VERSION) {
-			String res = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_MC_NOT_FOUND);
-			res = res.replace( "@MOD_NAME@", FReferences.MOD_NAME);
-			res = res.replace( "@MINECRAFT_VERSION@", Loader.instance().getMCVersionString());
-			return res;
-		}
-		sResult = ID_ERROR;
-		return LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_GENERAL_ERROR);
-	}
-
 	public static String getMessageForClient() {
-		String res = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_OUTDATED);
-		res = res.replace( "@MOD_NAME@", FColors.PREFIX_YELLOW + FReferences.MOD_NAME + FColors.PREFIX_WHITE);
-		res = res.replace( "@REMOTE_MOD_VERSION@", FColors.PREFIX_YELLOW + sVersion + FColors.PREFIX_WHITE);
-		res = res.replace( "@MINECRAFT_VERSION@", FColors.PREFIX_YELLOW + Loader.instance().getMCVersionString() + FColors.PREFIX_WHITE);
-		res = res.replace( "@MOD_UPDATE_LOCATION@", FColors.PREFIX_YELLOW + sLocation + FColors.PREFIX_WHITE);
-		return res;
+		return formatMsg( FStrings.VERSION_OUTDATED, true);
 	}
 
 	public static boolean isInitialized() {
@@ -88,6 +40,35 @@ public class VersionHelper implements Runnable {
 
 	public static boolean isOutdated() {
 		return sResult == ID_OUTDATED;
+	}
+
+	private static String formatMsg( String key, boolean withColor) {
+		String res = LanguageRegistry.instance().getStringLocalization( key);
+		res = res.replace( "@MOD_NAME@", FColors.get( FReferences.MOD_NAME, withColor));
+		res = res.replace( "@REMOTE_VERSION@", FColors.get( sVersion, withColor));
+		res = res.replace( "@UPDATE_LOCATION@", FColors.get( sLocation, withColor));
+		res = res.replace( "@MINECRAFT_VERSION@", FColors.get( Loader.instance().getMCVersionString(), withColor));
+		return res;
+	}
+
+	private static String getMessage() {
+		switch (sResult) {
+			case ID_UNINITIALIZED:
+				return formatMsg( FStrings.VERSION_UNINITIALIZED, false);
+			case ID_CURRENT:
+				return formatMsg( FStrings.VERSION_CURRENT, false);
+			case ID_FINAL:
+				return formatMsg( FStrings.VERSION_FINAL, false);
+			case ID_MC_NOT_FOUND:
+				return formatMsg( FStrings.VERSION_MC_NOT_FOUND, false);
+			case ID_OUTDATED:
+				if (sVersion != null && sLocation != null) {
+					return formatMsg( FStrings.VERSION_OUTDATED, false);
+				}
+			default:
+				sResult = ID_ERROR;
+				return formatMsg( FStrings.VERSION_ERROR, false);
+		}
 	}
 
 	private static String getVersionForCheck() {
@@ -122,50 +103,57 @@ public class VersionHelper implements Runnable {
 
 	private void checkVersion() {
 		sResult = ID_UNINITIALIZED;
-		InputStream is = null;
 		try {
-			URL url = new URL( REMOTE_VERSION);
-			is = url.openStream();
 			Properties props = new Properties();
-			props.loadFromXML( is);
-			String version = props.getProperty( Loader.instance().getMCVersionString());
-			if (version != null) {
-				String[] tokens = version.split( "\\|");
-				if (tokens.length >= 2) {
-					sVersion = tokens[0];
-					sLocation = tokens[1];
+			InputStream is = null;
+			try {
+				URL url = new URL( REMOTE_VERSION);
+				is = url.openStream();
+				props.loadFromXML( is);
+			}
+			catch (Exception ex) {
+				// ignore
+			}
+			finally {
+				try {
+					if (is != null) {
+						is.close();
+					}
 				}
-				else {
-					sResult = ID_ERROR;
-				}
-				if (sVersion != null) {
-					if (!FConfiguration.sLastDiscoveredVersion.equalsIgnoreCase( sVersion)) {
-						ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_NAME, sVersion);
-					}
-					if (sVersion.equalsIgnoreCase( getVersionForCheck())) {
-						sResult = ID_CURRENT;
-					}
-					else {
-						sResult = ID_OUTDATED;
-					}
+				catch (Exception ex) {
+					// ignore
 				}
 			}
-			else {
-				sResult = ID_MC_VERSION;
+			String version = props.getProperty( Loader.instance().getMCVersionString());
+			if (version == null) {
+				sResult = ID_MC_NOT_FOUND;
+				return;
+			}
+			String[] tokens = version.split( "\\|");
+			if (tokens.length < 1) {
+				sResult = ID_ERROR;
+				return;
+			}
+			sVersion = tokens[0];
+			sLocation = tokens[1];
+			if (sVersion != null) {
+				if (!FConfiguration.sLastDiscoveredVersion.equalsIgnoreCase( sVersion)) {
+					ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_NAME, sVersion);
+				}
+				if (sVersion.equalsIgnoreCase( getVersionForCheck())) {
+					sResult = ID_CURRENT;
+				}
+				else {
+					sResult = ID_OUTDATED;
+				}
 			}
 		}
 		catch (Exception ex) {
+			// ignore
 		}
 		finally {
 			if (sResult == ID_UNINITIALIZED) {
 				sResult = ID_ERROR;
-			}
-			try {
-				if (is != null) {
-					is.close();
-				}
-			}
-			catch (Exception ex) {
 			}
 		}
 	}

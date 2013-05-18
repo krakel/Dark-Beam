@@ -8,4 +8,11 @@ public final class FColors {
 
 	private FColors() {
 	}
+
+	public static String get( String name, boolean withColor) {
+		if (withColor) {
+			return PREFIX_YELLOW + name + PREFIX_WHITE;
+		}
+		return name;
+	}
 }

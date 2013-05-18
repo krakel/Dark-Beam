@@ -5,8 +5,8 @@ public final class FStrings {
 	/* Version check related constants */
 	public static final String VERSION_CHECK_INIT = "version.init_log";
 	public static final String VERSION_CURRENT = "version.current";
-	public static final String VERSION_FINAL_ERROR = "version.final_error";
-	public static final String VERSION_GENERAL_ERROR = "version.general_error";
+	public static final String VERSION_FINAL = "version.final_error";
+	public static final String VERSION_ERROR = "version.general_error";
 	public static final String VERSION_MC_NOT_FOUND = "version.mc_not_found";
 	public static final String VERSION_OUTDATED = "version.outdated";
 	public static final String VERSION_UNINITIALIZED = "version.uninitialized";
