@@ -64,6 +64,7 @@ public class ConfigurationHandler {
 			/* Block configs */
 			FBlockIds.sOreDarkeningID = getConfigBlock( FStrings.ORE_DARKENING_NAME, FBlockIds.ORE_DARKENING_DEFAULT_ID);
 			FBlockIds.sOreBeamingID = getConfigBlock( FStrings.ORE_BEAMING_NAME, FBlockIds.ORE_BEAMING_DEFAULT_ID);
+			FBlockIds.sBlockRedWireID = getConfigBlock( FStrings.BLOCK_RED_WIRE_NAME, FBlockIds.BLOCK_RED_WIRE_DEFAULT_ID);
 //			BlockIds.CALCINATOR = sConfig.getBlock( Strings.CALCINATOR_NAME, BlockIds.CALCINATOR_DEFAULT).getInt( BlockIds.CALCINATOR_DEFAULT);
 //			BlockIds.ALUDEL_BASE = sConfig.getBlock( Strings.ALUDEL_NAME, BlockIds.ALUDEL_BASE_DEFAULT).getInt( BlockIds.ALUDEL_BASE_DEFAULT);
 //			BlockIds.ALCHEMICAL_CHEST = sConfig.getBlock( Strings.ALCHEMICAL_CHEST_NAME, BlockIds.ALCHEMICAL_CHEST_DEFAULT).getInt( BlockIds.ALCHEMICAL_CHEST_DEFAULT);

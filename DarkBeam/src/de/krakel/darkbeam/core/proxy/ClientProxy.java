@@ -11,6 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
+import de.krakel.darkbeam.lib.FRenderIds;
 
 public class ClientProxy extends CommonProxy {
 	public void handleTileEntityPacket( int x, int y, int z, ForgeDirection orientation, byte state, String customName) {
@@ -38,10 +41,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void initRenderingAndTextures() {
-//		RenderIds.calcinatorRenderId = RenderingRegistry.getNextAvailableRenderId();
-//		RenderIds.aludelRenderId = RenderingRegistry.getNextAvailableRenderId();
-//		RenderIds.alchemicalChestRenderId = RenderingRegistry.getNextAvailableRenderId();
-//		RenderIds.glassBellId = RenderingRegistry.getNextAvailableRenderId();
+		FRenderIds.sRedWireRenderId = RenderingRegistry.getNextAvailableRenderId();
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.CALCINATOR, new ItemCalcinatorRenderer());
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.ALUDEL_BASE, new ItemAludelRenderer());
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.ALCHEMICAL_CHEST, new ItemAlchemicalChestRenderer());
