@@ -12,9 +12,8 @@ import net.minecraft.item.Item;
 import de.krakel.darkbeam.lib.FItemIds;
 
 public class ModItems {
-	public static Item sItemDarkening;
+	public static Item sItemDarkening = new ItemDarkening( FItemIds.sItemDarkeningID);
 
 	public static void init() {
-		sItemDarkening = new ItemDarkening( FItemIds.sItemDarkeningID);
 	}
 }

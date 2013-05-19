@@ -19,9 +19,9 @@ import de.krakel.darkbeam.lib.FTextures;
 
 public class ItemDarkening extends Item {
 	public ItemDarkening( int id) {
-		super( id - FReferences.SHIFTED_ID_RANGE_CORRECTION);
+		super( id - FReferences.SHIFTED_ID_RANGE);
 		setUnlocalizedName( FStrings.ITEM_DARKENING_NAME);
-		setCreativeTab( DarkBeam.sTabDB);
+		setCreativeTab( DarkBeam.sMainTab);
 		setMaxStackSize( 64);
 		setNoRepair();
 	}

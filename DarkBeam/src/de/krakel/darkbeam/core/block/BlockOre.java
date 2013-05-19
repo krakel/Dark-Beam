@@ -23,7 +23,7 @@ public class BlockOre extends Block {
 		setResistance( 5.0F);
 		setStepSound( soundStoneFootstep);
 		setUnlocalizedName( name);
-		setCreativeTab( DarkBeam.sTabDB);
+		setCreativeTab( DarkBeam.sMainTab);
 	}
 
 //	@Override

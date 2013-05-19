@@ -17,6 +17,8 @@ public final class FStrings {
 	public static final String VERSION_MC_NOT_FOUND = "version.mc_not_found";
 	public static final String VERSION_OUTDATED = "version.outdated";
 	public static final String VERSION_UNINITIALIZED = "version.uninitialized";
+	/* Tab name constants */
+	public static final String TAB_MAIN = "tabMain";
 	/* Block name constants */
 	public static final String ORE_BEAMING_NAME = "oreBeaming";
 	public static final String ORE_DARKENING_NAME = "oreDarkening";

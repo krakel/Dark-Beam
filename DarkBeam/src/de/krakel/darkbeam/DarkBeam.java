@@ -60,7 +60,7 @@ public class DarkBeam {
 		clientSide = FReferences.CLASS_CLIENT_PROXY,
 		serverSide = FReferences.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
-	public static CreativeTabs sTabDB = new CreativeTabDB( CreativeTabs.getNextID(), FReferences.MOD_ID);
+	public static CreativeTabs sMainTab = new MainTab( FStrings.TAB_MAIN);
 
 	@Init
 	public void init( FMLInitializationEvent event) {

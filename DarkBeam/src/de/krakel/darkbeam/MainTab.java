@@ -11,16 +11,16 @@ import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.lib.FItemIds;
+import de.krakel.darkbeam.lib.FBlockIds;
 
-public class CreativeTabDB extends CreativeTabs {
-	public CreativeTabDB( int id, String name) {
-		super( id, name);
+public class MainTab extends CreativeTabs {
+	public MainTab( String name) {
+		super( name);
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int getTabIconItemIndex() {
-		return FItemIds.sItemDarkeningID;
+		return FBlockIds.sOreDarkeningID;
 	}
 }

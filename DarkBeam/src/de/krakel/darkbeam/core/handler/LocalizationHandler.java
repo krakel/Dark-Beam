@@ -13,8 +13,8 @@ public class LocalizationHandler {
 	private static final String LANG_LOCATION = "/mods/darkbeam/lang/";
 	private static final String[] LOCALES = {
 //@formatter:off
-		"en_US",
-		"de_DE" 
+		"en_US"
+//		"de_DE", 
 //		"cs_CZ", 
 //		"cy_GB", 
 //		"da_DK", 

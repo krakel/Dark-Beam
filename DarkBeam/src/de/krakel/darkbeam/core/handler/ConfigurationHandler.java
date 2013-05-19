@@ -78,7 +78,7 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.RED_WATER_RANGE_BASE = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_BASE_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT);
 //			ConfigurationSettings.RED_WATER_RANGE_MODIFIER = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT);
 			/* Item configs */
-			FItemIds.sItemDarkeningID = getConfigItem( FStrings.ITEM_DARKENING_NAME, FItemIds.ITEM_DARKENING_DEFAULT);
+			FItemIds.sItemDarkeningID = getConfigItem( FStrings.ITEM_DARKENING_NAME, FItemIds.ITEM_DARKENING_ID);
 //			ItemIds.MINIUM_SHARD = sConfig.getItem( Strings.MINIUM_SHARD_NAME, ItemIds.MINIUM_SHARD_DEFAULT).getInt( ItemIds.MINIUM_SHARD_DEFAULT);
 //			ItemIds.INERT_STONE = sConfig.getItem( Strings.INERT_STONE_NAME, ItemIds.INERT_STONE_DEFAULT).getInt( ItemIds.INERT_STONE_DEFAULT);
 //			ItemIds.MINIUM_STONE = sConfig.getItem( Strings.MINIUM_STONE_NAME, ItemIds.MINIUM_STONE_DEFAULT).getInt( ItemIds.MINIUM_STONE_DEFAULT);
