@@ -50,7 +50,6 @@ public final class FStrings {
 //    String NBT_TE_DIRECTION_KEY = "teDirection";
 	/* Item name constants */
 	public static final String ITEM_DARKENING_NAME = "itemDarkening";
-	public static final String ITEM_RED_WIRE_NAME = "itemRedWire";
 
 //    String MINIUM_SHARD_NAME = "shardMinium";
 //    String INERT_STONE_NAME = "stoneInert";

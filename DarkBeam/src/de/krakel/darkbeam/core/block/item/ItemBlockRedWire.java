@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.lib.FTextures;
 
+// TODO remove
 public class ItemBlockRedWire extends ItemBlock {
 	private Icon mTexture;
 
@@ -31,6 +32,6 @@ public class ItemBlockRedWire extends ItemBlock {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
-		mTexture = reg.registerIcon( FTextures.PATH_DEFAULT + FStrings.ITEM_RED_WIRE_NAME);
+		mTexture = reg.registerIcon( FTextures.PATH_DEFAULT + FStrings.BLOCK_RED_WIRE_NAME);
 	}
 }

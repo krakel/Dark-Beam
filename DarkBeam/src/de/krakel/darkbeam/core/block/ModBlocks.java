@@ -10,7 +10,6 @@ package de.krakel.darkbeam.core.block;
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import de.krakel.darkbeam.core.block.item.ItemBlockRedWire;
 import de.krakel.darkbeam.lib.FBlockIds;
 import de.krakel.darkbeam.lib.FStrings;
 
@@ -22,6 +21,6 @@ public class ModBlocks {
 	public static void preInit() {
 		GameRegistry.registerBlock( sOreBeaming, FStrings.ORE_BEAMING_NAME);
 		GameRegistry.registerBlock( sOreDarkening, FStrings.ORE_DARKENING_NAME);
-		GameRegistry.registerBlock( sBlockRedWire, ItemBlockRedWire.class, FStrings.BLOCK_RED_WIRE_NAME);
+		GameRegistry.registerBlock( sBlockRedWire, FStrings.BLOCK_RED_WIRE_NAME);
 	}
 }
