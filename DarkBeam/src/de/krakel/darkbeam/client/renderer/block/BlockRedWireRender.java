@@ -29,11 +29,31 @@ public class BlockRedWireRender implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-		block.setBlockBounds( BlockRedWire.MIN_SIZE, BlockRedWire.MIN_SIZE, BlockRedWire.MIN_SIZE, BlockRedWire.MAX_SIZE, BlockRedWire.MAX_SIZE, BlockRedWire.MAX_SIZE);
-		renderer.setRenderBoundsFromBlock( block);
+//		int meta = world.getBlockMetadata( x, y, z);
+		boolean toWest = BlockRedWire.isPowerProviderOrWire( world, x - 1, y, z, 0);
+		boolean toEast = BlockRedWire.isPowerProviderOrWire( world, x + 1, y, z, 0);
+		boolean toNorth = BlockRedWire.isPowerProviderOrWire( world, x, y, z - 1, 0);
+		boolean toSouth = BlockRedWire.isPowerProviderOrWire( world, x, y, z + 1, 0);
+		float d = BlockRedWire.THICK / 2;
+		renderer.setRenderBounds( 0.5F - d, 0.0F, 0.5F - d, 0.5F + d, BlockRedWire.THICK, 0.5F + d);
 		renderer.renderStandardBlock( block, x, y, z);
-		block.setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		return false;
+		if (toWest) {
+			renderer.setRenderBounds( 0.0F, 0.0F, 0.5F - d, 0.5F - d, BlockRedWire.THICK, 0.5F + d);
+			renderer.renderStandardBlock( block, x, y, z);
+		}
+		if (toEast) {
+			renderer.setRenderBounds( 0.5F + d, 0.0F, 0.5F - d, 1.0F, BlockRedWire.THICK, 0.5F + d);
+			renderer.renderStandardBlock( block, x, y, z);
+		}
+		if (toNorth) {
+			renderer.setRenderBounds( 0.5F - d, 0.0F, 0.0F, 0.5F + d, BlockRedWire.THICK, 0.5F - d);
+			renderer.renderStandardBlock( block, x, y, z);
+		}
+		if (toSouth) {
+			renderer.setRenderBounds( 0.5F - d, 0.0F, 0.5F + d, 0.5F + d, BlockRedWire.THICK, 1.0F);
+			renderer.renderStandardBlock( block, x, y, z);
+		}
+		return true;
 	}
 
 	@Override
