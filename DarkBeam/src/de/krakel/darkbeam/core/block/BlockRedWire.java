@@ -24,6 +24,9 @@ import de.krakel.darkbeam.client.renderer.block.BlockRedWireRender;
 import de.krakel.darkbeam.lib.FTextures;
 
 public class BlockRedWire extends Block {
+	public static final float MIN_SIZE = 0.0F;
+	public static final float MAX_SIZE = 0.2F;
+
 	public BlockRedWire( int id, String name) {
 		super( id, Material.circuits);
 		setUnlocalizedName( name);
