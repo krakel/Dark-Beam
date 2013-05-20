@@ -44,7 +44,7 @@ public class LocalizationHandler {
 		return LanguageRegistry.instance().getStringLocalization( key);
 	}
 
-	public static void load() {
+	public static void preInit() {
 		LanguageRegistry registry = LanguageRegistry.instance();
 		for (String name : LOCALES) {
 			registry.loadLocalization( LANG_LOCATION + name + ".properties", name, false);

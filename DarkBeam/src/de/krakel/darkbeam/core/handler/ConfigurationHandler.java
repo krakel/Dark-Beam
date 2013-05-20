@@ -11,6 +11,7 @@ import java.io.File;
 
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.FBlockIds;
@@ -29,7 +30,7 @@ public class ConfigurationHandler {
 //	public static final String CAT_TRANSMUTATION = "transmutation";
 	public static Configuration sConfig;
 
-	public static void init( File config) {
+	public static void load( File config) {
 		sConfig = new Configuration( config);
 		try {
 			sConfig.load();
@@ -106,6 +107,12 @@ public class ConfigurationHandler {
 		finally {
 			sConfig.save();
 		}
+	}
+
+	public static void preInit( FMLPreInitializationEvent event) {
+		File confDir = new File( event.getModConfigurationDirectory(), FReferences.MOD_CHANNEL);
+		File confFile = new File( confDir, FReferences.MOD_ID + ".cfg");
+		load( confFile);
 	}
 
 	public static void set( String category, String property, String value) {

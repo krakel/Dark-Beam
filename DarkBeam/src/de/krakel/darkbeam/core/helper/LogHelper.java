@@ -33,7 +33,7 @@ public class LogHelper {
 		log( Level.INFO, String.format( msg, data));
 	}
 
-	public static void init() {
+	public static void preInit() {
 		sLogger.setParent( FMLLog.getLogger());
 	}
 

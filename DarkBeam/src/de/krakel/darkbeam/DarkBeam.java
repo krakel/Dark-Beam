@@ -7,7 +7,6 @@
  */
 package de.krakel.darkbeam;
 
-import java.io.File;
 
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
@@ -71,9 +70,11 @@ public class DarkBeam {
 //		MinecraftForge.EVENT_BUS.register( new ActionRequestHandler());
 //		MinecraftForge.EVENT_BUS.register( new WorldTransmutationHandler());
 //		GameRegistry.registerCraftingHandler( new CraftingHandler());
-		sProxy.registerDrawBlockHighlightHandler();
-		sProxy.registerTileEntities();
-		sProxy.initRenderingAndTextures();
+//		GameRegistry.registerTileEntity( TileCalcinator.class, Strings.TE_CALCINATOR_NAME);
+//		GameRegistry.registerTileEntity( TileAludel.class, Strings.TE_ALUDEL_NAME);
+//		GameRegistry.registerTileEntity( TileAlchemicalChest.class, Strings.TE_ALCHEMICAL_CHEST_NAME);
+//		GameRegistry.registerTileEntity( TileGlassBell.class, Strings.TE_GLASS_BELL_NAME);
+		sProxy.init();
 //		RecipesTransmutationStone.init();
 //		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());
 //		GameRegistry.registerFuelHandler( new FuelHandler());
@@ -91,18 +92,14 @@ public class DarkBeam {
 
 	@PreInit
 	public void preInit( FMLPreInitializationEvent event) {
-		LogHelper.init();
-		LocalizationHandler.load();
-		File confDir = new File( event.getModConfigurationDirectory(), FReferences.MOD_CHANNEL);
-		File confFile = new File( confDir, FReferences.MOD_ID + ".cfg");
-		ConfigurationHandler.init( confFile);
+		LogHelper.preInit();
+		LocalizationHandler.preInit();
+		ConfigurationHandler.preInit( event);
 		VersionHelper.execute();
 		TickRegistry.registerTickHandler( new VersionCheckTickHandler(), Side.CLIENT);
-		sProxy.registerRenderTickHandler();
-		sProxy.registerKeyBindingHandler();
-		sProxy.registerSoundHandler();
-		ModBlocks.init();
-		ModItems.init();
+		sProxy.preInit();
+		ModBlocks.preInit();
+		ModItems.preInit();
 	}
 
 	@ServerStarting

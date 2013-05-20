@@ -22,25 +22,9 @@ public class CommonProxy implements IGuiHandler {
 		return null;
 	}
 
-	public void initRenderingAndTextures() {
+	public void init() {
 	}
 
-	public void registerDrawBlockHighlightHandler() {
-	}
-
-	public void registerKeyBindingHandler() {
-	}
-
-	public void registerRenderTickHandler() {
-	}
-
-	public void registerSoundHandler() {
-	}
-
-	public void registerTileEntities() {
-//		GameRegistry.registerTileEntity( TileCalcinator.class, Strings.TE_CALCINATOR_NAME);
-//		GameRegistry.registerTileEntity( TileAludel.class, Strings.TE_ALUDEL_NAME);
-//		GameRegistry.registerTileEntity( TileAlchemicalChest.class, Strings.TE_ALCHEMICAL_CHEST_NAME);
-//		GameRegistry.registerTileEntity( TileGlassBell.class, Strings.TE_GLASS_BELL_NAME);
+	public void preInit() {
 	}
 }
