@@ -27,13 +27,14 @@ import de.krakel.darkbeam.lib.FTextures;
 public class BlockRedWire extends Block {
 	public static final float MIN = 0.0625F;
 	public static final float THICK = 2F / 16F;
-	private boolean mPower = true;
+	private boolean mPower;
 
 	public BlockRedWire( int id, String name) {
 		super( id, Material.circuits);
 		setUnlocalizedName( name);
 		setCreativeTab( DarkBeam.sMainTab);
 		setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, MIN, 1.0F);
+		disableStats();
 	}
 
 	public static boolean isPoweredOrRepeater( IBlockAccess world, int x, int y, int z, int side) {
@@ -71,11 +72,16 @@ public class BlockRedWire extends Block {
 	}
 
 	@Override
+	@SideOnly( Side.CLIENT)
+	public int colorMultiplier( IBlockAccess world, int x, int y, int z) {
+		return mPower ? 0xFFFFFF : 0x5F5F5F;
+	}
+
+	@Override
 	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
 //		TileEntityRedWire redWire = (TileEntityRedWire) world.getBlockTileEntity( x, y, z);
 //		return redWire.isPowered ? Block.blockRedstone.getIcon( 0, 0) : Block.stone.getIcon( 0, 0);
-		Block blk = mPower ? Block.blockRedstone : Block.stone;
-		return blk.getIcon( 0, 0);
+		return Block.blockRedstone.getIcon( 0, 0);
 	}
 
 	@Override
@@ -159,17 +165,13 @@ public class BlockRedWire extends Block {
 	}
 
 	@Override
-	public void onNeighborBlockChange( World world, int x, int y, int z, int side) {
+	public void onNeighborBlockChange( World world, int x, int y, int z, int id) {
 		if (!world.isRemote) {
-			boolean flag = canPlaceBlockAt( world, x, y, z);
-			if (flag) {
-				updateAndPropagateCurrentStrength( world, x, y, z);
+			boolean power = world.isBlockIndirectlyGettingPowered( x, y, z);
+			if (mPower != power) {
+				mPower = power;
+				world.markBlockForUpdate( x, y, z);
 			}
-			else {
-				dropBlockAsItem( world, x, y, z, 0, 0);
-				world.setBlockToAir( x, y, z);
-			}
-			super.onNeighborBlockChange( world, x, y, z, side);
 		}
 	}
 
@@ -182,15 +184,5 @@ public class BlockRedWire extends Block {
 	@Override
 	public boolean renderAsNormalBlock() {
 		return false;
-	}
-
-	private void updateAndPropagateCurrentStrength( World world, int x, int y, int z) {
-//		calculateCurrentChanges( world, x, y, z, x, y, z);
-//		ArrayList arraylist = new ArrayList( blocksNeedingUpdate);
-//		blocksNeedingUpdate.clear();
-//		for (int l = 0; l < arraylist.size(); ++l) {
-//			ChunkPosition chunkposition = (ChunkPosition) arraylist.get( l);
-//			world.notifyBlocksOfNeighborChange( chunkposition.x, chunkposition.y, chunkposition.z, blockID);
-//		}
 	}
 }

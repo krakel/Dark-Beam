@@ -34,25 +34,20 @@ public class BlockRedWireRender implements ISimpleBlockRenderingHandler {
 		boolean toEast = BlockRedWire.isPowerProviderOrWire( world, x + 1, y, z, 0);
 		boolean toNorth = BlockRedWire.isPowerProviderOrWire( world, x, y, z - 1, 0);
 		boolean toSouth = BlockRedWire.isPowerProviderOrWire( world, x, y, z + 1, 0);
+		boolean isConnected = toWest || toEast || toNorth || toSouth;
 		float d = BlockRedWire.THICK / 2;
-		renderer.setRenderBounds( 0.5F - d, 0.0F, 0.5F - d, 0.5F + d, BlockRedWire.THICK, 0.5F + d);
+		float minS = 0.5f - d;
+		float maxS = 0.5f + d;
+		float min = isConnected ? minS : 0.3F;
+		float max = isConnected ? maxS : 0.7F;
+		float minX = toWest ? 0F : min;
+		float maxX = toEast ? 1F : max;
+		renderer.setRenderBounds( minX, 0F, minS, maxX, BlockRedWire.THICK, maxS);
 		renderer.renderStandardBlock( block, x, y, z);
-		if (toWest) {
-			renderer.setRenderBounds( 0.0F, 0.0F, 0.5F - d, 0.5F - d, BlockRedWire.THICK, 0.5F + d);
-			renderer.renderStandardBlock( block, x, y, z);
-		}
-		if (toEast) {
-			renderer.setRenderBounds( 0.5F + d, 0.0F, 0.5F - d, 1.0F, BlockRedWire.THICK, 0.5F + d);
-			renderer.renderStandardBlock( block, x, y, z);
-		}
-		if (toNorth) {
-			renderer.setRenderBounds( 0.5F - d, 0.0F, 0.0F, 0.5F + d, BlockRedWire.THICK, 0.5F - d);
-			renderer.renderStandardBlock( block, x, y, z);
-		}
-		if (toSouth) {
-			renderer.setRenderBounds( 0.5F - d, 0.0F, 0.5F + d, 0.5F + d, BlockRedWire.THICK, 1.0F);
-			renderer.renderStandardBlock( block, x, y, z);
-		}
+		float minZ = toNorth ? 0F : min;
+		float maxZ = toSouth ? 1F : max;
+		renderer.setRenderBounds( minS, 0F, minZ, maxS, BlockRedWire.THICK, maxZ);
+		renderer.renderStandardBlock( block, x, y, z);
 		return true;
 	}
 
