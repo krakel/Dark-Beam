@@ -1,14 +1,17 @@
 # Auto detect text files and perform LF normalization
 *        text=auto
+*.java   text diff=java
+*.xml    text
+*.txt    text
 
-*.bat    text eol=crlf
+*.bat    eol=crlf
+*.sh     eol=lf
+
+*.class  -text diff=class
+*.jar    -text diff=jar
+
 *.png    binary
 *.zip    binary
 *.xcf    binary
-
-*.cs     text diff=csharp
-*.java   text diff=java
-*.html   text diff=html
-*.css    text
-*.js     text
-*.sql    text
+*.so     binary
+*.dll    binary
