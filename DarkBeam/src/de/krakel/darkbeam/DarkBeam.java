@@ -7,8 +7,9 @@
  */
 package de.krakel.darkbeam;
 
-
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.FingerprintWarning;
 import cpw.mods.fml.common.Mod.Init;
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -38,6 +40,7 @@ import de.krakel.darkbeam.core.proxy.CommonProxy;
 import de.krakel.darkbeam.lib.FReferences;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.network.PacketHandler;
+import de.krakel.darkbeam.tileentity.TileRedWire;
 
 @Mod(
 	modid = FReferences.MOD_ID,
@@ -61,6 +64,17 @@ public class DarkBeam {
 	public static CommonProxy sProxy;
 	public static CreativeTabs sMainTab = new MainTab( FStrings.TAB_MAIN);
 
+	@SuppressWarnings( "unchecked")
+	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z) {
+		try {
+			return (T) world.getBlockTileEntity( x, y, z);
+		}
+		catch (ClassCastException ex) {
+			LogHelper.severe( ex, "wrong tile entity");
+		}
+		return null;
+	}
+
 	@Init
 	public void init( FMLInitializationEvent event) {
 		NetworkRegistry.instance().registerGuiHandler( sInstance, sProxy);
@@ -70,10 +84,7 @@ public class DarkBeam {
 //		MinecraftForge.EVENT_BUS.register( new ActionRequestHandler());
 //		MinecraftForge.EVENT_BUS.register( new WorldTransmutationHandler());
 //		GameRegistry.registerCraftingHandler( new CraftingHandler());
-//		GameRegistry.registerTileEntity( TileCalcinator.class, Strings.TE_CALCINATOR_NAME);
-//		GameRegistry.registerTileEntity( TileAludel.class, Strings.TE_ALUDEL_NAME);
-//		GameRegistry.registerTileEntity( TileAlchemicalChest.class, Strings.TE_ALCHEMICAL_CHEST_NAME);
-//		GameRegistry.registerTileEntity( TileGlassBell.class, Strings.TE_GLASS_BELL_NAME);
+		GameRegistry.registerTileEntity( TileRedWire.class, FStrings.TE_REDWIRE_NAME);
 		sProxy.init();
 //		RecipesTransmutationStone.init();
 //		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());

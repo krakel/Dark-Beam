@@ -50,7 +50,6 @@ public final class FStrings {
 //    String NBT_TE_DIRECTION_KEY = "teDirection";
 	/* Item name constants */
 	public static final String ITEM_DARKENING_NAME = "itemDarkening";
-
 //    String MINIUM_SHARD_NAME = "shardMinium";
 //    String INERT_STONE_NAME = "stoneInert";
 //    String MINIUM_STONE_NAME = "stoneMinium";
@@ -58,10 +57,8 @@ public final class FStrings {
 //    String ALCHEMICAL_DUST_NAME = "alchemicalDust"; 
 //    String ALCHEMICAL_BAG_NAME = "alchemicalBag";
 	/* TileEntity name constants */
-//    String TE_CALCINATOR_NAME = "tileCalcinator";
-//    String TE_ALUDEL_NAME = "tileAludel";
-//    String TE_ALCHEMICAL_CHEST_NAME = "tileAlchemicalChest";
-//    String TE_GLASS_BELL_NAME = "tileGlassBell";
+	public static final String TE_REDWIRE_NAME = "tileRedWire";
+
 	/* Transmutation cost related constants */
 //    String TRANSMUTATION_COST = "_cost";
 //    String TRANSMUTATION_COST_ITEM = "item" + TRANSMUTATION_COST;
