@@ -8,6 +8,8 @@
 package de.krakel.darkbeam.core.block.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.StepSound;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,8 +21,10 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.lib.FTextures;
+import de.krakel.darkbeam.tileentity.TileRedWire;
 
 public class ItemBlockRedWire extends ItemBlock {
 	private Icon mTexture;
@@ -57,37 +61,45 @@ public class ItemBlockRedWire extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse( ItemStack stack, EntityPlayer entity, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		int id = world.getBlockId( x, y, z);
-		if (id == Block.snow.blockID && (world.getBlockMetadata( x, y, z) & 7) == 0) {
-			side = 1;
-		}
-		else if (!isBlockReplaceable( world, x, y, z, id)) {
-			ForgeDirection dir = ForgeDirection.getOrientation( side);
-			x += dir.offsetX;
-			y += dir.offsetY;
-			z += dir.offsetZ;
-		}
-		if (stack.stackSize == 0) {
+	public boolean onItemUse( ItemStack stack, EntityPlayer entity, World world, int x, int y, int z, int side, float xOff, float yOff, float zOff) {
+		if (stack.stackSize == 0 || entity == null || entity.isSneaking()) {
 			return false;
 		}
-		if (!entity.canPlayerEdit( x, y, z, side, stack)) {
+		ForgeDirection dir = ForgeDirection.getOrientation( side);
+		if (!canSupportWire( world, x, y, z, dir)) {
 			return false;
 		}
-		if (y == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
-			return false;
-		}
-		if (world.canPlaceEntityOnSide( getBlockID(), x, y, z, false, side, entity, stack)) {
-			Block block = Block.blocksList[getBlockID()];
-			int meta = getMetadata( stack.getItemDamage());
-			int blkMeta = block.onBlockPlaced( world, x, y, z, side, hitX, hitY, hitZ, meta);
-			if (placeBlockAt( stack, entity, world, x, y, z, side, hitX, hitY, hitZ, blkMeta)) {
-				world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
-				--stack.stackSize;
+		x += dir.offsetX;
+		y += dir.offsetY;
+		z += dir.offsetZ;
+		if (world.getBlockId( x, y, z) != stack.itemID) {
+			if (!world.canPlaceEntityOnSide( stack.itemID, x, y, z, false, side, entity, stack)) {
+				return false;
 			}
-			return true;
+			if (!world.setBlock( x, y, z, stack.itemID, stack.getItemDamage(), 2)) {
+				return true;
+			}
+			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+			if (tile == null) {
+				return false;
+			}
+			tile.setConnection( side);
 		}
-		return false;
+		else {
+			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+			if (tile == null) {
+				return false;
+			}
+			if (tile.isConnected( side)) {
+				return false;
+			}
+			tile.setConnection( side);
+			world.markBlockForUpdate( x, y, z);
+		}
+		--stack.stackSize;
+		playSound( world, x, y, z, stack.itemID);
+		world.notifyBlocksOfNeighborChange( x, y, z, stack.itemID);
+		return true;
 	}
 
 	@Override
@@ -96,11 +108,44 @@ public class ItemBlockRedWire extends ItemBlock {
 		mTexture = reg.registerIcon( FTextures.PATH_DEFAULT + FStrings.BLOCK_RED_WIRE_NAME);
 	}
 
+	private boolean canSupportWire( World world, int x, int y, int z, ForgeDirection dir) {
+		if (!world.blockExists( x, y, z)) {
+			return true;
+		}
+		if (world.isBlockSolidOnSide( x, y, z, dir)) {
+			return true;
+		}
+		if (world.isBlockNormalCube( x, y, z)) {
+			return true;
+		}
+		int id = world.getBlockId( x, y, z);
+		if (id == Block.pistonMoving.blockID) {
+			return true;
+		}
+		if (id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID) {
+			int o = BlockPistonBase.getOrientation( world.getBlockMetadata( x, y, z));
+			return o < 6 && o != dir.ordinal();
+		}
+		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+		if (tile != null) {
+			return tile.isNormal( dir);
+		}
+		return false;
+	}
+
 	private boolean isBlockReplaceable( World world, int x, int y, int z, int id) {
 		if (id == Block.vine.blockID || id == Block.tallGrass.blockID || id == Block.deadBush.blockID) {
 			return true;
 		}
 		Block block = Block.blocksList[id];
 		return block != null && block.isBlockReplaceable( world, x, y, z);
+	}
+
+	private void playSound( World world, int x, int y, int z, int id) {
+		Block blk = Block.blocksList[id];
+		if (blk != null) {
+			StepSound stepSound = blk.stepSound;
+			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(), stepSound.getVolume() * 0.5F + 0.F, stepSound.getPitch() * 0.8F);
+		}
 	}
 }

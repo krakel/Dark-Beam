@@ -12,13 +12,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileRedWire extends TileEntity {
+	private static final String NBT_CONNECTIONS = "cons";
 	private boolean mPowered;
+	private byte mConnections;
 
 	public TileRedWire() {
 	}
 
 	public boolean isConnected( ForgeDirection dir) {
-		return false;
+		return isConnected( dir.ordinal());
+	}
+
+	public boolean isConnected( int side) {
+		int mask = 1 << side;
+		return (mConnections & mask) != 0;
+	}
+
+	public boolean isNormal( ForgeDirection dir) {
+		return true;
 	}
 
 	public boolean isPowered() {
@@ -28,6 +39,17 @@ public class TileRedWire extends TileEntity {
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
 		super.readFromNBT( nbt);
+		mConnections = nbt.getByte( NBT_CONNECTIONS);
+	}
+
+	public void resConnection( int side) {
+		int mask = 1 << side;
+		mConnections &= ~mask;
+	}
+
+	public void setConnection( int side) {
+		int mask = 1 << side;
+		mConnections |= mask;
 	}
 
 	public void updateOnNeighbor() {
@@ -39,5 +61,6 @@ public class TileRedWire extends TileEntity {
 	@Override
 	public void writeToNBT( NBTTagCompound nbt) {
 		super.writeToNBT( nbt);
+		nbt.setByte( NBT_CONNECTIONS, mConnections);
 	}
 }
