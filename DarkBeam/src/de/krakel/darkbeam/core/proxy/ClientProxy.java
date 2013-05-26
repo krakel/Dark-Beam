@@ -16,20 +16,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import de.krakel.darkbeam.client.renderer.block.BlockRedWireRender;
 
 public class ClientProxy extends CommonProxy {
-	@Override
-	public void init() {
-//		registerDrawBlockHighlightHandler();
-//		registerTileEntities();
-		regeisterRendering();
-	}
-
-	@Override
-	public void preInit() {
-//		registerRenderTickHandler();
-//		registerKeyBindingHandler();
-//		registerSoundHandler();
-	}
-
 	@SuppressWarnings( "unused")
 	private void handleTileEntityPacket( int x, int y, int z, ForgeDirection orientation, byte state, String customName) {
 //		TileEntity tileEntity = FMLClientHandler.instance().getClient().theWorld.getBlockTileEntity( x, y, z);
@@ -53,6 +39,20 @@ public class ClientProxy extends CommonProxy {
 //				((TileGlassBell) tileEntity).setInventorySlotContents( 0, itemStack);
 //			}
 //		}
+	}
+
+	@Override
+	public void init() {
+//		registerDrawBlockHighlightHandler();
+//		registerTileEntities();
+		regeisterRendering();
+	}
+
+	@Override
+	public void preInit() {
+//		registerRenderTickHandler();
+//		registerKeyBindingHandler();
+//		registerSoundHandler();
 	}
 
 	private void regeisterRendering() {

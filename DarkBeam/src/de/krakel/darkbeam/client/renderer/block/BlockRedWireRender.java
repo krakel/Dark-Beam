@@ -29,7 +29,7 @@ public class BlockRedWireRender implements ISimpleBlockRenderingHandler {
 //			return side == (meta & 3);
 //		}
 //		return false;
-//	}
+//	} 
 //
 	private static boolean isPowerProviderOrWire( IBlockAccess world, int x, int y, int z, int dir) {
 		int id = world.getBlockId( x, y, z);

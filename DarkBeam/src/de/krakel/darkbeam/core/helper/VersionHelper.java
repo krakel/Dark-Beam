@@ -38,18 +38,6 @@ public class VersionHelper implements Runnable {
 		new Thread( helper).start();
 	}
 
-	public static String getMessageForClient() {
-		return formatMsg( FStrings.VERSION_OUTDATED, true);
-	}
-
-	public static boolean isInitialized() {
-		return sResult != ID_UNINITIALIZED && sResult != ID_FINAL;
-	}
-
-	public static boolean isOutdated() {
-		return sResult == ID_OUTDATED;
-	}
-
 	private static String formatMsg( String key, boolean withColor) {
 		String res = LanguageRegistry.instance().getStringLocalization( key);
 		res = res.replace( "@MOD_NAME@", FColors.get( FReferences.MOD_NAME, withColor));
@@ -79,6 +67,10 @@ public class VersionHelper implements Runnable {
 		}
 	}
 
+	public static String getMessageForClient() {
+		return formatMsg( FStrings.VERSION_OUTDATED, true);
+	}
+
 	private static String getVersionForCheck() {
 		String[] tokens = FReferences.VERSION.split( " ");
 		if (tokens.length < 1) {
@@ -87,26 +79,12 @@ public class VersionHelper implements Runnable {
 		return tokens[0];
 	}
 
-	@Override
-	public void run() {
-		LogHelper.info( LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_CHECK_INIT) + " " + REMOTE_VERSION);
-		try {
-			for (int count = 0; count < FReferences.VERSION_CHECK_ATTEMPTS; ++count) {
-				checkVersion();
-				logResult();
-				if (sResult != ID_UNINITIALIZED && sResult != ID_ERROR) {
-					break;
-				}
-				Thread.sleep( 10000);
-			}
-			if (sResult == ID_ERROR) {
-				sResult = ID_FINAL;
-				logResult();
-			}
-		}
-		catch (InterruptedException ex) {
-			ex.printStackTrace();
-		}
+	public static boolean isInitialized() {
+		return sResult != ID_UNINITIALIZED && sResult != ID_FINAL;
+	}
+
+	public static boolean isOutdated() {
+		return sResult == ID_OUTDATED;
 	}
 
 	private void checkVersion() {
@@ -172,6 +150,29 @@ public class VersionHelper implements Runnable {
 		}
 		else {
 			LogHelper.warning( getMessage());
+		}
+	}
+
+	@Override
+	public void run() {
+		LogHelper.info( LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_CHECK_INIT) + " "
+			+ REMOTE_VERSION);
+		try {
+			for (int count = 0; count < FReferences.VERSION_CHECK_ATTEMPTS; ++count) {
+				checkVersion();
+				logResult();
+				if (sResult != ID_UNINITIALIZED && sResult != ID_ERROR) {
+					break;
+				}
+				Thread.sleep( 10000);
+			}
+			if (sResult == ID_ERROR) {
+				sResult = ID_FINAL;
+				logResult();
+			}
+		}
+		catch (InterruptedException ex) {
+			ex.printStackTrace();
 		}
 	}
 }

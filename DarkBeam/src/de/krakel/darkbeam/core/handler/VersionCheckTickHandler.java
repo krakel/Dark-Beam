@@ -30,7 +30,8 @@ public class VersionCheckTickHandler implements ITickHandler {
 	public void tickEnd( EnumSet<TickType> type, Object... tickData) {
 		if (FConfiguration.sDisplayVersionResult && !sInitialized) {
 			for (TickType tt : type) {
-				if (tt == TickType.CLIENT && FMLClientHandler.instance().getClient().currentScreen == null && VersionHelper.isInitialized()) {
+				if (tt == TickType.CLIENT && FMLClientHandler.instance().getClient().currentScreen == null
+					&& VersionHelper.isInitialized()) {
 					sInitialized = true;
 					if (VersionHelper.isOutdated()) {
 						FMLClientHandler.instance().getClient().ingameGUI.getChatGUI().printChatMessage( VersionHelper.getMessageForClient());

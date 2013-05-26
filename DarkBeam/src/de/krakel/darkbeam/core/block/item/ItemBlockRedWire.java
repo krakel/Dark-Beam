@@ -49,6 +49,31 @@ public class ItemBlockRedWire extends ItemBlock {
 		return world.canPlaceEntityOnSide( getBlockID(), x, y, z, false, side, (Entity) null, stack);
 	}
 
+	private boolean canSupportWire( World world, int x, int y, int z, ForgeDirection dir) {
+		if (!world.blockExists( x, y, z)) {
+			return true;
+		}
+		if (world.isBlockSolidOnSide( x, y, z, dir)) {
+			return true;
+		}
+		if (world.isBlockNormalCube( x, y, z)) {
+			return true;
+		}
+		int id = world.getBlockId( x, y, z);
+		if (id == Block.pistonMoving.blockID) {
+			return true;
+		}
+		if (id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID) {
+			int o = BlockPistonBase.getOrientation( world.getBlockMetadata( x, y, z));
+			return o < 6 && o != dir.ordinal();
+		}
+		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+		if (tile != null) {
+			return tile.isNormal( dir);
+		}
+		return false;
+	}
+
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIconFromDamage( int meta) {
@@ -58,6 +83,14 @@ public class ItemBlockRedWire extends ItemBlock {
 	@Override
 	public int getMetadata( int meta) {
 		return meta;
+	}
+
+	private boolean isBlockReplaceable( World world, int x, int y, int z, int id) {
+		if (id == Block.vine.blockID || id == Block.tallGrass.blockID || id == Block.deadBush.blockID) {
+			return true;
+		}
+		Block block = Block.blocksList[id];
+		return block != null && block.isBlockReplaceable( world, x, y, z);
 	}
 
 	@Override
@@ -102,50 +135,17 @@ public class ItemBlockRedWire extends ItemBlock {
 		return true;
 	}
 
-	@Override
-	@SideOnly( Side.CLIENT)
-	public void registerIcons( IconRegister reg) {
-		mTexture = reg.registerIcon( FTextures.PATH_DEFAULT + FStrings.BLOCK_RED_WIRE_NAME);
-	}
-
-	private boolean canSupportWire( World world, int x, int y, int z, ForgeDirection dir) {
-		if (!world.blockExists( x, y, z)) {
-			return true;
-		}
-		if (world.isBlockSolidOnSide( x, y, z, dir)) {
-			return true;
-		}
-		if (world.isBlockNormalCube( x, y, z)) {
-			return true;
-		}
-		int id = world.getBlockId( x, y, z);
-		if (id == Block.pistonMoving.blockID) {
-			return true;
-		}
-		if (id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID) {
-			int o = BlockPistonBase.getOrientation( world.getBlockMetadata( x, y, z));
-			return o < 6 && o != dir.ordinal();
-		}
-		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
-		if (tile != null) {
-			return tile.isNormal( dir);
-		}
-		return false;
-	}
-
-	private boolean isBlockReplaceable( World world, int x, int y, int z, int id) {
-		if (id == Block.vine.blockID || id == Block.tallGrass.blockID || id == Block.deadBush.blockID) {
-			return true;
-		}
-		Block block = Block.blocksList[id];
-		return block != null && block.isBlockReplaceable( world, x, y, z);
-	}
-
 	private void playSound( World world, int x, int y, int z, int id) {
 		Block blk = Block.blocksList[id];
 		if (blk != null) {
 			StepSound stepSound = blk.stepSound;
 			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(), stepSound.getVolume() * 0.5F + 0.F, stepSound.getPitch() * 0.8F);
 		}
+	}
+
+	@Override
+	@SideOnly( Side.CLIENT)
+	public void registerIcons( IconRegister reg) {
+		mTexture = reg.registerIcon( FTextures.PATH_DEFAULT + FStrings.BLOCK_RED_WIRE_NAME);
 	}
 }

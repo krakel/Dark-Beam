@@ -13,8 +13,10 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class TileRedWire extends TileEntity {
 	private static final String NBT_CONNECTIONS = "cons";
+	private static final String NBT_SURFACES = "faces";
 	private boolean mPowered;
 	private byte mConnections;
+	private byte mSurfaces;
 
 	public TileRedWire() {
 	}

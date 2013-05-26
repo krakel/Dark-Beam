@@ -24,11 +24,29 @@ public class ConfigurationHandler {
 	public static final String CAT_AUDIO = "audio";
 	public static final String CAT_GRAPHICS = "graphics";
 	public static final String CAT_KEYBIND = "keybindings";
-	public static final String CAT_BLOCK_PROPERTIES = Configuration.CATEGORY_BLOCK + Configuration.CATEGORY_SPLITTER + "properties";
-	public static final String CAT_DURABILITY = Configuration.CATEGORY_ITEM + Configuration.CATEGORY_SPLITTER + "durability";
+	public static final String CAT_BLOCK_PROPERTIES = Configuration.CATEGORY_BLOCK + Configuration.CATEGORY_SPLITTER
+		+ "properties";
+	public static final String CAT_DURABILITY = Configuration.CATEGORY_ITEM + Configuration.CATEGORY_SPLITTER
+		+ "durability";
 //	public static final String CAT_RED_WATER_PROPERTIES = CAT_BLOCK_PROPERTIES + Configuration.CATEGORY_SPLITTER + "red_water";
 //	public static final String CAT_TRANSMUTATION = "transmutation";
 	public static Configuration sConfig;
+
+	private static int getConfigBlock( String name, int id) {
+		return sConfig.getBlock( name, id).getInt( id);
+	}
+
+	private static boolean getConfigBoolean( String category, String name, boolean def) {
+		return sConfig.get( category, name, def).getBoolean( def);
+	}
+
+	private static int getConfigItem( String name, int id) {
+		return sConfig.getItem( name, id).getInt( id);
+	}
+
+	private static String getConfigString( String category, String name, String def) {
+		return sConfig.get( category, name, def).getString();
+	}
 
 	public static void load( File config) {
 		sConfig = new Configuration( config);
@@ -124,21 +142,5 @@ public class ConfigurationHandler {
 			}
 		}
 		sConfig.save();
-	}
-
-	private static int getConfigBlock( String name, int id) {
-		return sConfig.getBlock( name, id).getInt( id);
-	}
-
-	private static boolean getConfigBoolean( String category, String name, boolean def) {
-		return sConfig.get( category, name, def).getBoolean( def);
-	}
-
-	private static int getConfigItem( String name, int id) {
-		return sConfig.getItem( name, id).getInt( id);
-	}
-
-	private static String getConfigString( String category, String name, String def) {
-		return sConfig.get( category, name, def).getString();
 	}
 }
