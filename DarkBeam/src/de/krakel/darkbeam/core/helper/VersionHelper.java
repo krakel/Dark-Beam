@@ -33,61 +33,7 @@ public class VersionHelper implements Runnable {
 	private static String sLocation;
 	private static String sVersion;
 
-	public static void execute() {
-		VersionHelper helper = new VersionHelper();
-		new Thread( helper).start();
-	}
-
-	private static String formatMsg( String key, boolean withColor) {
-		String res = LanguageRegistry.instance().getStringLocalization( key);
-		res = res.replace( "@MOD_NAME@", FColors.get( FReferences.MOD_NAME, withColor));
-		res = res.replace( "@REMOTE_VERSION@", FColors.get( sVersion, withColor));
-		res = res.replace( "@UPDATE_LOCATION@", FColors.get( sLocation, withColor));
-		res = res.replace( "@MINECRAFT_VERSION@", FColors.get( Loader.instance().getMCVersionString(), withColor));
-		return res;
-	}
-
-	private static String getMessage() {
-		switch (sResult) {
-			case ID_UNINITIALIZED:
-				return formatMsg( FStrings.VERSION_UNINITIALIZED, false);
-			case ID_CURRENT:
-				return formatMsg( FStrings.VERSION_CURRENT, false);
-			case ID_FINAL:
-				return formatMsg( FStrings.VERSION_FINAL, false);
-			case ID_MC_NOT_FOUND:
-				return formatMsg( FStrings.VERSION_MC_NOT_FOUND, false);
-			case ID_OUTDATED:
-				if (sVersion != null && sLocation != null) {
-					return formatMsg( FStrings.VERSION_OUTDATED, false);
-				}
-			default:
-				sResult = ID_ERROR;
-				return formatMsg( FStrings.VERSION_ERROR, false);
-		}
-	}
-
-	public static String getMessageForClient() {
-		return formatMsg( FStrings.VERSION_OUTDATED, true);
-	}
-
-	private static String getVersionForCheck() {
-		String[] tokens = FReferences.VERSION.split( " ");
-		if (tokens.length < 1) {
-			return FReferences.VERSION;
-		}
-		return tokens[0];
-	}
-
-	public static boolean isInitialized() {
-		return sResult != ID_UNINITIALIZED && sResult != ID_FINAL;
-	}
-
-	public static boolean isOutdated() {
-		return sResult == ID_OUTDATED;
-	}
-
-	private void checkVersion() {
+	private static void checkVersion() {
 		sResult = ID_UNINITIALIZED;
 		try {
 			Properties props = new Properties();
@@ -144,7 +90,61 @@ public class VersionHelper implements Runnable {
 		}
 	}
 
-	private void logResult() {
+	public static void execute() {
+		VersionHelper helper = new VersionHelper();
+		new Thread( helper).start();
+	}
+
+	private static String formatMsg( String key, boolean withColor) {
+		String res = LanguageRegistry.instance().getStringLocalization( key);
+		res = res.replace( "@MOD_NAME@", FColors.get( FReferences.MOD_NAME, withColor));
+		res = res.replace( "@REMOTE_VERSION@", FColors.get( sVersion, withColor));
+		res = res.replace( "@UPDATE_LOCATION@", FColors.get( sLocation, withColor));
+		res = res.replace( "@MINECRAFT_VERSION@", FColors.get( Loader.instance().getMCVersionString(), withColor));
+		return res;
+	}
+
+	private static String getMessage() {
+		switch (sResult) {
+			case ID_UNINITIALIZED:
+				return formatMsg( FStrings.VERSION_UNINITIALIZED, false);
+			case ID_CURRENT:
+				return formatMsg( FStrings.VERSION_CURRENT, false);
+			case ID_FINAL:
+				return formatMsg( FStrings.VERSION_FINAL, false);
+			case ID_MC_NOT_FOUND:
+				return formatMsg( FStrings.VERSION_MC_NOT_FOUND, false);
+			case ID_OUTDATED:
+				if (sVersion != null && sLocation != null) {
+					return formatMsg( FStrings.VERSION_OUTDATED, false);
+				}
+			default:
+				sResult = ID_ERROR;
+				return formatMsg( FStrings.VERSION_ERROR, false);
+		}
+	}
+
+	public static String getMessageForClient() {
+		return formatMsg( FStrings.VERSION_OUTDATED, true);
+	}
+
+	private static String getVersionForCheck() {
+		String[] tokens = FReferences.VERSION.split( " ");
+		if (tokens.length < 1) {
+			return FReferences.VERSION;
+		}
+		return tokens[0];
+	}
+
+	public static boolean isInitialized() {
+		return sResult != ID_UNINITIALIZED && sResult != ID_FINAL;
+	}
+
+	public static boolean isOutdated() {
+		return sResult == ID_OUTDATED;
+	}
+
+	private static void logResult() {
 		if (sResult == ID_CURRENT || sResult == ID_OUTDATED) {
 			LogHelper.info( getMessage());
 		}

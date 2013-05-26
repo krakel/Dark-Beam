@@ -55,6 +55,7 @@ public class ClientProxy extends CommonProxy {
 //		registerSoundHandler();
 	}
 
+	@SuppressWarnings( "static-method")
 	private void regeisterRendering() {
 		RenderingRegistry.registerBlockHandler( new BlockRedWireRender());
 //		MinecraftForgeClient.registerItemRenderer( FBlockIds.sBlockRedWireID, new BlockRedWireRender());

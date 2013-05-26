@@ -8,15 +8,24 @@
 package de.krakel.darkbeam.core.block;
 
 import static net.minecraftforge.common.ForgeDirection.UNKNOWN;
+
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -42,12 +51,35 @@ public class BlockRedWire extends BlockContainer {
 		disableStats();
 	}
 
+	private static double getBlockReachDistance( EntityLiving player) {
+		try {
+			EntityPlayerMP p = (EntityPlayerMP) player;
+			return p.theItemInWorldManager.getBlockReachDistance();
+		}
+		catch (ClassCastException ex) {
+			return 5.0D;
+		}
+	}
+
+	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
+		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
+		Vec3 lookVec = player.getLook( 1.0F);
+		double reach = getBlockReachDistance( player);
+		Vec3 endVec = headVec.addVector( lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
+		Block blk = Block.blocksList[world.getBlockId( x, y, z)];
+		if (blk == null) {
+			return null;
+		}
+		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
+	}
+
 	@Override
 	public void breakBlock( World world, int x, int y, int z, int id, int meta) {
 		LogHelper.debug( "breakBlock", world.isRemote, x, y, z, id, meta);
 		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			if (tile.isConnected( dir)) {
+			if (TileRedWire.isSet( tile.mSurfaces, dir)) {
+//			if (TileRedWire.isSet( tile.mConnections, dir)) {
 				world.notifyBlocksOfNeighborChange( x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, blockID);
 			}
 		}
@@ -89,7 +121,24 @@ public class BlockRedWire extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity( World world) {
-		return new TileRedWire();
+//		return new TileRedWire();
+		return null;
+	}
+
+	@Override
+	public TileEntity createTileEntity( World world, int meta) {
+		return super.createTileEntity( world, meta);
+//		try {
+//			return (TileEntity) tileEntityMap[var2].getDeclaredConstructor( new Class[0]).newInstance( new Object[0]);
+//		}
+//		catch (Exception var5) {
+//			return null;
+//		}
+	}
+
+	@Override
+	public int damageDropped( int value) {
+		return value;
 	}
 
 	@Override
@@ -108,11 +157,35 @@ public class BlockRedWire extends BlockContainer {
 	}
 
 	@Override
+	public void harvestBlock( World world, EntityPlayer player, int x, int y, int z, int meta) {
+	}
+
+	@Override
+	public int idDropped( int meta, Random rand, int fortune) {
+		return 0;
+	}
+
+	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
-//	@Override
+	@Override
+	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int side) {
+		return super.isProvidingStrongPower( world, x, y, z, side);
+	}
+
+	@Override
+	public int isProvidingWeakPower( IBlockAccess world, int x, int y, int z, int side) {
+		return super.isProvidingWeakPower( world, x, y, z, side);
+	}
+
+	@Override
+	public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int side, float xOff, float yOff, float zOff) {
+		return super.onBlockActivated( world, x, y, z, player, side, xOff, yOff, zOff);
+	}
+
+	//	@Override
 //	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int dir) {
 //		int meta = world.getBlockMetadata( x, y, z);
 //		if ((meta & 8) == 0) {
@@ -144,13 +217,18 @@ public class BlockRedWire extends BlockContainer {
 //	}
 //	
 	@Override
-	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving entity, ItemStack stack) {
+	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		LogHelper.debug( "onBlockPlacedBy", world.isRemote, x, y, z);
 		if (!world.isRemote) {
 			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
 			tile.updateOnPlace();
 		}
 		world.markBlockForUpdate( x, y, z);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock( World world, int x, int y, int z, Entity entity) {
+		super.onEntityCollidedWithBlock( world, x, y, z, entity);
 	}
 
 	@Override
@@ -164,8 +242,33 @@ public class BlockRedWire extends BlockContainer {
 
 	@Override
 	@SideOnly( Side.CLIENT)
+	public void randomDisplayTick( World world, int x, int y, int z, Random rand) {
+		super.randomDisplayTick( world, x, y, z, rand);
+	}
+
+	@Override
+	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
 		blockIcon = reg.registerIcon( FTextures.PATH_DEFAULT + getUnlocalizedName2());
+	}
+
+	@Override
+	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
+		if (world.isRemote) {
+			return true;
+		}
+		MovingObjectPosition pos = retraceBlock( world, player, x, y, z);
+		if (pos == null) {
+			return false;
+		}
+		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
+			return false;
+		}
+		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+		if (tile != null) {
+			tile.onHarvestPart( player, pos.subHit);
+		}
+		return false;
 	}
 
 	@Override

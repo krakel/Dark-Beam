@@ -33,23 +33,7 @@ public class ItemBlockRedWire extends ItemBlock {
 		super( id);
 	}
 
-	@Override
-	@SideOnly( Side.CLIENT)
-	public boolean canPlaceItemBlockOnSide( World world, int x, int y, int z, int side, EntityPlayer entity, ItemStack stack) {
-		int id = world.getBlockId( x, y, z);
-		if (id == Block.snow.blockID) {
-			side = 1;
-		}
-		else if (!isBlockReplaceable( world, x, y, z, id)) {
-			ForgeDirection dir = ForgeDirection.getOrientation( side);
-			x += dir.offsetX;
-			y += dir.offsetY;
-			z += dir.offsetZ;
-		}
-		return world.canPlaceEntityOnSide( getBlockID(), x, y, z, false, side, (Entity) null, stack);
-	}
-
-	private boolean canSupportWire( World world, int x, int y, int z, ForgeDirection dir) {
+	private static boolean canSupportWire( World world, int x, int y, int z, ForgeDirection dir) {
 		if (!world.blockExists( x, y, z)) {
 			return true;
 		}
@@ -74,6 +58,38 @@ public class ItemBlockRedWire extends ItemBlock {
 		return false;
 	}
 
+	private static boolean isBlockReplaceable( World world, int x, int y, int z, int id) {
+		if (id == Block.vine.blockID || id == Block.tallGrass.blockID || id == Block.deadBush.blockID) {
+			return true;
+		}
+		Block block = Block.blocksList[id];
+		return block != null && block.isBlockReplaceable( world, x, y, z);
+	}
+
+	private static void playSound( World world, int x, int y, int z, int id) {
+		Block blk = Block.blocksList[id];
+		if (blk != null) {
+			StepSound stepSound = blk.stepSound;
+			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(), stepSound.getVolume() * 0.5F + 0.F, stepSound.getPitch() * 0.8F);
+		}
+	}
+
+	@Override
+	@SideOnly( Side.CLIENT)
+	public boolean canPlaceItemBlockOnSide( World world, int x, int y, int z, int side, EntityPlayer entity, ItemStack stack) {
+		int id = world.getBlockId( x, y, z);
+		if (id == Block.snow.blockID) {
+			side = 1;
+		}
+		else if (!isBlockReplaceable( world, x, y, z, id)) {
+			ForgeDirection dir = ForgeDirection.getOrientation( side);
+			x += dir.offsetX;
+			y += dir.offsetY;
+			z += dir.offsetZ;
+		}
+		return world.canPlaceEntityOnSide( getBlockID(), x, y, z, false, side, (Entity) null, stack);
+	}
+
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIconFromDamage( int meta) {
@@ -83,14 +99,6 @@ public class ItemBlockRedWire extends ItemBlock {
 	@Override
 	public int getMetadata( int meta) {
 		return meta;
-	}
-
-	private boolean isBlockReplaceable( World world, int x, int y, int z, int id) {
-		if (id == Block.vine.blockID || id == Block.tallGrass.blockID || id == Block.deadBush.blockID) {
-			return true;
-		}
-		Block block = Block.blocksList[id];
-		return block != null && block.isBlockReplaceable( world, x, y, z);
 	}
 
 	@Override
@@ -116,31 +124,26 @@ public class ItemBlockRedWire extends ItemBlock {
 			if (tile == null) {
 				return false;
 			}
-			tile.setConnection( side);
+			tile.mSurfaces = TileRedWire.set( tile.mSurfaces, dir);
+//			tile.mConnections = TileRedWire.set( tile.mConnections, dir);
 		}
 		else {
 			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
 			if (tile == null) {
 				return false;
 			}
-			if (tile.isConnected( side)) {
+			if (TileRedWire.isSet( tile.mSurfaces, dir)) {
+//			if (TileRedWire.isSet( tile.mConnections, dir)) {
 				return false;
 			}
-			tile.setConnection( side);
+			tile.mSurfaces = TileRedWire.set( tile.mSurfaces, dir);
+//			tile.mConnections = TileRedWire.set( tile.mConnections, dir);
 			world.markBlockForUpdate( x, y, z);
 		}
 		--stack.stackSize;
 		playSound( world, x, y, z, stack.itemID);
 		world.notifyBlocksOfNeighborChange( x, y, z, stack.itemID);
 		return true;
-	}
-
-	private void playSound( World world, int x, int y, int z, int id) {
-		Block blk = Block.blocksList[id];
-		if (blk != null) {
-			StepSound stepSound = blk.stepSound;
-			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(), stepSound.getVolume() * 0.5F + 0.F, stepSound.getPitch() * 0.8F);
-		}
 	}
 
 	@Override
