@@ -23,6 +23,7 @@ public final class FStrings {
 	public static final String ORE_BEAMING_NAME = "oreBeaming";
 	public static final String ORE_DARKENING_NAME = "oreDarkening";
 	public static final String BLOCK_RED_WIRE_NAME = "blockRedWire";
+	public static final String BLOCK_UNIT_NAME = "blockUnit";
 //    String CALCINATOR_NAME = "calcinator";
 //    String ALUDEL_NAME = "aludel";
 //    String ALCHEMICAL_CHEST_NAME = "alchemicalChest";

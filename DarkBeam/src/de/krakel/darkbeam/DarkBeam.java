@@ -7,6 +7,8 @@
  */
 package de.krakel.darkbeam;
 
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -53,6 +55,7 @@ public class DarkBeam {
 	@SidedProxy( clientSide = FReferences.CLASS_CLIENT_PROXY, serverSide = FReferences.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
 	public static CreativeTabs sMainTab = new MainTab( FStrings.TAB_MAIN);
+	public static final Material MAT_DARK = new Material( MapColor.woodColor);
 
 	@SuppressWarnings( "unchecked")
 	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z) {
@@ -99,8 +102,8 @@ public class DarkBeam {
 		VersionHelper.execute();
 		TickRegistry.registerTickHandler( new VersionCheckTickHandler(), Side.CLIENT);
 		sProxy.preInit();
-		ModBlocks.preInit();
 		ModItems.preInit();
+		ModBlocks.preInit();
 	}
 
 	@ServerStarting
