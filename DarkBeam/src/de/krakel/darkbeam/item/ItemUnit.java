@@ -13,12 +13,15 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.block.ModBlocks;
+import de.krakel.darkbeam.core.FDarkLib;
 
 public class ItemUnit extends ItemBlock {
 	public ItemUnit( int id) {
@@ -53,6 +56,16 @@ public class ItemUnit extends ItemBlock {
 
 	@Override
 	public boolean onItemUse( ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		return super.onItemUse( stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+		if (player == null || player.isSneaking()) {
+			return false;
+		}
+		MovingObjectPosition hit = FDarkLib.retraceBlock( world, player, x, y, z);
+		if (hit == null) {
+			return false;
+		}
+		if (hit.typeOfHit != EnumMovingObjectType.TILE) {
+			return false;
+		}
+		return false;
 	}
 }

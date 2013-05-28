@@ -10,8 +10,6 @@ package de.krakel.darkbeam;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.FingerprintWarning;
 import cpw.mods.fml.common.Mod.Init;
@@ -57,17 +55,6 @@ public class DarkBeam {
 	@SidedProxy( clientSide = FReferences.CLASS_CLIENT_PROXY, serverSide = FReferences.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
 	public static CreativeTabs sMainTab = new MainTab( FStrings.TAB_MAIN);
-
-	@SuppressWarnings( "unchecked")
-	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z) {
-		try {
-			return (T) world.getBlockTileEntity( x, y, z);
-		}
-		catch (ClassCastException ex) {
-			LogHelper.severe( ex, "wrong tile entity");
-		}
-		return null;
-	}
 
 	@Init
 	public void init( FMLInitializationEvent event) {

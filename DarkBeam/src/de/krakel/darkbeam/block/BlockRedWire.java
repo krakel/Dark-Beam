@@ -24,7 +24,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -33,6 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
+import de.krakel.darkbeam.core.FDarkLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.FTextures;
 import de.krakel.darkbeam.tile.TileRedWire;
@@ -50,7 +50,7 @@ public class BlockRedWire extends BlockContainer {
 		disableStats();
 	}
 
-	private static double getBlockReachDistance( EntityLiving player) {
+	public static double getBlockReachDistance( EntityLiving player) {
 		try {
 			EntityPlayerMP p = (EntityPlayerMP) player;
 			return p.theItemInWorldManager.getBlockReachDistance();
@@ -60,22 +60,10 @@ public class BlockRedWire extends BlockContainer {
 		}
 	}
 
-	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
-		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
-		Vec3 lookVec = player.getLook( 1.0F);
-		double reach = getBlockReachDistance( player);
-		Vec3 endVec = headVec.addVector( lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
-		Block blk = Block.blocksList[world.getBlockId( x, y, z)];
-		if (blk == null) {
-			return null;
-		}
-		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
-	}
-
 	@Override
 	public void breakBlock( World world, int x, int y, int z, int id, int meta) {
 		LogHelper.debug( "breakBlock", world.isRemote, x, y, z, id, meta);
-		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if (TileRedWire.isSet( tile.mSurfaces, dir)) {
 //			if (TileRedWire.isSet( tile.mConnections, dir)) {
@@ -114,7 +102,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int colorMultiplier( IBlockAccess world, int x, int y, int z) {
-		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 		return tile.isPowered() ? 0xFFFFFF : 0x7F7F7F;
 	}
 
@@ -214,7 +202,7 @@ public class BlockRedWire extends BlockContainer {
 	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		LogHelper.debug( "onBlockPlacedBy", world.isRemote, x, y, z);
 		if (!world.isRemote) {
-			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+			TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 			tile.updateOnPlace();
 		}
 		world.markBlockForUpdate( x, y, z);
@@ -228,7 +216,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	public void onNeighborBlockChange( World world, int x, int y, int z, int id) {
 		if (!world.isRemote) {
-			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+			TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 			tile.updateOnNeighbor();
 		}
 		world.markBlockForUpdate( x, y, z);
@@ -251,14 +239,14 @@ public class BlockRedWire extends BlockContainer {
 		if (world.isRemote) {
 			return true;
 		}
-		MovingObjectPosition pos = retraceBlock( world, player, x, y, z);
+		MovingObjectPosition pos = FDarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {
 			return false;
 		}
 		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 			return false;
 		}
-		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 		if (tile != null) {
 			tile.onHarvestPart( player, pos.subHit);
 		}

@@ -14,4 +14,5 @@ public interface IDirection {
 	public static final int DIR_SOUTH = 3;
 	public static final int DIR_WEST = 4;
 	public static final int DIR_EAST = 5;
+	public static final int DIR_MAX = 6;
 }

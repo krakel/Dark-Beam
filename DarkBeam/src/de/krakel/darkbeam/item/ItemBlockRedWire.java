@@ -21,7 +21,7 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.DarkBeam;
+import de.krakel.darkbeam.core.FDarkLib;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.lib.FTextures;
 import de.krakel.darkbeam.tile.TileRedWire;
@@ -51,7 +51,7 @@ public class ItemBlockRedWire extends ItemBlock {
 			int o = BlockPistonBase.getOrientation( world.getBlockMetadata( x, y, z));
 			return o < 6 && o != dir.ordinal();
 		}
-		TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 		if (tile != null) {
 			return tile.isNormal( dir);
 		}
@@ -120,7 +120,7 @@ public class ItemBlockRedWire extends ItemBlock {
 			if (!world.setBlock( x, y, z, stack.itemID, stack.getItemDamage(), 2)) {
 				return true;
 			}
-			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+			TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 			if (tile == null) {
 				return false;
 			}
@@ -128,7 +128,7 @@ public class ItemBlockRedWire extends ItemBlock {
 //			tile.mConnections = TileRedWire.set( tile.mConnections, dir);
 		}
 		else {
-			TileRedWire tile = DarkBeam.getTileEntity( world, x, y, z);
+			TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 			if (tile == null) {
 				return false;
 			}
