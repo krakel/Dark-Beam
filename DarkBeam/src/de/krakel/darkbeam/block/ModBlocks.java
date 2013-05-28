@@ -5,12 +5,12 @@
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.krakel.darkbeam.core.block;
+package de.krakel.darkbeam.block;
 
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import de.krakel.darkbeam.core.item.ItemBlockRedWire;
+import de.krakel.darkbeam.item.ItemBlockRedWire;
 import de.krakel.darkbeam.lib.FBlockIds;
 import de.krakel.darkbeam.lib.FStrings;
 

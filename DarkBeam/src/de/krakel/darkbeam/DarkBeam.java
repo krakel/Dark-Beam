@@ -29,14 +29,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-import de.krakel.darkbeam.core.block.ModBlocks;
+import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.handler.VersionCheckTickHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.core.helper.VersionHelper;
-import de.krakel.darkbeam.core.item.ModItems;
 import de.krakel.darkbeam.core.proxy.CommonProxy;
+import de.krakel.darkbeam.item.ModItems;
 import de.krakel.darkbeam.lib.FReferences;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.network.PacketHandler;

@@ -5,7 +5,7 @@
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.krakel.darkbeam.client.renderer.block;
+package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-import de.krakel.darkbeam.core.block.BlockRedWire;
+import de.krakel.darkbeam.block.BlockRedWire;
 import de.krakel.darkbeam.lib.FBlockIds;
 
 public class BlockRedWireRender implements ISimpleBlockRenderingHandler {

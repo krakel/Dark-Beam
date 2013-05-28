@@ -5,7 +5,7 @@
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.krakel.darkbeam.core.block;
+package de.krakel.darkbeam.block;
 
 import static net.minecraftforge.common.ForgeDirection.UNKNOWN;
 
@@ -33,7 +33,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.client.renderer.block.BlockRedWireRender;
+import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.FTextures;
 import de.krakel.darkbeam.tileentity.TileRedWire;

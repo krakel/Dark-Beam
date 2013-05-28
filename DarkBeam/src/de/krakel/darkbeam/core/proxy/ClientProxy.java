@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-import de.krakel.darkbeam.client.renderer.block.BlockRedWireRender;
+import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
 
 public class ClientProxy extends CommonProxy {
 	@SuppressWarnings( "unused")
