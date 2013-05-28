@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.lib.FTextures;
-import de.krakel.darkbeam.tileentity.TileRedWire;
+import de.krakel.darkbeam.tile.TileRedWire;
 
 public class ItemBlockRedWire extends ItemBlock {
 	private Icon mTexture;

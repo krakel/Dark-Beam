@@ -40,7 +40,7 @@ import de.krakel.darkbeam.item.ModItems;
 import de.krakel.darkbeam.lib.FReferences;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.network.PacketHandler;
-import de.krakel.darkbeam.tileentity.TileRedWire;
+import de.krakel.darkbeam.tile.TileRedWire;
 
 @Mod( modid = FReferences.MOD_ID, name = FReferences.MOD_NAME, version = FReferences.VERSION,
 	dependencies = FReferences.DEPENDENCIES, certificateFingerprint = FReferences.FINGERPRINT)

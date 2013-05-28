@@ -5,7 +5,7 @@
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  */
-package de.krakel.darkbeam.tileentity;
+package de.krakel.darkbeam.tile;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

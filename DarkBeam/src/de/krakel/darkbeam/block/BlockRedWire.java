@@ -36,7 +36,7 @@ import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.FTextures;
-import de.krakel.darkbeam.tileentity.TileRedWire;
+import de.krakel.darkbeam.tile.TileRedWire;
 
 public class BlockRedWire extends BlockContainer {
 //	public static final float MIN = 0.0625F;
