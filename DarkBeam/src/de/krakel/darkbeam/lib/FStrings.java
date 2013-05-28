@@ -59,6 +59,7 @@ public final class FStrings {
 //    String ALCHEMICAL_BAG_NAME = "alchemicalBag";
 	/* TileEntity name constants */
 	public static final String TE_REDWIRE_NAME = "tileRedWire";
+	public static final String TE_UNIT_NAME = "tileUnit";
 
 	/* Transmutation cost related constants */
 //    String TRANSMUTATION_COST = "_cost";

@@ -13,7 +13,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -44,7 +43,7 @@ public class BlockRedWire extends BlockContainer {
 
 //	private boolean mProvidePower = true;
 	public BlockRedWire( int id, String name) {
-		super( id, Material.circuits);
+		super( id, DarkBeam.MAT_DARK);
 		setUnlocalizedName( name);
 		setCreativeTab( DarkBeam.sMainTab);
 		setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, THICK, 1.0F);

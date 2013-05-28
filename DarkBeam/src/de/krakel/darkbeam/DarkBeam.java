@@ -43,6 +43,7 @@ import de.krakel.darkbeam.lib.FReferences;
 import de.krakel.darkbeam.lib.FStrings;
 import de.krakel.darkbeam.network.PacketHandler;
 import de.krakel.darkbeam.tile.TileRedWire;
+import de.krakel.darkbeam.tile.TileUnit;
 
 @Mod( modid = FReferences.MOD_ID, name = FReferences.MOD_NAME, version = FReferences.VERSION,
 	dependencies = FReferences.DEPENDENCIES, certificateFingerprint = FReferences.FINGERPRINT)
@@ -50,12 +51,12 @@ import de.krakel.darkbeam.tile.TileRedWire;
 	FReferences.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
 public class DarkBeam {
+	public static final Material MAT_DARK = new Material( MapColor.woodColor);
 	@Instance( FReferences.MOD_ID)
 	public static DarkBeam sInstance;
 	@SidedProxy( clientSide = FReferences.CLASS_CLIENT_PROXY, serverSide = FReferences.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
 	public static CreativeTabs sMainTab = new MainTab( FStrings.TAB_MAIN);
-	public static final Material MAT_DARK = new Material( MapColor.woodColor);
 
 	@SuppressWarnings( "unchecked")
 	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z) {
@@ -78,6 +79,7 @@ public class DarkBeam {
 //		MinecraftForge.EVENT_BUS.register( new WorldTransmutationHandler());
 //		GameRegistry.registerCraftingHandler( new CraftingHandler());
 		GameRegistry.registerTileEntity( TileRedWire.class, FStrings.TE_REDWIRE_NAME);
+		GameRegistry.registerTileEntity( TileUnit.class, FStrings.TE_UNIT_NAME);
 		sProxy.init();
 //		RecipesTransmutationStone.init();
 //		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());
