@@ -180,11 +180,6 @@ public class BlockRedWire extends BlockContainer {
 		return super.isProvidingWeakPower( world, x, y, z, side);
 	}
 
-	@Override
-	public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int side, float xOff, float yOff, float zOff) {
-		return super.onBlockActivated( world, x, y, z, player, side, xOff, yOff, zOff);
-	}
-
 	//	@Override
 //	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int dir) {
 //		int meta = world.getBlockMetadata( x, y, z);
