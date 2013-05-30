@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -48,16 +47,6 @@ public class BlockRedWire extends BlockContainer {
 		setCreativeTab( DarkBeam.sMainTab);
 		setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, THICK, 1.0F);
 		disableStats();
-	}
-
-	public static double getBlockReachDistance( EntityLiving player) {
-		try {
-			EntityPlayerMP p = (EntityPlayerMP) player;
-			return p.theItemInWorldManager.getBlockReachDistance();
-		}
-		catch (ClassCastException ex) {
-			return 5.0D;
-		}
 	}
 
 	@Override

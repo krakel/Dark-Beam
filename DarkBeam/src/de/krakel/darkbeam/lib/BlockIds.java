@@ -16,7 +16,7 @@ public class BlockIds {
 	public static int sOreDarkeningID;
 	public static int sOreBeamingID;
 	public static int sBlockRedWireID;
-	public static int sBlockUnitID;
+	public static int sBlockUnitsID;
 
 	private BlockIds() {
 	}

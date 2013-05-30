@@ -17,17 +17,13 @@ import net.minecraft.world.World;
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.tile.TileUnit;
 
-public class BlockUnit extends Block {
-	public BlockUnit( int id, String name) {
+public class BlockUnits extends Block {
+	public BlockUnits( int id, String name) {
 		super( id, DarkBeam.MAT_DARK);
 		setUnlocalizedName( name);
 		setHardness( 0.1F);
 		setCreativeTab( DarkBeam.sMainTab);
 		disableStats();
-	}
-
-	public TileEntity createNewTileEntity( World world) {
-		return null;
 	}
 
 	@Override

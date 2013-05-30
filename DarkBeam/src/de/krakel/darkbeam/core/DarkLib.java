@@ -9,6 +9,8 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -16,16 +18,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import de.krakel.darkbeam.IDirection;
-import de.krakel.darkbeam.block.BlockRedWire;
+import de.krakel.darkbeam.lib.BlockIds;
 
 public class DarkLib implements IDirection {
 	private DarkLib() {
 	}
 
-	private static boolean canUnitAdd( World world, MovingObjectPosition pos, int subID) {
-//		if (world.canPlaceEntityOnSide( blockCoverPlate.blockID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null)) {
-//			return true;
-//		}
+	private static boolean canUnitAdd( World world, MovingObjectPosition pos, int subID, ItemStack stack) {
+		if (world.canPlaceEntityOnSide( BlockIds.sBlockUnitsID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stack)) {
+			return true;
+		}
 //		ICoverable var3 = getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ);
 //		if (var3 != null) {
 //			return var3.canAddCover( pos.subHit, subID);
@@ -47,20 +49,30 @@ public class DarkLib implements IDirection {
 		return obj2 == null;
 	}
 
-	public static MovingObjectPosition getPosition( World world, MovingObjectPosition hit, int subID) {
+	private static double getBlockReachDistance( EntityLiving player) {
+		try {
+			EntityPlayerMP p = (EntityPlayerMP) player;
+			return p.theItemInWorldManager.getBlockReachDistance();
+		}
+		catch (ClassCastException ex) {
+			return 5.0D;
+		}
+	}
+
+	public static MovingObjectPosition getPosition( World world, MovingObjectPosition hit, int subID, ItemStack stack) {
 		MovingObjectPosition pos = new MovingObjectPosition( hit.blockX, hit.blockY, hit.blockZ, hit.sideHit, hit.hitVec);
 		int hitArea = unitSide( hit);
 		if (isInside( hit.subHit, hit.sideHit)) {
 			if (hitArea == pos.sideHit) {
 				pos.subHit = hitArea ^ 1;
-				if (canUnitAdd( world, pos, subID)) {
+				if (canUnitAdd( world, pos, subID, stack)) {
 					return pos;
 				}
 				pos.subHit = hitArea;
 			}
 			else {
 				pos.subHit = hitArea;
-				if (canUnitAdd( world, pos, subID)) {
+				if (canUnitAdd( world, pos, subID, stack)) {
 					return pos;
 				}
 				movePosition( pos);
@@ -68,7 +80,7 @@ public class DarkLib implements IDirection {
 		}
 		else if (hitArea == pos.sideHit) {
 			pos.subHit = hitArea;
-			if (canUnitAdd( world, pos, subID)) {
+			if (canUnitAdd( world, pos, subID, stack)) {
 				return pos;
 			}
 			pos.subHit = hitArea ^ 1;
@@ -78,7 +90,7 @@ public class DarkLib implements IDirection {
 			pos.subHit = hitArea;
 			movePosition( pos);
 		}
-		return canUnitAdd( world, pos, subID) ? pos : null;
+		return canUnitAdd( world, pos, subID, stack) ? pos : null;
 	}
 
 	@SuppressWarnings( "unchecked")
@@ -139,7 +151,7 @@ public class DarkLib implements IDirection {
 	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
 		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
 		Vec3 lookVec = player.getLook( 1.0F);
-		double reach = BlockRedWire.getBlockReachDistance( player);
+		double reach = getBlockReachDistance( player);
 		Vec3 endVec = headVec.addVector( lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
 		Block blk = Block.blocksList[world.getBlockId( x, y, z)];
 		if (blk == null) {

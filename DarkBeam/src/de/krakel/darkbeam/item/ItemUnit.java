@@ -22,6 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.lib.BlockIds;
 
 public class ItemUnit extends ItemBlock {
 	public ItemUnit( int id) {
@@ -49,7 +50,7 @@ public class ItemUnit extends ItemBlock {
 	})
 	public void getSubItems( int itemID, CreativeTabs tab, List lst) {
 		if (tab == DarkBeam.sMainTab) {
-			lst.add( new ItemStack( ModBlocks.sBlockUnit, 1, 0));
+			lst.add( new ItemStack( ModBlocks.sBlockUnits, 1, 0));
 		}
 		super.getSubItems( itemID, tab, lst);
 	}
@@ -59,13 +60,28 @@ public class ItemUnit extends ItemBlock {
 		if (player == null || player.isSneaking()) {
 			return false;
 		}
-		MovingObjectPosition hit = DarkLib.retraceBlock( world, player, x, y, z);
+		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
+		if (pos == null) {
+			return false;
+		}
+		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
+			return false;
+		}
+		MovingObjectPosition hit = DarkLib.getPosition( world, pos, stack.getItemDamage(), stack);
 		if (hit == null) {
 			return false;
 		}
-		if (hit.typeOfHit != EnumMovingObjectType.TILE) {
-			return false;
+		if (world.canPlaceEntityOnSide( stack.itemID, hit.blockX, hit.blockY, hit.blockZ, false, side, player, stack)) {
+			world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockIds.sBlockUnitsID, 0, 2);
 		}
+//		TileUnit tile = DarkLib.getTileEntity( world, x, y, z, TileUnit.class);
+//		if (tile != null && tile.tryAddUnit( hit.subHit, 0)) {
+//			--stack.stackSize;
+//			DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, BlockIds.sBlockUnitsID);
+//			world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockIds.sBlockUnitsID);
+//			world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
+//			return true;
+//		}
 		return false;
 	}
 }
