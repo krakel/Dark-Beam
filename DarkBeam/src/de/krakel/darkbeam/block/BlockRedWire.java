@@ -63,7 +63,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	public void breakBlock( World world, int x, int y, int z, int id, int meta) {
 		LogHelper.info( "{0}, x={1}, y={2}, z={3}, id={4}, meta={5}", world.isRemote, x, y, z, id, meta);
-		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
+		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if (TileRedWire.isSet( tile.mSurfaces, dir)) {
 //			if (TileRedWire.isSet( tile.mConnections, dir)) {
@@ -102,7 +102,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int colorMultiplier( IBlockAccess world, int x, int y, int z) {
-		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
+		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
 		return tile.isPowered() ? 0xFFFFFF : 0x7F7F7F;
 	}
 
@@ -202,7 +202,7 @@ public class BlockRedWire extends BlockContainer {
 	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		LogHelper.info( "{0}, x={1}, y={2}, z={3}", world.isRemote, x, y, z);
 		if (!world.isRemote) {
-			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
+			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
 			tile.updateOnPlace();
 		}
 		world.markBlockForUpdate( x, y, z);
@@ -216,7 +216,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	public void onNeighborBlockChange( World world, int x, int y, int z, int id) {
 		if (!world.isRemote) {
-			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
+			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
 			tile.updateOnNeighbor();
 		}
 		world.markBlockForUpdate( x, y, z);
@@ -246,7 +246,7 @@ public class BlockRedWire extends BlockContainer {
 		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 			return false;
 		}
-		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
+		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
 		if (tile != null) {
 			tile.onHarvestPart( player, pos.subHit);
 		}

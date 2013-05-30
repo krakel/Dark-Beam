@@ -17,45 +17,138 @@ import net.minecraft.world.World;
 
 import de.krakel.darkbeam.IDirection;
 import de.krakel.darkbeam.block.BlockRedWire;
-import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class DarkLib implements IDirection {
 	private DarkLib() {
 	}
 
-	private static boolean canAddCover( World world, MovingObjectPosition pos, int dmg) {
+	private static boolean canUnitAdd( World world, MovingObjectPosition pos, int subID) {
 //		if (world.canPlaceEntityOnSide( blockCoverPlate.blockID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null)) {
 //			return true;
 //		}
 //		ICoverable var3 = getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ);
 //		if (var3 != null) {
-//			return var3.canAddCover( pos.subHit, dmg);
+//			return var3.canAddCover( pos.subHit, subID);
 //		}
 		return false;
 	}
 
-	private static boolean clickInside( MovingObjectPosition pos) {
-		if (pos.subHit < 0) {
+	public static <T> boolean different( T obj1, T obj2) {
+		if (obj1 != null) {
+			return !obj1.equals( obj2);
+		}
+		return obj2 != null;
+	}
+
+	public static <T> boolean equals( T obj1, T obj2) {
+		if (obj1 != null) {
+			return obj1.equals( obj2);
+		}
+		return obj2 == null;
+	}
+
+	public static MovingObjectPosition getPosition( World world, MovingObjectPosition hit, int subID) {
+		MovingObjectPosition pos = new MovingObjectPosition( hit.blockX, hit.blockY, hit.blockZ, hit.sideHit, hit.hitVec);
+		int hitArea = unitSide( hit);
+		if (isInside( hit.subHit, hit.sideHit)) {
+			if (hitArea == pos.sideHit) {
+				pos.subHit = hitArea ^ 1;
+				if (canUnitAdd( world, pos, subID)) {
+					return pos;
+				}
+				pos.subHit = hitArea;
+			}
+			else {
+				pos.subHit = hitArea;
+				if (canUnitAdd( world, pos, subID)) {
+					return pos;
+				}
+				movePosition( pos);
+			}
+		}
+		else if (hitArea == pos.sideHit) {
+			pos.subHit = hitArea;
+			if (canUnitAdd( world, pos, subID)) {
+				return pos;
+			}
+			pos.subHit = hitArea ^ 1;
+			movePosition( pos);
+		}
+		else {
+			pos.subHit = hitArea;
+			movePosition( pos);
+		}
+		return canUnitAdd( world, pos, subID) ? pos : null;
+	}
+
+	@SuppressWarnings( "unchecked")
+	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z, Class<T> type) {
+		TileEntity tile = world.getBlockTileEntity( x, y, z);
+		if (type.isInstance( tile)) {
+			return (T) tile;
+		}
+		return null;
+	}
+
+	private static boolean isInside( int subHit, int sideHit) {
+		if (subHit < 0) {
 			return false;
 		}
-		if (pos.subHit < DIR_MAX) {
-			return pos.sideHit != pos.subHit;
+		if (subHit < DIR_MAX) {
+			return (sideHit ^ subHit) == 1;
 		}
-//		if (pos.subHit < 14) {
-//			int sub = pos.subHit - DIR_MAX;
+//		if (subHit < 14) {
+//			int sub = subHit - DIR_MAX;
 //			sub = sub >> 2 | (sub & 3) << 1;
-//			return !(((pos.sideHit ^ sub >> (pos.sideHit >> 1)) & 1) == 0);
+//			return ((sideHit ^ sub >> (sideHit >> 1)) & 1) == 1;
 //		}
-//		if (pos.subHit < 26) {
-//			int sub = pos.subHit - 14;
+//		if (subHit < 26) {
+//			int sub = subHit - 14;
 //			sub = stripToCoverMask( sub);
-//			return !((sub & 1 << (pos.sideHit ^ 1)) <= 0);
+//			return !((sub & 1 << (sideHit ^ 1)) <= 0);
 //		}
-//		return !(pos.subHit < 29 ? true : pos.subHit == 29);
+//		return subHit < 29 ? false : subHit != 29;
 		return false;
 	}
 
-	private static int coverSide( MovingObjectPosition hit) {
+	private static void movePosition( MovingObjectPosition pos) {
+		switch (pos.sideHit) {
+			case DIR_DOWN:
+				--pos.blockY;
+				break;
+			case DIR_UP:
+				++pos.blockY;
+				break;
+			case DIR_NORTH:
+				--pos.blockZ;
+				break;
+			case DIR_SOUTH:
+				++pos.blockZ;
+				break;
+			case DIR_WEST:
+				--pos.blockX;
+				break;
+			case DIR_EAST:
+				++pos.blockX;
+				break;
+			default:
+				--pos.blockY;
+		}
+	}
+
+	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
+		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
+		Vec3 lookVec = player.getLook( 1.0F);
+		double reach = BlockRedWire.getBlockReachDistance( player);
+		Vec3 endVec = headVec.addVector( lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
+		Block blk = Block.blocksList[world.getBlockId( x, y, z)];
+		if (blk == null) {
+			return null;
+		}
+		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
+	}
+
+	private static int unitSide( MovingObjectPosition hit) {
 		double dx = hit.hitVec.xCoord - hit.blockX;
 		double dy = hit.hitVec.yCoord - hit.blockY;
 		double dz = hit.hitVec.zCoord - hit.blockZ;
@@ -92,92 +185,6 @@ public class DarkLib implements IDirection {
 			default:
 				return DIR_DOWN;
 		}
-	}
-
-	public static <T> boolean different( T obj1, T obj2) {
-		if (obj1 != null) {
-			return !obj1.equals( obj2);
-		}
-		return obj2 != null;
-	}
-
-	public static <T> boolean equals( T obj1, T obj2) {
-		if (obj1 != null) {
-			return obj1.equals( obj2);
-		}
-		return obj2 == null;
-	}
-
-	public static MovingObjectPosition getPlacement( World world, MovingObjectPosition hit, int dmg) {
-		MovingObjectPosition pos = new MovingObjectPosition( hit.blockX, hit.blockY, hit.blockZ, hit.sideHit, hit.hitVec);
-		int side = coverSide( hit);
-		if (side != pos.sideHit) { // on border area
-			pos.subHit = side;
-			if (clickInside( hit) && canAddCover( world, pos, dmg)) {
-				return pos;
-			}
-			move( pos);
-		}
-		else if (clickInside( hit)) {
-			pos.subHit = side ^ 1;
-		}
-		else {
-			pos.subHit = side;
-			if (canAddCover( world, pos, dmg)) {
-				return pos;
-			}
-			move( pos);
-			pos.subHit = side ^ 1;
-		}
-		return canAddCover( world, pos, dmg) ? pos : null;
-	}
-
-	@SuppressWarnings( "unchecked")
-	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z) {
-		try {
-			return (T) world.getBlockTileEntity( x, y, z);
-		}
-		catch (ClassCastException ex) {
-			LogHelper.severe( ex, "wrong tile entity");
-		}
-		return null;
-	}
-
-	private static void move( MovingObjectPosition pos) {
-		switch (pos.sideHit) {
-			case DIR_DOWN:
-				--pos.blockY;
-				break;
-			case DIR_UP:
-				++pos.blockY;
-				break;
-			case DIR_NORTH:
-				--pos.blockZ;
-				break;
-			case DIR_SOUTH:
-				++pos.blockZ;
-				break;
-			case DIR_WEST:
-				--pos.blockX;
-				break;
-			case DIR_EAST:
-				++pos.blockX;
-				break;
-			default:
-				--pos.blockY;
-		}
-	}
-
-	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
-		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
-		Vec3 lookVec = player.getLook( 1.0F);
-		double reach = BlockRedWire.getBlockReachDistance( player);
-		Vec3 endVec = headVec.addVector( lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
-		Block blk = Block.blocksList[world.getBlockId( x, y, z)];
-		if (blk == null) {
-			return null;
-		}
-		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
 	}
 
 	public static boolean validString( String value) {
