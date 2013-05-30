@@ -95,37 +95,11 @@ public class VersionHelper implements Runnable {
 		new Thread( helper).start();
 	}
 
-	private static String formatMsg( String key, boolean withColor) {
-		String res = LanguageRegistry.instance().getStringLocalization( key);
-		res = res.replace( "@MOD_NAME@", FColors.get( FReferences.MOD_NAME, withColor));
-		res = res.replace( "@REMOTE_VERSION@", FColors.get( sVersion, withColor));
-		res = res.replace( "@UPDATE_LOCATION@", FColors.get( sLocation, withColor));
-		res = res.replace( "@MINECRAFT_VERSION@", FColors.get( Loader.instance().getMCVersionString(), withColor));
-		return res;
-	}
-
-	private static String getMessage() {
-		switch (sResult) {
-			case ID_UNINITIALIZED:
-				return formatMsg( FStrings.VERSION_UNINITIALIZED, false);
-			case ID_CURRENT:
-				return formatMsg( FStrings.VERSION_CURRENT, false);
-			case ID_FINAL:
-				return formatMsg( FStrings.VERSION_FINAL, false);
-			case ID_MC_NOT_FOUND:
-				return formatMsg( FStrings.VERSION_MC_NOT_FOUND, false);
-			case ID_OUTDATED:
-				if (sVersion != null && sLocation != null) {
-					return formatMsg( FStrings.VERSION_OUTDATED, false);
-				}
-			default:
-				sResult = ID_ERROR;
-				return formatMsg( FStrings.VERSION_ERROR, false);
-		}
-	}
-
 	public static String getMessageForClient() {
-		return formatMsg( FStrings.VERSION_OUTDATED, true);
+		String msg = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_OUTDATED);
+		String modName = FColors.get( FReferences.MOD_NAME);
+		String mcVersion = FColors.get( Loader.instance().getMCVersionString());
+		return LogHelper.format( msg, modName, mcVersion, FColors.get( sVersion), FColors.get( sLocation));
 	}
 
 	private static String getVersionForCheck() {
@@ -145,18 +119,31 @@ public class VersionHelper implements Runnable {
 	}
 
 	private static void logResult() {
-		if (sResult == ID_CURRENT || sResult == ID_OUTDATED) {
-			LogHelper.info( getMessage());
-		}
-		else {
-			LogHelper.warning( getMessage());
+		String mcVersion = Loader.instance().getMCVersionString();
+		LanguageRegistry reg = LanguageRegistry.instance();
+		switch (sResult) {
+			case ID_UNINITIALIZED:
+				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_UNINITIALIZED));
+			case ID_CURRENT:
+				LogHelper.info( reg.getStringLocalization( FStrings.VERSION_CURRENT), FReferences.MOD_NAME, mcVersion, sVersion);
+			case ID_FINAL:
+				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_FINAL));
+			case ID_MC_NOT_FOUND:
+				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_MC_NOT_FOUND), FReferences.MOD_NAME, mcVersion);
+			case ID_OUTDATED:
+				if (sVersion != null && sLocation != null) {
+					LogHelper.info( reg.getStringLocalization( FStrings.VERSION_OUTDATED), FReferences.MOD_NAME, mcVersion, sVersion, sLocation);
+				}
+			default:
+				sResult = ID_ERROR;
+				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_ERROR));
 		}
 	}
 
 	@Override
 	public void run() {
-		LogHelper.info( LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_CHECK_INIT) + " "
-			+ REMOTE_VERSION);
+		LanguageRegistry rec = LanguageRegistry.instance();
+		LogHelper.info( rec.getStringLocalization( FStrings.VERSION_CHECK_INIT), REMOTE_VERSION);
 		try {
 			for (int count = 0; count < FReferences.VERSION_CHECK_ATTEMPTS; ++count) {
 				checkVersion();

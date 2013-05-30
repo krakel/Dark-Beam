@@ -94,6 +94,20 @@ public class FDarkLib implements IDirection {
 		}
 	}
 
+	public static <T> boolean different( T obj1, T obj2) {
+		if (obj1 != null) {
+			return !obj1.equals( obj2);
+		}
+		return obj2 != null;
+	}
+
+	public static <T> boolean equals( T obj1, T obj2) {
+		if (obj1 != null) {
+			return obj1.equals( obj2);
+		}
+		return obj2 == null;
+	}
+
 	public static MovingObjectPosition getPlacement( World world, MovingObjectPosition hit, int dmg) {
 		MovingObjectPosition pos = new MovingObjectPosition( hit.blockX, hit.blockY, hit.blockZ, hit.sideHit, hit.hitVec);
 		int side = coverSide( hit);
@@ -164,5 +178,9 @@ public class FDarkLib implements IDirection {
 			return null;
 		}
 		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
+	}
+
+	public static boolean validString( String value) {
+		return value != null && !"".equals( value);
 	}
 }

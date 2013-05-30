@@ -62,7 +62,7 @@ public class BlockRedWire extends BlockContainer {
 
 	@Override
 	public void breakBlock( World world, int x, int y, int z, int id, int meta) {
-		LogHelper.debug( "breakBlock", world.isRemote, x, y, z, id, meta);
+		LogHelper.info( "{0}, x={1}, y={2}, z={3}, id={4}, meta={5}", world.isRemote, x, y, z, id, meta);
 		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if (TileRedWire.isSet( tile.mSurfaces, dir)) {
@@ -75,7 +75,7 @@ public class BlockRedWire extends BlockContainer {
 
 	@Override
 	public boolean canPlaceBlockAt( World world, int x, int y, int z) {
-		LogHelper.debug( "canPlaceBlockAt", world.isRemote, x, y, z);
+		LogHelper.info( "{0}, x={1}, y={2}, z={3}", world.isRemote, x, y, z);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if (world.isBlockSolidOnSide( x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ, dir)) {
 				return true;
@@ -86,7 +86,7 @@ public class BlockRedWire extends BlockContainer {
 
 	@Override
 	public boolean canPlaceBlockOnSide( World world, int x, int y, int z, int side) {
-		LogHelper.debug( "canPlaceBlockOnSide", world.isRemote, x, y, z, side);
+		LogHelper.info( "{0}, x={1}, y={2}, z={3}, side={4}", world.isRemote, x, y, z, side);
 		ForgeDirection dir = ForgeDirection.getOrientation( side);
 		if (dir == UNKNOWN) {
 			return false;
@@ -200,7 +200,7 @@ public class BlockRedWire extends BlockContainer {
 //	
 	@Override
 	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
-		LogHelper.debug( "onBlockPlacedBy", world.isRemote, x, y, z);
+		LogHelper.info( "{0}, x={1}, y={2}, z={3}", world.isRemote, x, y, z);
 		if (!world.isRemote) {
 			TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
 			tile.updateOnPlace();
