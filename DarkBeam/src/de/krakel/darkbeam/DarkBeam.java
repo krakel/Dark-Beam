@@ -37,24 +37,24 @@ import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.core.helper.VersionHelper;
 import de.krakel.darkbeam.core.proxy.CommonProxy;
 import de.krakel.darkbeam.item.ModItems;
-import de.krakel.darkbeam.lib.FReferences;
-import de.krakel.darkbeam.lib.FStrings;
+import de.krakel.darkbeam.lib.References;
+import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
 import de.krakel.darkbeam.tile.TileRedWire;
 import de.krakel.darkbeam.tile.TileUnit;
 
-@Mod( modid = FReferences.MOD_ID, name = FReferences.MOD_NAME, version = FReferences.VERSION,
-	dependencies = FReferences.DEPENDENCIES, certificateFingerprint = FReferences.FINGERPRINT)
+@Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
+	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
 @NetworkMod( channels = {
-	FReferences.MOD_CHANNEL
+	References.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
 public class DarkBeam {
 	public static final Material MAT_DARK = new Material( MapColor.woodColor);
-	@Instance( FReferences.MOD_ID)
+	@Instance( References.MOD_ID)
 	public static DarkBeam sInstance;
-	@SidedProxy( clientSide = FReferences.CLASS_CLIENT_PROXY, serverSide = FReferences.CLASS_SERVER_PROXY)
+	@SidedProxy( clientSide = References.CLASS_CLIENT_PROXY, serverSide = References.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
-	public static CreativeTabs sMainTab = new MainTab( FStrings.TAB_MAIN);
+	public static CreativeTabs sMainTab = new MainTab( Strings.TAB_MAIN);
 
 	@Init
 	public void init( FMLInitializationEvent event) {
@@ -65,8 +65,8 @@ public class DarkBeam {
 //		MinecraftForge.EVENT_BUS.register( new ActionRequestHandler());
 //		MinecraftForge.EVENT_BUS.register( new WorldTransmutationHandler());
 //		GameRegistry.registerCraftingHandler( new CraftingHandler());
-		GameRegistry.registerTileEntity( TileRedWire.class, FStrings.TE_REDWIRE_NAME);
-		GameRegistry.registerTileEntity( TileUnit.class, FStrings.TE_UNIT_NAME);
+		GameRegistry.registerTileEntity( TileRedWire.class, Strings.TE_REDWIRE_NAME);
+		GameRegistry.registerTileEntity( TileUnit.class, Strings.TE_UNIT_NAME);
 		sProxy.init();
 //		RecipesTransmutationStone.init();
 //		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());
@@ -75,7 +75,7 @@ public class DarkBeam {
 
 	@FingerprintWarning
 	public void invalidFingerprint( FMLFingerprintViolationEvent event) {
-		LogHelper.severe( FStrings.INVALID_FINGERPRINT);
+		LogHelper.severe( Strings.INVALID_FINGERPRINT);
 	}
 
 	@PostInit

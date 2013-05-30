@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.lib.FTextures;
+import de.krakel.darkbeam.lib.Textures;
 
 public class BlockOre extends Block {
 	public BlockOre( int id, String name) {
@@ -53,6 +53,6 @@ public class BlockOre extends Block {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
-		blockIcon = reg.registerIcon( FTextures.PATH_DEFAULT + getUnlocalizedName2());
+		blockIcon = reg.registerIcon( Textures.PATH_DEFAULT + getUnlocalizedName2());
 	}
 }

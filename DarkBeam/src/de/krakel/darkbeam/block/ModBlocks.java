@@ -12,19 +12,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import de.krakel.darkbeam.item.ItemBlockRedWire;
 import de.krakel.darkbeam.item.ItemUnit;
-import de.krakel.darkbeam.lib.FBlockIds;
-import de.krakel.darkbeam.lib.FStrings;
+import de.krakel.darkbeam.lib.BlockIds;
+import de.krakel.darkbeam.lib.Strings;
 
 public class ModBlocks {
-	public static Block sOreBeaming = new BlockOre( FBlockIds.sOreBeamingID, FStrings.ORE_BEAMING_NAME);
-	public static Block sOreDarkening = new BlockOre( FBlockIds.sOreDarkeningID, FStrings.ORE_DARKENING_NAME);
-	public static Block sBlockRedWire = new BlockRedWire( FBlockIds.sBlockRedWireID, FStrings.BLOCK_RED_WIRE_NAME);
-	public static Block sBlockUnit = new BlockUnit( FBlockIds.sBlockUnitID, FStrings.BLOCK_UNIT_NAME);
+	public static Block sOreBeaming = new BlockOre( BlockIds.sOreBeamingID, Strings.ORE_BEAMING_NAME);
+	public static Block sOreDarkening = new BlockOre( BlockIds.sOreDarkeningID, Strings.ORE_DARKENING_NAME);
+	public static Block sBlockRedWire = new BlockRedWire( BlockIds.sBlockRedWireID, Strings.BLOCK_RED_WIRE_NAME);
+	public static Block sBlockUnit = new BlockUnit( BlockIds.sBlockUnitID, Strings.BLOCK_UNIT_NAME);
 
 	public static void preInit() {
-		GameRegistry.registerBlock( sOreBeaming, FStrings.ORE_BEAMING_NAME);
-		GameRegistry.registerBlock( sOreDarkening, FStrings.ORE_DARKENING_NAME);
-		GameRegistry.registerBlock( sBlockRedWire, ItemBlockRedWire.class, FStrings.BLOCK_RED_WIRE_NAME);
-		GameRegistry.registerBlock( sBlockUnit, ItemUnit.class, FStrings.BLOCK_UNIT_NAME);
+		GameRegistry.registerBlock( sOreBeaming, Strings.ORE_BEAMING_NAME);
+		GameRegistry.registerBlock( sOreDarkening, Strings.ORE_DARKENING_NAME);
+		GameRegistry.registerBlock( sBlockRedWire, ItemBlockRedWire.class, Strings.BLOCK_RED_WIRE_NAME);
+		GameRegistry.registerBlock( sBlockUnit, ItemUnit.class, Strings.BLOCK_UNIT_NAME);
 	}
 }

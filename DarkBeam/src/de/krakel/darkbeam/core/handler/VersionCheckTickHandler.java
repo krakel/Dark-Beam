@@ -15,27 +15,27 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 import de.krakel.darkbeam.core.helper.VersionHelper;
-import de.krakel.darkbeam.lib.FConfiguration;
-import de.krakel.darkbeam.lib.FReferences;
+import de.krakel.darkbeam.lib.Configs;
+import de.krakel.darkbeam.lib.References;
 
 public class VersionCheckTickHandler implements ITickHandler {
 	private static boolean sInitialized = false;
 
 	@Override
 	public String getLabel() {
-		return FReferences.MOD_NAME + ": " + getClass().getSimpleName();
+		return References.MOD_NAME + ": " + getClass().getSimpleName();
 	}
 
 	@Override
 	public void tickEnd( EnumSet<TickType> type, Object... tickData) {
-		if (FConfiguration.sDisplayVersionResult && !sInitialized) {
+		if (Configs.sDisplayVersionResult && !sInitialized) {
 			for (TickType tt : type) {
 				if (tt == TickType.CLIENT && FMLClientHandler.instance().getClient().currentScreen == null
 					&& VersionHelper.isInitialized()) {
 					sInitialized = true;
 					if (VersionHelper.isOutdated()) {
 						FMLClientHandler.instance().getClient().ingameGUI.getChatGUI().printChatMessage( VersionHelper.getMessageForClient());
-						ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, FConfiguration.DISPLAY_VERSION_RESULT_NAME, Boolean.FALSE.toString());
+						ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, Configs.DISPLAY_VERSION_RESULT_NAME, Boolean.FALSE.toString());
 					}
 				}
 			}

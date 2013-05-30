@@ -14,11 +14,11 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.lib.FBlockIds;
-import de.krakel.darkbeam.lib.FConfiguration;
-import de.krakel.darkbeam.lib.FItemIds;
-import de.krakel.darkbeam.lib.FReferences;
-import de.krakel.darkbeam.lib.FStrings;
+import de.krakel.darkbeam.lib.BlockIds;
+import de.krakel.darkbeam.lib.Configs;
+import de.krakel.darkbeam.lib.ItemIds;
+import de.krakel.darkbeam.lib.References;
+import de.krakel.darkbeam.lib.Strings;
 
 public class ConfigurationHandler {
 	public static final String CAT_AUDIO = "audio";
@@ -53,9 +53,9 @@ public class ConfigurationHandler {
 		try {
 			sConfig.load();
 			/* General configs */
-			FConfiguration.sDisplayVersionResult = getConfigBoolean( Configuration.CATEGORY_GENERAL, FConfiguration.DISPLAY_VERSION_RESULT_NAME, FConfiguration.DISPLAY_VERSION_RESULT_DEFAULT);
-			FConfiguration.sLastDiscoveredVersion = getConfigString( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_NAME, FConfiguration.LAST_DISCOVERED_VERSION_DEFAULT);
-			FConfiguration.sLastDiscoveredVersionType = getConfigString( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_TYPE_NAME, FConfiguration.LAST_DISCOVERED_VERSION_TYPE_DEFAULT);
+			Configs.sDisplayVersionResult = getConfigBoolean( Configuration.CATEGORY_GENERAL, Configs.DISPLAY_VERSION_RESULT_NAME, Configs.DISPLAY_VERSION_RESULT_DEFAULT);
+			Configs.sLastDiscoveredVersion = getConfigString( Configuration.CATEGORY_GENERAL, Configs.LAST_DISCOVERED_VERSION_NAME, Configs.LAST_DISCOVERED_VERSION_DEFAULT);
+			Configs.sLastDiscoveredVersionType = getConfigString( Configuration.CATEGORY_GENERAL, Configs.LAST_DISCOVERED_VERSION_TYPE_NAME, Configs.LAST_DISCOVERED_VERSION_TYPE_DEFAULT);
 			/* Graphic configs */
 //			ConfigurationSettings.ENABLE_PARTICLE_FX = sConfig.get( CAT_GRAPHICS, ConfigurationSettings.ENABLE_PARTICLE_FX_CONFIGNAME, ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT).getBoolean( ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT);
 //			ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION = sConfig.get( CAT_GRAPHICS, ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_CONFIGNAME, ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_DEFAULT).getBoolean( ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_DEFAULT);
@@ -81,10 +81,10 @@ public class ConfigurationHandler {
 			/* Audio configs */
 //			ConfigurationSettings.ENABLE_SOUNDS = sConfig.get( CAT_AUDIO, ConfigurationSettings.ENABLE_SOUNDS_CONFIGNAME, ConfigurationSettings.ENABLE_SOUNDS_DEFAULT).getString();
 			/* Block configs */
-			FBlockIds.sOreDarkeningID = getConfigBlock( FStrings.ORE_DARKENING_NAME, FBlockIds.ORE_DARKENING_DEFAULT_ID);
-			FBlockIds.sOreBeamingID = getConfigBlock( FStrings.ORE_BEAMING_NAME, FBlockIds.ORE_BEAMING_DEFAULT_ID);
-			FBlockIds.sBlockRedWireID = getConfigBlock( FStrings.BLOCK_RED_WIRE_NAME, FBlockIds.BLOCK_RED_WIRE_DEFAULT_ID);
-			FBlockIds.sBlockUnitID = getConfigBlock( FStrings.BLOCK_UNIT_NAME, FBlockIds.BLOCK_UNIT_DEFAULT_ID);
+			BlockIds.sOreDarkeningID = getConfigBlock( Strings.ORE_DARKENING_NAME, BlockIds.ORE_DARKENING_DEFAULT_ID);
+			BlockIds.sOreBeamingID = getConfigBlock( Strings.ORE_BEAMING_NAME, BlockIds.ORE_BEAMING_DEFAULT_ID);
+			BlockIds.sBlockRedWireID = getConfigBlock( Strings.BLOCK_RED_WIRE_NAME, BlockIds.BLOCK_RED_WIRE_DEFAULT_ID);
+			BlockIds.sBlockUnitID = getConfigBlock( Strings.BLOCK_UNIT_NAME, BlockIds.BLOCK_UNIT_DEFAULT_ID);
 //			BlockIds.CALCINATOR = sConfig.getBlock( Strings.CALCINATOR_NAME, BlockIds.CALCINATOR_DEFAULT).getInt( BlockIds.CALCINATOR_DEFAULT);
 //			BlockIds.ALUDEL_BASE = sConfig.getBlock( Strings.ALUDEL_NAME, BlockIds.ALUDEL_BASE_DEFAULT).getInt( BlockIds.ALUDEL_BASE_DEFAULT);
 //			BlockIds.ALCHEMICAL_CHEST = sConfig.getBlock( Strings.ALCHEMICAL_CHEST_NAME, BlockIds.ALCHEMICAL_CHEST_DEFAULT).getInt( BlockIds.ALCHEMICAL_CHEST_DEFAULT);
@@ -99,7 +99,7 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.RED_WATER_RANGE_BASE = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_BASE_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT);
 //			ConfigurationSettings.RED_WATER_RANGE_MODIFIER = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT);
 			/* Item configs */
-			FItemIds.sItemDarkeningID = getConfigItem( FStrings.ITEM_DARKENING_NAME, FItemIds.ITEM_DARKENING_ID);
+			ItemIds.sItemDarkeningID = getConfigItem( Strings.ITEM_DARKENING_NAME, ItemIds.ITEM_DARKENING_ID);
 //			ItemIds.MINIUM_SHARD = sConfig.getItem( Strings.MINIUM_SHARD_NAME, ItemIds.MINIUM_SHARD_DEFAULT).getInt( ItemIds.MINIUM_SHARD_DEFAULT);
 //			ItemIds.INERT_STONE = sConfig.getItem( Strings.INERT_STONE_NAME, ItemIds.INERT_STONE_DEFAULT).getInt( ItemIds.INERT_STONE_DEFAULT);
 //			ItemIds.MINIUM_STONE = sConfig.getItem( Strings.MINIUM_STONE_NAME, ItemIds.MINIUM_STONE_DEFAULT).getInt( ItemIds.MINIUM_STONE_DEFAULT);
@@ -121,7 +121,7 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.TRANSMUTE_COST_MOB = sConfig.get( CAT_TRANSMUTATION, ConfigurationSettings.TRANSMUTE_COST_MOB_CONFIGNAME, ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT).getInt( ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT);
 		}
 		catch (Exception ex) {
-			LogHelper.severe( ex, FReferences.MOD_NAME + " has had a problem loading its configuration");
+			LogHelper.severe( ex, References.MOD_NAME + " has had a problem loading its configuration");
 		}
 		finally {
 			sConfig.save();
@@ -129,8 +129,8 @@ public class ConfigurationHandler {
 	}
 
 	public static void preInit( FMLPreInitializationEvent event) {
-		File confDir = new File( event.getModConfigurationDirectory(), FReferences.MOD_CHANNEL);
-		File confFile = new File( confDir, FReferences.MOD_ID + ".cfg");
+		File confDir = new File( event.getModConfigurationDirectory(), References.MOD_CHANNEL);
+		File confFile = new File( confDir, References.MOD_ID + ".cfg");
 		load( confFile);
 	}
 

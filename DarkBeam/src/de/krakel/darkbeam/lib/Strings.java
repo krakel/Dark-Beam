@@ -7,7 +7,7 @@
  */
 package de.krakel.darkbeam.lib;
 
-public final class FStrings {
+public class Strings {
 	public static final String INVALID_FINGERPRINT = "The copy of Dark Beam that you are running has been modified from the original, and unpredictable things may happen. Please consider re-downloading the original version of the mod.";
 	/* Version check related constants */
 	public static final String VERSION_CHECK_INIT = "version.init_log";
@@ -66,6 +66,6 @@ public final class FStrings {
 //    String TRANSMUTATION_COST_ITEM = "item" + TRANSMUTATION_COST;
 //    String TRANSMUTATION_COST_BLOCK = "block" + TRANSMUTATION_COST;
 //    String TRANSMUTATION_COST_MOB = "mob" + TRANSMUTATION_COST;
-	private FStrings() {
+	private Strings() {
 	}
 }

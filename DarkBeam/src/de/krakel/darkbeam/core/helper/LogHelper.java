@@ -13,15 +13,17 @@ import java.util.logging.Logger;
 
 import cpw.mods.fml.common.FMLLog;
 
-import de.krakel.darkbeam.lib.FReferences;
+import de.krakel.darkbeam.lib.References;
 
 public class LogHelper {
 	private static final String SELF = LogHelper.class.getName();
-	private static Logger sLogger = Logger.getLogger( FReferences.MOD_ID);
-	private static boolean sTraceStack;
+	private static Logger sLogger = Logger.getLogger( References.MOD_ID);
+
+	private LogHelper() {
+	}
 
 	private static void doLog( Level lvl, String msg, Object[] arr) {
-		StackTraceElement frame = inferCaller( SELF);
+		StackTraceElement frame = inferCaller();
 		if (frame != null) {
 			sLogger.logp( lvl, frame.getClassName(), frame.getMethodName(), msg, arr);
 		}
@@ -31,7 +33,7 @@ public class LogHelper {
 	}
 
 	private static void doLogThrows( Level lvl, String msg, Throwable ex) {
-		StackTraceElement frame = inferCaller( SELF);
+		StackTraceElement frame = inferCaller();
 		if (frame != null) {
 			sLogger.logp( lvl, frame.getClassName(), frame.getMethodName(), msg, ex);
 		}
@@ -64,19 +66,21 @@ public class LogHelper {
 		}
 	}
 
-	private static StackTraceElement inferCaller( String self) {
+	private static StackTraceElement inferCaller() {
 		StackTraceElement[] stack = new Throwable().getStackTrace();
 		int ix = 0;
-		for (; ix < stack.length; ++ix) {
-			if (self.equals( stack[ix].getClassName())) {
+		while (ix < stack.length) {
+			if (SELF.equals( stack[ix].getClassName())) {
 				break;
 			}
+			++ix;
 		}
-		for (; ix < stack.length; ++ix) {
+		while (ix < stack.length) {
 			StackTraceElement frame = stack[ix];
-			if (!self.equals( frame.getClassName())) {
+			if (!SELF.equals( frame.getClassName())) {
 				return frame;
 			}
+			++ix;
 		}
 		return null;
 	}
@@ -113,15 +117,7 @@ public class LogHelper {
 
 	public static void logThrows( Level lvl, String msg, Throwable ex) {
 		if (sLogger.isLoggable( lvl)) {
-			if (sTraceStack) {
-				doLogThrows( lvl, msg, ex);
-//				ex.printStackTrace();
-			}
-			else {
-				doLog( lvl, msg, new Object[] {
-					ex
-				});
-			}
+			doLogThrows( lvl, msg, ex);
 		}
 	}
 
@@ -129,16 +125,14 @@ public class LogHelper {
 		sLogger.setParent( FMLLog.getLogger());
 	}
 
-	public static void setStackTrace( boolean traceStack) {
-		sTraceStack = traceStack;
-	}
-
 	public static void severe( String msg, Object... data) {
 		log( Level.SEVERE, msg, data);
 	}
 
 	public static void severe( Throwable ex, String msg, Object... data) {
-		logThrows( Level.SEVERE, format( msg, data), ex);
+		if (sLogger.isLoggable( Level.SEVERE)) {
+			doLogThrows( Level.SEVERE, format( msg, data), ex);
+		}
 	}
 
 	private static String toString( Object[] arr) {

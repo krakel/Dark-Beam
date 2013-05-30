@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.block.ModBlocks;
-import de.krakel.darkbeam.core.FDarkLib;
+import de.krakel.darkbeam.core.DarkLib;
 
 public class ItemUnit extends ItemBlock {
 	public ItemUnit( int id) {
@@ -59,7 +59,7 @@ public class ItemUnit extends ItemBlock {
 		if (player == null || player.isSneaking()) {
 			return false;
 		}
-		MovingObjectPosition hit = FDarkLib.retraceBlock( world, player, x, y, z);
+		MovingObjectPosition hit = DarkLib.retraceBlock( world, player, x, y, z);
 		if (hit == null) {
 			return false;
 		}

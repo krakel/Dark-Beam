@@ -16,10 +16,10 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
-import de.krakel.darkbeam.lib.FColors;
-import de.krakel.darkbeam.lib.FConfiguration;
-import de.krakel.darkbeam.lib.FReferences;
-import de.krakel.darkbeam.lib.FStrings;
+import de.krakel.darkbeam.lib.Colors;
+import de.krakel.darkbeam.lib.Configs;
+import de.krakel.darkbeam.lib.References;
+import de.krakel.darkbeam.lib.Strings;
 
 public class VersionHelper implements Runnable {
 	private static final String REMOTE_VERSION = "https://raw.github.com/krakel/Dark-Beam/master/DarkBeam/version.xml";
@@ -32,6 +32,9 @@ public class VersionHelper implements Runnable {
 	private static byte sResult = ID_UNINITIALIZED;
 	private static String sLocation;
 	private static String sVersion;
+
+	private VersionHelper() {
+	}
 
 	private static void checkVersion() {
 		sResult = ID_UNINITIALIZED;
@@ -69,8 +72,8 @@ public class VersionHelper implements Runnable {
 			sVersion = tokens[0];
 			sLocation = tokens[1];
 			if (sVersion != null) {
-				if (!FConfiguration.sLastDiscoveredVersion.equalsIgnoreCase( sVersion)) {
-					ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, FConfiguration.LAST_DISCOVERED_VERSION_NAME, sVersion);
+				if (!Configs.sLastDiscoveredVersion.equalsIgnoreCase( sVersion)) {
+					ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, Configs.LAST_DISCOVERED_VERSION_NAME, sVersion);
 				}
 				if (sVersion.equalsIgnoreCase( getVersionForCheck())) {
 					sResult = ID_CURRENT;
@@ -96,16 +99,16 @@ public class VersionHelper implements Runnable {
 	}
 
 	public static String getMessageForClient() {
-		String msg = LanguageRegistry.instance().getStringLocalization( FStrings.VERSION_OUTDATED);
-		String modName = FColors.get( FReferences.MOD_NAME);
-		String mcVersion = FColors.get( Loader.instance().getMCVersionString());
-		return LogHelper.format( msg, modName, mcVersion, FColors.get( sVersion), FColors.get( sLocation));
+		String msg = LanguageRegistry.instance().getStringLocalization( Strings.VERSION_OUTDATED);
+		String modName = Colors.get( References.MOD_NAME);
+		String mcVersion = Colors.get( Loader.instance().getMCVersionString());
+		return LogHelper.format( msg, modName, mcVersion, Colors.get( sVersion), Colors.get( sLocation));
 	}
 
 	private static String getVersionForCheck() {
-		String[] tokens = FReferences.VERSION.split( " ");
+		String[] tokens = References.VERSION.split( " ");
 		if (tokens.length < 1) {
-			return FReferences.VERSION;
+			return References.VERSION;
 		}
 		return tokens[0];
 	}
@@ -123,29 +126,29 @@ public class VersionHelper implements Runnable {
 		LanguageRegistry reg = LanguageRegistry.instance();
 		switch (sResult) {
 			case ID_UNINITIALIZED:
-				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_UNINITIALIZED));
+				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_UNINITIALIZED));
 			case ID_CURRENT:
-				LogHelper.info( reg.getStringLocalization( FStrings.VERSION_CURRENT), FReferences.MOD_NAME, mcVersion, sVersion);
+				LogHelper.info( reg.getStringLocalization( Strings.VERSION_CURRENT), References.MOD_NAME, mcVersion, sVersion);
 			case ID_FINAL:
-				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_FINAL));
+				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_FINAL));
 			case ID_MC_NOT_FOUND:
-				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_MC_NOT_FOUND), FReferences.MOD_NAME, mcVersion);
+				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_MC_NOT_FOUND), References.MOD_NAME, mcVersion);
 			case ID_OUTDATED:
 				if (sVersion != null && sLocation != null) {
-					LogHelper.info( reg.getStringLocalization( FStrings.VERSION_OUTDATED), FReferences.MOD_NAME, mcVersion, sVersion, sLocation);
+					LogHelper.info( reg.getStringLocalization( Strings.VERSION_OUTDATED), References.MOD_NAME, mcVersion, sVersion, sLocation);
 				}
 			default:
 				sResult = ID_ERROR;
-				LogHelper.warning( reg.getStringLocalization( FStrings.VERSION_ERROR));
+				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_ERROR));
 		}
 	}
 
 	@Override
 	public void run() {
 		LanguageRegistry rec = LanguageRegistry.instance();
-		LogHelper.info( rec.getStringLocalization( FStrings.VERSION_CHECK_INIT), REMOTE_VERSION);
+		LogHelper.info( rec.getStringLocalization( Strings.VERSION_CHECK_INIT), REMOTE_VERSION);
 		try {
-			for (int count = 0; count < FReferences.VERSION_CHECK_ATTEMPTS; ++count) {
+			for (int count = 0; count < References.VERSION_CHECK_ATTEMPTS; ++count) {
 				checkVersion();
 				logResult();
 				if (sResult != ID_UNINITIALIZED && sResult != ID_ERROR) {

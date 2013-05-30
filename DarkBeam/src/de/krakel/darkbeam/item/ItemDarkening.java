@@ -13,14 +13,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.lib.FReferences;
-import de.krakel.darkbeam.lib.FStrings;
-import de.krakel.darkbeam.lib.FTextures;
+import de.krakel.darkbeam.lib.References;
+import de.krakel.darkbeam.lib.Strings;
+import de.krakel.darkbeam.lib.Textures;
 
 public class ItemDarkening extends Item {
 	public ItemDarkening( int id) {
-		super( id - FReferences.SHIFTED_ID_RANGE);
-		setUnlocalizedName( FStrings.ITEM_DARKENING_NAME);
+		super( id - References.SHIFTED_ID_RANGE);
+		setUnlocalizedName( Strings.ITEM_DARKENING_NAME);
 		setCreativeTab( DarkBeam.sMainTab);
 		setMaxStackSize( 64);
 		setNoRepair();
@@ -29,6 +29,6 @@ public class ItemDarkening extends Item {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
-		itemIcon = reg.registerIcon( FTextures.PATH_DEFAULT + FTextures.getItemName( this));
+		itemIcon = reg.registerIcon( Textures.PATH_DEFAULT + Textures.getItemName( this));
 	}
 }

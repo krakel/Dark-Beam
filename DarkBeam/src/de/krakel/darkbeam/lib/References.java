@@ -7,7 +7,7 @@
  */
 package de.krakel.darkbeam.lib;
 
-public final class FReferences {
+public class References {
 	public static final String MOD_ID = "DarkBeam";
 	public static final String MOD_NAME = "Dark Beam";
 	public static final String MOD_CHANNEL = "DarkBeam";
@@ -22,6 +22,6 @@ public final class FReferences {
 	public static final int TICKS_PER_SECOND = 20;
 	public static final int VERSION_CHECK_ATTEMPTS = 3;
 
-	private FReferences() {
+	private References() {
 	}
 }

@@ -9,7 +9,7 @@ package de.krakel.darkbeam.lib;
 
 import net.minecraft.item.Item;
 
-public final class FTextures {
+public class Textures {
 	/* Base file pathes */
 	public static final String PATH_DEFAULT = "darkbeam:";
 	public static final String PATH_BLOCKS = "darkbeam:blocks/";
@@ -18,7 +18,7 @@ public final class FTextures {
 	public static final String PATH_ITEMS = "darkbeam:items/";
 	public static final String PATH_MODELS = "darkbeam:models/";
 
-	private FTextures() {
+	private Textures() {
 	}
 
 	public static String getItemName( Item item) {

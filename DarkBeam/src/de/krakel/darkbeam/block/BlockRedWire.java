@@ -32,9 +32,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
-import de.krakel.darkbeam.core.FDarkLib;
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.lib.FTextures;
+import de.krakel.darkbeam.lib.Textures;
 import de.krakel.darkbeam.tile.TileRedWire;
 
 public class BlockRedWire extends BlockContainer {
@@ -63,7 +63,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	public void breakBlock( World world, int x, int y, int z, int id, int meta) {
 		LogHelper.info( "{0}, x={1}, y={2}, z={3}, id={4}, meta={5}", world.isRemote, x, y, z, id, meta);
-		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
+		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 			if (TileRedWire.isSet( tile.mSurfaces, dir)) {
 //			if (TileRedWire.isSet( tile.mConnections, dir)) {
@@ -102,7 +102,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int colorMultiplier( IBlockAccess world, int x, int y, int z) {
-		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
+		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
 		return tile.isPowered() ? 0xFFFFFF : 0x7F7F7F;
 	}
 
@@ -202,7 +202,7 @@ public class BlockRedWire extends BlockContainer {
 	public void onBlockPlacedBy( World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
 		LogHelper.info( "{0}, x={1}, y={2}, z={3}", world.isRemote, x, y, z);
 		if (!world.isRemote) {
-			TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
+			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
 			tile.updateOnPlace();
 		}
 		world.markBlockForUpdate( x, y, z);
@@ -216,7 +216,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	public void onNeighborBlockChange( World world, int x, int y, int z, int id) {
 		if (!world.isRemote) {
-			TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
+			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
 			tile.updateOnNeighbor();
 		}
 		world.markBlockForUpdate( x, y, z);
@@ -231,7 +231,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
-		blockIcon = reg.registerIcon( FTextures.PATH_DEFAULT + getUnlocalizedName2());
+		blockIcon = reg.registerIcon( Textures.PATH_DEFAULT + getUnlocalizedName2());
 	}
 
 	@Override
@@ -239,14 +239,14 @@ public class BlockRedWire extends BlockContainer {
 		if (world.isRemote) {
 			return true;
 		}
-		MovingObjectPosition pos = FDarkLib.retraceBlock( world, player, x, y, z);
+		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {
 			return false;
 		}
 		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 			return false;
 		}
-		TileRedWire tile = FDarkLib.getTileEntity( world, x, y, z);
+		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z);
 		if (tile != null) {
 			tile.onHarvestPart( player, pos.subHit);
 		}

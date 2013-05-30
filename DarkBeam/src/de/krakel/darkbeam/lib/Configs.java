@@ -7,7 +7,7 @@
  */
 package de.krakel.darkbeam.lib;
 
-public class FConfiguration {
+public class Configs {
 	public static final String DISPLAY_VERSION_RESULT_NAME = "version_check.display_results";
 	public static final boolean DISPLAY_VERSION_RESULT_DEFAULT = true;
 	public static final String LAST_DISCOVERED_VERSION_NAME = "version_check.last_discovered_version";
@@ -101,6 +101,6 @@ public class FConfiguration {
 //    public static int TRANSMUTE_COST_MOB;
 //    public static final String TRANSMUTE_COST_MOB_CONFIGNAME = IStrings.TRANSMUTATION_COST_MOB;
 //    public static final int TRANSMUTE_COST_MOB_DEFAULT = 1;
-	private FConfiguration() {
+	private Configs() {
 	}
 }

@@ -19,8 +19,8 @@ import de.krakel.darkbeam.IDirection;
 import de.krakel.darkbeam.block.BlockRedWire;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
-public class FDarkLib implements IDirection {
-	private FDarkLib() {
+public class DarkLib implements IDirection {
+	private DarkLib() {
 	}
 
 	private static boolean canAddCover( World world, MovingObjectPosition pos, int dmg) {
