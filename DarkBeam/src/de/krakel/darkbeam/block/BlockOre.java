@@ -14,15 +14,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
+import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.lib.Textures;
 
 public class BlockOre extends Block {
-	public BlockOre( int id, String name) {
-		super( id, Material.rock);
+	public BlockOre( BlockType type) {
+		super( type.getId(), Material.rock);
 		setHardness( 3.0F);
 		setResistance( 5.0F);
 		setStepSound( soundStoneFootstep);
-		setUnlocalizedName( name);
+		setUnlocalizedName( type.mName);
 		setCreativeTab( DarkBeam.sMainTab);
 	}
 

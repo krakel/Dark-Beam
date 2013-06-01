@@ -14,11 +14,10 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.lib.BlockIds;
+import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.lib.Configs;
-import de.krakel.darkbeam.lib.ItemIds;
+import de.krakel.darkbeam.lib.ItemType;
 import de.krakel.darkbeam.lib.References;
-import de.krakel.darkbeam.lib.Strings;
 
 public class ConfigurationHandler {
 	public static final String CAT_AUDIO = "audio";
@@ -32,16 +31,8 @@ public class ConfigurationHandler {
 //	public static final String CAT_TRANSMUTATION = "transmutation";
 	public static Configuration sConfig;
 
-	private static int getConfigBlock( String name, int id) {
-		return sConfig.getBlock( name, id).getInt( id);
-	}
-
 	private static boolean getConfigBoolean( String category, String name, boolean def) {
 		return sConfig.get( category, name, def).getBoolean( def);
-	}
-
-	private static int getConfigItem( String name, int id) {
-		return sConfig.getItem( name, id).getInt( id);
 	}
 
 	private static String getConfigString( String category, String name, String def) {
@@ -81,15 +72,9 @@ public class ConfigurationHandler {
 			/* Audio configs */
 //			ConfigurationSettings.ENABLE_SOUNDS = sConfig.get( CAT_AUDIO, ConfigurationSettings.ENABLE_SOUNDS_CONFIGNAME, ConfigurationSettings.ENABLE_SOUNDS_DEFAULT).getString();
 			/* Block configs */
-			BlockIds.sOreDarkeningID = getConfigBlock( Strings.ORE_DARKENING_NAME, BlockIds.ORE_DARKENING_DEFAULT_ID);
-			BlockIds.sOreBeamingID = getConfigBlock( Strings.ORE_BEAMING_NAME, BlockIds.ORE_BEAMING_DEFAULT_ID);
-			BlockIds.sBlockRedWireID = getConfigBlock( Strings.BLOCK_RED_WIRE_NAME, BlockIds.BLOCK_RED_WIRE_DEFAULT_ID);
-			BlockIds.sBlockUnitsID = getConfigBlock( Strings.BLOCK_UNITS_NAME, BlockIds.BLOCK_UNIT_DEFAULT_ID);
-//			BlockIds.CALCINATOR = sConfig.getBlock( Strings.CALCINATOR_NAME, BlockIds.CALCINATOR_DEFAULT).getInt( BlockIds.CALCINATOR_DEFAULT);
-//			BlockIds.ALUDEL_BASE = sConfig.getBlock( Strings.ALUDEL_NAME, BlockIds.ALUDEL_BASE_DEFAULT).getInt( BlockIds.ALUDEL_BASE_DEFAULT);
-//			BlockIds.ALCHEMICAL_CHEST = sConfig.getBlock( Strings.ALCHEMICAL_CHEST_NAME, BlockIds.ALCHEMICAL_CHEST_DEFAULT).getInt( BlockIds.ALCHEMICAL_CHEST_DEFAULT);
-//			BlockIds.GLASS_BELL = sConfig.getBlock( Strings.GLASS_BELL_NAME, BlockIds.GLASS_BELL_DEFAULT).getInt( BlockIds.GLASS_BELL_DEFAULT);
-//			BlockIds.RED_WATER_STILL = sConfig.getBlock( Strings.RED_WATER_STILL_NAME, BlockIds.RED_WATER_STILL_DEFAULT).getInt( BlockIds.RED_WATER_STILL_DEFAULT);
+			for (BlockType block : BlockType.values()) {
+				block.updateID( sConfig);
+			}
 			/* Block property configs */
 //			sConfig.addCustomCategoryComment( CAT_BLOCK_PROPERTIES, "Custom block properties");
 			/* Red Water configs */
@@ -99,13 +84,9 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.RED_WATER_RANGE_BASE = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_BASE_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_BASE_DEFAULT);
 //			ConfigurationSettings.RED_WATER_RANGE_MODIFIER = sConfig.get( CAT_RED_WATER_PROPERTIES, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_CONFIGNAME, ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT).getInt( ConfigurationSettings.RED_WATER_RANGE_MODIFIER_DEFAULT);
 			/* Item configs */
-			ItemIds.sItemDarkeningID = getConfigItem( Strings.ITEM_DARKENING_NAME, ItemIds.ITEM_DARKENING_ID);
-//			ItemIds.MINIUM_SHARD = sConfig.getItem( Strings.MINIUM_SHARD_NAME, ItemIds.MINIUM_SHARD_DEFAULT).getInt( ItemIds.MINIUM_SHARD_DEFAULT);
-//			ItemIds.INERT_STONE = sConfig.getItem( Strings.INERT_STONE_NAME, ItemIds.INERT_STONE_DEFAULT).getInt( ItemIds.INERT_STONE_DEFAULT);
-//			ItemIds.MINIUM_STONE = sConfig.getItem( Strings.MINIUM_STONE_NAME, ItemIds.MINIUM_STONE_DEFAULT).getInt( ItemIds.MINIUM_STONE_DEFAULT);
-//			ItemIds.PHILOSOPHERS_STONE = sConfig.getItem( Strings.PHILOSOPHERS_STONE_NAME, ItemIds.PHILOSOPHERS_STONE_DEFAULT).getInt( ItemIds.PHILOSOPHERS_STONE_DEFAULT);
-//			ItemIds.ALCHEMICAL_DUST = sConfig.getItem( Strings.ALCHEMICAL_DUST_NAME, ItemIds.ALCHEMICAL_DUST_DEFAULT).getInt( ItemIds.ALCHEMICAL_DUST_DEFAULT);
-//			ItemIds.ALCHEMICAL_BAG = sConfig.getItem( Strings.ALCHEMICAL_BAG_NAME, ItemIds.ALCHEMICAL_BAG_DEFAULT).getInt( ItemIds.ALCHEMICAL_BAG_DEFAULT);
+			for (ItemType item : ItemType.values()) {
+				item.updateID( sConfig);
+			}
 			/* Item durability configs */
 //			ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY = sConfig.get( CAT_DURABILITY, ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY_CONFIGNAME, ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY_DEFAULT).getInt( ConfigurationSettings.MINIUM_STONE_MAX_DURABILITY_DEFAULT);
 //			ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY = sConfig.get( CAT_DURABILITY, ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY_CONFIGNAME, ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY_DEFAULT).getInt( ConfigurationSettings.PHILOSOPHERS_STONE_MAX_DURABILITY_DEFAULT);
@@ -121,7 +102,7 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.TRANSMUTE_COST_MOB = sConfig.get( CAT_TRANSMUTATION, ConfigurationSettings.TRANSMUTE_COST_MOB_CONFIGNAME, ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT).getInt( ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT);
 		}
 		catch (Exception ex) {
-			LogHelper.severe( ex, References.MOD_NAME + " has had a problem loading its configuration");
+			LogHelper.severe( ex, "{0} has had a problem loading its configuration", References.MOD_NAME);
 		}
 		finally {
 			sConfig.save();

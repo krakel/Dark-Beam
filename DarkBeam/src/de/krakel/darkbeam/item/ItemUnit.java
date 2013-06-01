@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.lib.BlockIds;
+import de.krakel.darkbeam.lib.BlockType;
 
 public class ItemUnit extends ItemBlock {
 	public ItemUnit( int id) {
@@ -72,7 +72,7 @@ public class ItemUnit extends ItemBlock {
 			return false;
 		}
 		if (world.canPlaceEntityOnSide( stack.itemID, hit.blockX, hit.blockY, hit.blockZ, false, side, player, stack)) {
-			world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockIds.sBlockUnitsID, 0, 2);
+			world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.BlockUnits.getId(), 0, 2);
 		}
 //		TileUnit tile = DarkLib.getTileEntity( world, x, y, z, TileUnit.class);
 //		if (tile != null && tile.tryAddUnit( hit.subHit, 0)) {

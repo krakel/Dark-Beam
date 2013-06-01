@@ -9,10 +9,10 @@ package de.krakel.darkbeam.item;
 
 import net.minecraft.item.Item;
 
-import de.krakel.darkbeam.lib.ItemIds;
+import de.krakel.darkbeam.lib.ItemType;
 
 public class ModItems {
-	public static Item sItemDarkening = new ItemDarkening( ItemIds.sItemDarkeningID);
+	public static Item sItemDarkening = new ItemDarkening( ItemType.ItemDarkening);
 
 	public static void preInit() {
 	}

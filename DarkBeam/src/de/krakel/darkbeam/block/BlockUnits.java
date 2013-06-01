@@ -15,12 +15,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import de.krakel.darkbeam.DarkBeam;
+import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.tile.TileUnit;
 
 public class BlockUnits extends Block {
-	public BlockUnits( int id, String name) {
-		super( id, DarkBeam.MAT_DARK);
-		setUnlocalizedName( name);
+	public BlockUnits( BlockType type) {
+		super( type.getId(), DarkBeam.MAT_DARK);
+		setUnlocalizedName( type.mName);
 		setHardness( 0.1F);
 		setCreativeTab( DarkBeam.sMainTab);
 		disableStats();

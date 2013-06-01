@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.lib.Strings;
+import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.lib.Textures;
 import de.krakel.darkbeam.tile.TileRedWire;
 
@@ -149,6 +149,6 @@ public class ItemBlockRedWire extends ItemBlock {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
-		mTexture = reg.registerIcon( Textures.PATH_DEFAULT + Strings.BLOCK_RED_WIRE_NAME);
+		mTexture = reg.registerIcon( Textures.PATH_DEFAULT + BlockType.BlockRedWire.mName);
 	}
 }

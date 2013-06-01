@@ -18,7 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import de.krakel.darkbeam.IDirection;
-import de.krakel.darkbeam.lib.BlockIds;
+import de.krakel.darkbeam.lib.BlockType;
 
 public class DarkLib implements IDirection {
 	public static final double BOX_BORDER_MIN = 1D / 4D;
@@ -29,7 +29,7 @@ public class DarkLib implements IDirection {
 	}
 
 	private static boolean canUnitAdd( World world, MovingObjectPosition pos, int subID, ItemStack stack) {
-		if (world.canPlaceEntityOnSide( BlockIds.sBlockUnitsID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stack)) {
+		if (world.canPlaceEntityOnSide( BlockType.BlockUnits.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stack)) {
 			return true;
 		}
 //		ICoverable var3 = getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ);
