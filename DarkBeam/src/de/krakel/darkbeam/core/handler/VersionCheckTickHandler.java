@@ -9,6 +9,7 @@ package de.krakel.darkbeam.core.handler;
 
 import java.util.EnumSet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
@@ -29,12 +30,12 @@ public class VersionCheckTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd( EnumSet<TickType> type, Object... tickData) {
 		if (Configs.sDisplayVersionResult && !sInitialized) {
+			Minecraft client = FMLClientHandler.instance().getClient();
 			for (TickType tt : type) {
-				if (tt == TickType.CLIENT && FMLClientHandler.instance().getClient().currentScreen == null
-					&& VersionHelper.isInitialized()) {
+				if (tt == TickType.CLIENT && client.currentScreen == null && VersionHelper.isInitialized()) {
 					sInitialized = true;
 					if (VersionHelper.isOutdated()) {
-						FMLClientHandler.instance().getClient().ingameGUI.getChatGUI().printChatMessage( VersionHelper.getMessageForClient());
+						client.ingameGUI.getChatGUI().printChatMessage( VersionHelper.getMessageForClient());
 						ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, Configs.DISPLAY_VERSION_RESULT_NAME, Boolean.FALSE.toString());
 					}
 				}
