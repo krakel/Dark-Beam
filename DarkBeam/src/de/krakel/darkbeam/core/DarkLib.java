@@ -21,6 +21,10 @@ import de.krakel.darkbeam.IDirection;
 import de.krakel.darkbeam.lib.BlockIds;
 
 public class DarkLib implements IDirection {
+	public static final double BOX_BORDER_MIN = 1D / 4D;
+	public static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
+	public static final double BOX_BORDER_HEIGHT = 1D / 512D;
+
 	private DarkLib() {
 	}
 
@@ -164,12 +168,10 @@ public class DarkLib implements IDirection {
 		double dx = hit.hitVec.xCoord - hit.blockX;
 		double dy = hit.hitVec.yCoord - hit.blockY;
 		double dz = hit.hitVec.zCoord - hit.blockZ;
-		double min = 0.25D;
-		double max = 0.75D;
 		switch (hit.sideHit) {
 			case DIR_DOWN:
 			case DIR_UP:
-				if (min < dz && dz < max && min < dx && dx < max) {
+				if (BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX && BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX) {
 					return hit.sideHit;
 				}
 				if (dz > dx) {
@@ -178,7 +180,7 @@ public class DarkLib implements IDirection {
 				return dz + dx > 1D ? DIR_EAST : DIR_NORTH;
 			case DIR_NORTH:
 			case DIR_SOUTH:
-				if (min < dy && dy < max && min < dx && dx < max) {
+				if (BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX && BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX) {
 					return hit.sideHit;
 				}
 				if (dy > dx) {
@@ -187,7 +189,7 @@ public class DarkLib implements IDirection {
 				return dy + dx > 1D ? DIR_EAST : DIR_DOWN;
 			case DIR_WEST:
 			case DIR_EAST:
-				if (min < dy && dy < max && min < dz && dz < max) {
+				if (BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
 					return hit.sideHit;
 				}
 				if (dy > dz) {

@@ -10,11 +10,11 @@ package de.krakel.darkbeam.lib;
 public class Strings {
 	public static final String INVALID_FINGERPRINT = "The copy of Dark Beam that you are running has been modified from the original, and unpredictable things may happen. Please consider re-downloading the original version of the mod.";
 	/* Version check related constants */
-	public static final String VERSION_CHECK_INIT = "version.init_log";
+	public static final String VERSION_INIT = "version.init";
 	public static final String VERSION_CURRENT = "version.current";
-	public static final String VERSION_FINAL = "version.final_error";
-	public static final String VERSION_ERROR = "version.general_error";
-	public static final String VERSION_MC_NOT_FOUND = "version.mc_not_found";
+	public static final String VERSION_FINAL = "version.final";
+	public static final String VERSION_ERROR = "version.error";
+	public static final String VERSION_MC = "version.mc";
 	public static final String VERSION_OUTDATED = "version.outdated";
 	public static final String VERSION_UNINITIALIZED = "version.uninitialized";
 	/* Tab name constants */

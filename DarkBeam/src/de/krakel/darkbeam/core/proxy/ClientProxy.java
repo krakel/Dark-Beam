@@ -11,9 +11,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
+import de.krakel.darkbeam.client.renderer.DrawBlockHighlightHandler;
 
 public class ClientProxy extends CommonProxy {
 	@SuppressWarnings( "unused")
@@ -62,6 +64,7 @@ public class ClientProxy extends CommonProxy {
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.ALUDEL_BASE, new ItemAludelRenderer());
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.ALCHEMICAL_CHEST, new ItemAlchemicalChestRenderer());
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.GLASS_BELL, new ItemGlassBellRenderer());
+		MinecraftForge.EVENT_BUS.register( new DrawBlockHighlightHandler());
 	}
 
 	@SuppressWarnings( "unused")

@@ -65,7 +65,7 @@ public class VersionHelper implements Runnable {
 				return;
 			}
 			String[] tokens = version.split( "\\|");
-			if (tokens.length < 1) {
+			if (tokens.length < 2) {
 				sResult = ID_ERROR;
 				return;
 			}
@@ -75,12 +75,7 @@ public class VersionHelper implements Runnable {
 				if (!Configs.sLastDiscoveredVersion.equalsIgnoreCase( sVersion)) {
 					ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, Configs.LAST_DISCOVERED_VERSION_NAME, sVersion);
 				}
-				if (sVersion.equalsIgnoreCase( getVersionForCheck())) {
-					sResult = ID_CURRENT;
-				}
-				else {
-					sResult = ID_OUTDATED;
-				}
+				sResult = compareVersion( sVersion, References.VERSION) < 0 ? ID_OUTDATED : ID_CURRENT;
 			}
 		}
 		catch (Exception ex) {
@@ -91,6 +86,36 @@ public class VersionHelper implements Runnable {
 				sResult = ID_ERROR;
 			}
 		}
+	}
+
+	private static int compareVersion( String s1, String s2) {
+		String[] a1 = s1.split( "\\.");
+		String[] a2 = s2.split( "\\.");
+		int min = Math.min( a1.length, a2.length);
+		int i = 0;
+		while (i < min && a1[i].equals( a2[i])) {
+			++i;
+		}
+		if (i < min) {
+			return Integer.valueOf( a1[i]).compareTo( Integer.valueOf( a2[i]));
+		}
+		if (i < a1.length) {
+			boolean zeros = true;
+			do {
+				zeros &= Integer.parseInt( a1[i++]) == 0;
+			}
+			while (zeros & i < a1.length);
+			return zeros ? 0 : -1;
+		}
+		if (i < a2.length) {
+			boolean zeros = true;
+			do {
+				zeros &= Integer.parseInt( a2[i++]) == 0;
+			}
+			while (zeros & i < a2.length);
+			return zeros ? 0 : 1;
+		}
+		return 0;
 	}
 
 	public static void execute() {
@@ -105,14 +130,6 @@ public class VersionHelper implements Runnable {
 		return LogHelper.format( msg, modName, mcVersion, Colors.get( sVersion), Colors.get( sLocation));
 	}
 
-	private static String getVersionForCheck() {
-		String[] tokens = References.VERSION.split( " ");
-		if (tokens.length < 1) {
-			return References.VERSION;
-		}
-		return tokens[0];
-	}
-
 	public static boolean isInitialized() {
 		return sResult != ID_UNINITIALIZED && sResult != ID_FINAL;
 	}
@@ -125,18 +142,18 @@ public class VersionHelper implements Runnable {
 		String mcVersion = Loader.instance().getMCVersionString();
 		LanguageRegistry reg = LanguageRegistry.instance();
 		switch (sResult) {
-			case ID_UNINITIALIZED:
-				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_UNINITIALIZED));
 			case ID_CURRENT:
 				LogHelper.info( reg.getStringLocalization( Strings.VERSION_CURRENT), References.MOD_NAME, mcVersion, sVersion);
-			case ID_FINAL:
-				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_FINAL));
-			case ID_MC_NOT_FOUND:
-				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_MC_NOT_FOUND), References.MOD_NAME, mcVersion);
+				break;
 			case ID_OUTDATED:
-				if (sVersion != null && sLocation != null) {
-					LogHelper.info( reg.getStringLocalization( Strings.VERSION_OUTDATED), References.MOD_NAME, mcVersion, sVersion, sLocation);
-				}
+				LogHelper.info( reg.getStringLocalization( Strings.VERSION_OUTDATED), References.MOD_NAME, mcVersion, sVersion, sLocation);
+				break;
+			case ID_MC_NOT_FOUND:
+				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_MC), References.MOD_NAME, mcVersion);
+				break;
+			case ID_UNINITIALIZED:
+				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_UNINITIALIZED));
+				break;
 			default:
 				sResult = ID_ERROR;
 				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_ERROR));
@@ -145,10 +162,10 @@ public class VersionHelper implements Runnable {
 
 	@Override
 	public void run() {
-		LanguageRegistry rec = LanguageRegistry.instance();
-		LogHelper.info( rec.getStringLocalization( Strings.VERSION_CHECK_INIT), REMOTE_VERSION);
+		LanguageRegistry reg = LanguageRegistry.instance();
+		LogHelper.info( reg.getStringLocalization( Strings.VERSION_INIT), REMOTE_VERSION);
 		try {
-			for (int count = 0; count < References.VERSION_CHECK_ATTEMPTS; ++count) {
+			for (int i = 0; i < References.VERSION_CHECK_ATTEMPTS; ++i) {
 				checkVersion();
 				logResult();
 				if (sResult != ID_UNINITIALIZED && sResult != ID_ERROR) {
@@ -158,11 +175,11 @@ public class VersionHelper implements Runnable {
 			}
 			if (sResult == ID_ERROR) {
 				sResult = ID_FINAL;
-				logResult();
+				LogHelper.warning( reg.getStringLocalization( Strings.VERSION_FINAL));
 			}
 		}
 		catch (InterruptedException ex) {
-			ex.printStackTrace();
+			LogHelper.severe( ex);
 		}
 	}
 }

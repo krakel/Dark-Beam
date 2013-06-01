@@ -11,7 +11,7 @@ public class References {
 	public static final String MOD_ID = "DarkBeam";
 	public static final String MOD_NAME = "Dark Beam";
 	public static final String MOD_CHANNEL = "DarkBeam";
-	public static final String VERSION = "@VERSION@ (build @BUILD_NUMBER@)";
+	public static final String VERSION = "@VERSION@.@BUILD_NUMBER@";
 	public static final String DEPENDENCIES = "required-after:Forge@[7.8.0.684,)";
 	public static final String FINGERPRINT = "@FINGERPRINT@";
 	//
