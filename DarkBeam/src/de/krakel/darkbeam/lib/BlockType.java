@@ -13,7 +13,9 @@ public enum BlockType {
 	OreDarkening( "oreDarkening"),
 	OreBeaming( "oreBeaming"),
 	BlockRedWire( "blockRedWire"),
-	BlockUnits( "blockUnits");
+	BlockUnits( "blockUnits"),
+	TestBlockSimple( "testBlockSimple"),
+	TestBlockItem( "testBlockItem");
 	private static int sBlockIds = 2500;
 	//
 	private int mId;

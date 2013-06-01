@@ -12,6 +12,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import de.krakel.darkbeam.item.ItemBlockRedWire;
 import de.krakel.darkbeam.item.ItemUnit;
+import de.krakel.darkbeam.item.TestItemBlockItem;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class ModBlocks {
@@ -19,11 +20,16 @@ public class ModBlocks {
 	public static Block sOreDarkening = new BlockOre( BlockType.OreDarkening);
 	public static Block sBlockRedWire = new BlockRedWire( BlockType.BlockRedWire);
 	public static Block sBlockUnits = new BlockUnits( BlockType.BlockUnits);
+	public static Block sTestBlockSimple = new TestBlockSimple( BlockType.TestBlockSimple);
+	public static Block sTestBlockItem = new TestBlockItem( BlockType.TestBlockItem);
 
 	public static void preInit() {
-		GameRegistry.registerBlock( sOreBeaming, BlockType.OreBeaming.mName);
-		GameRegistry.registerBlock( sOreDarkening, BlockType.OreDarkening.mName);
-		GameRegistry.registerBlock( sBlockRedWire, ItemBlockRedWire.class, BlockType.BlockRedWire.mName);
-		GameRegistry.registerBlock( sBlockUnits, ItemUnit.class, BlockType.BlockUnits.mName);
+		GameRegistry.registerBlock( sOreBeaming, sOreBeaming.getUnlocalizedName2());
+		GameRegistry.registerBlock( sOreDarkening, sOreDarkening.getUnlocalizedName2());
+		GameRegistry.registerBlock( sBlockRedWire, ItemBlockRedWire.class, sBlockRedWire.getUnlocalizedName2());
+		GameRegistry.registerBlock( sBlockUnits, ItemUnit.class, sBlockUnits.getUnlocalizedName2());
+		//
+		GameRegistry.registerBlock( sTestBlockSimple, sTestBlockSimple.getUnlocalizedName2());
+		GameRegistry.registerBlock( sTestBlockItem, TestItemBlockItem.class, sTestBlockItem.getUnlocalizedName2());
 	}
 }
