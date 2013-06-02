@@ -22,7 +22,6 @@ public class TestBlockItem extends Block {
 		setUnlocalizedName( type.mName);
 		setHardness( 0.1F);
 		setCreativeTab( DarkBeam.sMainTab);
-		disableStats();
 	}
 
 	@Override

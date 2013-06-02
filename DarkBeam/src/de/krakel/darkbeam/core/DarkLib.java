@@ -24,6 +24,10 @@ public class DarkLib implements IDirection {
 	public static final double BOX_BORDER_MIN = 1D / 4D;
 	public static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
 	public static final double BOX_BORDER_HEIGHT = 1D / 512D;
+	public static final String[] COLOR_NAMES = new String[] {
+		"white", "orange", "magenta", "lightBlue", "yellow", "lime", "pink", "gray", "lightGray", "cyan", "purple",
+		"blue", "brown", "green", "red", "black"
+	};
 
 	private DarkLib() {
 	}
@@ -37,6 +41,14 @@ public class DarkLib implements IDirection {
 //			return var3.canAddCover( pos.subHit, subID);
 //		}
 		return false;
+	}
+
+	public static int colorSubID( int dmg) {
+		return dmg & 15;
+	}
+
+	public static String colorSubName( int dmg) {
+		return COLOR_NAMES[dmg & 15];
 	}
 
 	public static <T> boolean different( T obj1, T obj2) {

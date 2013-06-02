@@ -15,7 +15,8 @@ public enum BlockType {
 	BlockRedWire( "blockRedWire"),
 	BlockUnits( "blockUnits"),
 	TestBlockSimple( "testBlockSimple"),
-	TestBlockItem( "testBlockItem");
+	TestBlockItem( "testBlockItem"),
+	TestBlockMulti( "testBlockMulti");
 	private static int sBlockIds = 2500;
 	//
 	private int mId;

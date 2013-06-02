@@ -24,7 +24,6 @@ public class TestBlockSimple extends Block {
 		setStepSound( soundStoneFootstep);
 		setUnlocalizedName( type.mName);
 		setCreativeTab( DarkBeam.sMainTab);
-		disableStats();
 	}
 
 	@Override
