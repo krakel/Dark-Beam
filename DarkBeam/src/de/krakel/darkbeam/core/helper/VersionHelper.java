@@ -75,7 +75,8 @@ public class VersionHelper implements Runnable {
 				if (!Configs.sLastDiscoveredVersion.equalsIgnoreCase( sVersion)) {
 					ConfigurationHandler.set( Configuration.CATEGORY_GENERAL, Configs.LAST_DISCOVERED_VERSION_NAME, sVersion);
 				}
-				sResult = compareVersion( sVersion, References.VERSION) < 0 ? ID_OUTDATED : ID_CURRENT;
+				String current = References.VERSION.indexOf( '@') < 0 ? References.VERSION : "0.0"; // only for testing
+				sResult = compareVersion( current, sVersion) < 0 ? ID_OUTDATED : ID_CURRENT;
 			}
 		}
 		catch (Exception ex) {
