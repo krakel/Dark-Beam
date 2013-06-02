@@ -14,6 +14,7 @@ import de.krakel.darkbeam.item.ItemBlockRedWire;
 import de.krakel.darkbeam.item.ItemUnit;
 import de.krakel.darkbeam.item.TestItemBlockItem;
 import de.krakel.darkbeam.item.TestItemBlockMulti;
+import de.krakel.darkbeam.item.TestItemBlockPanel;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class ModBlocks {
@@ -24,6 +25,7 @@ public class ModBlocks {
 	public static Block sTestBlockSimple = new TestBlockSimple( BlockType.TestBlockSimple);
 	public static Block sTestBlockItem = new TestBlockItem( BlockType.TestBlockItem);
 	public static Block sTestBlockMulti = new TestBlockMulti( BlockType.TestBlockMulti);
+	public static Block sTestBlockPanel = new TestBlockPanel( BlockType.TestBlockPanel);
 
 	public static void preInit() {
 		GameRegistry.registerBlock( sOreBeaming, BlockType.OreBeaming.mName);
@@ -34,5 +36,6 @@ public class ModBlocks {
 		GameRegistry.registerBlock( sTestBlockSimple, BlockType.TestBlockSimple.mName);
 		GameRegistry.registerBlock( sTestBlockItem, TestItemBlockItem.class, BlockType.TestBlockItem.mName);
 		GameRegistry.registerBlock( sTestBlockMulti, TestItemBlockMulti.class, BlockType.TestBlockMulti.mName);
+		GameRegistry.registerBlock( sTestBlockPanel, TestItemBlockPanel.class, BlockType.TestBlockPanel.mName);
 	}
 }
