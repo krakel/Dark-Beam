@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.IDirection;
+import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class TestBlockPanel extends Block implements IDirection {
@@ -154,9 +154,9 @@ public class TestBlockPanel extends Block implements IDirection {
 //			return false;
 //		}
 //		else {
-//			int i1 = x + Facing.offsetsXForSide[Facing.oppositeSide[side]];
-//			int j1 = y + Facing.offsetsYForSide[Facing.oppositeSide[side]];
-//			int k1 = z + Facing.offsetsZForSide[Facing.oppositeSide[side]];
+//			int i1 = x + Position.antiX[side];
+//			int j1 = y + Position.antiY[side];
+//			int k1 = z + Position.antiZ[side];
 //			boolean flag = (world.getBlockMetadata( i1, j1, k1) & 8) != 0;
 //			return flag ? side == 0 ? true : side == 1 && super.shouldSideBeRendered( world, x, y, z, side) ? true : (world.getBlockMetadata( x, y, z) & 8) == 0 : side == 1 ? true : side == 0
 //				&& super.shouldSideBeRendered( world, x, y, z, side) ? true : (world.getBlockMetadata( x, y, z) & 8) != 0;
@@ -166,9 +166,9 @@ public class TestBlockPanel extends Block implements IDirection {
 //		if (sr && (side == DIR_DOWN || side == DIR_UP)) {
 //			return true;
 //		}
-//		int sx = x + Facing.offsetsXForSide[Facing.oppositeSide[side]];
-//		int sy = y + Facing.offsetsYForSide[Facing.oppositeSide[side]];
-//		int sz = z + Facing.offsetsZForSide[Facing.oppositeSide[side]];
+//		int sx = x + Position.antiX[side];
+//		int sy = y + Position.antiY[side];
+//		int sz = z + Position.antiZ[side];
 //		boolean isSideTop = (world.getBlockMetadata( sx, sy, sz) & 8) != 0;
 //		boolean isThisTop = (world.getBlockMetadata( x, y, z) & 8) != 0;
 //		if (sr) {

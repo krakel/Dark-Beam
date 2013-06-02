@@ -22,6 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.lib.Textures;
 import de.krakel.darkbeam.tile.TileRedWire;
@@ -82,10 +83,9 @@ public class ItemBlockRedWire extends ItemBlock {
 			side = 1;
 		}
 		else if (!isBlockReplaceable( world, x, y, z, id)) {
-			ForgeDirection dir = ForgeDirection.getOrientation( side);
-			x += dir.offsetX;
-			y += dir.offsetY;
-			z += dir.offsetZ;
+			x += Position.relX( side);
+			y += Position.relY( side);
+			z += Position.relZ( side);
 		}
 		return world.canPlaceEntityOnSide( getBlockID(), x, y, z, false, side, (Entity) null, stack);
 	}
@@ -110,9 +110,9 @@ public class ItemBlockRedWire extends ItemBlock {
 		if (!canSupportWire( world, x, y, z, dir)) {
 			return false;
 		}
-		x += dir.offsetX;
-		y += dir.offsetY;
-		z += dir.offsetZ;
+		x += Position.relX( side);
+		y += Position.relY( side);
+		z += Position.relZ( side);
 		if (world.getBlockId( x, y, z) != stack.itemID) {
 			if (!world.canPlaceEntityOnSide( stack.itemID, x, y, z, false, side, entity, stack)) {
 				return false;

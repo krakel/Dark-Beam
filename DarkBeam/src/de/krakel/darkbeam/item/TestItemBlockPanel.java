@@ -16,9 +16,10 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.IDirection;
 import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.block.TestBlockPanel;
+import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.Position;
 
 public class TestItemBlockPanel extends ItemBlock implements IDirection {
 	public TestItemBlockPanel( int id) {
@@ -45,27 +46,9 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 	}
 
 	private boolean canPlaceItemBlockOnSide0( World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stk) {
-		switch (side) {
-			case DIR_DOWN:
-				--y;
-				break;
-			case DIR_UP:
-				++y;
-				break;
-			case DIR_NORTH:
-				--z;
-				break;
-			case DIR_SOUTH:
-				++z;
-				break;
-			case DIR_WEST:
-				--x;
-				break;
-			case DIR_EAST:
-				++x;
-				break;
-			default:
-		}
+		x += Position.relX( side);
+		y += Position.relY( side);
+		z += Position.relZ( side);
 		int posMeta = world.getBlockMetadata( x, y, z);
 		int posSubID = posMeta & 7;
 		if (isHalfBlock( stk, world, x, y, z, posSubID)) {
@@ -120,27 +103,9 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 	}
 
 	private boolean onItemUse0( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int side) {
-		switch (side) {
-			case DIR_DOWN:
-				--y;
-				break;
-			case DIR_UP:
-				++y;
-				break;
-			case DIR_NORTH:
-				--z;
-				break;
-			case DIR_SOUTH:
-				++z;
-				break;
-			case DIR_WEST:
-				--x;
-				break;
-			case DIR_EAST:
-				++x;
-				break;
-			default:
-		}
+		x += Position.relX( side);
+		y += Position.relY( side);
+		z += Position.relZ( side);
 		int posMeta = world.getBlockMetadata( x, y, z);
 		int posSubID = posMeta & 7;
 		if (isHalfBlock( stk, world, x, y, z, posSubID)) {

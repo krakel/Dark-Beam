@@ -17,7 +17,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import de.krakel.darkbeam.IDirection;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class DarkLib implements IDirection {
