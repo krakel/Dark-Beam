@@ -115,6 +115,15 @@ public class TestBlockPanel extends Block implements IDirection {
 		return meta | 8;
 	}
 
+	public void placeBlock( ItemStack stk, World world, int x, int y, int z, int posSubID) {
+		if (world.checkNoEntityCollision( getCollisionBoundingBoxFromPool( world, x, y, z))) {
+			if (world.setBlock( x, y, z, blockID, posSubID, 3)) {
+				world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(), (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
+				--stk.stackSize;
+			}
+		}
+	}
+
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
