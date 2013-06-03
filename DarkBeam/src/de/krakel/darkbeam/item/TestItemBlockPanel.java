@@ -31,11 +31,11 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public boolean canPlaceItemBlockOnSide( World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stk) {
-		int posMeta = world.getBlockMetadata( x, y, z);
-		int posSubID = posMeta & 7;
-		boolean isTop = (posMeta & 8) != 0;
+		int meta = world.getBlockMetadata( x, y, z);
+		int subID = meta & 7;
+		boolean isTop = (meta & 8) != 0;
 		if (side == DIR_UP && !isTop || side == DIR_DOWN && isTop) {
-			if (isHalfBlock( stk, world, x, y, z, posSubID)) {
+			if (isHalfBlock( stk, world, x, y, z, subID)) {
 				return true;
 			}
 		}
@@ -73,10 +73,9 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 		return getUnlocalizedName() + "." + TestBlockPanel.PANEL_NAMES[stk.getItemDamage()];
 	}
 
-	@SuppressWarnings( "static-method")
 	private boolean isHalfBlock( ItemStack stk, World world, int x, int y, int z, int posSubID) {
 		int posID = world.getBlockId( x, y, z);
-		return posID == ModBlocks.sTestBlockPanel.blockID && posSubID == stk.getItemDamage();
+		return posID == getBlockID() && posSubID == stk.getItemDamage();
 	}
 
 	@Override
@@ -92,7 +91,7 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 		if (side == DIR_UP && !isTop || side == DIR_DOWN && isTop) {
 			int posSubID = posMeta & 7;
 			if (isHalfBlock( stk, world, x, y, z, posSubID)) {
-				placeDoubleBlock( stk, world, x, y, z, posSubID);
+				ModBlocks.sTestBlockPanel.placeBlock( stk, world, x, y, z, posSubID);
 				return true;
 			}
 		}
@@ -109,20 +108,9 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 		int posMeta = world.getBlockMetadata( x, y, z);
 		int posSubID = posMeta & 7;
 		if (isHalfBlock( stk, world, x, y, z, posSubID)) {
-			placeDoubleBlock( stk, world, x, y, z, posSubID);
+			ModBlocks.sTestBlockPanel.placeBlock( stk, world, x, y, z, posSubID);
 			return true;
 		}
 		return false;
-	}
-
-	@SuppressWarnings( "static-method")
-	private void placeDoubleBlock( ItemStack stk, World world, int x, int y, int z, int posSubID) {
-		Block doubleBlk = ModBlocks.sTestBlockPanel;
-		if (world.checkNoEntityCollision( doubleBlk.getCollisionBoundingBoxFromPool( world, x, y, z))) {
-			if (world.setBlock( x, y, z, doubleBlk.blockID, posSubID, 3)) {
-				world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, doubleBlk.stepSound.getPlaceSound(), (doubleBlk.stepSound.getVolume() + 1.0F) / 2.0F, doubleBlk.stepSound.getPitch() * 0.8F);
-				--stk.stackSize;
-			}
-		}
 	}
 }

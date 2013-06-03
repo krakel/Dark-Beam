@@ -32,7 +32,6 @@ public class TestBlockPanel extends Block implements IDirection {
 		"stone", "sand", "wood", "cobble", "brick", "smoothStoneBrick", "netherBrick", "quartz"
 	};
 
-//	private Icon mSideTexture;
 	public TestBlockPanel( BlockType type) {
 		super( type.getId(), Material.rock);
 		setHardness( 2.0F);
@@ -57,14 +56,14 @@ public class TestBlockPanel extends Block implements IDirection {
 	}
 
 	@Override
-	public int damageDropped( int dmg) {
-		return dmg & 7;
+	public int damageDropped( int meta) {
+		return meta & 7;
 	}
 
 	@Override
 	public int getDamageValue( World world, int x, int y, int z) {
-		int dmg = world.getBlockMetadata( x, y, z);
-		return damageDropped( dmg);
+		int meta = world.getBlockMetadata( x, y, z);
+		return damageDropped( meta);
 	}
 
 	@Override
@@ -73,7 +72,6 @@ public class TestBlockPanel extends Block implements IDirection {
 		switch (meta & 7) {
 			case 0:
 				return Block.stone.getIcon( side, 0);
-//				return side == DIR_UP || side == DIR_DOWN ? blockIcon : mSideTexture;
 			case 1:
 				return Block.sandStone.getIcon( side, 0);
 			case 2:
@@ -120,8 +118,6 @@ public class TestBlockPanel extends Block implements IDirection {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
-//		blockIcon = reg.registerIcon( "stoneslab_top");
-//		mSideTexture = reg.registerIcon( "stoneslab_side");
 	}
 
 	@Override
@@ -150,27 +146,15 @@ public class TestBlockPanel extends Block implements IDirection {
 	@SideOnly( Side.CLIENT)
 	public boolean shouldSideBeRendered( IBlockAccess world, int x, int y, int z, int side) {
 		return super.shouldSideBeRendered( world, x, y, z, side);
-//		if (side != 1 && side != 0 && !super.shouldSideBeRendered( world, x, y, z, side)) {
-//			return false;
-//		}
-//		else {
-//			int i1 = x + Position.antiX[side];
-//			int j1 = y + Position.antiY[side];
-//			int k1 = z + Position.antiZ[side];
-//			boolean flag = (world.getBlockMetadata( i1, j1, k1) & 8) != 0;
-//			return flag ? side == 0 ? true : side == 1 && super.shouldSideBeRendered( world, x, y, z, side) ? true : (world.getBlockMetadata( x, y, z) & 8) == 0 : side == 1 ? true : side == 0
-//				&& super.shouldSideBeRendered( world, x, y, z, side) ? true : (world.getBlockMetadata( x, y, z) & 8) != 0;
-//		}
-		//
 //		boolean sr = super.shouldSideBeRendered( world, x, y, z, side);
 //		if (sr && (side == DIR_DOWN || side == DIR_UP)) {
 //			return true;
 //		}
-//		int sx = x + Position.antiX[side];
-//		int sy = y + Position.antiY[side];
-//		int sz = z + Position.antiZ[side];
-//		boolean isSideTop = (world.getBlockMetadata( sx, sy, sz) & 8) != 0;
 //		boolean isThisTop = (world.getBlockMetadata( x, y, z) & 8) != 0;
+//		x += Position.antiX( side);
+//		y += Position.antiY( side);
+//		z += Position.antiZ( side);
+//		boolean isSideTop = (world.getBlockMetadata( x, y, z) & 8) != 0;
 //		if (sr) {
 //			return isSideTop ^ isThisTop;
 //		}
