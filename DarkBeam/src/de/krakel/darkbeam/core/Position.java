@@ -7,7 +7,9 @@
  */
 package de.krakel.darkbeam.core;
 
-public class Position {
+import net.minecraft.util.MovingObjectPosition;
+
+public class Position implements IDirection {
 	private static final int[] REL_X = {
 		0, 0, 0, 0, -1, 1
 	};
@@ -54,6 +56,31 @@ public class Position {
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
+		}
+	}
+
+	public static void move( MovingObjectPosition pos) {
+		switch (pos.sideHit) {
+			case DIR_DOWN:
+				--pos.blockY;
+				break;
+			case DIR_UP:
+				++pos.blockY;
+				break;
+			case DIR_NORTH:
+				--pos.blockZ;
+				break;
+			case DIR_SOUTH:
+				++pos.blockZ;
+				break;
+			case DIR_WEST:
+				--pos.blockX;
+				break;
+			case DIR_EAST:
+				++pos.blockX;
+				break;
+			default:
+				--pos.blockY;
 		}
 	}
 

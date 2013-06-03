@@ -35,6 +35,11 @@ public class TestBlockMulti extends Block {
 	}
 
 	@Override
+	protected ItemStack createStackedBlock( int meta) {
+		return new ItemStack( blockID, 1, DarkLib.colorSubID( meta));
+	}
+
+	@Override
 	public int damageDropped( int dmg) {
 		return dmg;
 	}

@@ -27,6 +27,9 @@ public class DarkLib implements IDirection {
 		"white", "orange", "magenta", "lightBlue", "yellow", "lime", "pink", "gray", "lightGray", "cyan", "purple",
 		"blue", "brown", "green", "red", "black"
 	};
+	public static final String[] PANEL_NAMES = new String[] {
+		"stone", "sand", "wood", "cobble", "brick", "smoothStoneBrick", "netherBrick", "quartz"
+	};
 
 	private DarkLib() {
 	}
@@ -42,12 +45,12 @@ public class DarkLib implements IDirection {
 		return false;
 	}
 
-	public static int colorSubID( int dmg) {
-		return dmg & 15;
+	public static int colorSubID( int mate) {
+		return mate & 15;
 	}
 
-	public static String colorSubName( int dmg) {
-		return COLOR_NAMES[dmg & 15];
+	public static String colorSubName( int meta) {
+		return COLOR_NAMES[meta & 15];
 	}
 
 	public static <T> boolean different( T obj1, T obj2) {
@@ -90,7 +93,7 @@ public class DarkLib implements IDirection {
 				if (canUnitAdd( world, pos, subID, stack)) {
 					return pos;
 				}
-				movePosition( pos);
+				Position.move( pos);
 			}
 		}
 		else if (hitArea == pos.sideHit) {
@@ -99,11 +102,11 @@ public class DarkLib implements IDirection {
 				return pos;
 			}
 			pos.subHit = hitArea ^ 1;
-			movePosition( pos);
+			Position.move( pos);
 		}
 		else {
 			pos.subHit = hitArea;
-			movePosition( pos);
+			Position.move( pos);
 		}
 		return canUnitAdd( world, pos, subID, stack) ? pos : null;
 	}
@@ -138,29 +141,12 @@ public class DarkLib implements IDirection {
 		return false;
 	}
 
-	private static void movePosition( MovingObjectPosition pos) {
-		switch (pos.sideHit) {
-			case DIR_DOWN:
-				--pos.blockY;
-				break;
-			case DIR_UP:
-				++pos.blockY;
-				break;
-			case DIR_NORTH:
-				--pos.blockZ;
-				break;
-			case DIR_SOUTH:
-				++pos.blockZ;
-				break;
-			case DIR_WEST:
-				--pos.blockX;
-				break;
-			case DIR_EAST:
-				++pos.blockX;
-				break;
-			default:
-				--pos.blockY;
-		}
+	public static int panelSubID( int meta) {
+		return meta & 7;
+	}
+
+	public static String panelSubName( int meta) {
+		return PANEL_NAMES[meta & 7];
 	}
 
 	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {

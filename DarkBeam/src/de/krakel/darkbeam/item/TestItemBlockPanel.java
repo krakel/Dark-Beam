@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.block.ModBlocks;
-import de.krakel.darkbeam.block.TestBlockPanel;
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.Position;
 
@@ -32,25 +32,26 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 	@SideOnly( Side.CLIENT)
 	public boolean canPlaceItemBlockOnSide( World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stk) {
 		int meta = world.getBlockMetadata( x, y, z);
-		int subID = meta & 7;
+		int subID = DarkLib.panelSubID( meta);
 		boolean isTop = (meta & 8) != 0;
-		if (side == DIR_UP && !isTop || side == DIR_DOWN && isTop) {
+		if (side == DIR_UP && !isTop) { // || side == DIR_DOWN && isTop) {
 			if (isHalfBlock( stk, world, x, y, z, subID)) {
 				return true;
 			}
 		}
-		if (canPlaceItemBlockOnSide0( world, x, y, z, side, player, stk)) {
-			return true;
-		}
+//		if (canPlaceItemBlockOnSide0( world, x, y, z, side, player, stk)) {
+//			return true;
+//		}
 		return super.canPlaceItemBlockOnSide( world, x, y, z, side, player, stk);
 	}
 
+	@SuppressWarnings( "unused")
 	private boolean canPlaceItemBlockOnSide0( World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stk) {
 		x += Position.relX( side);
 		y += Position.relY( side);
 		z += Position.relZ( side);
 		int posMeta = world.getBlockMetadata( x, y, z);
-		int posSubID = posMeta & 7;
+		int posSubID = DarkLib.panelSubID( posMeta);
 		if (isHalfBlock( stk, world, x, y, z, posSubID)) {
 			return true;
 		}
@@ -70,7 +71,8 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 
 	@Override
 	public String getUnlocalizedName( ItemStack stk) {
-		return getUnlocalizedName() + "." + TestBlockPanel.PANEL_NAMES[stk.getItemDamage()];
+		int dmg = stk.getItemDamage();
+		return getUnlocalizedName() + "." + DarkLib.panelSubName( dmg);
 	}
 
 	private boolean isHalfBlock( ItemStack stk, World world, int x, int y, int z, int posSubID) {
@@ -88,25 +90,26 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 		}
 		int posMeta = world.getBlockMetadata( x, y, z);
 		boolean isTop = (posMeta & 8) != 0;
-		if (side == DIR_UP && !isTop || side == DIR_DOWN && isTop) {
-			int posSubID = posMeta & 7;
+		if (side == DIR_UP && !isTop) { // || side == DIR_DOWN && isTop) {
+			int posSubID = DarkLib.panelSubID( posMeta);
 			if (isHalfBlock( stk, world, x, y, z, posSubID)) {
 				ModBlocks.sTestBlockPanel.placeBlock( stk, world, x, y, z, posSubID);
 				return true;
 			}
 		}
-		if (onItemUse0( stk, player, world, x, y, z, side)) {
-			return true;
-		}
+//		if (onItemUse0( stk, player, world, x, y, z, side)) {
+//			return true;
+//		}
 		return super.onItemUse( stk, player, world, x, y, z, side, hitX, hitY, hitZ);
 	}
 
+	@SuppressWarnings( "unused")
 	private boolean onItemUse0( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int side) {
 		x += Position.relX( side);
 		y += Position.relY( side);
 		z += Position.relZ( side);
 		int posMeta = world.getBlockMetadata( x, y, z);
-		int posSubID = posMeta & 7;
+		int posSubID = DarkLib.panelSubID( posMeta);
 		if (isHalfBlock( stk, world, x, y, z, posSubID)) {
 			ModBlocks.sTestBlockPanel.placeBlock( stk, world, x, y, z, posSubID);
 			return true;

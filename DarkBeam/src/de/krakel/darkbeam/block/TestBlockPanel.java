@@ -23,14 +23,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class TestBlockPanel extends Block implements IDirection {
-	private static final float THICKNESS = 0.5F;
-	public static final String[] PANEL_NAMES = new String[] {
-		"stone", "sand", "wood", "cobble", "brick", "smoothStoneBrick", "netherBrick", "quartz"
-	};
+	private static final float THICKNESS = 1F / 8F;
 
 	public TestBlockPanel( BlockType type) {
 		super( type.getId(), Material.rock);
@@ -52,24 +50,18 @@ public class TestBlockPanel extends Block implements IDirection {
 
 	@Override
 	protected ItemStack createStackedBlock( int meta) {
-		return new ItemStack( blockID, 2, meta & 7);
+		return new ItemStack( blockID, 1, DarkLib.panelSubID( meta));
 	}
 
 	@Override
 	public int damageDropped( int meta) {
-		return meta & 7;
-	}
-
-	@Override
-	public int getDamageValue( World world, int x, int y, int z) {
-		int meta = world.getBlockMetadata( x, y, z);
-		return damageDropped( meta);
+		return DarkLib.panelSubID( meta);
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIcon( int side, int meta) {
-		switch (meta & 7) {
+		switch (DarkLib.panelSubID( meta)) {
 			case 0:
 				return Block.stone.getIcon( side, 0);
 			case 1:
@@ -107,14 +99,14 @@ public class TestBlockPanel extends Block implements IDirection {
 		return false;
 	}
 
-	@Override
-	public int onBlockPlaced( World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
-		if (side == DIR_UP || hitY <= THICKNESS) {
-			return meta;
-		}
-		return meta | 8;
-	}
-
+//	@Override
+//	public int onBlockPlaced( World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
+//		if (side == DIR_UP || hitY <= THICKNESS) {
+//			return meta;
+//		}
+//		return meta | 8;
+//	}
+//
 	public void placeBlock( ItemStack stk, World world, int x, int y, int z, int posSubID) {
 		if (world.checkNoEntityCollision( getCollisionBoundingBoxFromPool( world, x, y, z))) {
 			if (world.setBlock( x, y, z, blockID, posSubID, 3)) {
@@ -136,14 +128,14 @@ public class TestBlockPanel extends Block implements IDirection {
 
 	@Override
 	public void setBlockBoundsBasedOnState( IBlockAccess world, int x, int y, int z) {
-		int meta = world.getBlockMetadata( x, y, z);
-		boolean isTop = (meta & 8) != 0;
-		if (isTop) {
-			setBlockBounds( 0.0F, THICKNESS, 0.0F, 1.0F, 1.0F, 1.0F);
-		}
-		else {
-			setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, THICKNESS, 1.0F);
-		}
+//		int meta = world.getBlockMetadata( x, y, z);
+//		boolean isTop = (meta & 8) != 0;
+//		if (isTop) {
+//			setBlockBounds( 0.0F, THICKNESS, 0.0F, 1.0F, 1.0F, 1.0F);
+//		}
+//		else {
+		setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, THICKNESS, 1.0F);
+//		}
 	}
 
 	@Override
