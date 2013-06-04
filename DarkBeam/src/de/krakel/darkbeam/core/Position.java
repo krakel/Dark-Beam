@@ -8,6 +8,7 @@
 package de.krakel.darkbeam.core;
 
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.common.ForgeDirection;
 
 public class Position implements IDirection {
 	private static final int[] REL_X = {
@@ -27,6 +28,14 @@ public class Position implements IDirection {
 	};
 	private static final int[] ANTI_Z = {
 		0, 0, 1, -1, 0, 0
+	};
+	private static final ForgeDirection[] FORGE = {
+		ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST,
+		ForgeDirection.EAST
+	};
+	private static final ForgeDirection[] OPPOSITES = {
+		ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.SOUTH, ForgeDirection.NORTH, ForgeDirection.EAST,
+		ForgeDirection.WEST
 	};
 
 	private Position() {
@@ -108,6 +117,24 @@ public class Position implements IDirection {
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
+		}
+	}
+
+	public static ForgeDirection toForge( int side) {
+		try {
+			return FORGE[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return ForgeDirection.UNKNOWN;
+		}
+	}
+
+	public static ForgeDirection toOpposite( int side) {
+		try {
+			return OPPOSITES[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return ForgeDirection.UNKNOWN;
 		}
 	}
 }
