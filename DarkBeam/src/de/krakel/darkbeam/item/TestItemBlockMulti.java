@@ -26,7 +26,7 @@ public class TestItemBlockMulti extends ItemBlock {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIconFromDamage( int dmg) {
-		return ModBlocks.sTestBlockMulti.getIcon( 2, DarkLib.colorSubID( dmg));
+		return ModBlocks.sTestMulti.getIcon( 2, DarkLib.colorSubID( dmg));
 	}
 
 	@Override

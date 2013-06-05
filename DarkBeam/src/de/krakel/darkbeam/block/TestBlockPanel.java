@@ -22,21 +22,17 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
-import de.krakel.darkbeam.lib.BlockType;
 
 public class TestBlockPanel extends Block implements IDirection {
 	private static final float THICKNESS = 1F / 8F;
 
-	public TestBlockPanel( BlockType type) {
-		super( type.getId(), Material.rock);
+	public TestBlockPanel( int id) {
+		super( id, Material.rock);
 		setHardness( 2.0F);
 		setResistance( 10.0F);
 		setStepSound( soundStoneFootstep);
-		setUnlocalizedName( type.mName);
-		setCreativeTab( DarkBeam.sMainTab);
 		setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, THICKNESS, 1.0F);
 		setLightOpacity( 255);
 	}

@@ -13,17 +13,12 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.lib.BlockType;
-
 public class TestBlockSimple extends Block {
-	public TestBlockSimple( BlockType type) {
-		super( type.getId(), Material.rock);
+	public TestBlockSimple( int id) {
+		super( id, Material.rock);
 		setHardness( 3.0F);
 		setResistance( 5.0F);
 		setStepSound( soundStoneFootstep);
-		setUnlocalizedName( type.mName);
-		setCreativeTab( DarkBeam.sMainTab);
 	}
 
 	@Override

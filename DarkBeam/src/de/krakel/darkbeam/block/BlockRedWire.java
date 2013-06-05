@@ -33,7 +33,6 @@ import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.lib.Textures;
 import de.krakel.darkbeam.tile.TileRedWire;
 
@@ -42,10 +41,8 @@ public class BlockRedWire extends BlockContainer {
 	public static final float THICK = 2F / 16F;
 
 //	private boolean mProvidePower = true;
-	public BlockRedWire( BlockType type) {
-		super( type.getId(), DarkBeam.MAT_DARK);
-		setUnlocalizedName( type.mName);
-		setCreativeTab( DarkBeam.sMainTab);
+	public BlockRedWire( int id) {
+		super( id, DarkBeam.MAT_DARK);
 		setBlockBounds( 0.0F, 0.0F, 0.0F, 1.0F, THICK, 1.0F);
 		disableStats();
 	}

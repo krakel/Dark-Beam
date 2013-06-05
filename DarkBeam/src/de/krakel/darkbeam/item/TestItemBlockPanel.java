@@ -93,7 +93,7 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 		if (side == DIR_UP && !isTop) { // || side == DIR_DOWN && isTop) {
 			int posSubID = DarkLib.panelSubID( posMeta);
 			if (isHalfBlock( stk, world, x, y, z, posSubID)) {
-				ModBlocks.sTestBlockPanel.placeBlock( stk, world, x, y, z, posSubID);
+				ModBlocks.sTestPanel.placeBlock( stk, world, x, y, z, posSubID);
 				return true;
 			}
 		}
@@ -111,7 +111,7 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 		int posMeta = world.getBlockMetadata( x, y, z);
 		int posSubID = DarkLib.panelSubID( posMeta);
 		if (isHalfBlock( stk, world, x, y, z, posSubID)) {
-			ModBlocks.sTestBlockPanel.placeBlock( stk, world, x, y, z, posSubID);
+			ModBlocks.sTestPanel.placeBlock( stk, world, x, y, z, posSubID);
 			return true;
 		}
 		return false;

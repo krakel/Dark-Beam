@@ -22,6 +22,7 @@ public class Strings {
 	/* TileEntity name constants */
 	public static final String TE_REDWIRE_NAME = "tileRedWire";
 	public static final String TE_UNIT_NAME = "tileUnit";
+	public static final String TE_SIMPLE_NAME = "testTileSimple";
 
 	private Strings() {
 	}

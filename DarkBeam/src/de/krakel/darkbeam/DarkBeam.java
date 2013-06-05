@@ -41,11 +41,16 @@ import de.krakel.darkbeam.item.ModItems;
 import de.krakel.darkbeam.lib.References;
 import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
+import de.krakel.darkbeam.tile.TestTileSimple;
 import de.krakel.darkbeam.tile.TileRedWire;
 import de.krakel.darkbeam.tile.TileUnit;
 
-@Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
-	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
+@Mod(
+	modid = References.MOD_ID,
+	name = References.MOD_NAME,
+	version = References.VERSION,
+	dependencies = References.DEPENDENCIES,
+	certificateFingerprint = References.FINGERPRINT)
 @NetworkMod( channels = {
 	References.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
@@ -68,6 +73,7 @@ public class DarkBeam {
 //		GameRegistry.registerCraftingHandler( new CraftingHandler());
 		GameRegistry.registerTileEntity( TileRedWire.class, Strings.TE_REDWIRE_NAME);
 		GameRegistry.registerTileEntity( TileUnit.class, Strings.TE_UNIT_NAME);
+		GameRegistry.registerTileEntity( TestTileSimple.class, Strings.TE_SIMPLE_NAME);
 		sProxy.init();
 //		RecipesTransmutationStone.init();
 //		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());

@@ -18,20 +18,16 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.lib.BlockType;
 
 public class TestBlockMulti extends Block {
 	@SideOnly( Side.CLIENT)
 	private Icon[] mTextures = new Icon[16];
 
-	public TestBlockMulti( BlockType type) {
-		super( type.getId(), Material.cloth);
+	public TestBlockMulti( int id) {
+		super( id, Material.cloth);
 		setHardness( 0.8F);
 		setStepSound( soundClothFootstep);
-		setUnlocalizedName( type.mName);
-		setCreativeTab( DarkBeam.sMainTab);
 	}
 
 	@Override

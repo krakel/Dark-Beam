@@ -14,7 +14,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import de.krakel.darkbeam.block.BlockRedWire;
-import de.krakel.darkbeam.lib.BlockType;
+import de.krakel.darkbeam.block.ModBlocks;
 
 public class BlockRedWireRender implements ISimpleBlockRenderingHandler {
 	public static final int ID = RenderingRegistry.getNextAvailableRenderId();
@@ -33,7 +33,7 @@ public class BlockRedWireRender implements ISimpleBlockRenderingHandler {
 //
 	private static boolean isPowerProviderOrWire( IBlockAccess world, int x, int y, int z, int dir) {
 		int id = world.getBlockId( x, y, z);
-		if (BlockType.BlockRedWire.isId( id)) {
+		if (ModBlocks.sRedWire.blockID == id) {
 			return true;
 		}
 		if (id == 0 || Block.redstoneRepeaterIdle.func_94487_f( id)) {
