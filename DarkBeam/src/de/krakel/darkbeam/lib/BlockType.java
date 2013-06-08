@@ -14,8 +14,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.core.helper.LogHelper;
+import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.item.ItemBlockRedWire;
 import de.krakel.darkbeam.item.ItemUnit;
 import de.krakel.darkbeam.item.TestItemBlockItem;
@@ -59,7 +59,7 @@ public enum BlockType {
 			Constructor<T> ctor = cls.getConstructor( int.class);
 			T blk = ctor.newInstance( mId);
 			blk.setUnlocalizedName( mName);
-			blk.setCreativeTab( DarkBeam.sMainTab);
+			blk.setCreativeTab( ModTabs.sTabMain);
 			mBlock = blk;
 			return blk;
 		}

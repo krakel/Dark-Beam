@@ -12,8 +12,8 @@ import java.lang.reflect.Constructor;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 
-import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.core.helper.LogHelper;
+import de.krakel.darkbeam.creativetab.ModTabs;
 
 public enum ItemType {
 	Darkening( "itemDarkening");
@@ -37,7 +37,7 @@ public enum ItemType {
 			Constructor<T> ctor = cls.getConstructor( int.class);
 			T item = ctor.newInstance( mId);
 			item.setUnlocalizedName( mName);
-			item.setCreativeTab( DarkBeam.sMainTab);
+			item.setCreativeTab( ModTabs.sTabMain);
 			mItem = item;
 			return item;
 		}

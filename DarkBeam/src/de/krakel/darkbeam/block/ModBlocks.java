@@ -20,6 +20,9 @@ public class ModBlocks {
 	public static TestBlockPanel sTestPanel = BlockType.TestPanel.create( TestBlockPanel.class);
 	public static TestContainerSimple sContainerSimple = BlockType.TestPanel.create( TestContainerSimple.class);
 
+	private ModBlocks() {
+	}
+
 	public static void preInit() {
 		for (BlockType type : BlockType.values()) {
 			type.register();

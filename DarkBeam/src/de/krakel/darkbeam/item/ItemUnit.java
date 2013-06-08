@@ -19,9 +19,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.creativetab.ModTabs;
 
 public class ItemUnit extends ItemBlock {
 	public ItemUnit( int id) {
@@ -37,9 +37,10 @@ public class ItemUnit extends ItemBlock {
 	}
 
 	@Override
-	@SideOnly( Side.CLIENT)
-	public CreativeTabs getCreativeTab() {
-		return DarkBeam.sMainTab;
+	public CreativeTabs[] getCreativeTabs() {
+		return new CreativeTabs[] {
+			ModTabs.sSubTabUnit
+		};
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class ItemUnit extends ItemBlock {
 		"rawtypes", "unchecked"
 	})
 	public void getSubItems( int itemID, CreativeTabs tab, List lst) {
-		if (tab == DarkBeam.sMainTab) {
+		if (tab == ModTabs.sTabMain) {
 			lst.add( new ItemStack( ModBlocks.sUnits, 1, 0));
 		}
 		super.getSubItems( itemID, tab, lst);

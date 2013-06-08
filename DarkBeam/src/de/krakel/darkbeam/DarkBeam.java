@@ -9,7 +9,6 @@ package de.krakel.darkbeam;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.FingerprintWarning;
 import cpw.mods.fml.common.Mod.Init;
@@ -30,13 +29,13 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import de.krakel.darkbeam.block.ModBlocks;
-import de.krakel.darkbeam.core.MainTab;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.handler.VersionCheckTickHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.core.helper.VersionHelper;
 import de.krakel.darkbeam.core.proxy.CommonProxy;
+import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.item.ModItems;
 import de.krakel.darkbeam.lib.References;
 import de.krakel.darkbeam.lib.Strings;
@@ -45,12 +44,8 @@ import de.krakel.darkbeam.tile.TestTileSimple;
 import de.krakel.darkbeam.tile.TileRedWire;
 import de.krakel.darkbeam.tile.TileUnit;
 
-@Mod(
-	modid = References.MOD_ID,
-	name = References.MOD_NAME,
-	version = References.VERSION,
-	dependencies = References.DEPENDENCIES,
-	certificateFingerprint = References.FINGERPRINT)
+@Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
+	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
 @NetworkMod( channels = {
 	References.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
@@ -60,7 +55,6 @@ public class DarkBeam {
 	public static DarkBeam sInstance;
 	@SidedProxy( clientSide = References.CLASS_CLIENT_PROXY, serverSide = References.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
-	public static CreativeTabs sMainTab = new MainTab( Strings.TAB_MAIN);
 
 	@Init
 	public void init( FMLInitializationEvent event) {
@@ -98,6 +92,7 @@ public class DarkBeam {
 		VersionHelper.execute();
 		TickRegistry.registerTickHandler( new VersionCheckTickHandler(), Side.CLIENT);
 		sProxy.preInit();
+		ModTabs.preInit();
 		ModItems.preInit();
 		ModBlocks.preInit();
 	}
