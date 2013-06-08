@@ -12,16 +12,12 @@ import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.lib.ItemType;
 import de.krakel.darkbeam.lib.References;
 import de.krakel.darkbeam.lib.Textures;
 
 public class ItemDarkening extends Item {
-	public ItemDarkening( ItemType type) {
-		super( type.getId() - References.SHIFTED_ID_RANGE);
-		setUnlocalizedName( type.mName);
-		setCreativeTab( DarkBeam.sMainTab);
+	public ItemDarkening( int id) {
+		super( id - References.SHIFTED_ID_RANGE);
 		setMaxStackSize( 64);
 		setNoRepair();
 	}

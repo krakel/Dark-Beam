@@ -7,13 +7,14 @@
  */
 package de.krakel.darkbeam.item;
 
-import net.minecraft.item.Item;
-
 import de.krakel.darkbeam.lib.ItemType;
 
 public class ModItems {
-	public static Item sItemDarkening = new ItemDarkening( ItemType.ItemDarkening);
+	public static ItemDarkening sItemDarkening = ItemType.Darkening.create( ItemDarkening.class);
 
 	public static void preInit() {
+		for (ItemType type : ItemType.values()) {
+			type.register();
+		}
 	}
 }

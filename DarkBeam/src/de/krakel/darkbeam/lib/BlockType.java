@@ -33,11 +33,10 @@ public enum BlockType {
 	TestPanel( "testBlockPanel", TestItemBlockPanel.class),
 	ContainerSimple( "testContainerSimple");
 	private static int sBlockIds = 2500;
-	//
+	private int mDefault;
 	private int mId;
-	private Class<? extends ItemBlock> mItemClass;
 	private Block mBlock;
-	public final int mDefault;
+	private Class<? extends ItemBlock> mItemClass;
 	public final String mName;
 
 	private BlockType( String name) {
