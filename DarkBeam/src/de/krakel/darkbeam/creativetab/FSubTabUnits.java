@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.lib.BlockType;
 
-public final class FSubTabUnits extends CreativeTabs {
+final class FSubTabUnits extends CreativeTabs {
 	public FSubTabUnits( String label) {
 		super( label);
 	}

@@ -7,6 +7,8 @@
  */
 package de.krakel.darkbeam.core;
 
+import java.text.MessageFormat;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -65,6 +67,18 @@ public class DarkLib implements IDirection {
 			return obj1.equals( obj2);
 		}
 		return obj2 == null;
+	}
+
+	public static String format( String msg, Object... data) {
+		if (data == null || data.length == 0) {
+			return msg;
+		}
+		try {
+			return MessageFormat.format( msg, data);
+		}
+		catch (IllegalArgumentException ex) {
+			return msg;
+		}
 	}
 
 	private static double getBlockReachDistance( EntityLiving player) {

@@ -64,7 +64,7 @@ public enum BlockType {
 			return blk;
 		}
 		catch (Exception ex) {
-			LogHelper.severe( ex, "Caught an exception during block creation");
+			LogHelper.severe( ex, "caught an exception during block creation");
 		}
 		return null;
 	}

@@ -17,9 +17,6 @@ public class Strings {
 	public static final String VERSION_MC = "version.mc";
 	public static final String VERSION_OUTDATED = "version.outdated";
 	public static final String VERSION_UNINITIALIZED = "version.uninitialized";
-	/* Tab name constants */
-	public static final String TAB_MAIN = "tabMain";
-	public static final String TAB_SUB_UNIT = "tabSubUnit";
 	/* TileEntity name constants */
 	public static final String TE_REDWIRE_NAME = "tileRedWire";
 	public static final String TE_UNIT_NAME = "tileUnit";

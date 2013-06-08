@@ -7,12 +7,12 @@
  */
 package de.krakel.darkbeam.core.helper;
 
-import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cpw.mods.fml.common.FMLLog;
 
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.lib.References;
 
 public class LogHelper {
@@ -33,37 +33,25 @@ public class LogHelper {
 		log( Level.FINEST, msg, data);
 	}
 
-	public static String format( String msg, Object... data) {
-		if (data == null || data.length == 0) {
-			return msg;
-		}
-		try {
-			return MessageFormat.format( msg, data);
-		}
-		catch (IllegalArgumentException ex) {
-			return msg;
-		}
-	}
-
 	public static void info( String msg, Object... data) {
 		log( Level.INFO, msg, data);
 	}
 
 	public static void log( Level lvl, String msg, Object... data) {
 		if (sLogger.isLoggable( lvl)) {
-			sLogger.log( lvl, format( msg, data));
+			sLogger.log( lvl, DarkLib.format( msg, data));
 		}
 	}
 
 	public static void logArr( Level lvl, String msg, Object[] arr) {
 		if (sLogger.isLoggable( lvl)) {
-			sLogger.log( lvl, format( msg, toString( arr)));
+			sLogger.log( lvl, DarkLib.format( msg, toString( arr)));
 		}
 	}
 
 	public static void logProperty( Level lvl, String property) {
 		if (sLogger.isLoggable( lvl)) {
-			sLogger.log( lvl, format( "{0} = {1}", property, System.getProperty( property, null)));
+			sLogger.log( lvl, DarkLib.format( "{0} = {1}", property, System.getProperty( property, null)));
 		}
 	}
 
@@ -95,7 +83,7 @@ public class LogHelper {
 
 	public static void severe( Throwable ex, String msg, Object... data) {
 		if (sLogger.isLoggable( Level.SEVERE)) {
-			sLogger.log( Level.SEVERE, format( msg, data), ex);
+			sLogger.log( Level.SEVERE, DarkLib.format( msg, data), ex);
 		}
 	}
 

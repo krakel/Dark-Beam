@@ -15,6 +15,7 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.lib.Colors;
 import de.krakel.darkbeam.lib.Configs;
@@ -128,7 +129,7 @@ public class VersionHelper implements Runnable {
 		String msg = LanguageRegistry.instance().getStringLocalization( Strings.VERSION_OUTDATED);
 		String modName = Colors.get( References.MOD_NAME);
 		String mcVersion = Colors.get( Loader.instance().getMCVersionString());
-		return LogHelper.format( msg, modName, mcVersion, Colors.get( sVersion), Colors.get( sLocation));
+		return DarkLib.format( msg, modName, mcVersion, Colors.get( sVersion), Colors.get( sLocation));
 	}
 
 	public static boolean isInitialized() {

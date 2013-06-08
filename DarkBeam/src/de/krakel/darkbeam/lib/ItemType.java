@@ -42,7 +42,7 @@ public enum ItemType {
 			return item;
 		}
 		catch (Exception ex) {
-			LogHelper.severe( ex, "Caught an exception during item creation");
+			LogHelper.severe( ex, "caught an exception during item creation");
 		}
 		return null;
 	}

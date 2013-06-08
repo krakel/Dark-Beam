@@ -29,6 +29,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import de.krakel.darkbeam.block.ModBlocks;
+import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.handler.VersionCheckTickHandler;
@@ -69,6 +70,7 @@ public class DarkBeam {
 		GameRegistry.registerTileEntity( TileUnit.class, Strings.TE_UNIT_NAME);
 		GameRegistry.registerTileEntity( TestTileSimple.class, Strings.TE_SIMPLE_NAME);
 		sProxy.init();
+		MaterialLib.init();
 //		RecipesTransmutationStone.init();
 //		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());
 //		GameRegistry.registerFuelHandler( new FuelHandler());

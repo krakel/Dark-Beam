@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.block.ModBlocks;
 
-public final class FMainTab extends CreativeTabs {
+final class FMainTab extends CreativeTabs {
 	public FMainTab( String name) {
 		super( name);
 	}

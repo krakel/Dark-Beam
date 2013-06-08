@@ -9,6 +9,9 @@ package de.krakel.darkbeam.core.handler;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
+import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.lib.UnitType;
+
 public class LocalizationHandler {
 	private static final String LANG_LOCATION = "/mods/darkbeam/lang/";
 	private static final String[] LOCALES = {
@@ -40,14 +43,26 @@ public class LocalizationHandler {
 //@formatter:on
 	};
 
+	public static void addUnits( String blkName) {
+		LanguageRegistry registry = LanguageRegistry.instance();
+		for (String loc : LOCALES) {
+			String matName = registry.getStringLocalization( blkName, loc);
+			for (UnitType type : UnitType.values()) {
+				String unitName = registry.getStringLocalization( type.mName, loc);
+				String translation = DarkLib.format( unitName, matName);
+				registry.addStringLocalization( type.mName + "." + blkName, loc, translation);
+			}
+		}
+	}
+
 	public static String get( String key) {
 		return LanguageRegistry.instance().getStringLocalization( key);
 	}
 
 	public static void preInit() {
 		LanguageRegistry registry = LanguageRegistry.instance();
-		for (String name : LOCALES) {
-			registry.loadLocalization( LANG_LOCATION + name + ".properties", name, false);
+		for (String loc : LOCALES) {
+			registry.loadLocalization( LANG_LOCATION + loc + ".properties", loc, false);
 		}
 	}
 }
