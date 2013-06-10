@@ -24,7 +24,9 @@ import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.MaterialLib.Material;
 import de.krakel.darkbeam.creativetab.ModTabs;
+import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.lib.UnitType;
+import de.krakel.darkbeam.tile.TileUnits;
 
 public class ItemUnit extends ItemBlock {
 	public ItemUnit( int id) {
@@ -70,37 +72,44 @@ public class ItemUnit extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse( ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int dir, float hitX, float hitY, float hitZ) {
 		if (player.isSneaking()) {
 			return false;
 		}
-		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
-		if (pos == null) {
+		if (!player.canPlayerEdit( x, y, z, dir, stk)) {
 			return false;
 		}
-		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
-			return false;
+		int dmg = stk.getItemDamage();
+		if (UnitType.isValid( dmg >> 8)) {
+			MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
+			if (pos == null) {
+				return false;
+			}
+			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
+				return false;
+			}
+			MovingObjectPosition hit = DarkLib.getPosition( world, pos, dmg, stk);
+			if (hit == null) {
+				return false;
+			}
+			if (world.canPlaceEntityOnSide( stk.itemID, hit.blockX, hit.blockY, hit.blockZ, false, dir, player, stk)) {
+				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Units.getId(), 0, 2);
+			}
+			TileUnits tile = DarkLib.getTileEntity( world, x, y, z, TileUnits.class);
+			if (tile != null && tile.tryAddUnit( hit.subHit, 0)) {
+				--stk.stackSize;
+				Material mat = MaterialLib.get( dmg & 255);
+				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
+				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Units.getId());
+				world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
+				return true;
+			}
 		}
-		MovingObjectPosition hit = DarkLib.getPosition( world, pos, stack.getItemDamage(), stack);
-		if (hit == null) {
-			return false;
-		}
-		if (world.canPlaceEntityOnSide( stack.itemID, hit.blockX, hit.blockY, hit.blockZ, false, side, player, stack)) {
-			world.setBlock( hit.blockX, hit.blockY, hit.blockZ, ModBlocks.sUnits.blockID, 0, 2);
-		}
-//		TileUnit tile = DarkLib.getTileEntity( world, x, y, z, TileUnit.class);
-//		if (tile != null && tile.tryAddUnit( hit.subHit, 0)) {
-//			--stack.stackSize;
-//			DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, BlockIds.sBlockUnitsID);
-//			world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockIds.sBlockUnitsID);
-//			world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
-//			return true;
-//		}
 		return false;
 	}
 
 	@Override
-	public boolean onItemUseFirst( ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+	public boolean onItemUseFirst( ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int dir, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
 			return false;
 		}

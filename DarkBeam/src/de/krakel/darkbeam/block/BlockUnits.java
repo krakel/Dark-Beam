@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.tile.TileUnit;
+import de.krakel.darkbeam.tile.TileUnits;
 
 public class BlockUnits extends Block {
 	public BlockUnits( int id) {
@@ -27,7 +27,7 @@ public class BlockUnits extends Block {
 	@Override
 	public TileEntity createTileEntity( World world, int meta) {
 		// TODO tile depend on meta
-		return new TileUnit();
+		return new TileUnits();
 	}
 
 	@Override

@@ -20,6 +20,15 @@ public enum UnitType {
 		mName = name;
 	}
 
+	public static boolean isValid( int unitID) {
+		try {
+			return VALID_UNITS[unitID] != null;
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return false;
+		}
+	}
+
 	public static UnitType unit( int unitID) {
 		try {
 			return VALID_UNITS[unitID];

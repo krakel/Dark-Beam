@@ -11,7 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.block.ModBlocks;
+import de.krakel.darkbeam.lib.BlockType;
 
 final class FMainTab extends CreativeTabs {
 	public FMainTab( String name) {
@@ -21,6 +21,6 @@ final class FMainTab extends CreativeTabs {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int getTabIconItemIndex() {
-		return ModBlocks.sOreDarkening.blockID;
+		return BlockType.OreDarkening.getId();
 	}
 }

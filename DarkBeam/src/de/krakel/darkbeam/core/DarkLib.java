@@ -19,7 +19,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import de.krakel.darkbeam.block.ModBlocks;
+import de.krakel.darkbeam.lib.BlockType;
 
 public class DarkLib implements IDirection {
 	public static final double BOX_BORDER_MIN = 1D / 4D;
@@ -36,8 +36,8 @@ public class DarkLib implements IDirection {
 	private DarkLib() {
 	}
 
-	private static boolean canUnitAdd( World world, MovingObjectPosition pos, int subID, ItemStack stack) {
-		if (world.canPlaceEntityOnSide( ModBlocks.sUnits.blockID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stack)) {
+	private static boolean canUnitAdd( World world, MovingObjectPosition hit, int subID, ItemStack stk) {
+		if (world.canPlaceEntityOnSide( BlockType.Units.getId(), hit.blockX, hit.blockY, hit.blockZ, false, hit.sideHit, null, stk)) {
 			return true;
 		}
 //		ICoverable var3 = getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ);
@@ -91,38 +91,38 @@ public class DarkLib implements IDirection {
 		}
 	}
 
-	public static MovingObjectPosition getPosition( World world, MovingObjectPosition hit, int subID, ItemStack stack) {
-		MovingObjectPosition pos = new MovingObjectPosition( hit.blockX, hit.blockY, hit.blockZ, hit.sideHit, hit.hitVec);
-		int hitArea = unitSide( hit);
-		if (isInside( hit.subHit, hit.sideHit)) {
-			if (hitArea == pos.sideHit) {
-				pos.subHit = hitArea ^ 1;
-				if (canUnitAdd( world, pos, subID, stack)) {
-					return pos;
+	public static MovingObjectPosition getPosition( World world, MovingObjectPosition pos, int subID, ItemStack stack) {
+		MovingObjectPosition hit = new MovingObjectPosition( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, pos.hitVec);
+		int hitArea = unitSide( pos);
+		if (isInside( pos.subHit, pos.sideHit)) {
+			if (hitArea == hit.sideHit) {
+				hit.subHit = hitArea ^ 1;
+				if (canUnitAdd( world, hit, subID, stack)) {
+					return hit;
 				}
-				pos.subHit = hitArea;
+				hit.subHit = hitArea;
 			}
 			else {
-				pos.subHit = hitArea;
-				if (canUnitAdd( world, pos, subID, stack)) {
-					return pos;
+				hit.subHit = hitArea;
+				if (canUnitAdd( world, hit, subID, stack)) {
+					return hit;
 				}
-				Position.move( pos);
+				Position.move( hit);
 			}
 		}
-		else if (hitArea == pos.sideHit) {
-			pos.subHit = hitArea;
-			if (canUnitAdd( world, pos, subID, stack)) {
-				return pos;
+		else if (hitArea == hit.sideHit) {
+			hit.subHit = hitArea;
+			if (canUnitAdd( world, hit, subID, stack)) {
+				return hit;
 			}
-			pos.subHit = hitArea ^ 1;
-			Position.move( pos);
+			hit.subHit = hitArea ^ 1;
+			Position.move( hit);
 		}
 		else {
-			pos.subHit = hitArea;
-			Position.move( pos);
+			hit.subHit = hitArea;
+			Position.move( hit);
 		}
-		return canUnitAdd( world, pos, subID, stack) ? pos : null;
+		return canUnitAdd( world, hit, subID, stack) ? hit : null;
 	}
 
 	@SuppressWarnings( "unchecked")
@@ -163,15 +163,23 @@ public class DarkLib implements IDirection {
 		return PANEL_NAMES[meta & 7];
 	}
 
+	public static void placeNoise( World world, int x, int y, int z, int id) {
+		Block blk = Block.blocksList[id];
+		if (blk != null) {
+			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, "step.stone", (blk.stepSound.getVolume() + 1F) * 0.5F, blk.stepSound.getPitch() * 0.8F);
+		}
+	}
+
 	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
-		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
-		Vec3 lookVec = player.getLook( 1.0F);
-		double reach = getBlockReachDistance( player);
-		Vec3 endVec = headVec.addVector( lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
-		Block blk = Block.blocksList[world.getBlockId( x, y, z)];
+		int id = world.getBlockId( x, y, z);
+		Block blk = Block.blocksList[id];
 		if (blk == null) {
 			return null;
 		}
+		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
+		Vec3 lookVec = player.getLook( 1.0F);
+		double dist = getBlockReachDistance( player);
+		Vec3 endVec = headVec.addVector( lookVec.xCoord * dist, lookVec.yCoord * dist, lookVec.zCoord * dist);
 		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
 	}
 
