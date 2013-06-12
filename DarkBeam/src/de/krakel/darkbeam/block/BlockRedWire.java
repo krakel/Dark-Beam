@@ -90,7 +90,7 @@ public class BlockRedWire extends BlockContainer {
 	@SideOnly( Side.CLIENT)
 	public int colorMultiplier( IBlockAccess world, int x, int y, int z) {
 		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
-		return tile.isPowered() ? 0xFFFFFF : 0x7F7F7F;
+		return tile != null && tile.isPowered() ? 0xFFFFFF : 0x7F7F7F;
 	}
 
 	@Override

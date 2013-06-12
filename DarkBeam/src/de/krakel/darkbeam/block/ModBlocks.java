@@ -18,7 +18,7 @@ public class ModBlocks {
 	public static TestBlockItem sTestItem = BlockType.TestItem.create( TestBlockItem.class);
 	public static TestBlockMulti sTestMulti = BlockType.TestMulti.create( TestBlockMulti.class);
 	public static TestBlockPanel sTestPanel = BlockType.TestPanel.create( TestBlockPanel.class);
-	public static TestContainerSimple sContainerSimple = BlockType.TestPanel.create( TestContainerSimple.class);
+	public static TestContainerSimple sContainerSimple = BlockType.ContainerSimple.create( TestContainerSimple.class);
 
 	private ModBlocks() {
 	}

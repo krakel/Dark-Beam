@@ -23,6 +23,7 @@ import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.MaterialLib.Material;
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.lib.UnitType;
@@ -73,6 +74,10 @@ public class ItemUnit extends ItemBlock {
 
 	@Override
 	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int dir, float hitX, float hitY, float hitZ) {
+		if (world.isRemote) {
+			return false;
+		}
+		LogHelper.info( "a: {0}, {1}", world.isRemote, LogHelper.toString( x, y, z, dir, hitX, hitY, hitZ, null));
 		if (player.isSneaking()) {
 			return false;
 		}
@@ -85,6 +90,7 @@ public class ItemUnit extends ItemBlock {
 			if (pos == null) {
 				return false;
 			}
+			LogHelper.info( "b: {0}, {1}", world.isRemote, LogHelper.toString( pos));
 			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 				return false;
 			}
@@ -92,6 +98,7 @@ public class ItemUnit extends ItemBlock {
 			if (hit == null) {
 				return false;
 			}
+			LogHelper.info( "c: {0}, {1}", world.isRemote, LogHelper.toString( hit));
 			if (world.canPlaceEntityOnSide( stk.itemID, hit.blockX, hit.blockY, hit.blockZ, false, dir, player, stk)) {
 				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Units.getId(), 0, 2);
 			}
