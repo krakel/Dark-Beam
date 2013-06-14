@@ -29,6 +29,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import de.krakel.darkbeam.block.ModBlocks;
+import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
@@ -42,11 +43,15 @@ import de.krakel.darkbeam.lib.References;
 import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
 import de.krakel.darkbeam.tile.TestTileSimple;
-import de.krakel.darkbeam.tile.TileRedWire;
 import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileRedWire;
 
-@Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
-	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
+@Mod(
+	modid = References.MOD_ID,
+	name = References.MOD_NAME,
+	version = References.VERSION,
+	dependencies = References.DEPENDENCIES,
+	certificateFingerprint = References.FINGERPRINT)
 @NetworkMod( channels = {
 	References.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
@@ -71,6 +76,7 @@ public class DarkBeam {
 		GameRegistry.registerTileEntity( TestTileSimple.class, Strings.TE_SIMPLE_NAME);
 		sProxy.init();
 		MaterialLib.init();
+		MaskLib.init();
 //		RecipesTransmutationStone.init();
 //		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());
 //		GameRegistry.registerFuelHandler( new FuelHandler());

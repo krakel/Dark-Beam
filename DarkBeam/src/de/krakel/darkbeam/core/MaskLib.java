@@ -10,20 +10,24 @@ package de.krakel.darkbeam.core;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import de.krakel.darkbeam.client.renderer.IItemRenderer;
+import de.krakel.darkbeam.client.renderer.ItemCoverRenderer;
+import de.krakel.darkbeam.client.renderer.ItemPanelRenderer;
+import de.krakel.darkbeam.client.renderer.ItemSlabRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaskLib {
-	private static final Mask UNKNOWN = new Mask( "tile.maskUnknow");
+	private static final Mask UNKNOWN = new Mask( -1, "tile.maskUnknow", new ItemCoverRenderer());
 	private static Mask[] sData = new Mask[32];
 	private static Iterable<Mask> sIter = new MaskIterable();
 
-	public MaskLib() {
+	private MaskLib() {
 	}
 
-	private static void add( int maskID, String name) {
+	private static void add( int maskID, String name, IItemRenderer renderer) {
 		try {
 			if (sData[maskID] == null) {
-				sData[maskID] = new Mask( name);
+				sData[maskID] = new Mask( maskID, name, renderer);
 			}
 			else {
 				LogHelper.warning( "mask already initialized");
@@ -50,9 +54,9 @@ public class MaskLib {
 	}
 
 	public static void init() {
-		add( 0, "tile.maskCover");
-		add( 1, "tile.maskPanel");
-		add( 2, "tile.maskSlab");
+		add( 0, "tile.maskCover", new ItemCoverRenderer());
+		add( 1, "tile.maskPanel", new ItemPanelRenderer());
+		add( 2, "tile.maskSlab", new ItemSlabRenderer());
 	}
 
 	public static boolean isValid( int maskID) {
