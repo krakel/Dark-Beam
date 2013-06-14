@@ -7,14 +7,18 @@
  */
 package de.krakel.darkbeam.core;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import net.minecraft.block.Block;
 
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaterialLib {
-	private static final Material UNKNOWN = new Material( Block.bedrock, 0);
+	private static final Material UNKNOWN = new Material( 0, Block.bedrock, 0);
 	private static Material[] sMats = new Material[256];
+	private static Iterable<Material> sIter = new MatIterable();
 
 	private MaterialLib() {
 	}
@@ -26,7 +30,7 @@ public class MaterialLib {
 	private static void add( int matID, Block blk, int subID) {
 		try {
 			if (sMats[matID] == null) {
-				sMats[matID] = new Material( blk, subID);
+				sMats[matID] = new Material( matID, blk, subID);
 				LocalizationHandler.addUnits( blk.getUnlocalizedName2());
 			}
 			else {
@@ -40,7 +44,8 @@ public class MaterialLib {
 
 	public static Material get( int matID) {
 		try {
-			return sMats[matID];
+			Material mat = sMats[matID];
+			return mat != null ? mat : UNKNOWN;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			LogHelper.severe( ex, "illegal material id {0}", matID);
@@ -99,13 +104,52 @@ public class MaterialLib {
 		}
 	}
 
-	public static class Material {
-		public final Block mBlock;
-		public final int mSubID;
+	public static int matID( int meta) {
+		return meta & 0xFF;
+	}
 
-		Material( Block blk, int subID) {
-			mBlock = blk;
-			mSubID = subID;
+	public static Iterable<Material> values() {
+		return sIter;
+	}
+
+	private static final class MatIterable implements Iterable<Material> {
+		@Override
+		public Iterator<Material> iterator() {
+			return new MatIterator();
+		}
+	}
+
+	private static final class MatIterator implements Iterator<Material> {
+		private int mCursor;
+
+		private MatIterator() {
+			findNext();
+		}
+
+		private void findNext() {
+			while (mCursor < sMats.length && sMats[mCursor] == null) {
+				++mCursor;
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return mCursor < sMats.length;
+		}
+
+		@Override
+		public Material next() {
+			if (mCursor >= sMats.length) {
+				throw new NoSuchElementException( "No more elements");
+			}
+			Material mat = sMats[mCursor++];
+			findNext();
+			return mat;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException( "Removal not supported");
 		}
 	}
 }

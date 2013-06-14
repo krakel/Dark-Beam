@@ -7,22 +7,21 @@
  */
 package de.krakel.darkbeam.item;
 
-import java.util.List;
-
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
-import de.krakel.darkbeam.core.MaterialLib.Material;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
@@ -34,6 +33,7 @@ public class ItemUnit extends ItemBlock {
 		super( id);
 		setMaxDamage( 0);
 		setHasSubtypes( true);
+		setCreativeTab( ModTabs.sSubTabUnit);
 	}
 
 	@Override
@@ -43,31 +43,20 @@ public class ItemUnit extends ItemBlock {
 	}
 
 	@Override
-	public CreativeTabs[] getCreativeTabs() {
-		return new CreativeTabs[] {
-			ModTabs.sSubTabUnit
-		};
-	}
-
-	@Override
 	@SideOnly( Side.CLIENT)
-	@SuppressWarnings( {
-		"rawtypes", "unchecked"
-	})
-	public void getSubItems( int itemID, CreativeTabs tab, List lst) {
-		if (tab == ModTabs.sSubTabUnit) {
-			for (int matID = 0; matID < 255; ++matID) {
-				if (MaterialLib.isValid( matID)) {
-					lst.add( new ItemStack( ModBlocks.sUnits, 1, matID));
-				}
-			}
+	public Icon getIconFromDamage( int dmg) {
+		Block blk = Block.blocksList[itemID];
+		if (blk == null) {
+			return null;
 		}
+		return blk.getIcon( IDirection.DIR_NORTH, dmg);
 	}
 
 	@Override
 	public String getUnlocalizedName( ItemStack stk) {
 		int dmg = stk.getItemDamage();
-		Material mat = MaterialLib.get( dmg & 255);
+		int matID = MaterialLib.matID( dmg);
+		Material mat = MaterialLib.get( matID);
 		UnitType type = UnitType.unit( dmg >> 8);
 		return type.getUnlocalizedName( mat.mBlock);
 	}
@@ -105,7 +94,8 @@ public class ItemUnit extends ItemBlock {
 			TileUnits tile = DarkLib.getTileEntity( world, x, y, z, TileUnits.class);
 			if (tile != null && tile.tryAddUnit( hit.subHit, 0)) {
 				--stk.stackSize;
-				Material mat = MaterialLib.get( dmg & 255);
+				int matID = MaterialLib.matID( dmg);
+				Material mat = MaterialLib.get( matID);
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
 				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Units.getId());
 				world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
