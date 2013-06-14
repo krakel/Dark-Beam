@@ -16,7 +16,7 @@ import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaterialLib {
-	private static final Material UNKNOWN = new Material( 0, Block.bedrock, 0);
+	private static final Material UNKNOWN = new Material( -1, Block.bedrock, 0);
 	private static Material[] sMats = new Material[256];
 	private static Iterable<Material> sIter = new MatIterable();
 
@@ -31,7 +31,7 @@ public class MaterialLib {
 		try {
 			if (sMats[matID] == null) {
 				sMats[matID] = new Material( matID, blk, subID);
-				LocalizationHandler.addUnits( blk.getUnlocalizedName2());
+				LocalizationHandler.addMask( blk.getUnlocalizedName2());
 			}
 			else {
 				LogHelper.warning( "material already initialized");
@@ -51,6 +51,10 @@ public class MaterialLib {
 			LogHelper.severe( ex, "illegal material id {0}", matID);
 			return UNKNOWN;
 		}
+	}
+
+	public static Material getForMeta( int meta) {
+		return get( matID( meta));
 	}
 
 	public static void init() {
@@ -102,6 +106,10 @@ public class MaterialLib {
 		catch (IndexOutOfBoundsException ex) {
 			return false;
 		}
+	}
+
+	public static boolean isValidForMeta( int meta) {
+		return isValid( matID( meta));
 	}
 
 	public static int matID( int meta) {

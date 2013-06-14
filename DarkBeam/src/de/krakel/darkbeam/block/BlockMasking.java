@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * BlockUnit.java
+ * BlockMasking.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -25,10 +25,10 @@ import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.creativetab.ModTabs;
-import de.krakel.darkbeam.tile.TileUnits;
+import de.krakel.darkbeam.tile.TileMasking;
 
-public class BlockUnits extends Block {
-	public BlockUnits( int id) {
+public class BlockMasking extends Block {
+	public BlockMasking( int id) {
 		super( id, DarkBeam.MAT_DARK);
 		setHardness( 0.1F);
 		disableStats();
@@ -37,14 +37,13 @@ public class BlockUnits extends Block {
 	@Override
 	public TileEntity createTileEntity( World world, int meta) {
 		// TODO tile depend on meta
-		return new TileUnits();
+		return new TileMasking();
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIcon( int side, int meta) {
-		int matID = MaterialLib.matID( meta);
-		Material mat = MaterialLib.get( matID);
+		Material mat = MaterialLib.getForMeta( meta);
 		return mat.mBlock.getIcon( side, 0);
 	}
 
@@ -59,9 +58,9 @@ public class BlockUnits extends Block {
 		"rawtypes", "unchecked"
 	})
 	public void getSubBlocks( int blkID, CreativeTabs tab, List lst) {
-		if (tab == ModTabs.sSubTabUnit) {
+		if (tab == ModTabs.sSubTabMask) {
 			for (Material mat : MaterialLib.values()) {
-				lst.add( new ItemStack( ModBlocks.sUnits, 1, mat.mMatID));
+				lst.add( new ItemStack( ModBlocks.sMasking, 1, mat.mMatID));
 			}
 		}
 	}

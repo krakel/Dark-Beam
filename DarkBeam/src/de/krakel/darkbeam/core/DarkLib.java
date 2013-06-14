@@ -36,8 +36,8 @@ public class DarkLib implements IDirection {
 	private DarkLib() {
 	}
 
-	private static boolean canUnitAdd( World world, MovingObjectPosition hit, int subID, ItemStack stk) {
-		if (world.canPlaceEntityOnSide( BlockType.Units.getId(), hit.blockX, hit.blockY, hit.blockZ, false, hit.sideHit, null, stk)) {
+	private static boolean canMaskAdd( World world, MovingObjectPosition hit, int subID, ItemStack stk) {
+		if (world.canPlaceEntityOnSide( BlockType.Masking.getId(), hit.blockX, hit.blockY, hit.blockZ, false, hit.sideHit, null, stk)) {
 			return true;
 		}
 //		ICoverable var3 = getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ);
@@ -93,18 +93,18 @@ public class DarkLib implements IDirection {
 
 	public static MovingObjectPosition getPosition( World world, MovingObjectPosition pos, int subID, ItemStack stack) {
 		MovingObjectPosition hit = new MovingObjectPosition( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, pos.hitVec);
-		int hitArea = unitSide( pos);
+		int hitArea = maskSide( pos);
 		if (isInside( pos.subHit, pos.sideHit)) {
 			if (hitArea == hit.sideHit) {
 				hit.subHit = hitArea ^ 1;
-				if (canUnitAdd( world, hit, subID, stack)) {
+				if (canMaskAdd( world, hit, subID, stack)) {
 					return hit;
 				}
 				hit.subHit = hitArea;
 			}
 			else {
 				hit.subHit = hitArea;
-				if (canUnitAdd( world, hit, subID, stack)) {
+				if (canMaskAdd( world, hit, subID, stack)) {
 					return hit;
 				}
 				Position.move( hit);
@@ -112,7 +112,7 @@ public class DarkLib implements IDirection {
 		}
 		else if (hitArea == hit.sideHit) {
 			hit.subHit = hitArea;
-			if (canUnitAdd( world, hit, subID, stack)) {
+			if (canMaskAdd( world, hit, subID, stack)) {
 				return hit;
 			}
 			hit.subHit = hitArea ^ 1;
@@ -122,7 +122,7 @@ public class DarkLib implements IDirection {
 			hit.subHit = hitArea;
 			Position.move( hit);
 		}
-		return canUnitAdd( world, hit, subID, stack) ? hit : null;
+		return canMaskAdd( world, hit, subID, stack) ? hit : null;
 	}
 
 	@SuppressWarnings( "unchecked")
@@ -183,7 +183,7 @@ public class DarkLib implements IDirection {
 		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
 	}
 
-	private static int unitSide( MovingObjectPosition hit) {
+	private static int maskSide( MovingObjectPosition hit) {
 		double dx = hit.hitVec.xCoord - hit.blockX;
 		double dy = hit.hitVec.yCoord - hit.blockY;
 		double dz = hit.hitVec.zCoord - hit.blockZ;

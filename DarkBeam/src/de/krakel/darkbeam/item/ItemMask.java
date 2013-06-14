@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * ItemUnit.java
+ * ItemMask.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -25,15 +25,15 @@ import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
-import de.krakel.darkbeam.lib.UnitType;
-import de.krakel.darkbeam.tile.TileUnits;
+import de.krakel.darkbeam.lib.MaskType;
+import de.krakel.darkbeam.tile.TileMasking;
 
-public class ItemUnit extends ItemBlock {
-	public ItemUnit( int id) {
+public class ItemMask extends ItemBlock {
+	public ItemMask( int id) {
 		super( id);
 		setMaxDamage( 0);
 		setHasSubtypes( true);
-		setCreativeTab( ModTabs.sSubTabUnit);
+		setCreativeTab( ModTabs.sSubTabMask);
 	}
 
 	@Override
@@ -54,10 +54,9 @@ public class ItemUnit extends ItemBlock {
 
 	@Override
 	public String getUnlocalizedName( ItemStack stk) {
-		int dmg = stk.getItemDamage();
-		int matID = MaterialLib.matID( dmg);
-		Material mat = MaterialLib.get( matID);
-		UnitType type = UnitType.unit( dmg >> 8);
+		int meta = stk.getItemDamage();
+		Material mat = MaterialLib.getForMeta( meta);
+		MaskType type = MaskType.getForMeta( meta);
 		return type.getUnlocalizedName( mat.mBlock);
 	}
 
@@ -73,8 +72,8 @@ public class ItemUnit extends ItemBlock {
 		if (!player.canPlayerEdit( x, y, z, dir, stk)) {
 			return false;
 		}
-		int dmg = stk.getItemDamage();
-		if (UnitType.isValid( dmg >> 8)) {
+		int meta = stk.getItemDamage();
+		if (MaskType.isValidForMeta( meta)) {
 			MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
 			if (pos == null) {
 				return false;
@@ -83,21 +82,20 @@ public class ItemUnit extends ItemBlock {
 			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 				return false;
 			}
-			MovingObjectPosition hit = DarkLib.getPosition( world, pos, dmg, stk);
+			MovingObjectPosition hit = DarkLib.getPosition( world, pos, meta, stk);
 			if (hit == null) {
 				return false;
 			}
 			LogHelper.info( "c: {0}, {1}", world.isRemote, LogHelper.toString( hit));
 			if (world.canPlaceEntityOnSide( stk.itemID, hit.blockX, hit.blockY, hit.blockZ, false, dir, player, stk)) {
-				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Units.getId(), 0, 2);
+				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId(), 0, 2);
 			}
-			TileUnits tile = DarkLib.getTileEntity( world, x, y, z, TileUnits.class);
-			if (tile != null && tile.tryAddUnit( hit.subHit, 0)) {
+			TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+			if (tile != null && tile.tryAddMask( hit.subHit, 0)) {
 				--stk.stackSize;
-				int matID = MaterialLib.matID( dmg);
-				Material mat = MaterialLib.get( matID);
+				Material mat = MaterialLib.getForMeta( meta);
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
-				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Units.getId());
+				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId());
 				world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
 				return true;
 			}

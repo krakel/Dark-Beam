@@ -11,7 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class ModTabs {
 	public static CreativeTabs sTabMain = new FMainTab( "tabMain");
-	public static CreativeTabs sSubTabUnit = new FSubTabUnits( "tabSubUnit");
+	public static CreativeTabs sSubTabMask = new FSubTabMasking( "tabSubMask");
 
 	private ModTabs() {
 	}

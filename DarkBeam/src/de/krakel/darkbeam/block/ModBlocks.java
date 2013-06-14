@@ -13,7 +13,7 @@ public class ModBlocks {
 	public static BlockOre sOreBeaming = BlockType.OreBeaming.create( BlockOre.class);
 	public static BlockOre sOreDarkening = BlockType.OreDarkening.create( BlockOre.class);
 	public static BlockRedWire sRedWire = BlockType.RedWire.create( BlockRedWire.class);
-	public static BlockUnits sUnits = BlockType.Units.create( BlockUnits.class);
+	public static BlockMasking sMasking = BlockType.Masking.create( BlockMasking.class);
 	public static TestBlockSimple sTestSimple = BlockType.TestSimple.create( TestBlockSimple.class);
 	public static TestBlockItem sTestItem = BlockType.TestItem.create( TestBlockItem.class);
 	public static TestBlockMulti sTestMulti = BlockType.TestMulti.create( TestBlockMulti.class);

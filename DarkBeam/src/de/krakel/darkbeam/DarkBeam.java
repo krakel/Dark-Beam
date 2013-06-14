@@ -43,7 +43,7 @@ import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
 import de.krakel.darkbeam.tile.TestTileSimple;
 import de.krakel.darkbeam.tile.TileRedWire;
-import de.krakel.darkbeam.tile.TileUnits;
+import de.krakel.darkbeam.tile.TileMasking;
 
 @Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
 	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
@@ -67,7 +67,7 @@ public class DarkBeam {
 //		MinecraftForge.EVENT_BUS.register( new WorldTransmutationHandler());
 //		GameRegistry.registerCraftingHandler( new CraftingHandler());
 		GameRegistry.registerTileEntity( TileRedWire.class, Strings.TE_REDWIRE_NAME);
-		GameRegistry.registerTileEntity( TileUnits.class, Strings.TE_UNIT_NAME);
+		GameRegistry.registerTileEntity( TileMasking.class, Strings.TE_MASK_NAME);
 		GameRegistry.registerTileEntity( TestTileSimple.class, Strings.TE_SIMPLE_NAME);
 		sProxy.init();
 		MaterialLib.init();

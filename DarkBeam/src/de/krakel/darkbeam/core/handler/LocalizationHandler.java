@@ -10,7 +10,7 @@ package de.krakel.darkbeam.core.handler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.lib.UnitType;
+import de.krakel.darkbeam.lib.MaskType;
 
 public class LocalizationHandler {
 	private static final String LANG_LOCATION = "/mods/darkbeam/lang/";
@@ -43,13 +43,13 @@ public class LocalizationHandler {
 //@formatter:on
 	};
 
-	public static void addUnits( String blkName) {
+	public static void addMask( String blkName) {
 		LanguageRegistry registry = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
 			String matName = registry.getStringLocalization( blkName, loc);
-			for (UnitType type : UnitType.values()) {
-				String unitName = registry.getStringLocalization( type.mName, loc);
-				String translation = DarkLib.format( unitName, matName);
+			for (MaskType type : MaskType.values()) {
+				String maskName = registry.getStringLocalization( type.mName, loc);
+				String translation = DarkLib.format( maskName, matName);
 				registry.addStringLocalization( type.mName + "." + blkName, loc, translation);
 			}
 		}

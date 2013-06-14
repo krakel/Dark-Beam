@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * TileUnit.java
+ * TileMasking.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -10,8 +10,8 @@ package de.krakel.darkbeam.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileUnits extends TileEntity {
-	public TileUnits() {
+public class TileMasking extends TileEntity {
+	public TileMasking() {
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public class TileUnits extends TileEntity {
 		super.readFromNBT( nbt);
 	}
 
-	public boolean tryAddUnit( int subHit, int i) {
+	public boolean tryAddMask( int subHit, int i) {
 		return false;
 	}
 
