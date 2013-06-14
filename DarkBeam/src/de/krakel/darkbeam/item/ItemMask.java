@@ -20,12 +20,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.Mask;
+import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
-import de.krakel.darkbeam.lib.MaskType;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class ItemMask extends ItemBlock {
@@ -56,7 +57,7 @@ public class ItemMask extends ItemBlock {
 	public String getUnlocalizedName( ItemStack stk) {
 		int meta = stk.getItemDamage();
 		Material mat = MaterialLib.getForMeta( meta);
-		MaskType type = MaskType.getForMeta( meta);
+		Mask type = MaskLib.getForMeta( meta);
 		return type.getUnlocalizedName( mat.mBlock);
 	}
 
@@ -73,7 +74,7 @@ public class ItemMask extends ItemBlock {
 			return false;
 		}
 		int meta = stk.getItemDamage();
-		if (MaskType.isValidForMeta( meta)) {
+		if (MaskLib.isValidForMeta( meta)) {
 			MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
 			if (pos == null) {
 				return false;

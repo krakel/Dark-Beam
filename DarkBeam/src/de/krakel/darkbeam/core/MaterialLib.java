@@ -17,7 +17,7 @@ import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaterialLib {
 	private static final Material UNKNOWN = new Material( -1, Block.bedrock, 0);
-	private static Material[] sMats = new Material[256];
+	private static Material[] sData = new Material[256];
 	private static Iterable<Material> sIter = new MatIterable();
 
 	private MaterialLib() {
@@ -29,8 +29,8 @@ public class MaterialLib {
 
 	private static void add( int matID, Block blk, int subID) {
 		try {
-			if (sMats[matID] == null) {
-				sMats[matID] = new Material( matID, blk, subID);
+			if (sData[matID] == null) {
+				sData[matID] = new Material( matID, blk, subID);
 				LocalizationHandler.addMask( blk.getUnlocalizedName2());
 			}
 			else {
@@ -44,7 +44,7 @@ public class MaterialLib {
 
 	public static Material get( int matID) {
 		try {
-			Material mat = sMats[matID];
+			Material mat = sData[matID];
 			return mat != null ? mat : UNKNOWN;
 		}
 		catch (IndexOutOfBoundsException ex) {
@@ -101,7 +101,7 @@ public class MaterialLib {
 
 	public static boolean isValid( int matID) {
 		try {
-			return sMats[matID] != null;
+			return sData[matID] != null;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return false;
@@ -135,22 +135,22 @@ public class MaterialLib {
 		}
 
 		private void findNext() {
-			while (mCursor < sMats.length && sMats[mCursor] == null) {
+			while (mCursor < sData.length && sData[mCursor] == null) {
 				++mCursor;
 			}
 		}
 
 		@Override
 		public boolean hasNext() {
-			return mCursor < sMats.length;
+			return mCursor < sData.length;
 		}
 
 		@Override
 		public Material next() {
-			if (mCursor >= sMats.length) {
+			if (mCursor >= sData.length) {
 				throw new NoSuchElementException( "No more elements");
 			}
-			Material mat = sMats[mCursor++];
+			Material mat = sData[mCursor++];
 			findNext();
 			return mat;
 		}
