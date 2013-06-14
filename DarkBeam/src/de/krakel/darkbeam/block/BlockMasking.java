@@ -7,14 +7,11 @@
  */
 package de.krakel.darkbeam.block;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -22,9 +19,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
+import de.krakel.darkbeam.client.renderer.BlockMaskingRender;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
-import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class BlockMasking extends Block {
@@ -43,26 +40,13 @@ public class BlockMasking extends Block {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIcon( int side, int meta) {
-		Material mat = MaterialLib.getForMeta( meta);
+		Material mat = MaterialLib.getForDmg( meta);
 		return mat.mBlock.getIcon( side, 0);
 	}
 
 	@Override
 	public int getRenderType() {
-		return super.getRenderType();
-	}
-
-	@Override
-	@SideOnly( Side.CLIENT)
-	@SuppressWarnings( {
-		"rawtypes", "unchecked"
-	})
-	public void getSubBlocks( int blkID, CreativeTabs tab, List lst) {
-		if (tab == ModTabs.sSubTabMask) {
-			for (Material mat : MaterialLib.values()) {
-				lst.add( new ItemStack( ModBlocks.sMasking, 1, mat.mMatID));
-			}
-		}
+		return BlockMaskingRender.ID;
 	}
 
 	@Override

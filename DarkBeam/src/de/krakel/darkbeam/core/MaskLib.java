@@ -49,8 +49,8 @@ public class MaskLib {
 		}
 	}
 
-	public static Mask getForMeta( int meta) {
-		return get( maskID( meta));
+	public static Mask getForDmg( int dmg) {
+		return get( maskID( dmg));
 	}
 
 	public static void init() {
@@ -72,8 +72,8 @@ public class MaskLib {
 		return isValid( maskID( meta));
 	}
 
-	public static int maskID( int meta) {
-		return meta >> 8;
+	public static int maskID( int dmg) {
+		return dmg >> 8;
 	}
 
 	public static Iterable<Mask> values() {

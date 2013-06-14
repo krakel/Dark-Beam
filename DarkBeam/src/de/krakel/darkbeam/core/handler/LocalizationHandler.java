@@ -7,6 +7,7 @@
  */
 package de.krakel.darkbeam.core.handler;
 
+import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
@@ -44,14 +45,18 @@ public class LocalizationHandler {
 //@formatter:on
 	};
 
-	public static void addMask( String blkName) {
+	public static void addMask( Block blk) {
 		LanguageRegistry registry = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
-			String matName = registry.getStringLocalization( blkName, loc);
-			for (Mask type : MaskLib.values()) {
-				String maskName = registry.getStringLocalization( type.mName, loc);
-				String translation = DarkLib.format( maskName, matName);
-				registry.addStringLocalization( type.mName + "." + blkName, loc, translation);
+			String matName = blk.getLocalizedName();
+			for (Mask msk : MaskLib.values()) {
+				String mskKey = msk.mName + ".name";
+				String mskName = registry.getStringLocalization( mskKey, loc);
+				if ("".equals( mskName)) {
+					mskName = registry.getStringLocalization( mskKey);
+				}
+				String translation = DarkLib.format( mskName, matName);
+				registry.addStringLocalization( msk.mName + "." + blk.getUnlocalizedName2() + ".name", loc, translation);
 			}
 		}
 	}

@@ -29,7 +29,7 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock( Block blk, int meta, int modelID, RenderBlocks rndr) {
-		Mask mask = MaskLib.getForMeta( meta);
+		Mask mask = MaskLib.getForDmg( meta);
 		mask.renderItem( blk, meta, rndr);
 	}
 

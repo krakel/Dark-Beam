@@ -30,4 +30,8 @@ public class Mask {
 	public void renderItem( Block blk, int meta, RenderBlocks rndr) {
 		mRenderer.render( blk, meta, rndr);
 	}
+
+	public int toDmg() {
+		return mMaskID << 8;
+	}
 }

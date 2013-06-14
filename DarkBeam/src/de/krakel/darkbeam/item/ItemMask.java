@@ -7,7 +7,10 @@
  */
 package de.krakel.darkbeam.item;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -18,6 +21,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.Mask;
@@ -34,13 +38,25 @@ public class ItemMask extends ItemBlock {
 		super( id);
 		setMaxDamage( 0);
 		setHasSubtypes( true);
-		setCreativeTab( ModTabs.sSubTabMask);
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
 	public boolean canPlaceItemBlockOnSide( World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stack) {
 		return true;
+	}
+
+	@Override
+	@SideOnly( Side.CLIENT)
+	public CreativeTabs getCreativeTab() {
+		return null;
+	}
+
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return new CreativeTabs[] {
+			ModTabs.sSubTabMask
+		};
 	}
 
 	@Override
@@ -54,10 +70,26 @@ public class ItemMask extends ItemBlock {
 	}
 
 	@Override
+	@SideOnly( Side.CLIENT)
+	@SuppressWarnings( {
+		"rawtypes", "unchecked"
+	})
+	public void getSubItems( int blkID, CreativeTabs tab, List lst) {
+//		if (tab == ModTabs.sSubTabMask) {
+		for (Mask msk : MaskLib.values()) {
+			int dmg = msk.toDmg();
+			for (Material mat : MaterialLib.values()) {
+				lst.add( new ItemStack( ModBlocks.sMasking, 1, dmg + mat.mMatID));
+			}
+		}
+//		}
+	}
+
+	@Override
 	public String getUnlocalizedName( ItemStack stk) {
-		int meta = stk.getItemDamage();
-		Material mat = MaterialLib.getForMeta( meta);
-		Mask type = MaskLib.getForMeta( meta);
+		int dmg = stk.getItemDamage();
+		Material mat = MaterialLib.getForDmg( dmg);
+		Mask type = MaskLib.getForDmg( dmg);
 		return type.getUnlocalizedName( mat.mBlock);
 	}
 
@@ -73,8 +105,8 @@ public class ItemMask extends ItemBlock {
 		if (!player.canPlayerEdit( x, y, z, dir, stk)) {
 			return false;
 		}
-		int meta = stk.getItemDamage();
-		if (MaskLib.isValidForMeta( meta)) {
+		int dmg = stk.getItemDamage();
+		if (MaskLib.isValidForMeta( dmg)) {
 			MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
 			if (pos == null) {
 				return false;
@@ -83,7 +115,7 @@ public class ItemMask extends ItemBlock {
 			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 				return false;
 			}
-			MovingObjectPosition hit = DarkLib.getPosition( world, pos, meta, stk);
+			MovingObjectPosition hit = DarkLib.getPosition( world, pos, dmg, stk);
 			if (hit == null) {
 				return false;
 			}
@@ -94,7 +126,7 @@ public class ItemMask extends ItemBlock {
 			TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
 			if (tile != null && tile.tryAddMask( hit.subHit, 0)) {
 				--stk.stackSize;
-				Material mat = MaterialLib.getForMeta( meta);
+				Material mat = MaterialLib.getForDmg( dmg);
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
 				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId());
 				world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);

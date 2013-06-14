@@ -31,7 +31,7 @@ public class MaterialLib {
 		try {
 			if (sData[matID] == null) {
 				sData[matID] = new Material( matID, blk, subID);
-				LocalizationHandler.addMask( blk.getUnlocalizedName2());
+				LocalizationHandler.addMask( blk);
 			}
 			else {
 				LogHelper.warning( "material already initialized");
@@ -53,8 +53,8 @@ public class MaterialLib {
 		}
 	}
 
-	public static Material getForMeta( int meta) {
-		return get( matID( meta));
+	public static Material getForDmg( int dmg) {
+		return get( matID( dmg));
 	}
 
 	public static void init() {
@@ -108,8 +108,8 @@ public class MaterialLib {
 		}
 	}
 
-	public static boolean isValidForMeta( int meta) {
-		return isValid( matID( meta));
+	public static boolean isValidForMeta( int dmg) {
+		return isValid( matID( dmg));
 	}
 
 	public static int matID( int meta) {
