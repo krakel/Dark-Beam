@@ -49,6 +49,11 @@ public class BlockUnits extends Block {
 	}
 
 	@Override
+	public int getRenderType() {
+		return super.getRenderType();
+	}
+
+	@Override
 	@SideOnly( Side.CLIENT)
 	@SuppressWarnings( {
 		"rawtypes", "unchecked"

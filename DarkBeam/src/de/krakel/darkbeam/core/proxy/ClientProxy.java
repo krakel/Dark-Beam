@@ -15,6 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import de.krakel.darkbeam.client.renderer.BlockRedWireRender;
+import de.krakel.darkbeam.client.renderer.BlockUnitsRender;
 import de.krakel.darkbeam.client.renderer.DrawBlockHighlightHandler;
 
 public class ClientProxy extends CommonProxy {
@@ -60,6 +61,7 @@ public class ClientProxy extends CommonProxy {
 	@SuppressWarnings( "static-method")
 	private void regeisterRendering() {
 		RenderingRegistry.registerBlockHandler( new BlockRedWireRender());
+		RenderingRegistry.registerBlockHandler( new BlockUnitsRender());
 //		MinecraftForgeClient.registerItemRenderer( FBlockIds.sBlockRedWireID, new BlockRedWireRender());
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.ALUDEL_BASE, new ItemAludelRenderer());
 //		MinecraftForgeClient.registerItemRenderer( BlockIds.ALCHEMICAL_CHEST, new ItemAlchemicalChestRenderer());

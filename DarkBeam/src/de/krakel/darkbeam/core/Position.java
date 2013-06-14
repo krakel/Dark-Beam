@@ -29,6 +29,15 @@ public class Position implements IDirection {
 	private static final int[] ANTI_Z = {
 		0, 0, 1, -1, 0, 0
 	};
+	private static final float[] NORM_X = {
+		0F, 0F, 0F, 0F, -1F, 1F
+	};
+	private static final float[] NORM_Y = {
+		-1F, 1F, 0F, 0F, 0F, 0F
+	};
+	private static final float[] NORM_Z = {
+		0F, 0F, -1F, 1F, 0F, 0F
+	};
 	private static final ForgeDirection[] FORGE = {
 		ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST,
 		ForgeDirection.EAST
@@ -90,6 +99,33 @@ public class Position implements IDirection {
 				break;
 			default:
 				--pos.blockY;
+		}
+	}
+
+	public static float normX( int side) {
+		try {
+			return NORM_X[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0F;
+		}
+	}
+
+	public static float normY( int side) {
+		try {
+			return NORM_Y[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0F;
+		}
+	}
+
+	public static float normZ( int side) {
+		try {
+			return NORM_Z[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0F;
 		}
 	}
 
