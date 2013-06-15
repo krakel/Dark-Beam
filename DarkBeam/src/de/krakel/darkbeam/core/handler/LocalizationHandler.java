@@ -7,12 +7,12 @@
  */
 package de.krakel.darkbeam.core.handler;
 
-import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.core.MaskLib;
+import de.krakel.darkbeam.core.Material;
 
 public class LocalizationHandler {
 	private static final String LANG_LOCATION = "/mods/darkbeam/lang/";
@@ -45,24 +45,28 @@ public class LocalizationHandler {
 //@formatter:on
 	};
 
-	public static void addMask( Block blk) {
-		LanguageRegistry registry = LanguageRegistry.instance();
+	public static void addMask( Material mat) {
+		LanguageRegistry reg = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
-			String matName = blk.getLocalizedName();
+			String matName = getLocalization( reg, mat.getUnlocalizedName(), loc);
 			for (Mask msk : MaskLib.values()) {
 				String mskKey = msk.mName + ".name";
-				String mskName = registry.getStringLocalization( mskKey, loc);
-				if ("".equals( mskName)) {
-					mskName = registry.getStringLocalization( mskKey);
-				}
+				String mskName = getLocalization( reg, mskKey, loc);
 				String translation = DarkLib.format( mskName, matName);
-				registry.addStringLocalization( msk.mName + "." + blk.getUnlocalizedName2() + ".name", loc, translation);
+				reg.addStringLocalization( mat.getUnlocalizedName( msk) + ".name", loc, translation);
 			}
 		}
 	}
 
-	public static String get( String key) {
-		return LanguageRegistry.instance().getStringLocalization( key);
+	public static String getLocalization( LanguageRegistry reg, String mskKey, String loc) {
+		String mskName = reg.getStringLocalization( mskKey, loc);
+		if ("".equals( mskName)) {
+			mskName = reg.getStringLocalization( mskKey);
+			if ("".equals( mskName)) {
+				mskName = mskKey;
+			}
+		}
+		return mskName;
 	}
 
 	public static void preInit() {

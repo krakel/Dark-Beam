@@ -16,22 +16,22 @@ import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaterialLib {
-	private static final Material UNKNOWN = new Material( -1, Block.bedrock, 0);
+	private static final Material UNKNOWN = new Material( -1, "unkown", Block.bedrock, 0);
 	private static Material[] sData = new Material[256];
 	private static Iterable<Material> sIter = new MatIterable();
 
 	private MaterialLib() {
 	}
 
-	private static void add( int matID, Block blk) {
-		add( matID, blk, 0);
+	private static void add( int matID, String name, Block blk) {
+		add( matID, name, blk, 0);
 	}
 
-	private static void add( int matID, Block blk, int subID) {
+	private static void add( int matID, String name, Block blk, int subID) {
 		try {
 			if (sData[matID] == null) {
-				sData[matID] = new Material( matID, blk, subID);
-				LocalizationHandler.addMask( blk);
+				sData[matID] = new Material( matID, name, blk, subID);
+				LocalizationHandler.addMask( sData[matID]);
 			}
 			else {
 				LogHelper.warning( "material already initialized");
@@ -58,45 +58,48 @@ public class MaterialLib {
 	}
 
 	public static void init() {
-		add( 0, Block.stone); // 1
-		add( 1, Block.dirt); // 3
-		add( 2, Block.cobblestone); // 4
-		add( 3, Block.glass); // 20
-		add( 4, Block.blockLapis); // 22
-		add( 5, Block.blockGold); // 41
-		add( 6, Block.blockIron); // 42
-		add( 7, Block.stoneSingleSlab); // 44
-		add( 8, Block.brick); // 45
-		add( 9, Block.bookShelf); // 47
-		add( 10, Block.cobblestoneMossy); // 48
-		add( 11, Block.obsidian); // 49
-		add( 12, Block.blockDiamond); // 57
-		add( 13, Block.blockSnow); // 80
-		add( 14, Block.blockClay); // 82
-		add( 15, Block.pumpkin); // 86
-		add( 16, Block.netherrack); // 87
-		add( 17, Block.slowSand); // 88
-		add( 18, Block.netherBrick); // 112
+		add( 0, "stone", Block.stone); // 1
+		add( 1, "dirt", Block.dirt); // 3
+		add( 2, "cobbel", Block.cobblestone); // 4
+		add( 3, "glass", Block.glass); // 20
+		add( 4, "lapis", Block.blockLapis); // 22
+		add( 5, "gold", Block.blockGold); // 41
+		add( 6, "iron", Block.blockIron); // 42
+		add( 7, "brick", Block.brick); // 45
+		add( 8, "shelf", Block.bookShelf); // 47
+		add( 9, "mossy", Block.cobblestoneMossy); // 48
+		add( 10, "obsidian", Block.obsidian); // 49
+		add( 11, "diamond", Block.blockDiamond); // 57
+		add( 12, "snow", Block.blockSnow); // 80
+		add( 13, "clay", Block.blockClay); // 82
+		add( 14, "pumpkin", Block.pumpkin); // 86
+		add( 15, "nether", Block.netherrack); // 87
+		add( 16, "netherBrick", Block.netherBrick); // 112
 		//
-		add( 32, Block.planks, 0); // 5
-		add( 33, Block.planks, 1);
-		add( 34, Block.planks, 2);
-		add( 35, Block.planks, 3);
+		add( 32, "oakBlank", Block.planks, 0); // 5
+		add( 33, "spruceBlank", Block.planks, 1);
+		add( 34, "birchBlank", Block.planks, 2);
+		add( 35, "jungleBlank", Block.planks, 3);
 		//
-		add( 36, Block.wood, 0); // 17
-		add( 37, Block.wood, 1);
-		add( 38, Block.wood, 2);
-		add( 39, Block.wood, 3);
+		add( 36, "oakWood", Block.wood, 0); // 17
+		add( 37, "spruceWood", Block.wood, 1);
+		add( 38, "birchWood", Block.wood, 2);
+		add( 39, "jungleWood", Block.wood, 3);
 		//
-		add( 40, Block.sandStone, 0); // 24
-		add( 41, Block.sandStone, 1);
-		add( 42, Block.sandStone, 2);
-//		add( 43, Block.sandStone, 3);
+		add( 40, "defaultStone", Block.sandStone, 0); // 24
+		add( 41, "chiseledStone", Block.sandStone, 1);
+		add( 42, "smoothStone", Block.sandStone, 2);
+//		add( 43, "", Block.sandStone, 3);
 		//
-		add( 44, Block.stoneBrick, 0); // 98
-		add( 45, Block.stoneBrick, 1);
-		add( 46, Block.stoneBrick, 2);
-		add( 47, Block.stoneBrick, 3);
+		add( 44, "defaultBrick", Block.stoneBrick, 0); // 98
+		add( 45, "mossyBrick", Block.stoneBrick, 1);
+		add( 46, "crackedBrick", Block.stoneBrick, 2);
+		add( 47, "chiseledBrick", Block.stoneBrick, 3);
+		//
+		add( 48, "defaultQuartz", Block.blockNetherQuartz, 0); // 155
+		add( 49, "chiseledQuartz", Block.blockNetherQuartz, 1);
+		add( 50, "linesQuartz", Block.blockNetherQuartz, 2);
+//		add( 51, "", Block.blockNetherQuartz, 3);
 	}
 
 	public static boolean isValid( int matID) {

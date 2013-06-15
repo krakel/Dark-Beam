@@ -22,10 +22,7 @@ import de.krakel.darkbeam.core.DarkLib;
 public class DrawBlockHighlightHandler {
 //	@ForgeSubscribe
 	public void onHighlightEvent( DrawBlockHighlightEvent event) {
-		if (event.currentItem != null /*
-									 * && event.currentItem ==
-									 * ItemIds.sItemDarkeningID
-									 */
+		if (event.currentItem != null /* && event.currentItem == ItemIds.sItemDarkeningID */
 			&& event.target.typeOfHit == EnumMovingObjectType.TILE) {
 			onHighlightEvent( event.context, event.player, event.target, event.subID, event.currentItem, event.partialTicks);
 		}

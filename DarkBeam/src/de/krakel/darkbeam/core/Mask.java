@@ -23,10 +23,6 @@ public class Mask {
 		mRenderer = renderer;
 	}
 
-	public String getUnlocalizedName( Block blk) {
-		return mName + "." + blk.getUnlocalizedName2();
-	}
-
 	public void renderItem( Block blk, int meta, RenderBlocks rndr) {
 		mRenderer.render( blk, meta, rndr);
 	}

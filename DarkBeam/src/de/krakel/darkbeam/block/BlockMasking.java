@@ -41,7 +41,7 @@ public class BlockMasking extends Block {
 	@SideOnly( Side.CLIENT)
 	public Icon getIcon( int side, int meta) {
 		Material mat = MaterialLib.getForDmg( meta);
-		return mat.mBlock.getIcon( side, 0);
+		return mat.mBlock.getIcon( side, mat.mSubID);
 	}
 
 	@Override

@@ -76,10 +76,9 @@ public class ItemMask extends ItemBlock {
 	})
 	public void getSubItems( int blkID, CreativeTabs tab, List lst) {
 //		if (tab == ModTabs.sSubTabMask) {
-		for (Mask msk : MaskLib.values()) {
-			int dmg = msk.toDmg();
-			for (Material mat : MaterialLib.values()) {
-				lst.add( new ItemStack( ModBlocks.sMasking, 1, dmg + mat.mMatID));
+		for (Material mat : MaterialLib.values()) {
+			for (Mask msk : MaskLib.values()) {
+				lst.add( new ItemStack( ModBlocks.sMasking, 1, msk.toDmg() + mat.mMatID));
 			}
 		}
 //		}
@@ -89,8 +88,8 @@ public class ItemMask extends ItemBlock {
 	public String getUnlocalizedName( ItemStack stk) {
 		int dmg = stk.getItemDamage();
 		Material mat = MaterialLib.getForDmg( dmg);
-		Mask type = MaskLib.getForDmg( dmg);
-		return type.getUnlocalizedName( mat.mBlock);
+		Mask msk = MaskLib.getForDmg( dmg);
+		return mat.getUnlocalizedName( msk);
 	}
 
 	@Override
