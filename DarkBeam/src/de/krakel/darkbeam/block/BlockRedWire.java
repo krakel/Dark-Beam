@@ -51,10 +51,12 @@ public class BlockRedWire extends BlockContainer {
 	public void breakBlock( World world, int x, int y, int z, int id, int meta) {
 		LogHelper.info( "{0}, x={1}, y={2}, z={3}, id={4}, meta={5}", world.isRemote, x, y, z, id, meta);
 		TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			if (TileRedWire.isSet( tile.mSurfaces, dir)) {
-//			if (TileRedWire.isSet( tile.mConnections, dir)) {
-				world.notifyBlocksOfNeighborChange( x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, blockID);
+		if (tile != null) {
+			for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+				if (TileRedWire.isSet( tile.mSurfaces, dir)) {
+//				if (TileRedWire.isSet( tile.mConnections, dir)) {
+					world.notifyBlocksOfNeighborChange( x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, blockID);
+				}
 			}
 		}
 		super.breakBlock( world, x, y, z, id, meta);
@@ -190,7 +192,9 @@ public class BlockRedWire extends BlockContainer {
 		LogHelper.info( "{0}, x={1}, y={2}, z={3}", world.isRemote, x, y, z);
 		if (!world.isRemote) {
 			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
-			tile.updateOnPlace();
+			if (tile != null) {
+				tile.updateOnPlace();
+			}
 		}
 		world.markBlockForUpdate( x, y, z);
 	}
@@ -204,7 +208,9 @@ public class BlockRedWire extends BlockContainer {
 	public void onNeighborBlockChange( World world, int x, int y, int z, int id) {
 		if (!world.isRemote) {
 			TileRedWire tile = DarkLib.getTileEntity( world, x, y, z, TileRedWire.class);
-			tile.updateOnNeighbor();
+			if (tile != null) {
+				tile.updateOnNeighbor();
+			}
 		}
 		world.markBlockForUpdate( x, y, z);
 	}

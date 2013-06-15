@@ -29,4 +29,8 @@ public class Material {
 	public String getUnlocalizedName( Mask mask) {
 		return "tile." + mask.mName + "." + mName;
 	}
+
+	public int toDmg( Mask msk) {
+		return msk.toDmg() + mMatID;
+	}
 }

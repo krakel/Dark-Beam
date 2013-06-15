@@ -13,8 +13,10 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.core.MaskLib;
+import de.krakel.darkbeam.tile.TileMasking;
 
 public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 	public static final int ID = RenderingRegistry.getNextAvailableRenderId();
@@ -34,7 +36,11 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block block, int modelID, RenderBlocks rndr) {
+	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndr) {
+		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		if (tile != null) {
+			return tile.render( world, x, y, z, blk, modelID, rndr);
+		}
 		return false;
 	}
 

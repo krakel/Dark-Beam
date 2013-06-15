@@ -78,7 +78,7 @@ public class ItemMask extends ItemBlock {
 //		if (tab == ModTabs.sSubTabMask) {
 		for (Material mat : MaterialLib.values()) {
 			for (Mask msk : MaskLib.values()) {
-				lst.add( new ItemStack( ModBlocks.sMasking, 1, msk.toDmg() + mat.mMatID));
+				lst.add( new ItemStack( ModBlocks.sMasking, 1, mat.toDmg( msk)));
 			}
 		}
 //		}
