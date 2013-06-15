@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.client.renderer.IItemRenderer;
 
 public class Mask {
-	public final String mName;
+	final String mName;
 	public final int mMaskID;
 	private IItemRenderer mRenderer;
 
@@ -21,6 +21,10 @@ public class Mask {
 		mMaskID = maskID;
 		mName = name;
 		mRenderer = renderer;
+	}
+
+	public String getUnlocalizedName() {
+		return "db.mask." + mName;
 	}
 
 	public void renderItem( Block blk, int meta, RenderBlocks rndr) {

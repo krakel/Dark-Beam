@@ -54,9 +54,9 @@ public class MaskLib {
 	}
 
 	public static void init() {
-		add( 0, "tile.maskCover", new ItemCoverRenderer());
-		add( 1, "tile.maskPanel", new ItemPanelRenderer());
-		add( 2, "tile.maskSlab", new ItemSlabRenderer());
+		add( 0, "cover", new ItemCoverRenderer());
+		add( 1, "panel", new ItemPanelRenderer());
+		add( 2, "slab", new ItemSlabRenderer());
 	}
 
 	public static boolean isValid( int maskID) {

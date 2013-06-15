@@ -11,9 +11,9 @@ import net.minecraft.block.Block;
 
 public class Material {
 	public final int mMatID;
+	final String mName;
 	public final Block mBlock;
 	public final int mSubID;
-	private String mName;
 
 	Material( int matID, String name, Block blk, int subID) {
 		mMatID = matID;
@@ -23,10 +23,10 @@ public class Material {
 	}
 
 	public String getUnlocalizedName() {
-		return "mat." + mName;
+		return "db.mat." + mName;
 	}
 
 	public String getUnlocalizedName( Mask mask) {
-		return mask.mName + "." + mName;
+		return "tile." + mask.mName + "." + mName;
 	}
 }

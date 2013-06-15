@@ -7,8 +7,6 @@
  */
 package de.krakel.darkbeam.core;
 
-import java.text.MessageFormat;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -74,7 +72,7 @@ public class DarkLib implements IDirection {
 			return msg;
 		}
 		try {
-			return MessageFormat.format( msg, data);
+			return String.format( msg, data);
 		}
 		catch (IllegalArgumentException ex) {
 			return msg;
@@ -155,34 +153,6 @@ public class DarkLib implements IDirection {
 		return false;
 	}
 
-	public static int panelSubID( int meta) {
-		return meta & 7;
-	}
-
-	public static String panelSubName( int meta) {
-		return PANEL_NAMES[meta & 7];
-	}
-
-	public static void placeNoise( World world, int x, int y, int z, int id) {
-		Block blk = Block.blocksList[id];
-		if (blk != null) {
-			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, "step.stone", (blk.stepSound.getVolume() + 1F) * 0.5F, blk.stepSound.getPitch() * 0.8F);
-		}
-	}
-
-	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
-		int id = world.getBlockId( x, y, z);
-		Block blk = Block.blocksList[id];
-		if (blk == null) {
-			return null;
-		}
-		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
-		Vec3 lookVec = player.getLook( 1.0F);
-		double dist = getBlockReachDistance( player);
-		Vec3 endVec = headVec.addVector( lookVec.xCoord * dist, lookVec.yCoord * dist, lookVec.zCoord * dist);
-		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
-	}
-
 	private static int maskSide( MovingObjectPosition hit) {
 		double dx = hit.hitVec.xCoord - hit.blockX;
 		double dy = hit.hitVec.yCoord - hit.blockY;
@@ -218,6 +188,34 @@ public class DarkLib implements IDirection {
 			default:
 				return DIR_DOWN;
 		}
+	}
+
+	public static int panelSubID( int meta) {
+		return meta & 7;
+	}
+
+	public static String panelSubName( int meta) {
+		return PANEL_NAMES[meta & 7];
+	}
+
+	public static void placeNoise( World world, int x, int y, int z, int id) {
+		Block blk = Block.blocksList[id];
+		if (blk != null) {
+			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, "step.stone", (blk.stepSound.getVolume() + 1F) * 0.5F, blk.stepSound.getPitch() * 0.8F);
+		}
+	}
+
+	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
+		int id = world.getBlockId( x, y, z);
+		Block blk = Block.blocksList[id];
+		if (blk == null) {
+			return null;
+		}
+		Vec3 headVec = Vec3.createVectorHelper( player.posX, player.posY + 1.62D - player.yOffset, player.posZ);
+		Vec3 lookVec = player.getLook( 1.0F);
+		double dist = getBlockReachDistance( player);
+		Vec3 endVec = headVec.addVector( lookVec.xCoord * dist, lookVec.yCoord * dist, lookVec.zCoord * dist);
+		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
 	}
 
 	public static boolean validString( String value) {

@@ -50,7 +50,7 @@ public class LocalizationHandler {
 		for (String loc : LOCALES) {
 			String matName = getLocalization( reg, mat.getUnlocalizedName(), loc);
 			for (Mask msk : MaskLib.values()) {
-				String mskKey = msk.mName + ".name";
+				String mskKey = msk.getUnlocalizedName();
 				String mskName = getLocalization( reg, mskKey, loc);
 				String translation = DarkLib.format( mskName, matName);
 				reg.addStringLocalization( mat.getUnlocalizedName( msk) + ".name", loc, translation);
