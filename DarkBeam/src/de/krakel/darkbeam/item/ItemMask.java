@@ -226,7 +226,6 @@ public class ItemMask extends ItemBlock {
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
 				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId());
 				world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
-//				world.updateTileEntityChunkAndDoNothing( x, y, z, tile);
 				return true;
 			}
 		}
