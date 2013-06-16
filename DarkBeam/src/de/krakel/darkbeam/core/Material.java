@@ -31,6 +31,6 @@ public class Material {
 	}
 
 	public int toDmg( Mask msk) {
-		return msk.toDmg() + mMatID;
+		return msk.toDmg() | mMatID;
 	}
 }

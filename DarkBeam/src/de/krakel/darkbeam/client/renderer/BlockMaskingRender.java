@@ -39,7 +39,6 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndr) {
 		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
 		if (tile != null) {
-			return tile.render( world, x, y, z, blk, modelID, rndr);
 		}
 		return false;
 	}

@@ -38,6 +38,9 @@ public class Position implements IDirection {
 	private static final float[] NORM_Z = {
 		0F, 0F, -1F, 1F, 0F, 0F
 	};
+	private static final int[] OFFSET = {
+		0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020
+	};
 	private static final ForgeDirection[] FORGE = {
 		ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST,
 		ForgeDirection.EAST
@@ -126,6 +129,16 @@ public class Position implements IDirection {
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0F;
+		}
+	}
+
+	// 1 << side
+	public static int offset( int side) {
+		try {
+			return OFFSET[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
 		}
 	}
 
