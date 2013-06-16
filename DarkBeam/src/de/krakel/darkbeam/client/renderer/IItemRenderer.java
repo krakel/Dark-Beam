@@ -12,4 +12,8 @@ import net.minecraft.client.renderer.RenderBlocks;
 
 public interface IItemRenderer {
 	void render( Block blk, int meta, RenderBlocks rndr);
+
+	void setBounds( RenderBlocks rndr, int side);
+
+	void setInventoryBounds( RenderBlocks rndr);
 }

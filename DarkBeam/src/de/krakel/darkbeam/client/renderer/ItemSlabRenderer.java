@@ -7,7 +7,6 @@
  */
 package de.krakel.darkbeam.client.renderer;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
 public class ItemSlabRenderer extends AItemMaskRenderer {
@@ -17,8 +16,12 @@ public class ItemSlabRenderer extends AItemMaskRenderer {
 	}
 
 	@Override
-	public void render( Block blk, int meta, RenderBlocks rndr) {
-		rndr.setRenderBounds( 0D, 0D, 0.5D - THICKNESS, 1D, 1D, 0.5D + THICKNESS);
-		renderMask( blk, meta, rndr);
+	public void setBounds( RenderBlocks rndr, int side) {
+		setBounds( rndr, side, THICKNESS);
+	}
+
+	@Override
+	public void setInventoryBounds( RenderBlocks rndr) {
+		setInventoryBounds( rndr, THICKNESS);
 	}
 }

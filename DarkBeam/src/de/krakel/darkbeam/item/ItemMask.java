@@ -123,7 +123,7 @@ public class ItemMask extends ItemBlock {
 				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId(), 0, 2);
 			}
 			TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
-			if (tile != null && tile.tryAddMask( hit.subHit, 0)) {
+			if (tile != null && tile.tryAdd( hit.subHit, 0)) {
 				--stk.stackSize;
 				Material mat = MaterialLib.getForDmg( dmg);
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);

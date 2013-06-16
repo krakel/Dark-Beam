@@ -27,7 +27,13 @@ public class Mask {
 		return "db.mask." + mName;
 	}
 
-	public void renderItem( Block blk, int meta, RenderBlocks rndr) {
+	public void renderInventoryItem( Block blk, int meta, RenderBlocks rndr) {
+		mRenderer.setInventoryBounds( rndr);
+		mRenderer.render( blk, meta, rndr);
+	}
+
+	public void renderUnitItem( Block blk, int meta, RenderBlocks rndr, int side) {
+		mRenderer.setBounds( rndr, side);
 		mRenderer.render( blk, meta, rndr);
 	}
 

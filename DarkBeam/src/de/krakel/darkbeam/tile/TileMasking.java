@@ -15,15 +15,15 @@ import de.krakel.darkbeam.lib.BlockType;
 
 public class TileMasking extends TileEntity {
 	private static final String NBT_SIDES = "sides";
-	private static final String NBT_MASKS = "masks";
+	private static final String NBT_METAS = "metas";
 	private static final int IN_USE = 0xFFFF0000;
-	private static final int MAX_SIDE = IDirection.DIR_MAX;
+	public static final int MAX_SIDE = IDirection.DIR_MAX;
 	private int[] mArr = new int[MAX_SIDE];
 
 	public TileMasking() {
 	}
 
-	public int getMask( int side) {
+	public int getMeta( int side) {
 		try {
 			return mArr[side] & ~IN_USE;
 		}
@@ -41,7 +41,7 @@ public class TileMasking extends TileEntity {
 		}
 	}
 
-	public void onBlockChanged() {
+	public void onChanged() {
 		if (worldObj != null) {
 			worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord, BlockType.Masking.getId());
 			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
@@ -53,7 +53,7 @@ public class TileMasking extends TileEntity {
 	public void readFromNBT( NBTTagCompound nbt) {
 		super.readFromNBT( nbt);
 		int sides = nbt.getInteger( NBT_SIDES);
-		byte[] arr = nbt.getByteArray( NBT_MASKS);
+		byte[] arr = nbt.getByteArray( NBT_METAS);
 		int side = 0;
 		int count = 0;
 		while (sides != 0) {
@@ -73,11 +73,11 @@ public class TileMasking extends TileEntity {
 		}
 	}
 
-	public boolean tryAddMask( int side, int meta) {
+	public boolean tryAdd( int side, int meta) {
 		try {
 			if (mArr[side] >= 0) {
 				mArr[side] = meta | IN_USE;
-				onBlockChanged();
+				onChanged();
 				return true;
 			}
 		}
@@ -86,12 +86,12 @@ public class TileMasking extends TileEntity {
 		return false;
 	}
 
-	public int tryRemoveMask( int side) {
+	public int tryRemove( int side) {
 		try {
 			int value = mArr[side];
 			if (value < 0) {
 				mArr[side] = 0;
-				onBlockChanged();
+				onChanged();
 				return value & ~IN_USE;
 			}
 		}
@@ -121,6 +121,6 @@ public class TileMasking extends TileEntity {
 				arr[--count] = (byte) (value & 0xFF);
 			}
 		}
-		nbt.setByteArray( NBT_MASKS, arr);
+		nbt.setByteArray( NBT_METAS, arr);
 	}
 }

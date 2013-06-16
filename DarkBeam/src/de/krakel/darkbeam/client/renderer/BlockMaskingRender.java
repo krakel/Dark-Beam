@@ -32,13 +32,20 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 	@Override
 	public void renderInventoryBlock( Block blk, int meta, int modelID, RenderBlocks rndr) {
 		Mask mask = MaskLib.getForDmg( meta);
-		mask.renderItem( blk, meta, rndr);
+		mask.renderInventoryItem( blk, meta, rndr);
 	}
 
 	@Override
 	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndr) {
 		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
 		if (tile != null) {
+			for (int side = 0; side < TileMasking.MAX_SIDE; ++side) {
+				if (tile.isInUse( side)) {
+					int meta = tile.getMeta( side);
+					Mask mask = MaskLib.getForDmg( meta);
+					mask.renderUnitItem( blk, meta, rndr, side);
+				}
+			}
 		}
 		return false;
 	}
