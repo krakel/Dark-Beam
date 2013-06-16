@@ -49,6 +49,9 @@ public class Position implements IDirection {
 		ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.SOUTH, ForgeDirection.NORTH, ForgeDirection.EAST,
 		ForgeDirection.WEST
 	};
+	public static final String[] NAMES = {
+		"DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST"
+	};
 
 	private Position() {
 	}
@@ -184,6 +187,15 @@ public class Position implements IDirection {
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return ForgeDirection.UNKNOWN;
+		}
+	}
+
+	public static String toString( int side) {
+		try {
+			return NAMES[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return "UNKNOWN" + side;
 		}
 	}
 }

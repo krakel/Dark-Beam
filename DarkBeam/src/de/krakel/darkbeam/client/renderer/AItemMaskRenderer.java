@@ -10,6 +10,7 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
@@ -20,7 +21,7 @@ abstract class AItemMaskRenderer implements IItemRenderer, IDirection {
 	}
 
 	@Override
-	public void render( Block blk, int meta, RenderBlocks rndr) {
+	public void renderItem( RenderBlocks rndr, Block blk, int meta) {
 //		GL11.glRotatef( 90F, 0F, 1F, 0F);
 		GL11.glTranslatef( -0.5F, -0.5F, -0.5F);
 		Tessellator tess = Tessellator.instance;
@@ -51,25 +52,33 @@ abstract class AItemMaskRenderer implements IItemRenderer, IDirection {
 		GL11.glTranslatef( 0.5F, 0.5F, 0.5F);
 	}
 
+	@Override
+	public void renderSide( RenderBlocks rndr, int side, Block blk, int meta, int x, int y, int z) {
+		Icon icon = rndr.getBlockIconFromSideAndMetadata( blk, side, meta);
+		rndr.setOverrideBlockTexture( icon);
+		rndr.renderStandardBlock( blk, x, y, z);
+		rndr.clearOverrideBlockTexture();
+	}
+
 	protected void setBounds( RenderBlocks rndr, int side, double thickness) {
 		switch (side) {
 			case DIR_DOWN:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D, thickness + thickness, 1D);
+				rndr.setRenderBounds( 0D, 0D, 0D, 1D, thickness, 1D);
 				break;
 			case DIR_UP:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D, 1D - thickness - thickness, 1D);
+				rndr.setRenderBounds( 0D, 1D - thickness, 0D, 1D, 1D, 1D);
 				break;
 			case DIR_NORTH:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D, 1D, thickness + thickness);
+				rndr.setRenderBounds( 0D, 0D, 0D, 1D, 1D, thickness);
 				break;
 			case DIR_SOUTH:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D, 1D, 1D - thickness - thickness);
+				rndr.setRenderBounds( 0D, 0D, 1D - thickness, 1D, 1D, 1D);
 				break;
 			case DIR_WEST:
-				rndr.setRenderBounds( 0D, 0D, 0D, thickness + thickness, 1D, 1D);
+				rndr.setRenderBounds( 0D, 0D, 0D, thickness, 1D, 1D);
 				break;
 			case DIR_EAST:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D - thickness - thickness, 1D, 1D);
+				rndr.setRenderBounds( 1D - thickness, 0D, 0D, 1D, 1D, 1D);
 				break;
 			default:
 				rndr.setRenderBounds( 0D, 0D, 0D, 1D, 1D, 1D);

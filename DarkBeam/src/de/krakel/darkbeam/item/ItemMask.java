@@ -94,10 +94,10 @@ public class ItemMask extends ItemBlock {
 
 	@Override
 	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int dir, float hitX, float hitY, float hitZ) {
-		if (world.isRemote) {
-			return false;
-		}
-		LogHelper.info( "a: {0}, {1}", world.isRemote, LogHelper.toString( x, y, z, dir, hitX, hitY, hitZ, null));
+//		if (world.isRemote) {
+//			return false;
+//		}
+		LogHelper.info( "a: %b, %s", world.isRemote, LogHelper.toString( x, y, z, dir, hitX, hitY, hitZ, null));
 		if (player.isSneaking()) {
 			return false;
 		}
@@ -110,7 +110,7 @@ public class ItemMask extends ItemBlock {
 			if (pos == null) {
 				return false;
 			}
-			LogHelper.info( "b: {0}, {1}", world.isRemote, LogHelper.toString( pos));
+			LogHelper.info( "b: %b, %s", world.isRemote, LogHelper.toString( pos));
 			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 				return false;
 			}
@@ -118,12 +118,13 @@ public class ItemMask extends ItemBlock {
 			if (hit == null) {
 				return false;
 			}
-			LogHelper.info( "c: {0}, {1}", world.isRemote, LogHelper.toString( hit));
+			LogHelper.info( "c: %b, %s", world.isRemote, LogHelper.toString( hit));
 			if (world.canPlaceEntityOnSide( stk.itemID, hit.blockX, hit.blockY, hit.blockZ, false, dir, player, stk)) {
 				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId(), 0, 2);
 			}
-			TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+			TileMasking tile = DarkLib.getTileEntity( world, hit.blockX, hit.blockY, hit.blockZ, TileMasking.class);
 			if (tile != null && tile.tryAdd( hit.subHit, 0)) {
+				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;
 				Material mat = MaterialLib.getForDmg( dmg);
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);

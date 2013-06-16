@@ -11,7 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
 public interface IItemRenderer {
-	void render( Block blk, int meta, RenderBlocks rndr);
+	void renderItem( RenderBlocks rndr, Block blk, int meta);
+
+	void renderSide( RenderBlocks rndr, int side, Block blk, int meta, int x, int y, int z);
 
 	void setBounds( RenderBlocks rndr, int side);
 

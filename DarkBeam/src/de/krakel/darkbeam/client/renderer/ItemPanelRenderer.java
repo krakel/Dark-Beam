@@ -17,7 +17,7 @@ public class ItemPanelRenderer extends AItemMaskRenderer {
 
 	@Override
 	public void setBounds( RenderBlocks rndr, int side) {
-		setBounds( rndr, side, THICKNESS);
+		setBounds( rndr, side, THICKNESS + THICKNESS);
 	}
 
 	@Override

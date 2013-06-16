@@ -15,7 +15,7 @@ import de.krakel.darkbeam.client.renderer.IItemRenderer;
 public class Mask {
 	final String mName;
 	public final int mMaskID;
-	private IItemRenderer mRenderer;
+	public IItemRenderer mRenderer;
 
 	Mask( int maskID, String name, IItemRenderer renderer) {
 		mMaskID = maskID;
@@ -27,14 +27,14 @@ public class Mask {
 		return "db.mask." + mName;
 	}
 
-	public void renderInventoryItem( Block blk, int meta, RenderBlocks rndr) {
+	public void renderInventoryItem( RenderBlocks rndr, Block blk, int meta) {
 		mRenderer.setInventoryBounds( rndr);
-		mRenderer.render( blk, meta, rndr);
+		mRenderer.renderItem( rndr, blk, meta);
 	}
 
-	public void renderUnitItem( Block blk, int meta, RenderBlocks rndr, int side) {
+	public void renderUnitSide( RenderBlocks rndr, int side, Block blk, int meta, int x, int y, int z) {
 		mRenderer.setBounds( rndr, side);
-		mRenderer.render( blk, meta, rndr);
+		mRenderer.renderSide( rndr, side, blk, meta, x, y, z);
 	}
 
 	public int toDmg() {

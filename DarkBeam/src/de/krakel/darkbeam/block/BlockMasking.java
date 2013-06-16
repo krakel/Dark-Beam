@@ -22,6 +22,7 @@ import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockMaskingRender;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class BlockMasking extends Block {
@@ -33,7 +34,7 @@ public class BlockMasking extends Block {
 
 	@Override
 	public TileEntity createTileEntity( World world, int meta) {
-		// TODO tile depend on meta
+		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
 		return new TileMasking();
 	}
 
@@ -51,6 +52,11 @@ public class BlockMasking extends Block {
 
 	@Override
 	public void harvestBlock( World world, EntityPlayer player, int x, int y, int z, int meta) {
+	}
+
+	@Override
+	public boolean hasTileEntity( int metadata) {
+		return true;
 	}
 
 	@Override

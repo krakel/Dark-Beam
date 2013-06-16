@@ -15,13 +15,11 @@ import net.minecraft.util.MovingObjectPosition;
 import cpw.mods.fml.common.FMLLog;
 
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.lib.References;
 
 public class LogHelper {
 	private static Logger sLogger = Logger.getLogger( References.MOD_ID);
-	private static final String[] DIRECTIONS = {
-		"DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST"
-	};
 
 	private LogHelper() {
 	}
@@ -92,17 +90,8 @@ public class LogHelper {
 		}
 	}
 
-	public static String toDirection( int dir) {
-		try {
-			return DIRECTIONS[dir];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return "UNKNOWN" + dir;
-		}
-	}
-
 	public static String toString( int x, int y, int z, int dir, double hitX, double hitY, double hitZ, EnumMovingObjectType type) {
-		return DarkLib.format( "obj=[dir={0}, pos=({1}|{2}|{3}), hit=({4}|{5}|{6}), type={7}]", toDirection( dir), x, y, z, hitX, hitY, hitZ, type);
+		return DarkLib.format( "obj=[dir=%s, pos=(%d|%d|%d), hit=(%f|%f|%f), type=%s]", Position.toString( dir), x, y, z, hitX, hitY, hitZ, type);
 	}
 
 	public static String toString( MovingObjectPosition pos) {

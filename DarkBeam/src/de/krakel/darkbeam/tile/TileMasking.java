@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.core.IDirection;
-import de.krakel.darkbeam.lib.BlockType;
 
 public class TileMasking extends TileEntity {
 	private static final String NBT_SIDES = "sides";
@@ -41,14 +40,6 @@ public class TileMasking extends TileEntity {
 		}
 	}
 
-	public void onChanged() {
-		if (worldObj != null) {
-			worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord, BlockType.Masking.getId());
-			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
-			worldObj.updateTileEntityChunkAndDoNothing( xCoord, yCoord, zCoord, this);
-		}
-	}
-
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
 		super.readFromNBT( nbt);
@@ -73,11 +64,31 @@ public class TileMasking extends TileEntity {
 		}
 	}
 
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer( "TileMasking[");
+		for (int i = 0; i < MAX_SIDE; ++i) {
+			if (i > 0) {
+				sb.append( ',');
+			}
+			int value = mArr[i];
+			if (value < 0) {
+				sb.append( value >> 8 & 0xFF);
+				sb.append( '|');
+				sb.append( value & 0xFF);
+			}
+			else {
+				sb.append( "-|-");
+			}
+		}
+		sb.append( "]");
+		return sb.toString();
+	}
+
 	public boolean tryAdd( int side, int meta) {
 		try {
 			if (mArr[side] >= 0) {
 				mArr[side] = meta | IN_USE;
-				onChanged();
 				return true;
 			}
 		}
@@ -91,7 +102,6 @@ public class TileMasking extends TileEntity {
 			int value = mArr[side];
 			if (value < 0) {
 				mArr[side] = 0;
-				onChanged();
 				return value & ~IN_USE;
 			}
 		}
