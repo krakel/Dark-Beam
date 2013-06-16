@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * ItemMask.java
+ * java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -28,6 +28,7 @@ import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
+import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
@@ -38,6 +39,101 @@ public class ItemMask extends ItemBlock {
 		super( id);
 		setMaxDamage( 0);
 		setHasSubtypes( true);
+	}
+
+	private static boolean canMaskAdd( World world, MovingObjectPosition hit, int side, ItemStack stk) {
+		if (world.canPlaceEntityOnSide( BlockType.Masking.getId(), hit.blockX, hit.blockY, hit.blockZ, false, hit.sideHit, null, stk)) {
+			return true;
+		}
+		TileMasking tile = DarkLib.getTileEntity( world, hit.blockX, hit.blockY, hit.blockZ, TileMasking.class);
+		if (tile != null) {
+			return !tile.isInUse( side);
+		}
+		return false;
+	}
+
+	private static MovingObjectPosition getPosition( World world, MovingObjectPosition pos, int subID, ItemStack stack) {
+		MovingObjectPosition hit = new MovingObjectPosition( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, pos.hitVec);
+		int hitArea = maskSide( pos);
+		if (isInside( pos.subHit, pos.sideHit)) {
+			if (hitArea == hit.sideHit) {
+				hit.subHit = hitArea ^ 1;
+				if (canMaskAdd( world, hit, subID, stack)) {
+					return hit;
+				}
+				hit.subHit = hitArea;
+			}
+			else {
+				hit.subHit = hitArea;
+				if (canMaskAdd( world, hit, subID, stack)) {
+					return hit;
+				}
+				Position.move( hit);
+			}
+		}
+		else if (hitArea == hit.sideHit) {
+			hit.subHit = hitArea;
+			if (canMaskAdd( world, hit, subID, stack)) {
+				return hit;
+			}
+			hit.subHit = hitArea ^ 1;
+			Position.move( hit);
+		}
+		else {
+			hit.subHit = hitArea;
+			Position.move( hit);
+		}
+		return canMaskAdd( world, hit, subID, stack) ? hit : null;
+	}
+
+	private static boolean isInside( int subHit, int sideHit) {
+		if (subHit < 0) {
+			return false;
+		}
+		if (subHit < TileMasking.MAX_SIDE) {
+			return (sideHit ^ subHit) == 1;
+		}
+		return false;
+	}
+
+	private static int maskSide( MovingObjectPosition hit) {
+		double dx = hit.hitVec.xCoord - hit.blockX;
+		double dy = hit.hitVec.yCoord - hit.blockY;
+		double dz = hit.hitVec.zCoord - hit.blockZ;
+		switch (hit.sideHit) {
+			case IDirection.DIR_DOWN:
+			case IDirection.DIR_UP:
+				if (DarkLib.BOX_BORDER_MIN < dz && dz < DarkLib.BOX_BORDER_MAX && DarkLib.BOX_BORDER_MIN < dx
+					&& dx < DarkLib.BOX_BORDER_MAX) {
+					return hit.sideHit;
+				}
+				if (dz > dx) {
+					return dz + dx > 1D ? IDirection.DIR_SOUTH : IDirection.DIR_WEST;
+				}
+				return dz + dx > 1D ? IDirection.DIR_EAST : IDirection.DIR_NORTH;
+			case IDirection.DIR_NORTH:
+			case IDirection.DIR_SOUTH:
+				if (DarkLib.BOX_BORDER_MIN < dy && dy < DarkLib.BOX_BORDER_MAX && DarkLib.BOX_BORDER_MIN < dx
+					&& dx < DarkLib.BOX_BORDER_MAX) {
+					return hit.sideHit;
+				}
+				if (dy > dx) {
+					return dy + dx > 1D ? IDirection.DIR_UP : IDirection.DIR_WEST;
+				}
+				return dy + dx > 1D ? IDirection.DIR_EAST : IDirection.DIR_DOWN;
+			case IDirection.DIR_WEST:
+			case IDirection.DIR_EAST:
+				if (DarkLib.BOX_BORDER_MIN < dy && dy < DarkLib.BOX_BORDER_MAX && DarkLib.BOX_BORDER_MIN < dz
+					&& dz < DarkLib.BOX_BORDER_MAX) {
+					return hit.sideHit;
+				}
+				if (dy > dz) {
+					return dy + dz > 1D ? IDirection.DIR_UP : IDirection.DIR_NORTH;
+				}
+				return dy + dz > 1D ? IDirection.DIR_SOUTH : IDirection.DIR_DOWN;
+			default:
+				return IDirection.DIR_DOWN;
+		}
 	}
 
 	@Override
@@ -114,7 +210,7 @@ public class ItemMask extends ItemBlock {
 			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 				return false;
 			}
-			MovingObjectPosition hit = DarkLib.getPosition( world, pos, dmg, stk);
+			MovingObjectPosition hit = getPosition( world, pos, dmg, stk);
 			if (hit == null) {
 				return false;
 			}
@@ -130,6 +226,7 @@ public class ItemMask extends ItemBlock {
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
 				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId());
 				world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
+//				world.updateTileEntityChunkAndDoNothing( x, y, z, tile);
 				return true;
 			}
 		}

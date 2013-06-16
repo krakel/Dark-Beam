@@ -8,9 +8,13 @@
 package de.krakel.darkbeam.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class TileMasking extends TileEntity {
 	private static final String NBT_SIDES = "sides";
@@ -20,6 +24,13 @@ public class TileMasking extends TileEntity {
 	private int[] mArr = new int[MAX_SIDE];
 
 	public TileMasking() {
+	}
+
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		writeToNBT( nbt);
+		return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, nbt);
 	}
 
 	public int getMeta( int side) {
@@ -41,7 +52,13 @@ public class TileMasking extends TileEntity {
 	}
 
 	@Override
+	public void onDataPacket( INetworkManager net, Packet132TileEntityData paket) {
+		readFromNBT( paket.customParam1);
+	}
+
+	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
+		LogHelper.info( "readFromNBT: %s", nbt);
 		super.readFromNBT( nbt);
 		int sides = nbt.getInteger( NBT_SIDES);
 		byte[] arr = nbt.getByteArray( NBT_METAS);
@@ -132,5 +149,6 @@ public class TileMasking extends TileEntity {
 			}
 		}
 		nbt.setByteArray( NBT_METAS, arr);
+		LogHelper.info( "writeToNBT: %s", nbt);
 	}
 }
