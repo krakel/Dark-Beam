@@ -28,6 +28,15 @@ public class TileMasking extends TileEntity {
 	public TileMasking() {
 	}
 
+	public boolean canUse( int side) {
+		try {
+			return mArr[side] >= 0;
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return true;
+		}
+	}
+
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbt = new NBTTagCompound();

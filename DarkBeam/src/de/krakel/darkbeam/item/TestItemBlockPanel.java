@@ -81,7 +81,7 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 	}
 
 	@Override
-	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int side, float dx, float dy, float dz) {
 		if (stk.stackSize == 0) {
 			return false;
 		}
@@ -100,7 +100,7 @@ public class TestItemBlockPanel extends ItemBlock implements IDirection {
 //		if (onItemUse0( stk, player, world, x, y, z, side)) {
 //			return true;
 //		}
-		return super.onItemUse( stk, player, world, x, y, z, side, hitX, hitY, hitZ);
+		return super.onItemUse( stk, player, world, x, y, z, side, dx, dy, dz);
 	}
 
 	@SuppressWarnings( "unused")

@@ -90,23 +90,23 @@ public class LogHelper {
 		}
 	}
 
-	public static String toString( double hitX, double hitY, double hitZ) {
-		return DarkLib.format( "hit=(%f|%f|%f)", hitX, hitY, hitZ);
+	public static String toString( double dx, double dy, double dz) {
+		return DarkLib.format( "hit=(%f|%f|%f)", dx, dy, dz);
 	}
 
 	public static String toString( int x, int y, int z) {
 		return DarkLib.format( "pos=(%d|%d|%d)", x, y, z);
 	}
 
-	public static String toString( int x, int y, int z, int dir, double hitX, double hitY, double hitZ, EnumMovingObjectType type) {
-		return DarkLib.format( "obj=[dir=%s, %s, %s, type=%s]", Position.toString( dir), toString( x, y, z), toString( hitX, hitY, hitZ), type);
+	public static String toString( int x, int y, int z, int dir, double dx, double dy, double dz, EnumMovingObjectType type) {
+		return DarkLib.format( "obj=[dir=%s, %s, %s, type=%s]", Position.toString( dir), toString( x, y, z), toString( dx, dy, dz), type);
 	}
 
 	public static String toString( MovingObjectPosition pos) {
-		double hitX = pos.hitVec.xCoord - pos.blockX;
-		double hitY = pos.hitVec.yCoord - pos.blockY;
-		double hitZ = pos.hitVec.zCoord - pos.blockZ;
-		return toString( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, hitX, hitY, hitZ, pos.typeOfHit);
+		double dx = pos.hitVec.xCoord - pos.blockX;
+		double dy = pos.hitVec.yCoord - pos.blockY;
+		double dz = pos.hitVec.zCoord - pos.blockZ;
+		return toString( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, dx, dy, dz, pos.typeOfHit);
 	}
 
 	private static String toString( Object[] arr) {

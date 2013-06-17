@@ -96,8 +96,8 @@ public class TestBlockPanel extends Block implements IDirection {
 	}
 
 //	@Override
-//	public int onBlockPlaced( World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
-//		if (side == DIR_UP || hitY <= THICKNESS) {
+//	public int onBlockPlaced( World world, int x, int y, int z, int side, float dx, float dy, float dz, int meta) {
+//		if (side == DIR_UP || dy <= THICKNESS) {
 //			return meta;
 //		}
 //		return meta | 8;
