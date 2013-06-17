@@ -14,7 +14,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.helper.LogHelper;
@@ -32,13 +31,14 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public void renderInventoryBlock( Block blk, int meta, int modelID, RenderBlocks rndr) {
-		Mask mask = MaskLib.getForDmg( meta);
-		mask.renderInventoryItem( rndr, blk, meta);
+	public void renderInventoryBlock( Block blk, int meta, int modelID, RenderBlocks rndrBlk) {
+		IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
+		rndr.setInventoryBounds( rndrBlk);
+		rndr.renderItem( rndrBlk, blk, meta);
 	}
 
 	@Override
-	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndr) {
+	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndrBlk) {
 		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
 		if (tile != null) {
 			LogHelper.info( "renderWorldBlock: %s, %s", LogHelper.toString( x, y, z), tile);
@@ -46,8 +46,9 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 				if (tile.isInUse( side)) {
 					LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
 					int meta = tile.getMeta( side);
-					Mask mask = MaskLib.getForDmg( meta);
-					mask.renderUnitSide( rndr, side, blk, meta, x, y, z);
+					IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
+					rndr.setBounds( rndrBlk, side);
+					rndr.renderSide( rndrBlk, side, blk, meta, x, y, z);
 				}
 			}
 		}

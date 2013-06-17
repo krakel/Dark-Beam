@@ -7,17 +7,14 @@
  */
 package de.krakel.darkbeam.core;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-
-import de.krakel.darkbeam.client.renderer.IItemRenderer;
+import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 
 public class Mask {
 	final String mName;
 	public final int mMaskID;
-	public IItemRenderer mRenderer;
+	public final IMaskRenderer mRenderer;
 
-	Mask( int maskID, String name, IItemRenderer renderer) {
+	Mask( int maskID, String name, IMaskRenderer renderer) {
 		mMaskID = maskID;
 		mName = name;
 		mRenderer = renderer;
@@ -25,16 +22,6 @@ public class Mask {
 
 	public String getUnlocalizedName() {
 		return "db.mask." + mName;
-	}
-
-	public void renderInventoryItem( RenderBlocks rndr, Block blk, int meta) {
-		mRenderer.setInventoryBounds( rndr);
-		mRenderer.renderItem( rndr, blk, meta);
-	}
-
-	public void renderUnitSide( RenderBlocks rndr, int side, Block blk, int meta, int x, int y, int z) {
-		mRenderer.setBounds( rndr, side);
-		mRenderer.renderSide( rndr, side, blk, meta, x, y, z);
 	}
 
 	public int toDmg() {

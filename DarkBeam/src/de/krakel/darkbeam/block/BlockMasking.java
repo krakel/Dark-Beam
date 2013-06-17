@@ -14,12 +14,15 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockMaskingRender;
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
@@ -30,6 +33,34 @@ public class BlockMasking extends Block {
 		super( id, DarkBeam.MAT_DARK);
 		setHardness( 0.1F);
 		disableStats();
+	}
+
+	@Override
+	public MovingObjectPosition collisionRayTrace( World world, int x, int y, int z, Vec3 start, Vec3 end) {
+		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		if (tile == null) {
+			return null;
+		}
+		double min = 0.0D;
+		MovingObjectPosition result = null;
+		for (int side = 0; side < TileMasking.MAX_SIDE; ++side) {
+			if (tile.isInUse( side)) {
+				tile.setMaskBounds( this, side);
+				MovingObjectPosition hit = super.collisionRayTrace( world, x, y, z, start, end);
+				if (hit != null) {
+					double dist = hit.hitVec.squareDistanceTo( start);
+					if (result == null || dist < min) {
+						result = hit;
+						result.subHit = side;
+						min = dist;
+					}
+				}
+			}
+		}
+		if (result != null) {
+			tile.setMaskBounds( this, result.subHit);
+		}
+		return result;
 	}
 
 	@Override

@@ -16,72 +16,98 @@ import org.lwjgl.opengl.GL11;
 
 import de.krakel.darkbeam.core.IDirection;
 
-abstract class AItemMaskRenderer implements IItemRenderer, IDirection {
+abstract class AItemMaskRenderer implements IMaskRenderer, IDirection {
 	public AItemMaskRenderer() {
 	}
 
 	@Override
-	public void renderItem( RenderBlocks rndr, Block blk, int meta) {
+	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
 //		GL11.glRotatef( 90F, 0F, 1F, 0F);
 		GL11.glTranslatef( -0.5F, -0.5F, -0.5F);
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, -1F, 0F);
-		rndr.renderFaceYNeg( blk, 0D, 0D, 0D, rndr.getBlockIconFromSideAndMetadata( blk, DIR_UP, meta));
+		rndrBlk.renderFaceYNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_UP, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, 1F, 0F);
-		rndr.renderFaceYPos( blk, 0D, 0D, 0D, rndr.getBlockIconFromSideAndMetadata( blk, DIR_DOWN, meta));
+		rndrBlk.renderFaceYPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_DOWN, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, 0F, -1F);
-		rndr.renderFaceZNeg( blk, 0D, 0D, 0D, rndr.getBlockIconFromSideAndMetadata( blk, DIR_NORTH, meta));
+		rndrBlk.renderFaceZNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_NORTH, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, 0F, 1F);
-		rndr.renderFaceZPos( blk, 0D, 0D, 0D, rndr.getBlockIconFromSideAndMetadata( blk, DIR_SOUTH, meta));
+		rndrBlk.renderFaceZPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_SOUTH, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( -1F, 0F, 0F);
-		rndr.renderFaceXNeg( blk, 0D, 0D, 0D, rndr.getBlockIconFromSideAndMetadata( blk, DIR_WEST, meta));
+		rndrBlk.renderFaceXNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_WEST, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 1F, 0F, 0F);
-		rndr.renderFaceXPos( blk, 0D, 0D, 0D, rndr.getBlockIconFromSideAndMetadata( blk, DIR_EAST, meta));
+		rndrBlk.renderFaceXPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_EAST, meta));
 		tess.draw();
 		GL11.glTranslatef( 0.5F, 0.5F, 0.5F);
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndr, int side, Block blk, int meta, int x, int y, int z) {
-		Icon icon = rndr.getBlockIconFromSideAndMetadata( blk, side, meta);
-		rndr.setOverrideBlockTexture( icon);
-		rndr.renderStandardBlock( blk, x, y, z);
-		rndr.clearOverrideBlockTexture();
+	public void renderSide( RenderBlocks rndrBlk, int side, Block blk, int meta, int x, int y, int z) {
+		Icon icon = rndrBlk.getBlockIconFromSideAndMetadata( blk, side, meta);
+		rndrBlk.setOverrideBlockTexture( icon);
+		rndrBlk.renderStandardBlock( blk, x, y, z);
+		rndrBlk.clearOverrideBlockTexture();
 	}
 
-	protected void setBounds( RenderBlocks rndr, int side, double thickness) {
+	protected void setBounds( Block blk, int side, float thickness) {
 		switch (side) {
 			case DIR_DOWN:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D, thickness, 1D);
+				blk.setBlockBounds( 0F, 0F, 0F, 1F, thickness, 1F);
 				break;
 			case DIR_UP:
-				rndr.setRenderBounds( 0D, 1D - thickness, 0D, 1D, 1D, 1D);
+				blk.setBlockBounds( 0F, 1F - thickness, 0F, 1F, 1F, 1F);
 				break;
 			case DIR_NORTH:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D, 1D, thickness);
+				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, thickness);
 				break;
 			case DIR_SOUTH:
-				rndr.setRenderBounds( 0D, 0D, 1D - thickness, 1D, 1D, 1D);
+				blk.setBlockBounds( 0F, 0F, 1F - thickness, 1F, 1F, 1F);
 				break;
 			case DIR_WEST:
-				rndr.setRenderBounds( 0D, 0D, 0D, thickness, 1D, 1D);
+				blk.setBlockBounds( 0F, 0F, 0F, thickness, 1F, 1F);
 				break;
 			case DIR_EAST:
-				rndr.setRenderBounds( 1D - thickness, 0D, 0D, 1D, 1D, 1D);
+				blk.setBlockBounds( 1F - thickness, 0F, 0F, 1F, 1F, 1F);
 				break;
 			default:
-				rndr.setRenderBounds( 0D, 0D, 0D, 1D, 1D, 1D);
+				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
+				break;
+		}
+	}
+
+	protected void setBounds( RenderBlocks rndrBlk, int side, double thickness) {
+		switch (side) {
+			case DIR_DOWN:
+				rndrBlk.setRenderBounds( 0D, 0D, 0D, 1D, thickness, 1D);
+				break;
+			case DIR_UP:
+				rndrBlk.setRenderBounds( 0D, 1D - thickness, 0D, 1D, 1D, 1D);
+				break;
+			case DIR_NORTH:
+				rndrBlk.setRenderBounds( 0D, 0D, 0D, 1D, 1D, thickness);
+				break;
+			case DIR_SOUTH:
+				rndrBlk.setRenderBounds( 0D, 0D, 1D - thickness, 1D, 1D, 1D);
+				break;
+			case DIR_WEST:
+				rndrBlk.setRenderBounds( 0D, 0D, 0D, thickness, 1D, 1D);
+				break;
+			case DIR_EAST:
+				rndrBlk.setRenderBounds( 1D - thickness, 0D, 0D, 1D, 1D, 1D);
+				break;
+			default:
+				rndrBlk.setRenderBounds( 0D, 0D, 0D, 1D, 1D, 1D);
 				break;
 		}
 	}

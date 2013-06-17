@@ -10,7 +10,7 @@ package de.krakel.darkbeam.core;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import de.krakel.darkbeam.client.renderer.IItemRenderer;
+import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.client.renderer.ItemCoverRenderer;
 import de.krakel.darkbeam.client.renderer.ItemPanelRenderer;
 import de.krakel.darkbeam.client.renderer.ItemSlabRenderer;
@@ -24,7 +24,7 @@ public class MaskLib {
 	private MaskLib() {
 	}
 
-	private static void add( int maskID, String name, IItemRenderer renderer) {
+	private static void add( int maskID, String name, IMaskRenderer renderer) {
 		try {
 			if (sData[maskID] == null) {
 				sData[maskID] = new Mask( maskID, name, renderer);
@@ -51,6 +51,14 @@ public class MaskLib {
 
 	public static Mask getForDmg( int dmg) {
 		return get( maskID( dmg));
+	}
+
+	public static IMaskRenderer getRenderer( int maskID) {
+		return get( maskID).mRenderer;
+	}
+
+	public static IMaskRenderer getRendererForDmg( int meta) {
+		return getRenderer( maskID( meta));
 	}
 
 	public static void init() {

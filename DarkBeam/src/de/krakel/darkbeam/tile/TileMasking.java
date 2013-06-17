@@ -7,6 +7,7 @@
  */
 package de.krakel.darkbeam.tile;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -14,6 +15,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class TileMasking extends TileEntity {
@@ -79,6 +81,11 @@ public class TileMasking extends TileEntity {
 		for (int i = 0; i < MAX_SIDE; ++i) {
 			mArr[i] = 0;
 		}
+	}
+
+	public void setMaskBounds( Block blk, int side) {
+		int meta = getMeta( side);
+		MaskLib.getRendererForDmg( meta).setMaskBounds( blk, side);
 	}
 
 	@Override
