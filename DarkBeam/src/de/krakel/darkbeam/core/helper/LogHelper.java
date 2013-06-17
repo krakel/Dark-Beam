@@ -54,7 +54,7 @@ public class LogHelper {
 
 	public static void logProperty( Level lvl, String property) {
 		if (sLogger.isLoggable( lvl)) {
-			sLogger.log( lvl, DarkLib.format( "{0} = {1}", property, System.getProperty( property, null)));
+			sLogger.log( lvl, DarkLib.format( "%s = %s", property, System.getProperty( property, null)));
 		}
 	}
 
@@ -90,8 +90,16 @@ public class LogHelper {
 		}
 	}
 
+	public static String toString( double hitX, double hitY, double hitZ) {
+		return DarkLib.format( "hit=(%f|%f|%f)", hitX, hitY, hitZ);
+	}
+
+	public static String toString( int x, int y, int z) {
+		return DarkLib.format( "pos=(%d|%d|%d)", x, y, z);
+	}
+
 	public static String toString( int x, int y, int z, int dir, double hitX, double hitY, double hitZ, EnumMovingObjectType type) {
-		return DarkLib.format( "obj=[dir=%s, pos=(%d|%d|%d), hit=(%f|%f|%f), type=%s]", Position.toString( dir), x, y, z, hitX, hitY, hitZ, type);
+		return DarkLib.format( "obj=[dir=%s, %s, %s, type=%s]", Position.toString( dir), toString( x, y, z), toString( hitX, hitY, hitZ), type);
 	}
 
 	public static String toString( MovingObjectPosition pos) {

@@ -102,7 +102,7 @@ public class ConfigurationHandler {
 //			ConfigurationSettings.TRANSMUTE_COST_MOB = sConfig.get( CAT_TRANSMUTATION, ConfigurationSettings.TRANSMUTE_COST_MOB_CONFIGNAME, ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT).getInt( ConfigurationSettings.TRANSMUTE_COST_MOB_DEFAULT);
 		}
 		catch (Exception ex) {
-			LogHelper.severe( ex, "{0} has had a problem loading its configuration", References.MOD_NAME);
+			LogHelper.severe( ex, "%s has had a problem loading its configuration", References.MOD_NAME);
 		}
 		finally {
 			sConfig.save();

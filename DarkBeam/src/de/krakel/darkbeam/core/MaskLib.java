@@ -44,7 +44,7 @@ public class MaskLib {
 			return mat != null ? mat : UNKNOWN;
 		}
 		catch (IndexOutOfBoundsException ex) {
-			LogHelper.severe( ex, "illegal mask id {0}", maskID);
+			LogHelper.severe( ex, "illegal mask id %d", maskID);
 			return UNKNOWN;
 		}
 	}

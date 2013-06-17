@@ -48,7 +48,7 @@ public class MaterialLib {
 			return mat != null ? mat : UNKNOWN;
 		}
 		catch (IndexOutOfBoundsException ex) {
-			LogHelper.severe( ex, "illegal material id {0}", matID);
+			LogHelper.severe( ex, "illegal material id %d", matID);
 			return UNKNOWN;
 		}
 	}

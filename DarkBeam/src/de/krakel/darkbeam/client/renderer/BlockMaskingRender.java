@@ -41,7 +41,7 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndr) {
 		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
 		if (tile != null) {
-			LogHelper.info( "renderWorldBlock: pos=(%d|%d|%d), %s", x, y, z, tile);
+			LogHelper.info( "renderWorldBlock: %s, %s", LogHelper.toString( x, y, z), tile);
 			for (int side = 0; side < TileMasking.MAX_SIDE; ++side) {
 				if (tile.isInUse( side)) {
 					LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
