@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -101,8 +102,35 @@ public class BlockMasking extends Block {
 	}
 
 	@Override
+	public void onBlockClicked( World world, int x, int y, int z, EntityPlayer player) {
+		LogHelper.info( "onBlockClicked: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
+		super.onBlockClicked( world, x, y, z, player);
+	}
+
+	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
+	}
+
+	@Override
+	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
+		LogHelper.info( "removeBlockByPlayer: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
+		if (world.isRemote) {
+			return true;
+		}
+		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
+		if (pos == null) {
+			return false;
+		}
+		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
+			return false;
+		}
+		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		if (tile == null) {
+			return false;
+		}
+		tile.onHarvest( pos.subHit);
+		return false;
 	}
 
 	@Override

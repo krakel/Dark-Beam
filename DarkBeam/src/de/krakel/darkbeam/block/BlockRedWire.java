@@ -230,7 +230,7 @@ public class BlockRedWire extends BlockContainer {
 	@Override
 	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
 		if (world.isRemote) {
-			return true;
+			return false;
 		}
 		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {

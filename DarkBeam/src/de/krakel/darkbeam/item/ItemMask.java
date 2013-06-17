@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.Mask;
@@ -105,7 +104,7 @@ public class ItemMask extends ItemBlock {
 //		if (tab == ModTabs.sSubTabMask) {
 		for (Material mat : MaterialLib.values()) {
 			for (Mask msk : MaskLib.values()) {
-				lst.add( new ItemStack( ModBlocks.sMasking, 1, mat.toDmg( msk)));
+				lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, mat.toDmg( msk)));
 			}
 		}
 //		}

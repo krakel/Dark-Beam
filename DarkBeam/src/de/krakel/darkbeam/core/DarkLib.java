@@ -9,7 +9,9 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -42,6 +44,19 @@ public class DarkLib implements IDirection {
 			return !obj1.equals( obj2);
 		}
 		return obj2 != null;
+	}
+
+	public static void dropItem( World world, int x, int y, int z, ItemStack stk) {
+		if (world.isRemote) {
+			return;
+		}
+		double delta = 0.7D;
+		double dx = world.rand.nextFloat() * delta + (1.0D - delta) * 0.5D;
+		double dy = world.rand.nextFloat() * delta + (1.0D - delta) * 0.5D;
+		double dz = world.rand.nextFloat() * delta + (1.0D - delta) * 0.5D;
+		EntityItem entity = new EntityItem( world, x + dx, y + dy, z + dz, stk);
+		entity.delayBeforeCanPickup = 10;
+		world.spawnEntityInWorld( entity);
 	}
 
 	public static <T> boolean equals( T obj1, T obj2) {
