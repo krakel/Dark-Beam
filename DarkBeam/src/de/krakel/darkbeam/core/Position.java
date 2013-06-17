@@ -231,7 +231,7 @@ public class Position implements IDirection {
 				}
 				return dy + dz > 1D ? DIR_SOUTH : DIR_DOWN;
 			default:
-				return DIR_DOWN;
+				return -1;
 		}
 	}
 

@@ -29,7 +29,6 @@ import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.Position;
-import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.tile.TileMasking;
@@ -54,52 +53,18 @@ public class ItemMask extends ItemBlock {
 
 	private static MovingObjectPosition getPosition( World world, MovingObjectPosition pos, ItemStack stk) {
 		MovingObjectPosition hit = new MovingObjectPosition( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, pos.hitVec);
-		int zoneHit = Position.zone( pos);
-		//
-		if (zoneHit == pos.sideHit) {
-			hit.subHit = zoneHit;
-			if (canMaskAdd( world, hit, stk)) {
-				return hit;
-			}
-			Position.move( hit); // next block at opposite position
-			hit.subHit = zoneHit ^ 1;
-			if (canMaskAdd( world, hit, stk)) {
-				return hit;
-			}
-			return null;
+		hit.subHit = Position.zone( pos);
+		if (canMaskAdd( world, hit, stk)) {
+			return hit;
 		}
-		//
-		if (isValidSide( pos.sideHit, pos.subHit)) {
-			if (zoneHit == pos.sideHit) {
-				hit.subHit = zoneHit ^ 1;
-				if (canMaskAdd( world, hit, stk)) {
-					return hit;
-				}
-				hit.subHit = zoneHit;
-			}
-			else {
-				hit.subHit = zoneHit;
-				if (canMaskAdd( world, hit, stk)) {
-					return hit;
-				}
-				Position.move( hit);
-			}
-			return canMaskAdd( world, hit, stk) ? hit : null;
+		if (hit.subHit == pos.sideHit) {
+			hit.subHit ^= 1;
 		}
-		hit.subHit = zoneHit;
-		Position.move( hit);
-		return canMaskAdd( world, hit, stk) ? hit : null;
-	}
-
-	private static boolean isValidSide( int side, int sub) {
-		if (sub < 0) {
-			return false;
+		Position.move( hit); // next block at opposite position
+		if (canMaskAdd( world, hit, stk)) {
+			return hit;
 		}
-		if (sub < TileMasking.MAX_SIDE) {
-			return true;
-//			return (sub ^ side) == 1;
-		}
-		return false;
+		return null;
 	}
 
 	@Override
@@ -156,10 +121,7 @@ public class ItemMask extends ItemBlock {
 
 	@Override
 	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int dir, float dx, float dy, float dz) {
-//		if (world.isRemote) {
-//			return false;
-//		}
-		LogHelper.info( "a: %b, %s", world.isRemote, LogHelper.toString( x, y, z, dir, dx, dy, dz, null));
+//		LogHelper.info( "a: %b, %s", world.isRemote, LogHelper.toString( x, y, z, dir, dx, dy, dz, null));
 		if (player.isSneaking()) {
 			return false;
 		}
@@ -172,7 +134,7 @@ public class ItemMask extends ItemBlock {
 			if (pos == null) {
 				return false;
 			}
-			LogHelper.info( "b: %b, %s", world.isRemote, LogHelper.toString( pos));
+//			LogHelper.info( "b: %b, %s", world.isRemote, LogHelper.toString( pos));
 			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 				return false;
 			}
@@ -180,13 +142,13 @@ public class ItemMask extends ItemBlock {
 			if (hit == null) {
 				return false;
 			}
-			LogHelper.info( "c: %b, %s", world.isRemote, LogHelper.toString( hit));
+//			LogHelper.info( "c: %b, %s", world.isRemote, LogHelper.toString( hit));
 			if (world.canPlaceEntityOnSide( stk.itemID, hit.blockX, hit.blockY, hit.blockZ, false, hit.sideHit, player, stk)) {
 				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId(), 0, 2);
 			}
 			TileMasking tile = DarkLib.getTileEntity( world, hit.blockX, hit.blockY, hit.blockZ, TileMasking.class);
-			if (tile != null && tile.tryAdd( hit.subHit, 0)) {
-				LogHelper.info( "e: %b, %s", world.isRemote, tile);
+			if (tile != null && tile.tryAdd( hit.subHit, dmg)) {
+//				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;
 				Material mat = MaterialLib.getForDmg( dmg);
 				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
