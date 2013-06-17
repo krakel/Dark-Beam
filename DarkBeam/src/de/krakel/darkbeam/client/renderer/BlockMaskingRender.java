@@ -33,7 +33,6 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 	@Override
 	public void renderInventoryBlock( Block blk, int meta, int modelID, RenderBlocks rndrBlk) {
 		IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
-		rndr.setInventoryBounds( rndrBlk);
 		rndr.renderItem( rndrBlk, blk, meta);
 	}
 
@@ -47,7 +46,6 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 					LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
 					int meta = tile.getMeta( side);
 					IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
-					rndr.setBounds( rndrBlk, side);
 					rndr.renderSide( rndrBlk, side, blk, meta, x, y, z);
 				}
 			}

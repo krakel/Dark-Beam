@@ -11,13 +11,13 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
-import de.krakel.darkbeam.client.renderer.ItemCoverRenderer;
-import de.krakel.darkbeam.client.renderer.ItemPanelRenderer;
-import de.krakel.darkbeam.client.renderer.ItemSlabRenderer;
+import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
+import de.krakel.darkbeam.client.renderer.MaskPanelRenderer;
+import de.krakel.darkbeam.client.renderer.MaskSlabRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaskLib {
-	private static final Mask UNKNOWN = new Mask( -1, "tile.maskUnknow", new ItemCoverRenderer());
+	private static final Mask UNKNOWN = new Mask( -1, "tile.maskUnknow", new MaskCoverRenderer());
 	private static Mask[] sData = new Mask[32];
 	private static Iterable<Mask> sIter = new MaskIterable();
 
@@ -62,9 +62,9 @@ public class MaskLib {
 	}
 
 	public static void init() {
-		add( 0, "cover", new ItemCoverRenderer());
-		add( 1, "panel", new ItemPanelRenderer());
-		add( 2, "slab", new ItemSlabRenderer());
+		add( 0, "cover", new MaskCoverRenderer());
+		add( 1, "panel", new MaskPanelRenderer());
+		add( 2, "slab", new MaskSlabRenderer());
 	}
 
 	public static boolean isValid( int maskID) {

@@ -15,9 +15,5 @@ public interface IMaskRenderer {
 
 	void renderSide( RenderBlocks rndrBlk, int side, Block blk, int meta, int x, int y, int z);
 
-	void setBounds( RenderBlocks rndrBlk, int side);
-
-	void setInventoryBounds( RenderBlocks rndrBlk);
-
 	void setMaskBounds( Block blk, int side);
 }

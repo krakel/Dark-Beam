@@ -16,13 +16,11 @@ import org.lwjgl.opengl.GL11;
 
 import de.krakel.darkbeam.core.IDirection;
 
-abstract class AItemMaskRenderer implements IMaskRenderer, IDirection {
-	public AItemMaskRenderer() {
+abstract class AMaskRenderer implements IMaskRenderer, IDirection {
+	protected AMaskRenderer() {
 	}
 
-	@Override
-	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
-//		GL11.glRotatef( 90F, 0F, 1F, 0F);
+	protected void renderInventoryItem( RenderBlocks rndrBlk, Block blk, int meta) {
 		GL11.glTranslatef( -0.5F, -0.5F, -0.5F);
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
@@ -52,8 +50,8 @@ abstract class AItemMaskRenderer implements IMaskRenderer, IDirection {
 		GL11.glTranslatef( 0.5F, 0.5F, 0.5F);
 	}
 
-	@Override
-	public void renderSide( RenderBlocks rndrBlk, int side, Block blk, int meta, int x, int y, int z) {
+	protected void renderStandard( RenderBlocks rndrBlk, Block blk, int side, int meta, int x, int y, int z) {
+		rndrBlk.setRenderBoundsFromBlock( blk);
 		Icon icon = rndrBlk.getBlockIconFromSideAndMetadata( blk, side, meta);
 		rndrBlk.setOverrideBlockTexture( icon);
 		rndrBlk.renderStandardBlock( blk, x, y, z);
@@ -82,32 +80,6 @@ abstract class AItemMaskRenderer implements IMaskRenderer, IDirection {
 				break;
 			default:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
-				break;
-		}
-	}
-
-	protected void setBounds( RenderBlocks rndrBlk, int side, double thickness) {
-		switch (side) {
-			case DIR_DOWN:
-				rndrBlk.setRenderBounds( 0D, 0D, 0D, 1D, thickness, 1D);
-				break;
-			case DIR_UP:
-				rndrBlk.setRenderBounds( 0D, 1D - thickness, 0D, 1D, 1D, 1D);
-				break;
-			case DIR_NORTH:
-				rndrBlk.setRenderBounds( 0D, 0D, 0D, 1D, 1D, thickness);
-				break;
-			case DIR_SOUTH:
-				rndrBlk.setRenderBounds( 0D, 0D, 1D - thickness, 1D, 1D, 1D);
-				break;
-			case DIR_WEST:
-				rndrBlk.setRenderBounds( 0D, 0D, 0D, thickness, 1D, 1D);
-				break;
-			case DIR_EAST:
-				rndrBlk.setRenderBounds( 1D - thickness, 0D, 0D, 1D, 1D, 1D);
-				break;
-			default:
-				rndrBlk.setRenderBounds( 0D, 0D, 0D, 1D, 1D, 1D);
 				break;
 		}
 	}
