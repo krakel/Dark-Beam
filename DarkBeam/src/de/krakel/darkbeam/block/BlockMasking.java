@@ -12,6 +12,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
@@ -27,6 +28,7 @@ import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
+import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class BlockMasking extends Block {
@@ -115,9 +117,9 @@ public class BlockMasking extends Block {
 	@Override
 	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
 		LogHelper.info( "removeBlockByPlayer: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
-		if (world.isRemote) {
-			return true;
-		}
+//		if (world.isRemote) {
+//			return false;
+//		}
 		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {
 			return false;
@@ -129,7 +131,17 @@ public class BlockMasking extends Block {
 		if (tile == null) {
 			return false;
 		}
-		tile.onHarvest( pos.subHit);
+		int meta = tile.tryRemove( pos.subHit);
+		if (meta >= 0) {
+			ItemStack stk = new ItemStack( BlockType.Masking.getBlock(), 1, meta);
+			DarkLib.dropItem( world, x, y, z, stk);
+			if (tile.isEmpty()) {
+				world.setBlockToAir( x, y, z);
+			}
+			else {
+				world.markBlockForUpdate( x, y, z);
+			}
+		}
 		return false;
 	}
 

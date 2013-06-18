@@ -8,18 +8,16 @@
 package de.krakel.darkbeam.tile;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
-import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.MaskLib;
+import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.lib.BlockType;
 
 public class TileMasking extends TileEntity {
 	private static final String NBT_SIDES = "sides";
@@ -56,7 +54,7 @@ public class TileMasking extends TileEntity {
 		}
 	}
 
-	private boolean isEmpty() {
+	public boolean isEmpty() {
 		for (int i = 0; i < MAX_SIDE; ++i) {
 			if (mArr[i] < 0) {
 				return false;
@@ -77,17 +75,6 @@ public class TileMasking extends TileEntity {
 	@Override
 	public void onDataPacket( INetworkManager net, Packet132TileEntityData paket) {
 		readFromNBT( paket.customParam1);
-	}
-
-	public void onHarvest( int side) {
-		int meta = tryRemove( side);
-		if (meta >= 0) {
-			ItemStack stk = new ItemStack( BlockType.Masking.getBlock(), 1, meta);
-			DarkLib.dropItem( worldObj, xCoord, yCoord, zCoord, stk);
-			if (isEmpty()) {
-				worldObj.setBlock( xCoord, yCoord, zCoord, 0);
-			}
-		}
 	}
 
 	@Override
@@ -145,6 +132,7 @@ public class TileMasking extends TileEntity {
 		try {
 			if (mArr[side] >= 0) {
 				mArr[side] = meta | IN_USE;
+				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( side), toString());
 				return true;
 			}
 		}
@@ -158,6 +146,7 @@ public class TileMasking extends TileEntity {
 			int value = mArr[side];
 			if (value < 0) {
 				mArr[side] = 0;
+				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( side), toString());
 				return value & ~IN_USE;
 			}
 		}
