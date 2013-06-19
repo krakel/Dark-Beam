@@ -156,6 +156,13 @@ public class TileMasking extends TileEntity {
 	}
 
 	@Override
+	public void updateEntity() {
+		if (worldObj != null) {
+			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
+		}
+	}
+
+	@Override
 	public void writeToNBT( NBTTagCompound nbt) {
 		super.writeToNBT( nbt);
 		int sides = 0;
