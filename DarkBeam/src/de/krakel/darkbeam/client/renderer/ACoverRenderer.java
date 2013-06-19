@@ -10,6 +10,8 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
+import de.krakel.darkbeam.core.AreaType;
+
 abstract class ACoverRenderer extends AMaskRenderer {
 	protected float mThickness;
 
@@ -32,5 +34,10 @@ abstract class ACoverRenderer extends AMaskRenderer {
 	@Override
 	public void setMaskBounds( Block blk, int side) {
 		setBounds( blk, side, mThickness + mThickness);
+	}
+
+	@Override
+	public boolean validate( int[] arr, AreaType area) {
+		return true;
 	}
 }

@@ -48,7 +48,7 @@ public class BlockMasking extends Block {
 		MovingObjectPosition result = null;
 		for (int side = 0; side < TileMasking.MAX_SIDE; ++side) {
 			if (tile.isInUse( side)) {
-				tile.setMaskBounds( this, side);
+				tile.getMaskRenderer( side).setMaskBounds( this, side);
 				MovingObjectPosition hit = super.collisionRayTrace( world, x, y, z, start, end);
 				if (hit != null) {
 					double dist = hit.hitVec.squareDistanceTo( start);
@@ -61,7 +61,8 @@ public class BlockMasking extends Block {
 			}
 		}
 		if (result != null) {
-			tile.setMaskBounds( this, result.subHit);
+			int side = result.subHit;
+			tile.getMaskRenderer( side).setMaskBounds( this, side);
 		}
 		return result;
 	}

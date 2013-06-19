@@ -7,13 +7,13 @@
  */
 package de.krakel.darkbeam.tile;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
+import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Position;
@@ -43,6 +43,11 @@ public class TileMasking extends TileEntity {
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT( nbt);
 		return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, nbt);
+	}
+
+	public IMaskRenderer getMaskRenderer( int side) {
+		int meta = getMeta( side);
+		return MaskLib.getRendererForDmg( meta);
 	}
 
 	public int getMeta( int side) {
@@ -102,11 +107,6 @@ public class TileMasking extends TileEntity {
 		}
 	}
 
-	public void setMaskBounds( Block blk, int side) {
-		int meta = getMeta( side);
-		MaskLib.getRendererForDmg( meta).setMaskBounds( blk, side);
-	}
-
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer( "TileMasking[");
@@ -160,6 +160,10 @@ public class TileMasking extends TileEntity {
 		if (worldObj != null) {
 			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
 		}
+	}
+
+	public boolean validate( int side, IMaskRenderer rndr) {
+		return true;
 	}
 
 	@Override
