@@ -76,30 +76,30 @@ public class MaterialLib {
 		add( 15, "nether", Block.netherrack); // 87
 		add( 16, "netherBrick", Block.netherBrick); // 112
 		//
-		add( 32, "oakBlank", Block.planks, 0); // 5
-		add( 33, "spruceBlank", Block.planks, 1);
-		add( 34, "birchBlank", Block.planks, 2);
-		add( 35, "jungleBlank", Block.planks, 3);
+		add( 32, "blank.0", Block.planks, 0); // 5
+		add( 33, "blank.1", Block.planks, 1);
+		add( 34, "blank.2", Block.planks, 2);
+		add( 35, "blank.3", Block.planks, 3);
 		//
-		add( 36, "oakWood", Block.wood, 0); // 17
-		add( 37, "spruceWood", Block.wood, 1);
-		add( 38, "birchWood", Block.wood, 2);
-		add( 39, "jungleWood", Block.wood, 3);
+		add( 36, "wood.0", Block.wood, 0); // 17
+		add( 37, "wood.1", Block.wood, 1);
+		add( 38, "wood.2", Block.wood, 2);
+		add( 39, "wood.3", Block.wood, 3);
 		//
-		add( 40, "defaultStone", Block.sandStone, 0); // 24
-		add( 41, "chiseledStone", Block.sandStone, 1);
-		add( 42, "smoothStone", Block.sandStone, 2);
-//		add( 43, "", Block.sandStone, 3);
+		add( 40, "sandStone.0", Block.sandStone, 0); // 24
+		add( 41, "sandStone.1", Block.sandStone, 1);
+		add( 42, "sandStone.2", Block.sandStone, 2);
+//		add( 43, "sandStone.3", Block.sandStone, 3);
 		//
-		add( 44, "defaultBrick", Block.stoneBrick, 0); // 98
-		add( 45, "mossyBrick", Block.stoneBrick, 1);
-		add( 46, "crackedBrick", Block.stoneBrick, 2);
-		add( 47, "chiseledBrick", Block.stoneBrick, 3);
+		add( 44, "stoneBrick.0", Block.stoneBrick, 0); // 98
+		add( 45, "stoneBrick.1", Block.stoneBrick, 1);
+		add( 46, "stoneBrick.2", Block.stoneBrick, 2);
+		add( 47, "stoneBrick.3", Block.stoneBrick, 3);
 		//
-		add( 48, "defaultQuartz", Block.blockNetherQuartz, 0); // 155
-		add( 49, "chiseledQuartz", Block.blockNetherQuartz, 1);
-		add( 50, "linesQuartz", Block.blockNetherQuartz, 2);
-//		add( 51, "", Block.blockNetherQuartz, 3);
+		add( 48, "quartz.0", Block.blockNetherQuartz, 0); // 155
+		add( 49, "quartz.1", Block.blockNetherQuartz, 1);
+		add( 50, "quartz.2", Block.blockNetherQuartz, 2);
+//		add( 51, "quartz.3", Block.blockNetherQuartz, 3);
 	}
 
 	public static boolean isValid( int matID) {
