@@ -18,9 +18,7 @@ public class Strings {
 	public static final String VERSION_OUTDATED = "db.version.outdated";
 	public static final String VERSION_UNINITIALIZED = "db.version.uninitialized";
 	/* TileEntity name constants */
-	public static final String TE_REDWIRE_NAME = "tileRedWire";
 	public static final String TE_MASK_NAME = "tileMask";
-	public static final String TE_SIMPLE_NAME = "testTileSimple";
 
 	private Strings() {
 	}
