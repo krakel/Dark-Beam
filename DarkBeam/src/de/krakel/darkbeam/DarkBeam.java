@@ -42,12 +42,14 @@ import de.krakel.darkbeam.item.ModItems;
 import de.krakel.darkbeam.lib.References;
 import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
-import de.krakel.darkbeam.tile.TestTileSimple;
 import de.krakel.darkbeam.tile.TileMasking;
-import de.krakel.darkbeam.tile.TileRedWire;
 
-@Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
-	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
+@Mod(
+	modid = References.MOD_ID,
+	name = References.MOD_NAME,
+	version = References.VERSION,
+	dependencies = References.DEPENDENCIES,
+	certificateFingerprint = References.FINGERPRINT)
 @NetworkMod( channels = {
 	References.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
@@ -61,21 +63,10 @@ public class DarkBeam {
 	@Init
 	public void init( FMLInitializationEvent event) {
 		NetworkRegistry.instance().registerGuiHandler( sInstance, sProxy);
-//		MinecraftForge.EVENT_BUS.register( new PlayerDestroyItemHandler());
-//		MinecraftForge.EVENT_BUS.register( new ItemEventHandler());
-//		MinecraftForge.EVENT_BUS.register( new EntityLivingHandler());
-//		MinecraftForge.EVENT_BUS.register( new ActionRequestHandler());
-//		MinecraftForge.EVENT_BUS.register( new WorldTransmutationHandler());
-//		GameRegistry.registerCraftingHandler( new CraftingHandler());
-		GameRegistry.registerTileEntity( TileRedWire.class, Strings.TE_REDWIRE_NAME);
 		GameRegistry.registerTileEntity( TileMasking.class, Strings.TE_MASK_NAME);
-		GameRegistry.registerTileEntity( TestTileSimple.class, Strings.TE_SIMPLE_NAME);
 		sProxy.init();
 		MaskLib.init();
 		MaterialLib.init();
-//		RecipesTransmutationStone.init();
-//		CraftingManager.getInstance().getRecipeList().add( new RecipesAlchemicalBagDyes());
-//		GameRegistry.registerFuelHandler( new FuelHandler());
 	}
 
 	@FingerprintWarning
@@ -85,7 +76,6 @@ public class DarkBeam {
 
 	@PostInit
 	public void postInit( FMLPostInitializationEvent event) {
-//        AddonHandler.init();
 	}
 
 	@PreInit
@@ -103,6 +93,5 @@ public class DarkBeam {
 
 	@ServerStarting
 	public void serverStarting( FMLServerStartingEvent event) {
-//		CommandHandler.initCommands( event);
 	}
 }

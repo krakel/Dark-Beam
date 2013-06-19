@@ -16,22 +16,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
-import de.krakel.darkbeam.item.ItemBlockRedWire;
 import de.krakel.darkbeam.item.ItemMask;
-import de.krakel.darkbeam.item.TestItemBlockItem;
-import de.krakel.darkbeam.item.TestItemBlockMulti;
-import de.krakel.darkbeam.item.TestItemBlockPanel;
 
 public enum BlockType {
-	OreDarkening( "oreDarkening"),
-	OreBeaming( "oreBeaming"),
-	RedWire( "blockRedWire", ItemBlockRedWire.class),
-	Masking( "blockMasking", ItemMask.class),
-	TestSimple( "testBlockSimple"),
-	TestItem( "testBlockItem", TestItemBlockItem.class),
-	TestMulti( "testBlockMulti", TestItemBlockMulti.class),
-	TestPanel( "testBlockPanel", TestItemBlockPanel.class),
-	ContainerSimple( "testContainerSimple");
+	Masking( "blockMasking", ItemMask.class);
 	private static int sBlockIds = 2500;
 	private int mDefault;
 	private int mId;

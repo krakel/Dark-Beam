@@ -10,8 +10,6 @@ package de.krakel.darkbeam.item;
 import de.krakel.darkbeam.lib.ItemType;
 
 public class ModItems {
-	public static ItemDarkening sItemDarkening = ItemType.Darkening.create( ItemDarkening.class);
-
 	private ModItems() {
 	}
 

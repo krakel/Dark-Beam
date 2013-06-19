@@ -21,6 +21,6 @@ final class FMainTab extends CreativeTabs {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int getTabIconItemIndex() {
-		return BlockType.OreDarkening.getId();
+		return BlockType.Masking.getId();
 	}
 }
