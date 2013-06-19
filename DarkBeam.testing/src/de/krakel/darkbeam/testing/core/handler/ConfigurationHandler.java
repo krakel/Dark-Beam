@@ -15,7 +15,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 import de.krakel.darkbeam.testing.core.helper.LogHelper;
 import de.krakel.darkbeam.testing.lib.BlockType;
-import de.krakel.darkbeam.testing.lib.Configs;
 import de.krakel.darkbeam.testing.lib.ItemType;
 import de.krakel.darkbeam.testing.lib.References;
 
@@ -31,10 +30,12 @@ public class ConfigurationHandler {
 //	public static final String CAT_TRANSMUTATION = "transmutation";
 	public static Configuration sConfig;
 
+	@SuppressWarnings( "unused")
 	private static boolean getConfigBoolean( String category, String name, boolean def) {
 		return sConfig.get( category, name, def).getBoolean( def);
 	}
 
+	@SuppressWarnings( "unused")
 	private static String getConfigString( String category, String name, String def) {
 		return sConfig.get( category, name, def).getString();
 	}
@@ -43,10 +44,6 @@ public class ConfigurationHandler {
 		sConfig = new Configuration( config);
 		try {
 			sConfig.load();
-			/* General configs */
-			Configs.sDisplayVersionResult = getConfigBoolean( Configuration.CATEGORY_GENERAL, Configs.DISPLAY_VERSION_RESULT_NAME, Configs.DISPLAY_VERSION_RESULT_DEFAULT);
-			Configs.sLastDiscoveredVersion = getConfigString( Configuration.CATEGORY_GENERAL, Configs.LAST_DISCOVERED_VERSION_NAME, Configs.LAST_DISCOVERED_VERSION_DEFAULT);
-			Configs.sLastDiscoveredVersionType = getConfigString( Configuration.CATEGORY_GENERAL, Configs.LAST_DISCOVERED_VERSION_TYPE_NAME, Configs.LAST_DISCOVERED_VERSION_TYPE_DEFAULT);
 			/* Graphic configs */
 //			ConfigurationSettings.ENABLE_PARTICLE_FX = sConfig.get( CAT_GRAPHICS, ConfigurationSettings.ENABLE_PARTICLE_FX_CONFIGNAME, ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT).getBoolean( ConfigurationSettings.ENABLE_PARTICLE_FX_DEFAULT);
 //			ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION = sConfig.get( CAT_GRAPHICS, ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_CONFIGNAME, ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_DEFAULT).getBoolean( ConfigurationSettings.ENABLE_OVERLAY_WORLD_TRANSMUTATION_DEFAULT);

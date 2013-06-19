@@ -10,14 +10,12 @@ package de.krakel.darkbeam.testing;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.FingerprintWarning;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLFingerprintViolationEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -25,15 +23,11 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 import de.krakel.darkbeam.testing.block.ModBlocks;
 import de.krakel.darkbeam.testing.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.testing.core.handler.LocalizationHandler;
-import de.krakel.darkbeam.testing.core.handler.VersionCheckTickHandler;
 import de.krakel.darkbeam.testing.core.helper.LogHelper;
-import de.krakel.darkbeam.testing.core.helper.VersionHelper;
 import de.krakel.darkbeam.testing.core.proxy.CommonProxy;
 import de.krakel.darkbeam.testing.creativetab.ModTabs;
 import de.krakel.darkbeam.testing.item.ModItems;
@@ -76,11 +70,6 @@ public class DarkBeamTesting {
 //		GameRegistry.registerFuelHandler( new FuelHandler());
 	}
 
-	@FingerprintWarning
-	public void invalidFingerprint( FMLFingerprintViolationEvent event) {
-		LogHelper.severe( Strings.INVALID_FINGERPRINT);
-	}
-
 	@PostInit
 	public void postInit( FMLPostInitializationEvent event) {
 //        AddonHandler.init();
@@ -91,8 +80,6 @@ public class DarkBeamTesting {
 		LogHelper.preInit();
 		LocalizationHandler.preInit();
 		ConfigurationHandler.preInit( event);
-		VersionHelper.execute();
-		TickRegistry.registerTickHandler( new VersionCheckTickHandler(), Side.CLIENT);
 		sProxy.preInit();
 		ModTabs.preInit();
 		ModItems.preInit();

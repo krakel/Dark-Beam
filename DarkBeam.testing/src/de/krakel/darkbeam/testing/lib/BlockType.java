@@ -30,7 +30,7 @@ public enum BlockType {
 	TestMulti( "testBlockMulti", TestItemBlockMulti.class),
 	TestPanel( "testBlockPanel", TestItemBlockPanel.class),
 	ContainerSimple( "testContainerSimple");
-	private static int sBlockIds = 2500;
+	private static int sBlockIds = 2400;
 	private int mDefault;
 	private int mId;
 	private Block mBlock;

@@ -17,7 +17,7 @@ import de.krakel.darkbeam.testing.creativetab.ModTabs;
 
 public enum ItemType {
 	Darkening( "itemDarkening");
-	private static int sItemIds = 27000;
+	private static int sItemIds = 26000;
 	private int mDefault;
 	private int mId;
 	private Item mItem;
