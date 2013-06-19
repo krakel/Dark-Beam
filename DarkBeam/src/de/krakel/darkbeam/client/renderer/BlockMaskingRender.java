@@ -41,13 +41,11 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
 		if (tile != null) {
 			LogHelper.info( "renderWorldBlockB: %s", tile);
-			for (int side = 0; side < TileMasking.MAX_SIDE; ++side) {
-				if (tile.isInUse( side)) {
-//					LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
-					int meta = tile.getMeta( side);
-					IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
-					rndr.renderSide( rndrBlk, side, blk, meta, x, y, z);
-				}
+			for (int i : tile) {
+//				LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
+				int meta = tile.getMeta( i);
+				IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
+				rndr.renderSide( rndrBlk, i, blk, meta, x, y, z);
 			}
 		}
 		return false;

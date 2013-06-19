@@ -47,7 +47,9 @@ public class ItemMask extends ItemBlock {
 		if (tile == null) {
 			return false;
 		}
-		return tile.canUse( pos.subHit);
+		int dmg = stk.getItemDamage();
+		Mask msk = MaskLib.getForDmg( dmg);
+		return msk.isValid( tile, pos.subHit);
 	}
 
 	private static MovingObjectPosition getPosition( World world, MovingObjectPosition pos, ItemStack stk) {

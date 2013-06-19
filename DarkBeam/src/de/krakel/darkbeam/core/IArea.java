@@ -41,6 +41,8 @@ public interface IArea {
 	static final int AXIS_NORTH_SOUTH = 27;
 	static final int AXIS_WEST_EAST = 28;
 	//
+	static final int MAX_AREA = 29;
+	//
 	static final int D = 1 << SIDE_DOWN;
 	static final int U = 1 << SIDE_UP;
 	static final int N = 1 << SIDE_NORTH;

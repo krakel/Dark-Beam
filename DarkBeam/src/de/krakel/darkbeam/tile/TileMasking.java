@@ -7,6 +7,9 @@
  */
 package de.krakel.darkbeam.tile;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -14,28 +17,21 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
-import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
-public class TileMasking extends TileEntity {
-	private static final String NBT_SIDES = "sides";
-	private static final String NBT_METAS = "metas";
-	private static final int IN_USE = 0xFFFF0000;
-	public static final int MAX_SIDE = IDirection.DIR_MAX;
-	private int[] mArr = new int[MAX_SIDE];
+public class TileMasking extends TileEntity implements Iterable<Integer> {
+	private static final String NBT_AREAS = "areas";
+	private static final String NBT_MASKS = "masks";
+	private int mArea;
+	private int[] mArr = new int[32];
 
 	public TileMasking() {
 	}
 
-	public boolean canUse( int side) {
-		try {
-			return mArr[side] >= 0;
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return true;
-		}
+	public int getArea() {
+		return mArea;
 	}
 
 	@Override
@@ -45,14 +41,14 @@ public class TileMasking extends TileEntity {
 		return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, nbt);
 	}
 
-	public IMaskRenderer getMaskRenderer( int side) {
-		int meta = getMeta( side);
+	public IMaskRenderer getMaskRenderer( int area) {
+		int meta = getMeta( area);
 		return MaskLib.getRendererForDmg( meta);
 	}
 
-	public int getMeta( int side) {
+	public int getMeta( int area) {
 		try {
-			return mArr[side] & ~IN_USE;
+			return mArr[area];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -60,21 +56,16 @@ public class TileMasking extends TileEntity {
 	}
 
 	public boolean isEmpty() {
-		for (int i = 0; i < MAX_SIDE; ++i) {
-			if (mArr[i] < 0) {
-				return false;
-			}
-		}
-		return true;
+		return mArea == 0;
 	}
 
-	public boolean isInUse( int side) {
-		try {
-			return mArr[side] < 0;
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return true;
-		}
+	public boolean isValid( int value) {
+		return (mArea & value) == 0;
+	}
+
+	@Override
+	public Iterator<Integer> iterator() {
+		return new AreaIterator( mArea);
 	}
 
 	@Override
@@ -86,36 +77,32 @@ public class TileMasking extends TileEntity {
 	public void readFromNBT( NBTTagCompound nbt) {
 		LogHelper.info( "readFromNBT: %s", nbt);
 		super.readFromNBT( nbt);
-		int sides = nbt.getInteger( NBT_SIDES);
-		byte[] arr = nbt.getByteArray( NBT_METAS);
-		int side = 0;
-		int count = 0;
-		while (sides != 0) {
-			if ((sides & 1) != 0) {
-				int mat = arr[count++] & 0xFF;
-				int msk = arr[count++] & 0xFF;
-				mArr[side] = mat | msk << 8 | IN_USE;
+		int areas = nbt.getInteger( NBT_AREAS);
+		byte[] arr = nbt.getByteArray( NBT_MASKS);
+		int n = 0;
+		for (int a = areas, i = 0; a != 0; a >>>= 1, ++i) {
+			if ((a & 1) != 0) {
+				int mat = arr[n++] & 0xFF;
+				int msk = arr[n++] & 0xFF;
+				mArr[i] = msk << 8 | mat;
 			}
-			++side;
-			sides >>= 1;
 		}
+		mArea |= areas;
 	}
 
 	public void reset() {
-		for (int i = 0; i < MAX_SIDE; ++i) {
-			mArr[i] = 0;
-		}
+		mArea = 0;
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer( "TileMasking[");
-		for (int i = 0; i < MAX_SIDE; ++i) {
+		for (int a = mArea, i = 0; a != 0; a >>>= 1, ++i) {
 			if (i > 0) {
 				sb.append( ',');
 			}
-			int value = mArr[i];
-			if (value < 0) {
+			if ((a & 1) != 0) {
+				int value = mArr[i];
 				sb.append( value >> 8 & 0xFF);
 				sb.append( '|');
 				sb.append( value & 0xFF);
@@ -128,11 +115,13 @@ public class TileMasking extends TileEntity {
 		return sb.toString();
 	}
 
-	public boolean tryAdd( int side, int meta) {
+	public boolean tryAdd( int area, int meta) {
 		try {
-			if (mArr[side] >= 0) {
-				mArr[side] = meta | IN_USE;
-				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( side), toString());
+			int off = 1 << area;
+			if (isValid( off)) {
+				mArr[area] = meta;
+				mArea |= off;
+				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( area), toString());
 				return true;
 			}
 		}
@@ -141,13 +130,15 @@ public class TileMasking extends TileEntity {
 		return false;
 	}
 
-	public int tryRemove( int side) {
+	public int tryRemove( int area) {
 		try {
-			int value = mArr[side];
-			if (value < 0) {
-				mArr[side] = 0;
-				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( side), toString());
-				return value & ~IN_USE;
+			int off = 1 << area;
+			if (!isValid( off)) {
+				int value = mArr[area];
+				mArr[area] = 0;
+				mArea &= ~off;
+				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( area), toString());
+				return value;
 			}
 		}
 		catch (IndexOutOfBoundsException ex) {
@@ -162,32 +153,67 @@ public class TileMasking extends TileEntity {
 		}
 	}
 
-	public boolean validate( int side, IMaskRenderer rndr) {
+	public boolean validate( int area, IMaskRenderer rndr) {
 		return true;
 	}
 
 	@Override
 	public void writeToNBT( NBTTagCompound nbt) {
 		super.writeToNBT( nbt);
-		int sides = 0;
-		int count = 0;
-		for (int i = MAX_SIDE - 1; i >= 0; --i) {
-			sides <<= 1;
-			if (mArr[i] < 0) {
-				sides |= 1;
-				count += 2;
+		int n = 0;
+		for (int a = mArea; a != 0; a >>>= 1) {
+			if ((a & 1) != 0) {
+				n += 2;
 			}
 		}
-		nbt.setInteger( NBT_SIDES, sides);
-		byte[] arr = new byte[count];
-		for (int i = MAX_SIDE - 1; i >= 0; --i) {
-			int value = mArr[i];
-			if (value < 0) {
-				arr[--count] = (byte) (value >> 8 & 0xFF);
-				arr[--count] = (byte) (value & 0xFF);
+		nbt.setInteger( NBT_AREAS, mArea);
+		byte[] arr = new byte[n];
+		n = 0;
+		for (int a = mArea, i = 0; a != 0; a >>>= 1, ++i) {
+			if ((a & 1) != 0) {
+				int value = mArr[i];
+				arr[n++] = (byte) (value & 0xFF);
+				arr[n++] = (byte) (value >> 8 & 0xFF);
 			}
 		}
-		nbt.setByteArray( NBT_METAS, arr);
+		nbt.setByteArray( NBT_MASKS, arr);
 		LogHelper.info( "writeToNBT: %s", nbt);
+	}
+
+	private static final class AreaIterator implements Iterator<Integer> {
+		private int mArea;
+		private int mIndex;
+
+		private AreaIterator( int area) {
+			mArea = area;
+			findNext();
+		}
+
+		private void findNext() {
+			while (mArea != 0 && (mArea & 1) == 0) {
+				mArea >>>= 1;
+				++mIndex;
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return mArea != 0;
+		}
+
+		@Override
+		public Integer next() {
+			if (mArea == 0) {
+				throw new NoSuchElementException( "No more elements");
+			}
+			Integer n = mIndex;
+			findNext();
+			return n;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException( "Removal not supported");
+		}
 	}
 }

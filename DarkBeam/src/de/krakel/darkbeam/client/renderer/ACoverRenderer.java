@@ -10,13 +10,40 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-import de.krakel.darkbeam.core.AreaType;
+import de.krakel.darkbeam.core.IArea;
+import de.krakel.darkbeam.tile.TileMasking;
 
-abstract class ACoverRenderer extends AMaskRenderer {
+abstract class ACoverRenderer extends AMaskRenderer implements IArea {
+	protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE | DU;
+	protected static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE | DU;
+	protected static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE | NS;
+	protected static final int VALID_S = S | DS | US | SW | SE | UNW | UNE | USW | USE | NS;
+	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW | WE;
+	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE | WE;
 	protected float mThickness;
 
 	protected ACoverRenderer( float thickness) {
 		mThickness = thickness;
+	}
+
+	@Override
+	public boolean isValid( TileMasking tile, int area) {
+		switch (area) {
+			case SIDE_DOWN:
+				return tile.isValid( VALID_D);
+			case SIDE_UP:
+				return tile.isValid( VALID_U);
+			case SIDE_NORTH:
+				return tile.isValid( VALID_N);
+			case SIDE_SOUTH:
+				return tile.isValid( VALID_S);
+			case SIDE_WEST:
+				return tile.isValid( VALID_W);
+			case SIDE_EAST:
+				return tile.isValid( VALID_E);
+			default:
+				return false;
+		}
 	}
 
 	@Override
@@ -34,10 +61,5 @@ abstract class ACoverRenderer extends AMaskRenderer {
 	@Override
 	public void setMaskBounds( Block blk, int side) {
 		setBounds( blk, side, mThickness + mThickness);
-	}
-
-	@Override
-	public boolean validate( int[] arr, AreaType area) {
-		return true;
 	}
 }
