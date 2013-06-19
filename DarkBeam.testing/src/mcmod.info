@@ -1,0 +1,20 @@
+[
+{
+  "modid": "DarkBeamTesting",
+  "name": "Dark Beam Testing",
+  "description": "Dark matter test on Minecraft!",
+  "version": "@VERSION@",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "krakel"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]
