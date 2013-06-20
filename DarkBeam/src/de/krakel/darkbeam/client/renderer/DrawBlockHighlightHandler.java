@@ -6,32 +6,22 @@
  */
 package de.krakel.darkbeam.client.renderer;
 
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.event.ForgeSubscribe;
 
 import org.lwjgl.opengl.GL11;
 
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.lib.BlockType;
 
 public class DrawBlockHighlightHandler {
-//	@ForgeSubscribe
-	public void onHighlightEvent( DrawBlockHighlightEvent event) {
-		if (event.currentItem != null /* && event.currentItem == ItemIds.sItemDarkeningID */
-			&& event.target.typeOfHit == EnumMovingObjectType.TILE) {
-			onHighlightEvent( event.context, event.player, event.target, event.subID, event.currentItem, event.partialTicks);
-		}
-	}
-
-	@SuppressWarnings( "static-method")
-	private void onHighlightEvent( RenderGlobal context, EntityPlayer player, MovingObjectPosition target, int subID, ItemStack stack, float ticks) {
-		World world = player.worldObj;
-		int id = world.getBlockId( target.blockX, target.blockY, target.blockZ);
+	private static void highlight( World world, int x, int y, int z) {
+		int id = world.getBlockId( x, y, z);
 		if (id > 0) {
 			GL11.glEnable( GL11.GL_BLEND);
 			GL11.glDisable( GL11.GL_TEXTURE_2D);
@@ -55,5 +45,21 @@ public class DrawBlockHighlightHandler {
 			GL11.glEnable( GL11.GL_TEXTURE_2D);
 			GL11.glDisable( GL11.GL_BLEND);
 		}
+	}
+
+	@ForgeSubscribe
+	public void onHighlightEvent( DrawBlockHighlightEvent event) {
+		if (event.currentItem == null) {
+			return;
+		}
+		if (event.target.typeOfHit != EnumMovingObjectType.TILE) {
+			return;
+		}
+		Item item = event.currentItem.getItem();
+		if (item.itemID != BlockType.Masking.getId()) {
+			return;
+		}
+		MovingObjectPosition pos = event.target;
+		highlight( event.player.worldObj, pos.blockX, pos.blockY, pos.blockZ);
 	}
 }

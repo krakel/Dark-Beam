@@ -21,7 +21,7 @@ abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
 	protected AMaskRenderer() {
 	}
 
-	protected void renderStandard( RenderBlocks rndrBlk, Block blk, int side, int meta, int x, int y, int z) {
+	protected static void renderStandard( RenderBlocks rndrBlk, Block blk, int side, int meta, int x, int y, int z) {
 		rndrBlk.setRenderBoundsFromBlock( blk);
 		Icon icon = rndrBlk.getBlockIconFromSideAndMetadata( blk, side, meta);
 		rndrBlk.setOverrideBlockTexture( icon);
@@ -29,7 +29,7 @@ abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
 		rndrBlk.clearOverrideBlockTexture();
 	}
 
-	protected void renderStandardInventory( RenderBlocks rndrBlk, Block blk, int meta) {
+	protected static void renderStandardInventory( RenderBlocks rndrBlk, Block blk, int meta) {
 		GL11.glTranslatef( -0.5F, -0.5F, -0.5F);
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
