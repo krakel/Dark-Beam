@@ -14,13 +14,22 @@ import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
+import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.IDirection;
 
-abstract class AMaskRenderer implements IMaskRenderer, IDirection {
+abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
 	protected AMaskRenderer() {
 	}
 
-	protected void renderInventoryItem( RenderBlocks rndrBlk, Block blk, int meta) {
+	protected void renderStandard( RenderBlocks rndrBlk, Block blk, int side, int meta, int x, int y, int z) {
+		rndrBlk.setRenderBoundsFromBlock( blk);
+		Icon icon = rndrBlk.getBlockIconFromSideAndMetadata( blk, side, meta);
+		rndrBlk.setOverrideBlockTexture( icon);
+		rndrBlk.renderStandardBlock( blk, x, y, z);
+		rndrBlk.clearOverrideBlockTexture();
+	}
+
+	protected void renderStandardInventory( RenderBlocks rndrBlk, Block blk, int meta) {
 		GL11.glTranslatef( -0.5F, -0.5F, -0.5F);
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
@@ -48,39 +57,5 @@ abstract class AMaskRenderer implements IMaskRenderer, IDirection {
 		rndrBlk.renderFaceXPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_EAST, meta));
 		tess.draw();
 		GL11.glTranslatef( 0.5F, 0.5F, 0.5F);
-	}
-
-	protected void renderStandard( RenderBlocks rndrBlk, Block blk, int side, int meta, int x, int y, int z) {
-		rndrBlk.setRenderBoundsFromBlock( blk);
-		Icon icon = rndrBlk.getBlockIconFromSideAndMetadata( blk, side, meta);
-		rndrBlk.setOverrideBlockTexture( icon);
-		rndrBlk.renderStandardBlock( blk, x, y, z);
-		rndrBlk.clearOverrideBlockTexture();
-	}
-
-	protected void setBounds( Block blk, int side, float thickness) {
-		switch (side) {
-			case DIR_DOWN:
-				blk.setBlockBounds( 0F, 0F, 0F, 1F, thickness, 1F);
-				break;
-			case DIR_UP:
-				blk.setBlockBounds( 0F, 1F - thickness, 0F, 1F, 1F, 1F);
-				break;
-			case DIR_NORTH:
-				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, thickness);
-				break;
-			case DIR_SOUTH:
-				blk.setBlockBounds( 0F, 0F, 1F - thickness, 1F, 1F, 1F);
-				break;
-			case DIR_WEST:
-				blk.setBlockBounds( 0F, 0F, 0F, thickness, 1F, 1F);
-				break;
-			case DIR_EAST:
-				blk.setBlockBounds( 1F - thickness, 0F, 0F, 1F, 1F, 1F);
-				break;
-			default:
-				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
-				break;
-		}
 	}
 }
