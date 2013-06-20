@@ -11,25 +11,25 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
+import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
+import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaskLib {
 	private static final Mask UNKNOWN = new Mask( -1, "unknown", new MaskCoverRenderer( 1));
 	private static Mask[] sData = new Mask[32];
 	private static Iterable<Mask> sIter = new MaskIterable();
+	private static int sNextID = 0;
 
 	private MaskLib() {
 	}
 
-	private static void add( int maskID, String name, IMaskRenderer renderer) {
+	private static void add( String name, IMaskRenderer renderer) {
 		try {
-			if (sData[maskID] == null) {
-				sData[maskID] = new Mask( maskID, name, renderer);
-			}
-			else {
-				LogHelper.warning( "mask already initialized");
-			}
+			int id = nextID();
+			sData[id] = new Mask( id, name, renderer);
 		}
 		catch (IndexOutOfBoundsException ex) {
 			LogHelper.severe( ex, "caught an exception during access mask");
@@ -60,13 +60,18 @@ public class MaskLib {
 	}
 
 	public static void init() {
-		add( 0, "cover.1", new MaskCoverRenderer( 1F));
-		add( 1, "cover.2", new MaskCoverRenderer( 2F));
-		add( 2, "cover.3", new MaskCoverRenderer( 3F));
-		add( 3, "cover.4", new MaskCoverRenderer( 4F));
-		add( 4, "cover.5", new MaskCoverRenderer( 5F));
-		add( 5, "cover.6", new MaskCoverRenderer( 6F));
-		add( 6, "cover.7", new MaskCoverRenderer( 7F));
+		for (int i = 1; i < 8; ++i) {
+			add( "cover." + i, new MaskCoverRenderer( i));
+		}
+		for (int i = 1; i < 8; ++i) {
+			add( "strip." + i, new MaskStripRenderer( i));
+		}
+		for (int i = 1; i < 8; ++i) {
+			add( "corner." + i, new MaskCornerRenderer( i));
+		}
+		for (int i = 1; i < 8; ++i) {
+			add( "hollow." + i, new MaskHollowRenderer( i));
+		}
 	}
 
 	public static boolean isValid( int maskID) {
@@ -84,6 +89,10 @@ public class MaskLib {
 
 	public static int maskID( int dmg) {
 		return dmg >> 8;
+	}
+
+	private static int nextID() {
+		return sNextID++;
 	}
 
 	public static Iterable<Mask> values() {

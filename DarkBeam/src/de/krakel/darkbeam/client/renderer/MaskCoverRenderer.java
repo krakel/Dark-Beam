@@ -21,9 +21,11 @@ public class MaskCoverRenderer extends AMaskRenderer implements IArea {
 	private static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW | WE;
 	private static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE | WE;
 	private float mThickness;
+	private float mSize;
 
 	public MaskCoverRenderer( float base) {
 		mThickness = base / 16F;
+		mSize = mThickness + mThickness;
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class MaskCoverRenderer extends AMaskRenderer implements IArea {
 
 	@Override
 	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
-		setInventoryBounds( rndrBlk, mThickness);
+		rndrBlk.setRenderBounds( 0D, 0D, 0.5D - mThickness, 1D, 1D, 0.5D + mThickness);
 		renderInventoryItem( rndrBlk, blk, meta);
 	}
 
@@ -60,6 +62,6 @@ public class MaskCoverRenderer extends AMaskRenderer implements IArea {
 
 	@Override
 	public void setMaskBounds( Block blk, int side) {
-		setBounds( blk, side, mThickness + mThickness);
+		setBounds( blk, side, mSize);
 	}
 }
