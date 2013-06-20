@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * ACoverRenderer.java
+ * MaskCover1Renderer.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -13,17 +13,17 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.tile.TileMasking;
 
-abstract class ACoverRenderer extends AMaskRenderer implements IArea {
-	protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE | DU;
-	protected static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE | DU;
-	protected static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE | NS;
-	protected static final int VALID_S = S | DS | US | SW | SE | UNW | UNE | USW | USE | NS;
-	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW | WE;
-	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE | WE;
-	protected float mThickness;
+public class MaskCoverRenderer extends AMaskRenderer implements IArea {
+	private static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE | DU;
+	private static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE | DU;
+	private static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE | NS;
+	private static final int VALID_S = S | DS | US | SW | SE | UNW | UNE | USW | USE | NS;
+	private static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW | WE;
+	private static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE | WE;
+	private float mThickness;
 
-	protected ACoverRenderer( float thickness) {
-		mThickness = thickness;
+	public MaskCoverRenderer( float base) {
+		mThickness = base / 16F;
 	}
 
 	@Override

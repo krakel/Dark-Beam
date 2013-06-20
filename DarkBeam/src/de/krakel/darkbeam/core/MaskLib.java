@@ -11,17 +11,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskCover1Renderer;
-import de.krakel.darkbeam.client.renderer.MaskCover2Renderer;
-import de.krakel.darkbeam.client.renderer.MaskCover3Renderer;
-import de.krakel.darkbeam.client.renderer.MaskCover4Renderer;
-import de.krakel.darkbeam.client.renderer.MaskCover5Renderer;
-import de.krakel.darkbeam.client.renderer.MaskCover6Renderer;
-import de.krakel.darkbeam.client.renderer.MaskCover7Renderer;
+import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaskLib {
-	private static final Mask UNKNOWN = new Mask( -1, "unknown", new MaskCover1Renderer());
+	private static final Mask UNKNOWN = new Mask( -1, "unknown", new MaskCoverRenderer( 1));
 	private static Mask[] sData = new Mask[32];
 	private static Iterable<Mask> sIter = new MaskIterable();
 
@@ -66,13 +60,13 @@ public class MaskLib {
 	}
 
 	public static void init() {
-		add( 0, "cover.1", new MaskCover1Renderer());
-		add( 1, "cover.2", new MaskCover2Renderer());
-		add( 2, "cover.3", new MaskCover3Renderer());
-		add( 3, "cover.4", new MaskCover4Renderer());
-		add( 4, "cover.5", new MaskCover5Renderer());
-		add( 5, "cover.6", new MaskCover6Renderer());
-		add( 6, "cover.7", new MaskCover7Renderer());
+		add( 0, "cover.1", new MaskCoverRenderer( 1F));
+		add( 1, "cover.2", new MaskCoverRenderer( 2F));
+		add( 2, "cover.3", new MaskCoverRenderer( 3F));
+		add( 3, "cover.4", new MaskCoverRenderer( 4F));
+		add( 4, "cover.5", new MaskCoverRenderer( 5F));
+		add( 5, "cover.6", new MaskCoverRenderer( 6F));
+		add( 6, "cover.7", new MaskCoverRenderer( 7F));
 	}
 
 	public static boolean isValid( int maskID) {
