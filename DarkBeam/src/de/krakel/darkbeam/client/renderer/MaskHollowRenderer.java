@@ -51,13 +51,15 @@ public class MaskHollowRenderer extends AMaskRenderer {
 	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
 		double min = 0.25D;
 		double max = 1D - min;
-		rndrBlk.setRenderBounds( 0D, 0D, 0.5D - mThickness, 1D, min, 0.5D + mThickness);
+		double x1 = 0.5D - mThickness;
+		double x2 = 0.5D + mThickness;
+		rndrBlk.setRenderBounds( x1, 0D, 0D, x2, min, 1D);
 		renderStandardInventory( rndrBlk, blk, meta);
-		rndrBlk.setRenderBounds( 0D, max, 0.5D - mThickness, 1D, 1D, 0.5D + mThickness);
+		rndrBlk.setRenderBounds( x1, min, 0D, x2, max, min);
 		renderStandardInventory( rndrBlk, blk, meta);
-		rndrBlk.setRenderBounds( 0D, min, 0.5D - mThickness, min, max, 0.5D + mThickness);
+		rndrBlk.setRenderBounds( x1, min, max, x2, max, 1D);
 		renderStandardInventory( rndrBlk, blk, meta);
-		rndrBlk.setRenderBounds( max, min, 0.5D - mThickness, 1D, max, 0.5D + mThickness);
+		rndrBlk.setRenderBounds( x1, max, 0D, x2, 1D, 1D);
 		renderStandardInventory( rndrBlk, blk, meta);
 	}
 

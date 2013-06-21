@@ -16,7 +16,7 @@ import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 
 public enum ItemType {
-	Darkening( "itemDarkening");
+	;
 	private static int sItemIds = 27000;
 	private int mDefault;
 	private int mId;
