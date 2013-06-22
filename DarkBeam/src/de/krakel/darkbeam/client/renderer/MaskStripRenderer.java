@@ -10,6 +10,7 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class MaskStripRenderer extends AMaskRenderer {
@@ -28,7 +29,7 @@ public class MaskStripRenderer extends AMaskRenderer {
 	private float mThickness;
 	private float mSize;
 
-	public MaskStripRenderer( float base) {
+	public MaskStripRenderer( int base) {
 		mThickness = base / 16F;
 		mSize = mThickness + mThickness;
 	}
@@ -117,6 +118,7 @@ public class MaskStripRenderer extends AMaskRenderer {
 				blk.setBlockBounds( 1F - mSize, 0F, 1F - mSize, 1F, 1F, 1F);
 				break;
 			default:
+				LogHelper.warning( "unknown area %d", area);
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
 				break;
 		}

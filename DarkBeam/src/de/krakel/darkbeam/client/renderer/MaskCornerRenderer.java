@@ -10,6 +10,7 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class MaskCornerRenderer extends AMaskRenderer {
@@ -24,7 +25,7 @@ public class MaskCornerRenderer extends AMaskRenderer {
 	private float mThickness;
 	private float mSize;
 
-	public MaskCornerRenderer( float base) {
+	public MaskCornerRenderer( int base) {
 		mThickness = base / 16F;
 		mSize = mThickness + mThickness;
 	}
@@ -93,6 +94,7 @@ public class MaskCornerRenderer extends AMaskRenderer {
 				blk.setBlockBounds( 1F - mSize, 1F - mSize, 1F - mSize, 1F, 1F, 1F);
 				break;
 			default:
+				LogHelper.warning( "unknown area %d", area);
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
 				break;
 		}
