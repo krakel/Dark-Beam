@@ -29,7 +29,7 @@ public class MaskHollowRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public int getSubHit( int side, double dx, double dy, double dz) {
+	public int getArea( int side, double dx, double dy, double dz) {
 		switch (side) {
 			case DIR_DOWN:
 				if (BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
@@ -85,7 +85,15 @@ public class MaskHollowRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public boolean isValid( TileMasking tile, int area) {
+	public int getOpposite( int side, int area) {
+		if (area == side) {
+			return area ^= 1;
+		}
+		return area;
+	}
+
+	@Override
+	public boolean isValid( int area, TileMasking tile) {
 		switch (area) {
 			case SIDE_DOWN:
 				return tile.isValid( VALID_D);
@@ -127,73 +135,73 @@ public class MaskHollowRenderer extends AMaskRenderer {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, min);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 0F, max, 1F, mSize, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 0F, min, min, mSize, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( max, 0F, min, 1F, mSize, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_UP:
 				blk.setBlockBounds( 0F, 1F - mSize, 0F, 1F, 1F, min);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 1F - mSize, max, 1F, 1F, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 1F - mSize, min, min, 1F, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( max, 1F - mSize, min, 1F, 1F, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_NORTH:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, min, mSize);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, max, 0F, 1F, 1F, mSize);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, min, 0F, min, max, mSize);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( max, min, 0F, 1F, max, mSize);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_SOUTH:
 				blk.setBlockBounds( 0F, 0F, 1F - mSize, 1F, min, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, max, 1F - mSize, 1F, 1F, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, min, 1F - mSize, min, max, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( max, min, 1F - mSize, 1F, max, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_WEST:
 				blk.setBlockBounds( 0F, 0F, 0F, mSize, 1F, min);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 0F, max, mSize, 1F, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 0F, min, mSize, min, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, max, min, mSize, 1F, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, 1F, min);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 1F - mSize, 0F, max, 1F, 1F, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 1F - mSize, 0F, min, 1F, min, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 1F - mSize, max, min, 1F, 1F, max);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			default:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 		}
 	}
 
 	@Override
-	public void setMaskBounds( Block blk, int area) {
+	public void setMaskBounds( int area, Block blk) {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);

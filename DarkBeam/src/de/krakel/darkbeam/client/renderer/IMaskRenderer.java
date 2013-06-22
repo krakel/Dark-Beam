@@ -16,13 +16,15 @@ public interface IMaskRenderer {
 	static final double BOX_BORDER_MIN = 1D / 4D;
 	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
 
-	int getSubHit( int side, double dx, double dy, double dz);
+	int getArea( int side, double dx, double dy, double dz);
 
-	boolean isValid( TileMasking tile, int area);
+	int getOpposite( int side, int area);
+
+	boolean isValid( int area, TileMasking tile);
 
 	void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
 
 	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z);
 
-	void setMaskBounds( Block blk, int area);
+	void setMaskBounds( int area, Block blk);
 }

@@ -29,7 +29,7 @@ public class MaskCoverRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public int getSubHit( int side, double dx, double dy, double dz) {
+	public int getArea( int side, double dx, double dy, double dz) {
 		switch (side) {
 			case DIR_DOWN:
 				if (BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
@@ -85,7 +85,15 @@ public class MaskCoverRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public boolean isValid( TileMasking tile, int area) {
+	public int getOpposite( int side, int area) {
+		if (area == side) {
+			return area ^= 1;
+		}
+		return area;
+	}
+
+	@Override
+	public boolean isValid( int area, TileMasking tile) {
 		switch (area) {
 			case SIDE_DOWN:
 				return tile.isValid( VALID_D);
@@ -112,12 +120,12 @@ public class MaskCoverRenderer extends AMaskRenderer {
 
 	@Override
 	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z) {
-		setMaskBounds( blk, area);
-		renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+		setMaskBounds( area, blk);
+		renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 	}
 
 	@Override
-	public void setMaskBounds( Block blk, int area) {
+	public void setMaskBounds( int area, Block blk) {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);

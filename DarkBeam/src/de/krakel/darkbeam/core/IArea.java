@@ -29,12 +29,12 @@ public interface IArea {
 	static final int EDGE_SOUTH_EAST = 17;
 	//
 	static final int CORNER_DOWN_NORTH_WEST = 18;
-	static final int CORNER_DOWN_NORTH_EAST = 19;
+	static final int CORNER_UP_NORTH_WEST = 19;
 	static final int CORNER_DOWN_SOUTH_WEST = 20;
-	static final int CORNER_DOWN_SOUTH_EAST = 21;
-	static final int CORNER_UP_NORTH_WEST = 22;
+	static final int CORNER_UP_SOUTH_WEST = 21;
+	static final int CORNER_DOWN_NORTH_EAST = 22;
 	static final int CORNER_UP_NORTH_EAST = 23;
-	static final int CORNER_UP_SOUTH_WEST = 24;
+	static final int CORNER_DOWN_SOUTH_EAST = 24;
 	static final int CORNER_UP_SOUTH_EAST = 25;
 	//
 	static final int AXIS_DOWN_UP = 26;

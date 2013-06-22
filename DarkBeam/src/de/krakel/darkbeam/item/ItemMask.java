@@ -28,6 +28,7 @@ import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.Position;
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.tile.TileMasking;
@@ -47,30 +48,28 @@ public class ItemMask extends ItemBlock {
 		return msk.isValid( tile, pos.subHit);
 	}
 
-	private static boolean canPlace( World world, MovingObjectPosition pos, ItemStack stk) {
-		return world.canPlaceEntityOnSide( BlockType.Masking.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk);
-	}
-
-	private static MovingObjectPosition getPosition( World world, MovingObjectPosition pos, ItemStack stk) {
-		MovingObjectPosition hit = new MovingObjectPosition( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, pos.hitVec);
+	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {
+		LogHelper.info( "toPlacePos: %b, %s", world.isRemote, LogHelper.toString( pos));
 		int dmg = stk.getItemDamage();
 		Mask msk = MaskLib.getForDmg( dmg);
-		hit.subHit = msk.getSubHit( pos);
-		if (canPlace( world, hit, stk)) {
-			return hit;
+		msk.updateArea( pos);
+		if (world.canPlaceEntityOnSide( BlockType.Masking.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
+			LogHelper.info( "toPlacePosA");
+			return pos;
 		}
-		if (canMaskAdd( world, hit, msk)) {
-			return hit;
+		if (canMaskAdd( world, pos, msk)) {
+			LogHelper.info( "toPlacePosB");
+			return pos;
 		}
-		if (hit.subHit == pos.sideHit) {
-			hit.subHit ^= 1;
+		Position.move( pos); // next block
+		msk.oppositeArea( pos);
+		if (world.canPlaceEntityOnSide( BlockType.Masking.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
+			LogHelper.info( "toPlacePosC");
+			return pos;
 		}
-		Position.move( hit); // next block at opposite position
-		if (canPlace( world, hit, stk)) {
-			return hit;
-		}
-		if (canMaskAdd( world, hit, msk)) {
-			return hit;
+		if (canMaskAdd( world, pos, msk)) {
+			LogHelper.info( "toPlacePosD");
+			return pos;
 		}
 		return null;
 	}
@@ -138,30 +137,30 @@ public class ItemMask extends ItemBlock {
 		}
 		int dmg = stk.getItemDamage();
 		if (MaskLib.isValidForMeta( dmg)) {
-			MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
-			if (pos == null) {
-				return false;
-			}
-//			LogHelper.info( "b: %b, %s", world.isRemote, LogHelper.toString( pos));
-			if (pos.typeOfHit != EnumMovingObjectType.TILE) {
-				return false;
-			}
-			MovingObjectPosition hit = getPosition( world, pos, stk);
+			MovingObjectPosition hit = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
 			if (hit == null) {
 				return false;
 			}
-//			LogHelper.info( "c: %b, %s", world.isRemote, LogHelper.toString( hit));
-			if (world.canPlaceEntityOnSide( stk.itemID, hit.blockX, hit.blockY, hit.blockZ, false, hit.sideHit, player, stk)) {
-				world.setBlock( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId(), 0, 2);
+//			LogHelper.info( "b: %b, %s", world.isRemote, LogHelper.toString( pos));
+			if (hit.typeOfHit != EnumMovingObjectType.TILE) {
+				return false;
 			}
-			TileMasking tile = DarkLib.getTileEntity( world, hit.blockX, hit.blockY, hit.blockZ, TileMasking.class);
-			if (tile != null && tile.tryAdd( hit.subHit, dmg)) {
+			MovingObjectPosition pos = toPlacePos( world, hit, stk);
+			if (pos == null) {
+				return false;
+			}
+//			LogHelper.info( "c: %b, %s", world.isRemote, LogHelper.toString( hit));
+			if (world.canPlaceEntityOnSide( stk.itemID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, player, stk)) {
+				world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.Masking.getId(), 0, 2);
+			}
+			TileMasking tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileMasking.class);
+			if (tile != null && tile.tryAdd( pos.subHit, dmg)) {
 //				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;
 				Material mat = MaterialLib.getForDmg( dmg);
-				DarkLib.placeNoise( world, hit.blockX, hit.blockY, hit.blockZ, mat.mBlock.blockID);
-				world.notifyBlocksOfNeighborChange( hit.blockX, hit.blockY, hit.blockZ, BlockType.Masking.getId());
-				world.markBlockForUpdate( hit.blockX, hit.blockY, hit.blockZ);
+				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, mat.mBlock.blockID);
+				world.notifyBlocksOfNeighborChange( pos.blockX, pos.blockY, pos.blockZ, BlockType.Masking.getId());
+				world.markBlockForUpdate( pos.blockX, pos.blockY, pos.blockZ);
 				return true;
 			}
 		}

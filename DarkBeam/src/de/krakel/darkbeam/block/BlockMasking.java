@@ -18,6 +18,7 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,7 +48,7 @@ public class BlockMasking extends Block {
 		double min = 0.0D;
 		MovingObjectPosition result = null;
 		for (int i : tile) {
-			tile.getMaskRenderer( i).setMaskBounds( this, i);
+			tile.getMaskRenderer( i).setMaskBounds( i, this);
 			MovingObjectPosition hit = super.collisionRayTrace( world, x, y, z, start, end);
 			if (hit != null) {
 				double dist = hit.hitVec.squareDistanceTo( start);
@@ -60,7 +61,7 @@ public class BlockMasking extends Block {
 		}
 		if (result != null) {
 			int side = result.subHit;
-			tile.getMaskRenderer( side).setMaskBounds( this, side);
+			tile.getMaskRenderer( side).setMaskBounds( side, this);
 		}
 		return result;
 	}
@@ -69,6 +70,16 @@ public class BlockMasking extends Block {
 	public TileEntity createTileEntity( World world, int meta) {
 		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
 		return new TileMasking();
+	}
+
+	@Override
+	@SideOnly( Side.CLIENT)
+	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
+		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		if (tile == null) {
+			return super.getBlockTexture( world, x, y, z, side);
+		}
+		return super.getBlockTexture( world, x, y, z, side);
 	}
 
 	@Override
