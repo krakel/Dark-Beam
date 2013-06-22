@@ -39,30 +39,37 @@ public class ItemMask extends ItemBlock {
 		setHasSubtypes( true);
 	}
 
-	private static boolean canMaskAdd( World world, MovingObjectPosition pos, ItemStack stk) {
-		if (world.canPlaceEntityOnSide( BlockType.Masking.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
-			return true;
-		}
+	private static boolean canMaskAdd( World world, MovingObjectPosition pos, Mask msk) {
 		TileMasking tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileMasking.class);
 		if (tile == null) {
 			return false;
 		}
-		int dmg = stk.getItemDamage();
-		Mask msk = MaskLib.getForDmg( dmg);
 		return msk.isValid( tile, pos.subHit);
+	}
+
+	private static boolean canPlace( World world, MovingObjectPosition pos, ItemStack stk) {
+		return world.canPlaceEntityOnSide( BlockType.Masking.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk);
 	}
 
 	private static MovingObjectPosition getPosition( World world, MovingObjectPosition pos, ItemStack stk) {
 		MovingObjectPosition hit = new MovingObjectPosition( pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, pos.hitVec);
-		hit.subHit = Position.zone( pos);
-		if (canMaskAdd( world, hit, stk)) {
+		int dmg = stk.getItemDamage();
+		Mask msk = MaskLib.getForDmg( dmg);
+		hit.subHit = msk.getSubHit( pos);
+		if (canPlace( world, hit, stk)) {
+			return hit;
+		}
+		if (canMaskAdd( world, hit, msk)) {
 			return hit;
 		}
 		if (hit.subHit == pos.sideHit) {
 			hit.subHit ^= 1;
 		}
 		Position.move( hit); // next block at opposite position
-		if (canMaskAdd( world, hit, stk)) {
+		if (canPlace( world, hit, stk)) {
+			return hit;
+		}
+		if (canMaskAdd( world, hit, msk)) {
 			return hit;
 		}
 		return null;

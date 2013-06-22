@@ -7,10 +7,12 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.util.MovingObjectPosition;
+
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.tile.TileMasking;
 
-public class Mask {
+public class Mask implements IDirection {
 	final String mName;
 	public final int mMaskID;
 	public final IMaskRenderer mRenderer;
@@ -19,6 +21,13 @@ public class Mask {
 		mMaskID = maskID;
 		mName = name;
 		mRenderer = renderer;
+	}
+
+	public int getSubHit( MovingObjectPosition pos) {
+		double dx = pos.hitVec.xCoord - pos.blockX;
+		double dy = pos.hitVec.yCoord - pos.blockY;
+		double dz = pos.hitVec.zCoord - pos.blockZ;
+		return mRenderer.getSubHit( pos.sideHit, dx, dy, dz);
 	}
 
 	public String getUnlocalizedName() {

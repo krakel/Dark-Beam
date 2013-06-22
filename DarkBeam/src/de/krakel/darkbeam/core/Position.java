@@ -52,8 +52,6 @@ public class Position implements IDirection {
 	private static final String[] NAMES = {
 		"DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST"
 	};
-	private static final double BOX_BORDER_MIN = 1D / 4D;
-	private static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
 
 	private Position() {
 	}
@@ -199,46 +197,5 @@ public class Position implements IDirection {
 		catch (IndexOutOfBoundsException ex) {
 			return "UNKNOWN" + side;
 		}
-	}
-
-	public static int zone( int side, double dx, double dy, double dz) {
-		switch (side) {
-			case DIR_DOWN:
-			case DIR_UP:
-				if (BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX && BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX) {
-					return side;
-				}
-				if (dz > dx) {
-					return dz + dx > 1D ? DIR_SOUTH : DIR_WEST;
-				}
-				return dz + dx > 1D ? DIR_EAST : DIR_NORTH;
-			case DIR_NORTH:
-			case DIR_SOUTH:
-				if (BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX && BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX) {
-					return side;
-				}
-				if (dy > dx) {
-					return dy + dx > 1D ? DIR_UP : DIR_WEST;
-				}
-				return dy + dx > 1D ? DIR_EAST : DIR_DOWN;
-			case DIR_WEST:
-			case DIR_EAST:
-				if (BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
-					return side;
-				}
-				if (dy > dz) {
-					return dy + dz > 1D ? DIR_UP : DIR_NORTH;
-				}
-				return dy + dz > 1D ? DIR_SOUTH : DIR_DOWN;
-			default:
-				return -1;
-		}
-	}
-
-	public static int zone( MovingObjectPosition pos) {
-		double dx = pos.hitVec.xCoord - pos.blockX;
-		double dy = pos.hitVec.yCoord - pos.blockY;
-		double dz = pos.hitVec.zCoord - pos.blockZ;
-		return zone( pos.sideHit, dx, dy, dz);
 	}
 }
