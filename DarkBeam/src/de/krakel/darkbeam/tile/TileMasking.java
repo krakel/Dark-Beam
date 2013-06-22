@@ -59,6 +59,11 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 		return mArea == 0;
 	}
 
+	public boolean isInUse( int area) {
+		int off = 1 << area;
+		return (mArea & off) != 0;
+	}
+
 	public boolean isValid( int value) {
 		return (mArea & value) == 0;
 	}
@@ -148,9 +153,9 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 
 	@Override
 	public void updateEntity() {
-		if (worldObj != null) {
-			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
-		}
+//		if (worldObj != null) {
+//			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
+//		}
 	}
 
 	public boolean validate( int area, IMaskRenderer rndr) {
@@ -207,6 +212,8 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 				throw new NoSuchElementException( "No more elements");
 			}
 			Integer n = mIndex;
+			mArea >>>= 1;
+			++mIndex;
 			findNext();
 			return n;
 		}

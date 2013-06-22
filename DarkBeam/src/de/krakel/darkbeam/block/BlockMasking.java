@@ -138,7 +138,8 @@ public class BlockMasking extends Block {
 				world.setBlockToAir( x, y, z);
 			}
 			else {
-				tile.updateEntity();
+				world.markBlockForUpdate( x, y, z);
+//				tile.updateEntity();
 			}
 		}
 		return false;

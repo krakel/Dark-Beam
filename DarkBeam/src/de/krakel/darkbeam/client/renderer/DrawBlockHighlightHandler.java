@@ -12,7 +12,6 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.event.ForgeSubscribe;
 
 import org.lwjgl.opengl.GL11;
 
@@ -47,7 +46,7 @@ public class DrawBlockHighlightHandler {
 		}
 	}
 
-	@ForgeSubscribe
+//	@ForgeSubscribe
 	public void onHighlightEvent( DrawBlockHighlightEvent event) {
 		if (event.currentItem == null) {
 			return;
