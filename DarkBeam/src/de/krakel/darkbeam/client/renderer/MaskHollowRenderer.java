@@ -10,25 +10,11 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-import de.krakel.darkbeam.core.Mask;
-import de.krakel.darkbeam.core.Material;
-import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class MaskHollowRenderer extends ACoverRenderer {
 	public MaskHollowRenderer( int base) {
 		super( base);
-	}
-
-	@Override
-	public String getNameForMask( Mask mask, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getMatName( mask);
-	}
-
-	@Override
-	public boolean hasMaterials() {
-		return true;
 	}
 
 	@Override

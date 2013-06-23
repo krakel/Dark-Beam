@@ -9,15 +9,11 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Mask;
-import de.krakel.darkbeam.core.Material;
-import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileMasking;
 
-public class MaskCornerRenderer extends AMaskRenderer {
+public class MaskCornerRenderer extends AStructureRenderer {
 	private static final int VALID_DNW = D | N | W | DN | DW | NW | DNW;
 	private static final int VALID_UNW = U | N | W | UN | UW | NW | UNW;
 	private static final int VALID_DSW = D | S | W | DS | DW | SW | DSW;
@@ -26,12 +22,9 @@ public class MaskCornerRenderer extends AMaskRenderer {
 	private static final int VALID_UNE = U | N | E | UN | UE | NE | UNE;
 	private static final int VALID_DSE = D | S | E | DS | DE | SE | DSE;
 	private static final int VALID_USE = U | S | E | US | UE | SE | USE;
-	private float mThickness;
-	private float mSize;
 
 	public MaskCornerRenderer( int base) {
-		mThickness = base / 16F;
-		mSize = mThickness + mThickness;
+		super( base);
 	}
 
 	@Override
@@ -70,24 +63,6 @@ public class MaskCornerRenderer extends AMaskRenderer {
 			default:
 				return -1;
 		}
-	}
-
-	@Override
-	public int getBlockID( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.mBlock.blockID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getIcon( side);
-	}
-
-	@Override
-	public String getNameForMask( Mask mask, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getMatName( mask);
 	}
 
 	@Override
@@ -156,11 +131,6 @@ public class MaskCornerRenderer extends AMaskRenderer {
 			default:
 				return area;
 		}
-	}
-
-	@Override
-	public boolean hasMaterials() {
-		return true;
 	}
 
 	@Override

@@ -9,15 +9,11 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Mask;
-import de.krakel.darkbeam.core.Material;
-import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileMasking;
 
-public class MaskStripRenderer extends AMaskRenderer {
+public class MaskStripRenderer extends AStructureRenderer {
 	private static final int VALID_DN = D | N | DN | DNW | DNE;
 	private static final int VALID_DS = D | S | DS | DSW | DSE;
 	private static final int VALID_DW = D | W | DW | DNW | DSW;
@@ -33,12 +29,9 @@ public class MaskStripRenderer extends AMaskRenderer {
 	private static final int VALID_DU = DU | NS | WE;
 	private static final int VALID_NS = DU | NS | WE;
 	private static final int VALID_WE = DU | NS | WE;
-	private float mThickness;
-	private float mSize;
 
 	public MaskStripRenderer( int base) {
-		mThickness = base / 16F;
-		mSize = mThickness + mThickness;
+		super( base);
 	}
 
 	@Override
@@ -206,24 +199,6 @@ public class MaskStripRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public int getBlockID( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.mBlock.blockID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getIcon( side);
-	}
-
-	@Override
-	public String getNameForMask( Mask mask, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getMatName( mask);
-	}
-
-	@Override
 	public int getOpposite( int side, int area) {
 		switch (side) {
 			case DIR_DOWN:
@@ -307,11 +282,6 @@ public class MaskStripRenderer extends AMaskRenderer {
 			default:
 				return area;
 		}
-	}
-
-	@Override
-	public boolean hasMaterials() {
-		return true;
 	}
 
 	@Override

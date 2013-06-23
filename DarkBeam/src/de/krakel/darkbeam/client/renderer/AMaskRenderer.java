@@ -18,7 +18,12 @@ import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.IDirection;
 
 public abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
-	protected AMaskRenderer() {
+	protected float mThickness;
+	protected float mSize;
+
+	protected AMaskRenderer( int base) {
+		mThickness = base / 16F;
+		mSize = mThickness + mThickness;
 	}
 
 	protected static void renderStandard( RenderBlocks rndrBlk, Block blk, int side, int meta, int x, int y, int z) {

@@ -8,27 +8,20 @@
 package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Mask;
-import de.krakel.darkbeam.core.Material;
-import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileMasking;
 
-abstract class ACoverRenderer extends AMaskRenderer {
+abstract class ACoverRenderer extends AStructureRenderer {
 	protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
 	protected static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
 	protected static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
 	protected static final int VALID_S = S | DS | US | SW | SE | USW | USE | USW | USE;
 	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
 	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
-	protected float mThickness;
-	protected float mSize;
 
 	protected ACoverRenderer( int base) {
-		mThickness = base / 16F;
-		mSize = mThickness + mThickness;
+		super( base);
 	}
 
 	@Override
@@ -85,24 +78,6 @@ abstract class ACoverRenderer extends AMaskRenderer {
 			default:
 				return -1;
 		}
-	}
-
-	@Override
-	public int getBlockID( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.mBlock.blockID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getIcon( side);
-	}
-
-	@Override
-	public String getNameForMask( Mask mask, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getMatName( mask);
 	}
 
 	@Override

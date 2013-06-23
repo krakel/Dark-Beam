@@ -7,19 +7,14 @@
  */
 package de.krakel.darkbeam.client.renderer;
 
-import de.krakel.darkbeam.tile.TileMasking;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+
+import de.krakel.darkbeam.tile.TileMasking;
 
 public class MaskCoverRenderer extends ACoverRenderer {
 	public MaskCoverRenderer( int base) {
 		super( base);
-	}
-
-	@Override
-	public boolean hasMaterials() {
-		return true;
 	}
 
 	@Override
