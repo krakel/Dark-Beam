@@ -10,6 +10,7 @@ package de.krakel.darkbeam.core.handler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.Insulate;
 import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Material;
@@ -45,16 +46,27 @@ public class LocalizationHandler {
 //@formatter:on
 	};
 
+	public static void addInsulate( Insulate insu) {
+		LanguageRegistry reg = LanguageRegistry.instance();
+		for (String loc : LOCALES) {
+			String insuName = getLocalization( reg, insu.getInsuKey(), loc);
+			String mskKey = MaskLib.sInsuwire.getMaskKey();
+			String mskName = getLocalization( reg, mskKey, loc);
+			String translation = DarkLib.format( mskName, insuName);
+			reg.addStringLocalization( insu.getInsuName( MaskLib.sInsuwire) + ".name", loc, translation);
+		}
+	}
+
 	public static void addMask( Material mat) {
 		LanguageRegistry reg = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
-			String matName = getLocalization( reg, mat.getUnlocalizedName(), loc);
+			String matName = getLocalization( reg, mat.getMatKey(), loc);
 			for (Mask msk : MaskLib.values()) {
 				if (msk.hasMaterials()) {
-					String mskKey = msk.getUnlocalizedName();
+					String mskKey = msk.getMaskKey();
 					String mskName = getLocalization( reg, mskKey, loc);
 					String translation = DarkLib.format( mskName, matName);
-					reg.addStringLocalization( mat.getUnlocalizedName( msk) + ".name", loc, translation);
+					reg.addStringLocalization( mat.getMatName( msk) + ".name", loc, translation);
 				}
 			}
 		}

@@ -13,7 +13,7 @@ import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public class Mask implements IDirection {
-	final String mName;
+	public final String mName;
 	public final int mMaskID;
 	public final IMaskRenderer mRenderer;
 
@@ -23,8 +23,16 @@ public class Mask implements IDirection {
 		mRenderer = renderer;
 	}
 
-	public String getUnlocalizedName() {
+	public int getBlockID( int dmg) {
+		return mRenderer.getBlockID( dmg);
+	}
+
+	public String getMaskKey() {
 		return "db.mask." + mName;
+	}
+
+	public String getMaskName( int dmg) {
+		return mRenderer.getNameForMask( this, dmg);
 	}
 
 	public boolean hasMaterials() {

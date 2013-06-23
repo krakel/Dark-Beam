@@ -14,6 +14,7 @@ import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
 import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
+import de.krakel.darkbeam.client.renderer.MaskInsulatedRenderer;
 import de.krakel.darkbeam.client.renderer.MaskRedWireRender;
 import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
@@ -24,6 +25,7 @@ public class MaskLib {
 	private static Iterable<Mask> sIter = new MaskIterable();
 	private static int sNextID = 0;
 	public static Mask sRedwire;
+	public static Mask sInsuwire;
 
 	private MaskLib() {
 	}
@@ -77,7 +79,8 @@ public class MaskLib {
 		for (int i = 1; i < 8; ++i) {
 			add( "hollow." + i, new MaskHollowRenderer( i));
 		}
-		sRedwire = add( "redwire", new MaskRedWireRender());
+		sRedwire = add( "db.redwire", new MaskRedWireRender());
+		sInsuwire = add( "insuwire", new MaskInsulatedRenderer());
 	}
 
 	public static boolean isValid( int maskID) {

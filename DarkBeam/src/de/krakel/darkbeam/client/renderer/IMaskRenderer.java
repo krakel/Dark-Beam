@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 
+import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.tile.TileMasking;
 
 public interface IMaskRenderer {
@@ -19,7 +20,11 @@ public interface IMaskRenderer {
 
 	int getArea( int side, double dx, double dy, double dz);
 
-	Icon getIcon( int side, int meta);
+	int getBlockID( int dmg);
+
+	Icon getIcon( int side, int dmg);
+
+	String getNameForMask( Mask mask, int dmg);
 
 	int getOpposite( int side, int area);
 

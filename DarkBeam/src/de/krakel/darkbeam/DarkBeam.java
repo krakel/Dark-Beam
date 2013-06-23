@@ -29,6 +29,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import de.krakel.darkbeam.block.ModBlocks;
+import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
@@ -44,12 +45,8 @@ import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
 import de.krakel.darkbeam.tile.TileMasking;
 
-@Mod(
-	modid = References.MOD_ID,
-	name = References.MOD_NAME,
-	version = References.VERSION,
-	dependencies = References.DEPENDENCIES,
-	certificateFingerprint = References.FINGERPRINT)
+@Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
+	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
 @NetworkMod( channels = {
 	References.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
@@ -67,6 +64,7 @@ public class DarkBeam {
 		sProxy.init();
 		MaskLib.init();
 		MaterialLib.init();
+		InsulateLib.init();
 	}
 
 	@FingerprintWarning

@@ -23,6 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.Insulate;
+import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Material;
@@ -109,7 +111,6 @@ public class ItemMask extends ItemBlock {
 		"rawtypes", "unchecked"
 	})
 	public void getSubItems( int blkID, CreativeTabs tab, List lst) {
-//		if (tab == ModTabs.sSubTabMask) {
 		for (Material mat : MaterialLib.values()) {
 			for (Mask msk : MaskLib.values()) {
 				if (msk.hasMaterials()) {
@@ -118,15 +119,18 @@ public class ItemMask extends ItemBlock {
 			}
 		}
 		lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, MaskLib.sRedwire.toDmg()));
+		for (Insulate insu : InsulateLib.values()) {
+			lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, insu.toDmg( MaskLib.sInsuwire)));
+		}
+//		if (tab == ModTabs.sSubTabMask) {
 //		}
 	}
 
 	@Override
 	public String getUnlocalizedName( ItemStack stk) {
 		int dmg = stk.getItemDamage();
-		Material mat = MaterialLib.getForDmg( dmg);
 		Mask msk = MaskLib.getForDmg( dmg);
-		return mat.getUnlocalizedName( msk);
+		return msk.getMaskName( dmg);
 	}
 
 	@Override
@@ -160,8 +164,8 @@ public class ItemMask extends ItemBlock {
 			if (tile != null && tile.tryAdd( pos.subHit, dmg)) {
 //				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;
-				Material mat = MaterialLib.getForDmg( dmg);
-				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, mat.mBlock.blockID);
+//				Mask mask = MaskLib.getForDmg( dmg);
+				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.Masking.getId());
 				world.notifyBlocksOfNeighborChange( pos.blockX, pos.blockY, pos.blockZ, BlockType.Masking.getId());
 				world.markBlockForUpdate( pos.blockX, pos.blockY, pos.blockZ);
 				return true;

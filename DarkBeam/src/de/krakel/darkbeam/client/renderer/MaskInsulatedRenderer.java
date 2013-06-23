@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * MaskRedWireRender.java
+ * MaskInsulatedRenderer.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -9,13 +9,16 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 
+import de.krakel.darkbeam.core.Insulate;
+import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.Mask;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileMasking;
 
-public class MaskRedWireRender extends AMaskRenderer {
+public class MaskInsulatedRenderer extends AMaskRenderer {
 	private static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
 	private static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
 	private static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
@@ -25,8 +28,8 @@ public class MaskRedWireRender extends AMaskRenderer {
 	private float mThickness;
 	private float mSize;
 
-	public MaskRedWireRender() {
-		mThickness = 1 / 16F;
+	public MaskInsulatedRenderer() {
+		mThickness = 2 / 16F;
 		mSize = mThickness + mThickness;
 	}
 
@@ -52,17 +55,19 @@ public class MaskRedWireRender extends AMaskRenderer {
 
 	@Override
 	public int getBlockID( int dmg) {
-		return Block.blockRedstone.blockID;
+		return Item.dyePowder.itemID;
 	}
 
 	@Override
 	public Icon getIcon( int side, int dmg) {
-		return Block.blockRedstone.getIcon( side, 0);
+		Insulate insu = InsulateLib.getForDmg( dmg);
+		return insu.getIcon( side);
 	}
 
 	@Override
 	public String getNameForMask( Mask mask, int dmg) {
-		return "tile." + mask.mName;
+		Insulate insu = InsulateLib.getForDmg( dmg);
+		return insu.getInsuName( mask);
 	}
 
 	@Override
@@ -126,8 +131,8 @@ public class MaskRedWireRender extends AMaskRenderer {
 		boolean isConnected = toDown || toUp || toNorth || toSouth || toWest || toEast || isSided;
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;
-		float min = isConnected ? minS : 0.3F;
-		float max = isConnected ? maxS : 0.7F;
+		float min = isConnected ? minS : 0.2F;
+		float max = isConnected ? maxS : 0.8F;
 		float minX = toWest || sideWest ? 0F : min;
 		float maxX = toEast || sideEast ? 1F : max;
 		float minY = toDown || sideDown ? 0F : min;

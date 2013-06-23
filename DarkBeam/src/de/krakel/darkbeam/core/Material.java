@@ -27,12 +27,12 @@ public class Material {
 		return mBlock.getIcon( side, mSubID);
 	}
 
-	public String getUnlocalizedName() {
-		return "db.mat." + mName;
+	public String getMatName( Mask mask) {
+		return "tile." + mask.mName + "." + mName;
 	}
 
-	public String getUnlocalizedName( Mask mask) {
-		return "tile." + mask.mName + "." + mName;
+	public String getMatKey() {
+		return "db.mat." + mName;
 	}
 
 	public int toDmg( Mask msk) {
