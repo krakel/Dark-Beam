@@ -45,7 +45,7 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 //				LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
 				int meta = tile.getMeta( i);
 				IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
-				rndr.renderSide( rndrBlk, i, blk, meta, x, y, z);
+				rndr.renderSide( rndrBlk, i, blk, meta, x, y, z, tile);
 			}
 		}
 		return false;

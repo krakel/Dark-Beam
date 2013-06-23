@@ -172,7 +172,7 @@ public class MaskCornerRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z) {
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileMasking tile) {
 		setMaskBounds( area, blk);
 		renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 	}

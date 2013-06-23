@@ -17,9 +17,11 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.helper.LogHelper;
+import de.krakel.darkbeam.lib.BlockType;
 
 public class TileMasking extends TileEntity implements Iterable<Integer> {
 	private static final String NBT_AREAS = "areas";
@@ -55,6 +57,28 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 		}
 	}
 
+	public boolean isConnect( int area, int meta, int side, int x, int y, int z) {
+		if (isConnectInner( area, meta, side)) {
+			return true;
+		}
+		if (worldObj == null) {
+			LogHelper.info( "missing world");
+			return false;
+		}
+		x += Position.relX( side);
+		y += Position.relY( side);
+		z += Position.relZ( side);
+		TileMasking tile1 = DarkLib.getTileEntity( worldObj, x, y, z, TileMasking.class);
+		if (tile1 != null && tile1.isMeta( area, meta)) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isConnectInner( int area, int meta, int side) {
+		return area != side && isMeta( side, meta);
+	}
+
 	public boolean isEmpty() {
 		return mArea == 0;
 	}
@@ -62,6 +86,41 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 	public boolean isInUse( int area) {
 		int off = 1 << area;
 		return (mArea & off) != 0;
+	}
+
+	public boolean isMeta( int area, int meta) {
+		try {
+			return mArr[area] == meta;
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return false;
+		}
+	}
+
+	public boolean isSided( int area, int meta, int side, int x, int y, int z) {
+		if (worldObj == null) {
+			LogHelper.info( "missing world");
+			return false;
+		}
+		int anti = Position.toAnti( side);
+		if (area == anti) {
+			return false;
+		}
+		x += Position.relX( side);
+		y += Position.relY( side);
+		z += Position.relZ( side);
+		int id = worldObj.getBlockId( x, y, z);
+		if (id != 0 && id != BlockType.Masking.getId()) {
+			return false;
+		}
+		x += Position.relX( area);
+		y += Position.relY( area);
+		z += Position.relZ( area);
+		TileMasking tile = DarkLib.getTileEntity( worldObj, x, y, z, TileMasking.class);
+		if (tile == null) {
+			return false;
+		}
+		return tile.isMeta( anti, meta);
 	}
 
 	public boolean isValid( int value) {

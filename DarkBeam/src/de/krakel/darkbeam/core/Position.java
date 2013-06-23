@@ -20,6 +20,9 @@ public class Position implements IDirection {
 	private static final int[] REL_Z = {
 		0, 0, -1, 1, 0, 0
 	};
+	private static final int[] ANTI = {
+		DIR_UP, DIR_DOWN, DIR_SOUTH, DIR_NORTH, DIR_EAST, DIR_WEST
+	};
 	private static final int[] ANTI_X = {
 		0, 0, 0, 0, 1, -1
 	};
@@ -166,6 +169,15 @@ public class Position implements IDirection {
 	public static int relZ( int side) {
 		try {
 			return REL_Z[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
+		}
+	}
+
+	public static int toAnti( int side) {
+		try {
+			return ANTI[side];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;

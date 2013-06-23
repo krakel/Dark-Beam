@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
@@ -80,6 +81,11 @@ public class BlockMasking extends Block {
 			return super.getBlockTexture( world, x, y, z, side);
 		}
 		return super.getBlockTexture( world, x, y, z, side);
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool( World par1World, int par2, int par3, int par4) {
+		return null;
 	}
 
 	@Override

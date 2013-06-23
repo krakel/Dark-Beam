@@ -29,7 +29,7 @@ public interface IMaskRenderer {
 
 	void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
 
-	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z);
+	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileMasking tile);
 
 	void setMaskBounds( int area, Block blk);
 }
