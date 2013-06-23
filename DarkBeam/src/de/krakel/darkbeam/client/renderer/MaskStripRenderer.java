@@ -288,6 +288,11 @@ public class MaskStripRenderer extends AMaskRenderer {
 	}
 
 	@Override
+	public boolean hasMaterials() {
+		return true;
+	}
+
+	@Override
 	public boolean isValid( int area, TileMasking tile) {
 		switch (area) {
 			case EDGE_DOWN_NORTH:

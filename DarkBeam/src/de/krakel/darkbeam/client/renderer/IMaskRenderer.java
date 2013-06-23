@@ -9,6 +9,7 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.tile.TileMasking;
 
@@ -18,7 +19,11 @@ public interface IMaskRenderer {
 
 	int getArea( int side, double dx, double dy, double dz);
 
+	Icon getIcon( int side, int meta);
+
 	int getOpposite( int side, int area);
+
+	boolean hasMaterials();
 
 	boolean isValid( int area, TileMasking tile);
 

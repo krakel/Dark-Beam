@@ -25,9 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockMaskingRender;
+import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.Material;
-import de.krakel.darkbeam.core.MaterialLib;
+import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.tile.TileMasking;
@@ -85,8 +85,8 @@ public class BlockMasking extends Block {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIcon( int side, int meta) {
-		Material mat = MaterialLib.getForDmg( meta);
-		return mat.mBlock.getIcon( side, mat.mSubID);
+		IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
+		return rndr.getIcon( side, meta);
 	}
 
 	@Override

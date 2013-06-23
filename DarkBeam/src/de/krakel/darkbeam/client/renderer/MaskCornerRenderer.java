@@ -137,6 +137,11 @@ public class MaskCornerRenderer extends AMaskRenderer {
 	}
 
 	@Override
+	public boolean hasMaterials() {
+		return true;
+	}
+
+	@Override
 	public boolean isValid( int area, TileMasking tile) {
 		switch (area) {
 			case CORNER_DOWN_NORTH_WEST:

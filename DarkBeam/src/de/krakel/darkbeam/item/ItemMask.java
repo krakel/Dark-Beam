@@ -112,9 +112,12 @@ public class ItemMask extends ItemBlock {
 //		if (tab == ModTabs.sSubTabMask) {
 		for (Material mat : MaterialLib.values()) {
 			for (Mask msk : MaskLib.values()) {
-				lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, mat.toDmg( msk)));
+				if (msk.hasMaterials()) {
+					lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, mat.toDmg( msk)));
+				}
 			}
 		}
+		lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, MaskLib.sRedwire.toDmg()));
 //		}
 	}
 

@@ -16,6 +16,11 @@ public class MaskCoverRenderer extends ACoverRenderer {
 	}
 
 	@Override
+	public boolean hasMaterials() {
+		return true;
+	}
+
+	@Override
 	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
 		rndrBlk.setRenderBounds( 0D, 0D, 0.5D - mThickness, 1D, 1D, 0.5D + mThickness);
 		renderStandardInventory( rndrBlk, blk, meta);

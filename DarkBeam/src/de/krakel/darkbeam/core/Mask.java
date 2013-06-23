@@ -27,6 +27,10 @@ public class Mask implements IDirection {
 		return "db.mask." + mName;
 	}
 
+	public boolean hasMaterials() {
+		return mRenderer.hasMaterials();
+	}
+
 	public boolean isValid( TileMasking tile, int area) {
 		return mRenderer.isValid( area, tile);
 	}

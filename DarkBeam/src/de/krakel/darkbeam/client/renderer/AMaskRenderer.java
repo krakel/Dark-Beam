@@ -16,8 +16,10 @@ import org.lwjgl.opengl.GL11;
 
 import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.Material;
+import de.krakel.darkbeam.core.MaterialLib;
 
-abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
+public abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
 	protected AMaskRenderer() {
 	}
 
@@ -57,5 +59,11 @@ abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
 		rndrBlk.renderFaceXPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_EAST, meta));
 		tess.draw();
 		GL11.glTranslatef( 0.5F, 0.5F, 0.5F);
+	}
+
+	@Override
+	public Icon getIcon( int side, int meta) {
+		Material mat = MaterialLib.getForDmg( meta);
+		return mat.getIcon( side);
 	}
 }

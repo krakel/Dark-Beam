@@ -8,6 +8,7 @@
 package de.krakel.darkbeam.core;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.Icon;
 
 public class Material {
 	public final int mMatID;
@@ -20,6 +21,10 @@ public class Material {
 		mName = name;
 		mBlock = blk;
 		mSubID = subID;
+	}
+
+	public Icon getIcon( int side) {
+		return mBlock.getIcon( side, mSubID);
 	}
 
 	public String getUnlocalizedName() {

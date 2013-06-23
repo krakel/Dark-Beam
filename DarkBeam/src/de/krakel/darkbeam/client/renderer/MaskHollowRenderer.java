@@ -16,18 +16,23 @@ public class MaskHollowRenderer extends ACoverRenderer {
 	}
 
 	@Override
+	public boolean hasMaterials() {
+		return true;
+	}
+
+	@Override
 	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
 		double min = 0.25D;
 		double max = 1D - min;
-		double x1 = 0.5D - mThickness;
-		double x2 = 0.5D + mThickness;
-		rndrBlk.setRenderBounds( x1, 0D, 0D, x2, min, 1D);
+		double xMin = 0.5D - mThickness;
+		double xMax = 0.5D + mThickness;
+		rndrBlk.setRenderBounds( xMin, 0D, 0D, xMax, min, 1D);
 		renderStandardInventory( rndrBlk, blk, meta);
-		rndrBlk.setRenderBounds( x1, min, 0D, x2, max, min);
+		rndrBlk.setRenderBounds( xMin, min, 0D, xMax, max, min);
 		renderStandardInventory( rndrBlk, blk, meta);
-		rndrBlk.setRenderBounds( x1, min, max, x2, max, 1D);
+		rndrBlk.setRenderBounds( xMin, min, max, xMax, max, 1D);
 		renderStandardInventory( rndrBlk, blk, meta);
-		rndrBlk.setRenderBounds( x1, max, 0D, x2, 1D, 1D);
+		rndrBlk.setRenderBounds( xMin, max, 0D, xMax, 1D, 1D);
 		renderStandardInventory( rndrBlk, blk, meta);
 	}
 

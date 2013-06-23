@@ -14,26 +14,31 @@ import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
 import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
+import de.krakel.darkbeam.client.renderer.MaskRedWireRender;
 import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaskLib {
 	private static final Mask UNKNOWN = new Mask( -1, "unknown", new MaskCoverRenderer( 1));
-	private static Mask[] sData = new Mask[32];
+	private static Mask[] sData = new Mask[64];
 	private static Iterable<Mask> sIter = new MaskIterable();
 	private static int sNextID = 0;
+	public static Mask sRedwire;
 
 	private MaskLib() {
 	}
 
-	private static void add( String name, IMaskRenderer renderer) {
+	private static Mask add( String name, IMaskRenderer renderer) {
 		try {
 			int id = nextID();
-			sData[id] = new Mask( id, name, renderer);
+			Mask msk = new Mask( id, name, renderer);
+			sData[id] = msk;
+			return msk;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			LogHelper.severe( ex, "caught an exception during access mask");
 		}
+		return null;
 	}
 
 	public static Mask get( int maskID) {
@@ -72,6 +77,7 @@ public class MaskLib {
 		for (int i = 1; i < 8; ++i) {
 			add( "hollow." + i, new MaskHollowRenderer( i));
 		}
+		sRedwire = add( "redwire", new MaskRedWireRender());
 	}
 
 	public static boolean isValid( int maskID) {
