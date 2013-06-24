@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.Side;
 
 import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.InsulateLib;
-import de.krakel.darkbeam.core.MaskLib;
+import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
@@ -43,7 +43,7 @@ import de.krakel.darkbeam.item.ModItems;
 import de.krakel.darkbeam.lib.References;
 import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
 @Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
 	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
@@ -60,9 +60,9 @@ public class DarkBeam {
 	@Init
 	public void init( FMLInitializationEvent event) {
 		NetworkRegistry.instance().registerGuiHandler( sInstance, sProxy);
-		GameRegistry.registerTileEntity( TileMasking.class, Strings.TE_MASK_NAME);
+		GameRegistry.registerTileEntity( TileSection.class, Strings.TE_SECTION_NAME);
 		sProxy.init();
-		MaskLib.init();
+		SectionLib.init();
 		MaterialLib.init();
 		InsulateLib.init();
 	}

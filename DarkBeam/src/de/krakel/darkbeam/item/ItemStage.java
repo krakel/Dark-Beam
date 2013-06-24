@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * java
+ * ItemSection.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -25,51 +25,51 @@ import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.Insulate;
 import de.krakel.darkbeam.core.InsulateLib;
-import de.krakel.darkbeam.core.Mask;
-import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.Position;
+import de.krakel.darkbeam.core.Section;
+import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
-public class ItemMask extends ItemBlock {
-	public ItemMask( int id) {
+public class ItemStage extends ItemBlock {
+	public ItemStage( int id) {
 		super( id);
 		setMaxDamage( 0);
 		setHasSubtypes( true);
 	}
 
-	private static boolean canMaskAdd( World world, MovingObjectPosition pos, Mask msk) {
-		TileMasking tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileMasking.class);
+	private static boolean canSectionAdd( World world, MovingObjectPosition pos, Section sec) {
+		TileSection tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileSection.class);
 		if (tile == null) {
 			return false;
 		}
-		return msk.isValid( tile, pos.subHit);
+		return sec.isValid( tile, pos.subHit);
 	}
 
 	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {
 		LogHelper.info( "toPlacePos: %b, %s", world.isRemote, LogHelper.toString( pos));
 		int dmg = stk.getItemDamage();
-		Mask msk = MaskLib.getForDmg( dmg);
-		msk.updateArea( pos);
-		if (world.canPlaceEntityOnSide( BlockType.Masking.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
+		Section sec = SectionLib.getForDmg( dmg);
+		sec.updateArea( pos);
+		if (world.canPlaceEntityOnSide( BlockType.STAGE.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
 			LogHelper.info( "toPlacePosA");
 			return pos;
 		}
-		if (canMaskAdd( world, pos, msk)) {
+		if (canSectionAdd( world, pos, sec)) {
 			LogHelper.info( "toPlacePosB");
 			return pos;
 		}
 		Position.move( pos); // next block
-		msk.oppositeArea( pos);
-		if (world.canPlaceEntityOnSide( BlockType.Masking.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
+		sec.oppositeArea( pos);
+		if (world.canPlaceEntityOnSide( BlockType.STAGE.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
 			LogHelper.info( "toPlacePosC");
 			return pos;
 		}
-		if (canMaskAdd( world, pos, msk)) {
+		if (canSectionAdd( world, pos, sec)) {
 			LogHelper.info( "toPlacePosD");
 			return pos;
 		}
@@ -91,7 +91,7 @@ public class ItemMask extends ItemBlock {
 	@Override
 	public CreativeTabs[] getCreativeTabs() {
 		return new CreativeTabs[] {
-			ModTabs.sSubTabMask
+			ModTabs.sSubTabSection
 		};
 	}
 
@@ -112,25 +112,25 @@ public class ItemMask extends ItemBlock {
 	})
 	public void getSubItems( int blkID, CreativeTabs tab, List lst) {
 		for (Material mat : MaterialLib.values()) {
-			for (Mask msk : MaskLib.values()) {
-				if (msk.hasMaterials()) {
-					lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, mat.toDmg( msk)));
+			for (Section sec : SectionLib.values()) {
+				if (sec.hasMaterials()) {
+					lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, mat.toDmg( sec)));
 				}
 			}
 		}
-		lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, MaskLib.sRedwire.toDmg()));
+		lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, SectionLib.sRedwire.toDmg()));
 		for (Insulate insu : InsulateLib.values()) {
-			lst.add( new ItemStack( BlockType.Masking.getBlock(), 1, insu.toDmg( MaskLib.sInsuwire)));
+			lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, insu.toDmg( SectionLib.sInsuwire)));
 		}
-//		if (tab == ModTabs.sSubTabMask) {
+//		if (tab == ModTabs.sSubTabSection) {
 //		}
 	}
 
 	@Override
 	public String getUnlocalizedName( ItemStack stk) {
 		int dmg = stk.getItemDamage();
-		Mask msk = MaskLib.getForDmg( dmg);
-		return msk.getMaskName( dmg);
+		Section sec = SectionLib.getForDmg( dmg);
+		return sec.getSectionName( dmg);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class ItemMask extends ItemBlock {
 			return false;
 		}
 		int dmg = stk.getItemDamage();
-		if (MaskLib.isValidForMeta( dmg)) {
+		if (SectionLib.isValidForMeta( dmg)) {
 			MovingObjectPosition hit = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
 			if (hit == null) {
 				return false;
@@ -158,15 +158,14 @@ public class ItemMask extends ItemBlock {
 			}
 //			LogHelper.info( "c: %b, %s", world.isRemote, LogHelper.toString( hit));
 			if (world.canPlaceEntityOnSide( stk.itemID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, player, stk)) {
-				world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.Masking.getId(), 0, 2);
+				world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
 			}
-			TileMasking tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileMasking.class);
+			TileSection tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileSection.class);
 			if (tile != null && tile.tryAdd( pos.subHit, dmg)) {
 //				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;
-//				Mask mask = MaskLib.getForDmg( dmg);
-				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.Masking.getId());
-				world.notifyBlocksOfNeighborChange( pos.blockX, pos.blockY, pos.blockZ, BlockType.Masking.getId());
+				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());
+				world.notifyBlocksOfNeighborChange( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());
 				world.markBlockForUpdate( pos.blockX, pos.blockY, pos.blockZ);
 				return true;
 			}

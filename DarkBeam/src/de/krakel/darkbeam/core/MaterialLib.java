@@ -31,7 +31,7 @@ public class MaterialLib {
 		try {
 			if (sData[matID] == null) {
 				sData[matID] = new Material( matID, name, blk, subID);
-				LocalizationHandler.addMask( sData[matID]);
+				LocalizationHandler.addMaterial( sData[matID]);
 			}
 			else {
 				LogHelper.warning( "material already initialized");

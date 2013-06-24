@@ -10,7 +10,7 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
 public class MaskHollowRenderer extends ACoverRenderer {
 	public MaskHollowRenderer( int base) {
@@ -34,7 +34,7 @@ public class MaskHollowRenderer extends ACoverRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileMasking tile) {
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile) {
 		float min = 0.25F;
 		float max = 1F - min;
 		switch (area) {

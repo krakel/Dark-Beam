@@ -27,15 +27,15 @@ public class Material {
 		return mBlock.getIcon( side, mSubID);
 	}
 
-	public String getMatName( Mask mask) {
-		return "tile." + mask.mName + "." + mName;
+	public String getMatName( Section sec) {
+		return "tile." + sec.mName + "." + mName;
 	}
 
 	public String getMatKey() {
 		return "db.mat." + mName;
 	}
 
-	public int toDmg( Mask msk) {
-		return msk.toDmg() | mMatID;
+	public int toDmg( Section sec) {
+		return sec.toDmg() | mMatID;
 	}
 }

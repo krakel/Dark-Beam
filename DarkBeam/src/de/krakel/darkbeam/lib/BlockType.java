@@ -16,10 +16,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
-import de.krakel.darkbeam.item.ItemMask;
+import de.krakel.darkbeam.item.ItemStage;
 
 public enum BlockType {
-	Masking( "blockMasking", ItemMask.class);
+	STAGE( "blockStage", ItemStage.class);
 	private static int sBlockIds = 2500;
 	private int mDefault;
 	private int mId;

@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * BlockMasking.java
+ * BlockSection.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -25,16 +25,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.client.renderer.BlockMaskingRender;
+import de.krakel.darkbeam.client.renderer.BlockSectionRender;
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.MaskLib;
+import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
-public class BlockMasking extends Block {
-	public BlockMasking( int id) {
+public class BlockStage extends Block {
+	public BlockStage( int id) {
 		super( id, DarkBeam.MAT_DARK);
 		setHardness( 0.1F);
 		disableStats();
@@ -42,14 +42,14 @@ public class BlockMasking extends Block {
 
 	@Override
 	public MovingObjectPosition collisionRayTrace( World world, int x, int y, int z, Vec3 start, Vec3 end) {
-		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		TileSection tile = DarkLib.getTileEntity( world, x, y, z, TileSection.class);
 		if (tile == null) {
 			return null;
 		}
 		double min = 0.0D;
 		MovingObjectPosition result = null;
 		for (int i : tile) {
-			tile.getMaskRenderer( i).setMaskBounds( i, this);
+			tile.getSectionRenderer( i).setSectionBounds( i, this);
 			MovingObjectPosition hit = super.collisionRayTrace( world, x, y, z, start, end);
 			if (hit != null) {
 				double dist = hit.hitVec.squareDistanceTo( start);
@@ -62,7 +62,7 @@ public class BlockMasking extends Block {
 		}
 		if (result != null) {
 			int side = result.subHit;
-			tile.getMaskRenderer( side).setMaskBounds( side, this);
+			tile.getSectionRenderer( side).setSectionBounds( side, this);
 		}
 		return result;
 	}
@@ -70,13 +70,13 @@ public class BlockMasking extends Block {
 	@Override
 	public TileEntity createTileEntity( World world, int meta) {
 		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
-		return new TileMasking();
+		return new TileSection();
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
-		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		TileSection tile = DarkLib.getTileEntity( world, x, y, z, TileSection.class);
 		if (tile == null) {
 			return super.getBlockTexture( world, x, y, z, side);
 		}
@@ -91,13 +91,13 @@ public class BlockMasking extends Block {
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getIcon( int side, int meta) {
-		IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
+		IMaskRenderer rndr = SectionLib.getRendererForDmg( meta);
 		return rndr.getIcon( side, meta);
 	}
 
 	@Override
 	public int getRenderType() {
-		return BlockMaskingRender.ID;
+		return BlockSectionRender.ID;
 	}
 
 	@Override
@@ -143,13 +143,13 @@ public class BlockMasking extends Block {
 		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 			return false;
 		}
-		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		TileSection tile = DarkLib.getTileEntity( world, x, y, z, TileSection.class);
 		if (tile == null) {
 			return false;
 		}
 		int meta = tile.tryRemove( pos.subHit);
 		if (meta >= 0) {
-			ItemStack stk = new ItemStack( BlockType.Masking.getBlock(), 1, meta);
+			ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), 1, meta);
 			DarkLib.dropItem( world, x, y, z, stk);
 			if (tile.isEmpty()) {
 				world.setBlockToAir( x, y, z);

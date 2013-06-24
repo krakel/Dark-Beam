@@ -10,7 +10,7 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
 abstract class ACoverRenderer extends AStructureRenderer {
 	protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
@@ -89,7 +89,7 @@ abstract class ACoverRenderer extends AStructureRenderer {
 	}
 
 	@Override
-	public boolean isValid( int area, TileMasking tile) {
+	public boolean isValid( int area, TileSection tile) {
 		switch (area) {
 			case SIDE_DOWN:
 				return tile.isValid( VALID_D);
@@ -109,7 +109,7 @@ abstract class ACoverRenderer extends AStructureRenderer {
 	}
 
 	@Override
-	public void setMaskBounds( int area, Block blk) {
+	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);

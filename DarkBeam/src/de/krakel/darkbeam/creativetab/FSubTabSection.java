@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * CreativeTabMasking.java
+ * CreativeTabSection.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -13,14 +13,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.lib.BlockType;
 
-final class FSubTabMasking extends CreativeTabs {
-	public FSubTabMasking( String label) {
+final class FSubTabSection extends CreativeTabs {
+	public FSubTabSection( String label) {
 		super( label);
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
 	public int getTabIconItemIndex() {
-		return BlockType.Masking.getId();
+		return BlockType.STAGE.getId();
 	}
 }

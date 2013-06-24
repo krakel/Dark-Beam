@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * Mask.java
+ * Section.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -10,15 +10,15 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
-public class Mask implements IDirection {
+public class Section implements IDirection {
 	public final String mName;
-	public final int mMaskID;
+	public final int mSecID;
 	public final IMaskRenderer mRenderer;
 
-	Mask( int maskID, String name, IMaskRenderer renderer) {
-		mMaskID = maskID;
+	Section( int secID, String name, IMaskRenderer renderer) {
+		mSecID = secID;
 		mName = name;
 		mRenderer = renderer;
 	}
@@ -27,19 +27,19 @@ public class Mask implements IDirection {
 		return mRenderer.getBlockID( dmg);
 	}
 
-	public String getMaskKey() {
-		return "db.mask." + mName;
+	public String getSectionKey() {
+		return "db.section." + mName;
 	}
 
-	public String getMaskName( int dmg) {
-		return mRenderer.getNameForMask( this, dmg);
+	public String getSectionName( int dmg) {
+		return mRenderer.getNameForSection( this, dmg);
 	}
 
 	public boolean hasMaterials() {
 		return mRenderer.hasMaterials();
 	}
 
-	public boolean isValid( TileMasking tile, int area) {
+	public boolean isValid( TileSection tile, int area) {
 		return mRenderer.isValid( area, tile);
 	}
 
@@ -48,7 +48,7 @@ public class Mask implements IDirection {
 	}
 
 	public int toDmg() {
-		return mMaskID << 8;
+		return mSecID << 8;
 	}
 
 	public void updateArea( MovingObjectPosition pos) {

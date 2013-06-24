@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * MaskLib.java
+ * SectionLib.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -19,51 +19,51 @@ import de.krakel.darkbeam.client.renderer.MaskRedWireRender;
 import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
-public class MaskLib {
-	private static final Mask UNKNOWN = new Mask( -1, "unknown", new MaskCoverRenderer( 1));
-	private static Mask[] sData = new Mask[64];
-	private static Iterable<Mask> sIter = new MaskIterable();
+public class SectionLib {
+	private static final Section UNKNOWN = new Section( -1, "unknown", new MaskCoverRenderer( 1));
+	private static Section[] sData = new Section[64];
+	private static Iterable<Section> sIter = new MaskIterable();
 	private static int sNextID = 0;
-	public static Mask sRedwire;
-	public static Mask sInsuwire;
+	public static Section sRedwire;
+	public static Section sInsuwire;
 
-	private MaskLib() {
+	private SectionLib() {
 	}
 
-	private static Mask add( String name, IMaskRenderer renderer) {
+	private static Section add( String name, IMaskRenderer renderer) {
 		try {
 			int id = nextID();
-			Mask msk = new Mask( id, name, renderer);
-			sData[id] = msk;
-			return msk;
+			Section sec = new Section( id, name, renderer);
+			sData[id] = sec;
+			return sec;
 		}
 		catch (IndexOutOfBoundsException ex) {
-			LogHelper.severe( ex, "caught an exception during access mask");
+			LogHelper.severe( ex, "caught an exception during access section");
 		}
 		return null;
 	}
 
-	public static Mask get( int maskID) {
+	public static Section get( int secID) {
 		try {
-			Mask mat = sData[maskID];
-			return mat != null ? mat : UNKNOWN;
+			Section sec = sData[secID];
+			return sec != null ? sec : UNKNOWN;
 		}
 		catch (IndexOutOfBoundsException ex) {
-			LogHelper.severe( ex, "illegal mask id %d", maskID);
+			LogHelper.severe( ex, "illegal section id %d", secID);
 			return UNKNOWN;
 		}
 	}
 
-	public static Mask getForDmg( int dmg) {
-		return get( maskID( dmg));
+	public static Section getForDmg( int dmg) {
+		return get( secID( dmg));
 	}
 
-	public static IMaskRenderer getRenderer( int maskID) {
-		return get( maskID).mRenderer;
+	public static IMaskRenderer getRenderer( int secID) {
+		return get( secID).mRenderer;
 	}
 
 	public static IMaskRenderer getRendererForDmg( int meta) {
-		return getRenderer( maskID( meta));
+		return getRenderer( secID( meta));
 	}
 
 	public static void init() {
@@ -83,9 +83,9 @@ public class MaskLib {
 		sInsuwire = add( "insuwire", new MaskInsulatedRenderer());
 	}
 
-	public static boolean isValid( int maskID) {
+	public static boolean isValid( int secID) {
 		try {
-			return sData[maskID] != null;
+			return sData[secID] != null;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return false;
@@ -93,29 +93,29 @@ public class MaskLib {
 	}
 
 	public static boolean isValidForMeta( int meta) {
-		return isValid( maskID( meta));
-	}
-
-	public static int maskID( int dmg) {
-		return dmg >> 8;
+		return isValid( secID( meta));
 	}
 
 	private static int nextID() {
 		return sNextID++;
 	}
 
-	public static Iterable<Mask> values() {
+	public static int secID( int dmg) {
+		return dmg >> 8;
+	}
+
+	public static Iterable<Section> values() {
 		return sIter;
 	}
 
-	private static final class MaskIterable implements Iterable<Mask> {
+	private static final class MaskIterable implements Iterable<Section> {
 		@Override
-		public Iterator<Mask> iterator() {
+		public Iterator<Section> iterator() {
 			return new MaskIterator();
 		}
 	}
 
-	private static final class MaskIterator implements Iterator<Mask> {
+	private static final class MaskIterator implements Iterator<Section> {
 		private int mCursor;
 
 		private MaskIterator() {
@@ -134,11 +134,11 @@ public class MaskLib {
 		}
 
 		@Override
-		public Mask next() {
+		public Section next() {
 			if (mCursor >= sData.length) {
 				throw new NoSuchElementException( "No more elements");
 			}
-			Mask mat = sData[mCursor++];
+			Section mat = sData[mCursor++];
 			findNext();
 			return mat;
 		}

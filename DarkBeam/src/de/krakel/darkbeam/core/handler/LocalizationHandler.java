@@ -11,8 +11,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.Insulate;
-import de.krakel.darkbeam.core.Mask;
-import de.krakel.darkbeam.core.MaskLib;
+import de.krakel.darkbeam.core.Section;
+import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.Material;
 
 public class LocalizationHandler {
@@ -50,37 +50,37 @@ public class LocalizationHandler {
 		LanguageRegistry reg = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
 			String insuName = getLocalization( reg, insu.getInsuKey(), loc);
-			String mskKey = MaskLib.sInsuwire.getMaskKey();
-			String mskName = getLocalization( reg, mskKey, loc);
-			String translation = DarkLib.format( mskName, insuName);
-			reg.addStringLocalization( insu.getInsuName( MaskLib.sInsuwire) + ".name", loc, translation);
+			String secKey = SectionLib.sInsuwire.getSectionKey();
+			String secName = getLocalization( reg, secKey, loc);
+			String translation = DarkLib.format( secName, insuName);
+			reg.addStringLocalization( insu.getInsuName( SectionLib.sInsuwire) + ".name", loc, translation);
 		}
 	}
 
-	public static void addMask( Material mat) {
+	public static void addMaterial( Material mat) {
 		LanguageRegistry reg = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
 			String matName = getLocalization( reg, mat.getMatKey(), loc);
-			for (Mask msk : MaskLib.values()) {
-				if (msk.hasMaterials()) {
-					String mskKey = msk.getMaskKey();
-					String mskName = getLocalization( reg, mskKey, loc);
-					String translation = DarkLib.format( mskName, matName);
-					reg.addStringLocalization( mat.getMatName( msk) + ".name", loc, translation);
+			for (Section sec : SectionLib.values()) {
+				if (sec.hasMaterials()) {
+					String secKey = sec.getSectionKey();
+					String secName = getLocalization( reg, secKey, loc);
+					String translation = DarkLib.format( secName, matName);
+					reg.addStringLocalization( mat.getMatName( sec) + ".name", loc, translation);
 				}
 			}
 		}
 	}
 
-	public static String getLocalization( LanguageRegistry reg, String mskKey, String loc) {
-		String mskName = reg.getStringLocalization( mskKey, loc);
-		if ("".equals( mskName)) {
-			mskName = reg.getStringLocalization( mskKey);
-			if ("".equals( mskName)) {
-				mskName = mskKey;
+	public static String getLocalization( LanguageRegistry reg, String secKey, String loc) {
+		String secName = reg.getStringLocalization( secKey, loc);
+		if ("".equals( secName)) {
+			secName = reg.getStringLocalization( secKey);
+			if ("".equals( secName)) {
+				secName = secKey;
 			}
 		}
-		return mskName;
+		return secName;
 	}
 
 	public static void preInit() {

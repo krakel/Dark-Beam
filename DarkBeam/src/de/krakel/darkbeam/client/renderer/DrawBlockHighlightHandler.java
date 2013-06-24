@@ -55,7 +55,7 @@ public class DrawBlockHighlightHandler {
 			return;
 		}
 		Item item = event.currentItem.getItem();
-		if (item.itemID != BlockType.Masking.getId()) {
+		if (item.itemID != BlockType.STAGE.getId()) {
 			return;
 		}
 		MovingObjectPosition pos = event.target;

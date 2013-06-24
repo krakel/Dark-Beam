@@ -10,7 +10,7 @@ package de.krakel.darkbeam.block;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class ModBlocks {
-	public static BlockMasking sMasking = BlockType.Masking.create( BlockMasking.class);
+	public static BlockStage sStage = BlockType.STAGE.create( BlockStage.class);
 
 	private ModBlocks() {
 	}

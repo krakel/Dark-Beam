@@ -11,7 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
 public class MaskStripRenderer extends AStructureRenderer {
 	private static final int VALID_DN = D | N | DN | DNW | DNE;
@@ -285,7 +285,7 @@ public class MaskStripRenderer extends AStructureRenderer {
 	}
 
 	@Override
-	public boolean isValid( int area, TileMasking tile) {
+	public boolean isValid( int area, TileSection tile) {
 		switch (area) {
 			case EDGE_DOWN_NORTH:
 				return tile.isValid( VALID_DN);
@@ -329,13 +329,13 @@ public class MaskStripRenderer extends AStructureRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileMasking tile) {
-		setMaskBounds( area, blk);
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile) {
+		setSectionBounds( area, blk);
 		renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 	}
 
 	@Override
-	public void setMaskBounds( int area, Block blk) {
+	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
 			case EDGE_DOWN_NORTH:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, mSize);

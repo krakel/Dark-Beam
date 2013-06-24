@@ -10,7 +10,7 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
 abstract class AWireRenderer extends AMaskRenderer {
 	private static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
@@ -58,7 +58,7 @@ abstract class AWireRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public boolean isValid( int area, TileMasking tile) {
+	public boolean isValid( int area, TileSection tile) {
 		switch (area) {
 			case SIDE_DOWN:
 				return tile.isValid( VALID_D);

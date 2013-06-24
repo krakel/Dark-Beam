@@ -11,8 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Mask;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.core.Section;
+import de.krakel.darkbeam.tile.TileSection;
 
 public interface IMaskRenderer {
 	static final double BOX_BORDER_MIN = 1D / 4D;
@@ -24,17 +24,17 @@ public interface IMaskRenderer {
 
 	Icon getIcon( int side, int dmg);
 
-	String getNameForMask( Mask mask, int dmg);
+	String getNameForSection( Section sec, int dmg);
 
 	int getOpposite( int side, int area);
 
 	boolean hasMaterials();
 
-	boolean isValid( int area, TileMasking tile);
+	boolean isValid( int area, TileSection tile);
 
 	void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
 
-	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileMasking tile);
+	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile);
 
-	void setMaskBounds( int area, Block blk);
+	void setSectionBounds( int area, Block blk);
 }

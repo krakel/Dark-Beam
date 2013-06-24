@@ -11,9 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Mask;
+import de.krakel.darkbeam.core.Section;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
 public class MaskRedWireRender extends AWireRenderer {
 	public MaskRedWireRender() {
@@ -31,12 +31,12 @@ public class MaskRedWireRender extends AWireRenderer {
 	}
 
 	@Override
-	public String getNameForMask( Mask mask, int dmg) {
-		return "tile." + mask.mName;
+	public String getNameForSection( Section sec, int dmg) {
+		return "tile." + sec.mName;
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileMasking tile) {
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile) {
 		boolean sideDown = tile.isSided( area, meta, SIDE_DOWN, x, y, z);
 		boolean sideUp = tile.isSided( area, meta, SIDE_UP, x, y, z);
 		boolean sideNorth = tile.isSided( area, meta, SIDE_NORTH, x, y, z);
@@ -142,7 +142,7 @@ public class MaskRedWireRender extends AWireRenderer {
 	}
 
 	@Override
-	public void setMaskBounds( int area, Block blk) {
+	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);

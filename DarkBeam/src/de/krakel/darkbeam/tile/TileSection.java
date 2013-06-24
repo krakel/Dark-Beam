@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * TileMasking.java
+ * TileSection.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -18,18 +18,18 @@ import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.MaskLib;
 import de.krakel.darkbeam.core.Position;
+import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
 
-public class TileMasking extends TileEntity implements Iterable<Integer> {
+public class TileSection extends TileEntity implements Iterable<Integer> {
 	private static final String NBT_AREAS = "areas";
-	private static final String NBT_MASKS = "masks";
+	private static final String NBT_SECTIONS = "secs";
 	private int mArea;
 	private int[] mArr = new int[32];
 
-	public TileMasking() {
+	public TileSection() {
 	}
 
 	public int getArea() {
@@ -43,11 +43,6 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 		return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, nbt);
 	}
 
-	public IMaskRenderer getMaskRenderer( int area) {
-		int meta = getMeta( area);
-		return MaskLib.getRendererForDmg( meta);
-	}
-
 	public int getMeta( int area) {
 		try {
 			return mArr[area];
@@ -55,6 +50,11 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
 		}
+	}
+
+	public IMaskRenderer getSectionRenderer( int area) {
+		int meta = getMeta( area);
+		return SectionLib.getRendererForDmg( meta);
 	}
 
 	public boolean isConnect( int area, int meta, int side, int x, int y, int z) {
@@ -68,7 +68,7 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 		x += Position.relX( side);
 		y += Position.relY( side);
 		z += Position.relZ( side);
-		TileMasking tile1 = DarkLib.getTileEntity( worldObj, x, y, z, TileMasking.class);
+		TileSection tile1 = DarkLib.getTileEntity( worldObj, x, y, z, TileSection.class);
 		if (tile1 != null && tile1.isMeta( area, meta)) {
 			return true;
 		}
@@ -110,13 +110,13 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 		y += Position.relY( side);
 		z += Position.relZ( side);
 		int id = worldObj.getBlockId( x, y, z);
-		if (id != 0 && id != BlockType.Masking.getId()) {
+		if (id != 0 && id != BlockType.STAGE.getId()) {
 			return false;
 		}
 		x += Position.relX( area);
 		y += Position.relY( area);
 		z += Position.relZ( area);
-		TileMasking tile = DarkLib.getTileEntity( worldObj, x, y, z, TileMasking.class);
+		TileSection tile = DarkLib.getTileEntity( worldObj, x, y, z, TileSection.class);
 		if (tile == null) {
 			return false;
 		}
@@ -142,13 +142,13 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 		LogHelper.info( "readFromNBT: %s", nbt);
 		super.readFromNBT( nbt);
 		int areas = nbt.getInteger( NBT_AREAS);
-		byte[] arr = nbt.getByteArray( NBT_MASKS);
+		byte[] arr = nbt.getByteArray( NBT_SECTIONS);
 		int n = 0;
 		for (int a = areas, i = 0; a != 0; a >>>= 1, ++i) {
 			if ((a & 1) != 0) {
 				int mat = arr[n++] & 0xFF;
-				int msk = arr[n++] & 0xFF;
-				mArr[i] = msk << 8 | mat;
+				int sec = arr[n++] & 0xFF;
+				mArr[i] = sec << 8 | mat;
 			}
 		}
 		mArea |= areas;
@@ -160,7 +160,7 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer( "TileMasking[");
+		StringBuffer sb = new StringBuffer( "TileSection[");
 		for (int a = mArea, i = 0; a != 0; a >>>= 1, ++i) {
 			if (i > 0) {
 				sb.append( ',');
@@ -240,7 +240,7 @@ public class TileMasking extends TileEntity implements Iterable<Integer> {
 				arr[n++] = (byte) (value >> 8 & 0xFF);
 			}
 		}
-		nbt.setByteArray( NBT_MASKS, arr);
+		nbt.setByteArray( NBT_SECTIONS, arr);
 		LogHelper.info( "writeToNBT: %s", nbt);
 	}
 

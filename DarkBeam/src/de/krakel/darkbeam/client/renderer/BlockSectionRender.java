@@ -14,14 +14,14 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.MaskLib;
+import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.TileMasking;
+import de.krakel.darkbeam.tile.TileSection;
 
-public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
+public class BlockSectionRender implements ISimpleBlockRenderingHandler {
 	public static final int ID = RenderingRegistry.getNextAvailableRenderId();
 
-	public BlockMaskingRender() {
+	public BlockSectionRender() {
 	}
 
 	@Override
@@ -31,20 +31,20 @@ public class BlockMaskingRender implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock( Block blk, int meta, int modelID, RenderBlocks rndrBlk) {
-		IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
+		IMaskRenderer rndr = SectionLib.getRendererForDmg( meta);
 		rndr.renderItem( rndrBlk, blk, meta);
 	}
 
 	@Override
 	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndrBlk) {
 		LogHelper.info( "renderWorldBlockA: %s", LogHelper.toString( x, y, z));
-		TileMasking tile = DarkLib.getTileEntity( world, x, y, z, TileMasking.class);
+		TileSection tile = DarkLib.getTileEntity( world, x, y, z, TileSection.class);
 		if (tile != null) {
 			LogHelper.info( "renderWorldBlockB: %s", tile);
 			for (int i : tile) {
 //				LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
 				int meta = tile.getMeta( i);
-				IMaskRenderer rndr = MaskLib.getRendererForDmg( meta);
+				IMaskRenderer rndr = SectionLib.getRendererForDmg( meta);
 				rndr.renderSide( rndrBlk, i, blk, meta, x, y, z, tile);
 			}
 		}
