@@ -15,6 +15,8 @@ import de.krakel.darkbeam.tile.TileSection;
 public interface ISection {
 	int getBlockID( int dmg);
 
+	int getID();
+
 	String getName();
 
 	IMaskRenderer getRenderer();

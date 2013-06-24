@@ -23,9 +23,20 @@ abstract class ASection implements ISection {
 		mRenderer = renderer;
 	}
 
+	protected ASection( String name, IMaskRenderer renderer) {
+		mSecID = SectionLib.nextID();
+		mName = name;
+		mRenderer = renderer;
+	}
+
 	@Override
 	public int getBlockID( int dmg) {
 		return mRenderer.getBlockID( dmg);
+	}
+
+	@Override
+	public int getID() {
+		return mSecID;
 	}
 
 	@Override

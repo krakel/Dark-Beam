@@ -20,19 +20,19 @@ import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class SectionLib {
-	private static final Section UNKNOWN = new Section( 255, "unknown", new MaskCoverRenderer( 1));
+	private static final ISection UNKNOWN = new UnknownSection();
 	private static ISection[] sData = new ISection[64];
 	private static Iterable<ISection> sIter = new MaskIterable();
 	private static int sNextID = 0;
-	public static Section sRedwire;
-	public static Section sInsuwire;
+	public static ISection sRedwire;
+	public static ISection sInsuwire;
 
 	private SectionLib() {
 	}
 
-	private static void add( Section sec) {
+	private static void add( ISection sec) {
 		try {
-			sData[sec.mSecID] = sec;
+			sData[sec.getID()] = sec;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			LogHelper.severe( ex, "caught an exception during access section");
@@ -64,20 +64,20 @@ public class SectionLib {
 
 	public static void init() {
 		for (int i = 1; i < 8; ++i) {
-			add( new Section( "cover." + i, new MaskCoverRenderer( i)));
+			add( new CoverSection( "cover." + i, new MaskCoverRenderer( i)));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new Section( "strip." + i, new MaskStripRenderer( i)));
+			add( new StripSection( "strip." + i, new MaskStripRenderer( i)));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new Section( "corner." + i, new MaskCornerRenderer( i)));
+			add( new CornerSection( "corner." + i, new MaskCornerRenderer( i)));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new Section( "hollow." + i, new MaskHollowRenderer( i)));
+			add( new HollowSection( "hollow." + i, new MaskHollowRenderer( i)));
 		}
-		sRedwire = new Section( "db.redwire", new MaskRedWireRender());
+		sRedwire = new RedWireSection( "db.redwire", new MaskRedWireRender());
 		add( sRedwire);
-		sInsuwire = new Section( "insuwire", new MaskInsulatedRenderer());
+		sInsuwire = new InsulatedSection( "insuwire", new MaskInsulatedRenderer());
 		add( sInsuwire);
 	}
 
@@ -144,6 +144,12 @@ public class SectionLib {
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException( "Removal not supported");
+		}
+	}
+
+	private static class UnknownSection extends ASection {
+		public UnknownSection() {
+			super( 255, "unknown", new MaskCoverRenderer( 1));
 		}
 	}
 }
