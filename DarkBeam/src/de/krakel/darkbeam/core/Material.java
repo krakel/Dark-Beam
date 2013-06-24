@@ -29,7 +29,7 @@ public class Material {
 	public void addStringLocalization( ISection sec, String lang) {
 		String key = getName( sec) + ".name";
 		String pattern = LocalizationHandler.getLocalization( "db.section." + sec.getName(), lang);
-		String matter = LocalizationHandler.getLocalization( "db.mat." + mName, lang);
+		String matter = LocalizationHandler.getLocalization( "db.material." + mName, lang);
 		String translation = DarkLib.format( pattern, matter);
 		LanguageRegistry.instance().addStringLocalization( key, lang, translation);
 	}

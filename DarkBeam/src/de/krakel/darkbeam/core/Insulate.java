@@ -25,7 +25,7 @@ public class Insulate {
 	public void addStringLocalization( ISection sec, String lang) {
 		String key = getName( sec) + ".name";
 		String pattern = LocalizationHandler.getLocalization( "db.section." + sec.getName(), lang);
-		String matter = LocalizationHandler.getLocalization( "db.insulated." + mName, lang);
+		String matter = LocalizationHandler.getLocalization( "db.insulate." + mName, lang);
 		String translation = DarkLib.format( pattern, matter);
 		LanguageRegistry.instance().addStringLocalization( key, lang, translation);
 	}
