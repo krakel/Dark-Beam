@@ -9,6 +9,7 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.util.MovingObjectPosition;
 
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 abstract class ASectionCover extends ASectionStructure {
@@ -19,12 +20,12 @@ abstract class ASectionCover extends ASectionStructure {
 	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
 	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 
-	ASectionCover( int secID, String name) {
-		super( secID, name);
+	ASectionCover( int secID, String name, ASectionRenderer renderer) {
+		super( secID, name, renderer);
 	}
 
-	protected ASectionCover( String name) {
-		super( name);
+	protected ASectionCover( String name, ASectionRenderer renderer) {
+		super( name, renderer);
 	}
 
 	private static int getArea( int side, double dx, double dy, double dz) {

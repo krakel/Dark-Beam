@@ -7,10 +7,8 @@
  */
 package de.krakel.darkbeam.core;
 
-import net.minecraft.block.Block;
 import net.minecraft.util.MovingObjectPosition;
 
-import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.client.renderer.SectionStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
@@ -30,11 +28,9 @@ class SectionStrip extends ASectionStructure {
 	private static final int VALID_DU = DU | NS | WE;
 	private static final int VALID_NS = DU | NS | WE;
 	private static final int VALID_WE = DU | NS | WE;
-	private SectionStripRenderer mRenderer;
 
 	public SectionStrip( int nr) {
-		super( "strip." + nr);
-		mRenderer = new SectionStripRenderer( nr);
+		super( "strip." + nr, new SectionStripRenderer( nr));
 	}
 
 	public static int getArea( int side, double dx, double dy, double dz) {
@@ -286,11 +282,6 @@ class SectionStrip extends ASectionStructure {
 	}
 
 	@Override
-	public ASectionRenderer getRenderer() {
-		return mRenderer;
-	}
-
-	@Override
 	public boolean isValid( TileStage tile, int area) {
 		switch (area) {
 			case EDGE_DOWN_NORTH:
@@ -331,11 +322,6 @@ class SectionStrip extends ASectionStructure {
 	@Override
 	public void oppositeArea( MovingObjectPosition pos) {
 		pos.subHit = getOpposite( pos.sideHit, pos.subHit);
-	}
-
-	@Override
-	public void setSectionBounds( int area, Block blk) {
-		mRenderer.setSectionBounds( area, blk);
 	}
 
 	@Override

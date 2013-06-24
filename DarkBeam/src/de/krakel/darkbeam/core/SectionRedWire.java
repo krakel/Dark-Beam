@@ -10,15 +10,11 @@ package de.krakel.darkbeam.core;
 import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.client.renderer.SectionRedWireRender;
 
 class SectionRedWire extends ASectionWire {
-	private SectionRedWireRender mRenderer;
-
 	public SectionRedWire() {
-		super( "db.redwire");
-		mRenderer = new SectionRedWireRender();
+		super( "db.redwire", new SectionRedWireRender());
 	}
 
 	@Override
@@ -32,17 +28,7 @@ class SectionRedWire extends ASectionWire {
 	}
 
 	@Override
-	public ASectionRenderer getRenderer() {
-		return mRenderer;
-	}
-
-	@Override
 	public String getSectionName( int dmg) {
 		return "tile." + getName();
-	}
-
-	@Override
-	public void setSectionBounds( int area, Block blk) {
-		mRenderer.setSectionBounds( area, blk);
 	}
 }

@@ -10,6 +10,7 @@ package de.krakel.darkbeam.core;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 abstract class ASection implements ISection, IDirection, IArea {
@@ -18,15 +19,18 @@ abstract class ASection implements ISection, IDirection, IArea {
 	public String mName;
 	public int mSecID;
 	private static int sNextID = 0;
+	private ASectionRenderer mRenderer;
 
-	ASection( int secID, String name) {
+	ASection( int secID, String name, ASectionRenderer renderer) {
 		mSecID = secID;
 		mName = name;
+		mRenderer = renderer;
 	}
 
-	protected ASection( String name) {
+	protected ASection( String name, ASectionRenderer renderer) {
 		mSecID = nextID();
 		mName = name;
+		mRenderer = renderer;
 	}
 
 	private static int nextID() {
@@ -50,12 +54,17 @@ abstract class ASection implements ISection, IDirection, IArea {
 
 	@Override
 	public void renderItem( RenderBlocks rndrBlk, Block blk, int dmg) {
-		getRenderer().renderItem( rndrBlk, blk, dmg);
+		mRenderer.renderItem( rndrBlk, blk, dmg);
 	}
 
 	@Override
 	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int dmg, int x, int y, int z, TileStage tile) {
-		getRenderer().renderSide( rndrBlk, area, blk, dmg, x, y, z, tile);
+		mRenderer.renderSide( rndrBlk, area, blk, dmg, x, y, z, tile);
+	}
+
+	@Override
+	public void setSectionBounds( int area, Block blk) {
+		mRenderer.setSectionBounds( area, blk);
 	}
 
 	@Override

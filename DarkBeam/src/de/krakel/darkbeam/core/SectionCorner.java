@@ -7,10 +7,8 @@
  */
 package de.krakel.darkbeam.core;
 
-import net.minecraft.block.Block;
 import net.minecraft.util.MovingObjectPosition;
 
-import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.client.renderer.SectionCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
@@ -23,11 +21,9 @@ class SectionCorner extends ASectionStructure {
 	private static final int VALID_UNE = U | N | E | UN | UE | NE | UNE;
 	private static final int VALID_DSE = D | S | E | DS | DE | SE | DSE;
 	private static final int VALID_USE = U | S | E | US | UE | SE | USE;
-	private SectionCornerRenderer mRenderer;
 
 	public SectionCorner( int nr) {
-		super( "corner." + nr);
-		mRenderer = new SectionCornerRenderer( nr);
+		super( "corner." + nr, new SectionCornerRenderer( nr));
 	}
 
 	private static int getArea( int side, double dx, double dy, double dz) {
@@ -135,11 +131,6 @@ class SectionCorner extends ASectionStructure {
 	}
 
 	@Override
-	public ASectionRenderer getRenderer() {
-		return mRenderer;
-	}
-
-	@Override
 	public boolean isValid( TileStage tile, int area) {
 		switch (area) {
 			case CORNER_DOWN_NORTH_WEST:
@@ -166,11 +157,6 @@ class SectionCorner extends ASectionStructure {
 	@Override
 	public void oppositeArea( MovingObjectPosition pos) {
 		pos.subHit = getOpposite( pos.sideHit, pos.subHit);
-	}
-
-	@Override
-	public void setSectionBounds( int area, Block blk) {
-		mRenderer.setSectionBounds( area, blk);
 	}
 
 	@Override

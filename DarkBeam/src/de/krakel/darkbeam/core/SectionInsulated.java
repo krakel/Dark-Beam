@@ -7,19 +7,14 @@
  */
 package de.krakel.darkbeam.core;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.client.renderer.SectionInsulatedRenderer;
 
 class SectionInsulated extends ASectionWire {
-	private SectionInsulatedRenderer mRenderer;
-
 	public SectionInsulated() {
-		super( "insuwire");
-		mRenderer = new SectionInsulatedRenderer();
+		super( "insuwire", new SectionInsulatedRenderer());
 	}
 
 	@Override
@@ -34,18 +29,8 @@ class SectionInsulated extends ASectionWire {
 	}
 
 	@Override
-	public ASectionRenderer getRenderer() {
-		return mRenderer;
-	}
-
-	@Override
 	public String getSectionName( int dmg) {
 		Insulate insu = InsulateLib.getForDmg( dmg);
 		return insu.getInsuName( this);
-	}
-
-	@Override
-	public void setSectionBounds( int area, Block blk) {
-		mRenderer.setSectionBounds( area, blk);
 	}
 }

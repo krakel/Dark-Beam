@@ -9,13 +9,15 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.util.Icon;
 
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+
 abstract class ASectionStructure extends ASection {
-	ASectionStructure( int secID, String name) {
-		super( secID, name);
+	ASectionStructure( int secID, String name, ASectionRenderer renderer) {
+		super( secID, name, renderer);
 	}
 
-	protected ASectionStructure( String name) {
-		super( name);
+	protected ASectionStructure( String name, ASectionRenderer renderer) {
+		super( name, renderer);
 	}
 
 	@Override

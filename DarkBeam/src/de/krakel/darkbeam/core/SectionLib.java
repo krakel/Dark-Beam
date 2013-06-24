@@ -10,9 +10,6 @@ package de.krakel.darkbeam.core;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import net.minecraft.block.Block;
-
-import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.client.renderer.SectionCoverRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
@@ -132,21 +129,8 @@ public class SectionLib {
 	}
 
 	private static class UnknownSection extends ASectionCover {
-		private SectionCoverRenderer mRenderer;
-
 		public UnknownSection() {
-			super( 255, "unknown");
-			mRenderer = new SectionCoverRenderer( 1);
-		}
-
-		@Override
-		public ASectionRenderer getRenderer() {
-			return mRenderer;
-		}
-
-		@Override
-		public void setSectionBounds( int area, Block blk) {
-			mRenderer.setSectionBounds( area, blk);
+			super( 255, "unknown", new SectionCoverRenderer( 1));
 		}
 	}
 }
