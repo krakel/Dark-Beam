@@ -33,7 +33,7 @@ public class BlockSectionRender implements ISimpleBlockRenderingHandler {
 	@Override
 	public void renderInventoryBlock( Block blk, int dmg, int modelID, RenderBlocks rndrBlk) {
 		ISection sec = SectionLib.getForDmg( dmg);
-		IMaskRenderer rndr = sec.getRenderer();
+		AMaskRenderer rndr = sec.getRenderer();
 		rndr.renderItem( rndrBlk, blk, dmg);
 	}
 
@@ -47,7 +47,7 @@ public class BlockSectionRender implements ISimpleBlockRenderingHandler {
 //				LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
 				int dmg = tile.getMeta( i);
 				ISection sec = SectionLib.getForDmg( dmg);
-				IMaskRenderer rndr = sec.getRenderer();
+				AMaskRenderer rndr = sec.getRenderer();
 				rndr.renderSide( rndrBlk, i, blk, dmg, x, y, z, tile);
 			}
 		}

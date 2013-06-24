@@ -18,6 +18,8 @@ import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.IDirection;
 
 public abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
+	static final double BOX_BORDER_MIN = 1D / 4D;
+	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
 	protected float mThickness;
 	protected float mSize;
 

@@ -10,7 +10,7 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 public interface ISection {
@@ -22,7 +22,7 @@ public interface ISection {
 
 	String getName();
 
-	IMaskRenderer getRenderer();
+	AMaskRenderer getRenderer();
 
 	String getSectionKey();
 

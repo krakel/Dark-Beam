@@ -16,7 +16,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Position;
@@ -53,10 +53,10 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 	}
 
-	public IMaskRenderer getSectionRenderer( int area) {
+	public ISection getSection( int area) {
 		int dmg = getMeta( area);
 		ISection sec = SectionLib.getForDmg( dmg);
-		return sec.getRenderer();
+		return sec;
 	}
 
 	public boolean isConnect( int area, int meta, int side, int x, int y, int z) {
@@ -219,7 +219,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 //		}
 	}
 
-	public boolean validate( int area, IMaskRenderer rndr) {
+	public boolean validate( int area, AMaskRenderer rndr) {
 		return true;
 	}
 

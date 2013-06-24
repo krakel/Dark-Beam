@@ -9,7 +9,6 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.helper.LogHelper;
@@ -23,11 +22,6 @@ public class MaskRedWireRender extends AWireRenderer {
 	@Override
 	public int getBlockID( int dmg) {
 		return Block.blockRedstone.blockID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		return Block.blockRedstone.getIcon( side, 0);
 	}
 
 	@Override

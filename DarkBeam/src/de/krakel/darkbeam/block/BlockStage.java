@@ -49,7 +49,8 @@ public class BlockStage extends Block {
 		double min = 0.0D;
 		MovingObjectPosition result = null;
 		for (int i : tile) {
-			tile.getSectionRenderer( i).setSectionBounds( i, this);
+			ISection sec = tile.getSection( i);
+			sec.getRenderer().setSectionBounds( i, this);
 			MovingObjectPosition hit = super.collisionRayTrace( world, x, y, z, start, end);
 			if (hit != null) {
 				double dist = hit.hitVec.squareDistanceTo( start);
@@ -62,7 +63,8 @@ public class BlockStage extends Block {
 		}
 		if (result != null) {
 			int side = result.subHit;
-			tile.getSectionRenderer( side).setSectionBounds( side, this);
+			ISection sec = tile.getSection( side);
+			sec.getRenderer().setSectionBounds( side, this);
 		}
 		return result;
 	}

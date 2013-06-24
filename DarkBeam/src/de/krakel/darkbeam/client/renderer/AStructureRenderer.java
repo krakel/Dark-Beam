@@ -7,8 +7,6 @@
  */
 package de.krakel.darkbeam.client.renderer;
 
-import net.minecraft.util.Icon;
-
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
@@ -22,12 +20,6 @@ abstract class AStructureRenderer extends AMaskRenderer {
 	public int getBlockID( int dmg) {
 		Material mat = MaterialLib.getForDmg( dmg);
 		return mat.mBlock.blockID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getIcon( side);
 	}
 
 	@Override

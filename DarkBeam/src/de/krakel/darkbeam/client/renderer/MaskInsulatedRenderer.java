@@ -10,7 +10,6 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Insulate;
@@ -26,12 +25,6 @@ public class MaskInsulatedRenderer extends AWireRenderer {
 	@Override
 	public int getBlockID( int dmg) {
 		return Item.dyePowder.itemID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		Insulate insu = InsulateLib.getForDmg( dmg);
-		return insu.getIcon( side);
 	}
 
 	@Override

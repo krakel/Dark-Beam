@@ -9,20 +9,14 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.tile.TileStage;
 
 public interface IMaskRenderer {
-	static final double BOX_BORDER_MIN = 1D / 4D;
-	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
-
 	int getArea( int side, double dx, double dy, double dz);
 
 	int getBlockID( int dmg);
-
-	Icon getIcon( int side, int dmg);
 
 	String getNameForSection( ISection sec, int dmg);
 
