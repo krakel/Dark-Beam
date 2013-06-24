@@ -30,6 +30,73 @@ public class CornerSection extends ASection {
 		mRenderer = new MaskCornerRenderer( nr);
 	}
 
+	private static int getOpposite( int side, int area) {
+		switch (side) {
+			case DIR_DOWN:
+				switch (area) {
+					case CORNER_DOWN_NORTH_WEST:
+					case CORNER_DOWN_SOUTH_WEST:
+					case CORNER_DOWN_NORTH_EAST:
+					case CORNER_DOWN_SOUTH_EAST:
+						return area + 1;
+					default:
+						return area;
+				}
+			case DIR_UP:
+				switch (area) {
+					case CORNER_UP_NORTH_WEST:
+					case CORNER_UP_SOUTH_WEST:
+					case CORNER_UP_NORTH_EAST:
+					case CORNER_UP_SOUTH_EAST:
+						return area - 1;
+					default:
+						return area;
+				}
+			case DIR_NORTH:
+				switch (area) {
+					case CORNER_DOWN_NORTH_WEST:
+					case CORNER_UP_NORTH_WEST:
+					case CORNER_DOWN_NORTH_EAST:
+					case CORNER_UP_NORTH_EAST:
+						return area + 2;
+					default:
+						return area;
+				}
+			case DIR_SOUTH:
+				switch (area) {
+					case CORNER_DOWN_SOUTH_WEST:
+					case CORNER_UP_SOUTH_WEST:
+					case CORNER_DOWN_SOUTH_EAST:
+					case CORNER_UP_SOUTH_EAST:
+						return area - 2;
+					default:
+						return area;
+				}
+			case DIR_WEST:
+				switch (area) {
+					case CORNER_DOWN_NORTH_WEST:
+					case CORNER_DOWN_SOUTH_WEST:
+					case CORNER_UP_NORTH_WEST:
+					case CORNER_UP_SOUTH_WEST:
+						return area + 4;
+					default:
+						return area;
+				}
+			case DIR_EAST:
+				switch (area) {
+					case CORNER_DOWN_NORTH_EAST:
+					case CORNER_DOWN_SOUTH_EAST:
+					case CORNER_UP_NORTH_EAST:
+					case CORNER_UP_SOUTH_EAST:
+						return area - 4;
+					default:
+						return area;
+				}
+			default:
+				return area;
+		}
+	}
+
 	@Override
 	public int getBlockID( int dmg) {
 		Material mat = MaterialLib.getForDmg( dmg);
@@ -84,7 +151,7 @@ public class CornerSection extends ASection {
 
 	@Override
 	public void oppositeArea( MovingObjectPosition pos) {
-		pos.subHit = mRenderer.getOpposite( pos.sideHit, pos.subHit);
+		pos.subHit = getOpposite( pos.sideHit, pos.subHit);
 	}
 
 	@Override

@@ -37,6 +37,91 @@ public class StripSection extends ASection {
 		mRenderer = new MaskStripRenderer( nr);
 	}
 
+	private static int getOpposite( int side, int area) {
+		switch (side) {
+			case DIR_DOWN:
+				switch (area) {
+					case EDGE_DOWN_NORTH:
+						return EDGE_UP_NORTH;
+					case EDGE_DOWN_SOUTH:
+						return EDGE_UP_SOUTH;
+					case EDGE_DOWN_WEST:
+						return EDGE_UP_WEST;
+					case EDGE_DOWN_EAST:
+						return EDGE_UP_EAST;
+					default:
+						return area;
+				}
+			case DIR_UP:
+				switch (area) {
+					case EDGE_UP_NORTH:
+						return EDGE_DOWN_NORTH;
+					case EDGE_UP_SOUTH:
+						return EDGE_DOWN_SOUTH;
+					case EDGE_UP_WEST:
+						return EDGE_DOWN_WEST;
+					case EDGE_UP_EAST:
+						return EDGE_DOWN_EAST;
+					default:
+						return area;
+				}
+			case DIR_NORTH:
+				switch (area) {
+					case EDGE_DOWN_NORTH:
+						return EDGE_DOWN_SOUTH;
+					case EDGE_UP_NORTH:
+						return EDGE_UP_SOUTH;
+					case EDGE_NORTH_WEST:
+						return EDGE_SOUTH_WEST;
+					case EDGE_NORTH_EAST:
+						return EDGE_SOUTH_EAST;
+					default:
+						return area;
+				}
+			case DIR_SOUTH:
+				switch (area) {
+					case EDGE_DOWN_SOUTH:
+						return EDGE_DOWN_NORTH;
+					case EDGE_UP_SOUTH:
+						return EDGE_UP_NORTH;
+					case EDGE_SOUTH_WEST:
+						return EDGE_NORTH_WEST;
+					case EDGE_SOUTH_EAST:
+						return EDGE_NORTH_EAST;
+					default:
+						return area;
+				}
+			case DIR_WEST:
+				switch (area) {
+					case EDGE_DOWN_WEST:
+						return EDGE_DOWN_EAST;
+					case EDGE_UP_WEST:
+						return EDGE_UP_EAST;
+					case EDGE_NORTH_WEST:
+						return EDGE_NORTH_EAST;
+					case EDGE_SOUTH_WEST:
+						return EDGE_SOUTH_EAST;
+					default:
+						return area;
+				}
+			case DIR_EAST:
+				switch (area) {
+					case EDGE_DOWN_EAST:
+						return EDGE_DOWN_WEST;
+					case EDGE_UP_EAST:
+						return EDGE_UP_WEST;
+					case EDGE_NORTH_EAST:
+						return EDGE_NORTH_WEST;
+					case EDGE_SOUTH_EAST:
+						return EDGE_SOUTH_WEST;
+					default:
+						return area;
+				}
+			default:
+				return area;
+		}
+	}
+
 	@Override
 	public int getBlockID( int dmg) {
 		Material mat = MaterialLib.getForDmg( dmg);
@@ -105,7 +190,7 @@ public class StripSection extends ASection {
 
 	@Override
 	public void oppositeArea( MovingObjectPosition pos) {
-		pos.subHit = mRenderer.getOpposite( pos.sideHit, pos.subHit);
+		pos.subHit = getOpposite( pos.sideHit, pos.subHit);
 	}
 
 	@Override

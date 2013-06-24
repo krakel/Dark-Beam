@@ -73,14 +73,6 @@ abstract class ACoverRenderer extends AStructureRenderer {
 	}
 
 	@Override
-	public int getOpposite( int side, int area) {
-		if (area == side) {
-			return area ^= 1;
-		}
-		return area;
-	}
-
-	@Override
 	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
 			case SIDE_DOWN:

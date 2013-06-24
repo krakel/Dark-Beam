@@ -202,7 +202,12 @@ public class SectionLib {
 
 		@Override
 		public void oppositeArea( MovingObjectPosition pos) {
-			pos.subHit = mRenderer.getOpposite( pos.sideHit, pos.subHit);
+			if (pos.subHit == pos.sideHit) {
+				pos.subHit = pos.subHit ^= 1;
+			}
+			else {
+				pos.subHit = pos.subHit;
+			}
 		}
 
 		@Override

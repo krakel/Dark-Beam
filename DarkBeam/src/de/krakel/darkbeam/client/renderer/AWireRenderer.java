@@ -36,14 +36,6 @@ abstract class AWireRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public int getOpposite( int side, int area) {
-		if (area == side) {
-			return area ^= 1;
-		}
-		return area;
-	}
-
-	@Override
 	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
 		double minS = 0.5D - mThickness;
 		double maxS = 0.5D + mThickness;
