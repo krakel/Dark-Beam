@@ -9,7 +9,7 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Section;
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 
@@ -31,7 +31,7 @@ abstract class AStructureRenderer extends AMaskRenderer {
 	}
 
 	@Override
-	public String getNameForSection( Section sec, int dmg) {
+	public String getNameForSection( ISection sec, int dmg) {
 		Material mat = MaterialLib.getForDmg( dmg);
 		return mat.getMatName( sec);
 	}

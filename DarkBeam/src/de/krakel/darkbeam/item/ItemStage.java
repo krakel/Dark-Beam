@@ -23,12 +23,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Insulate;
 import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.Position;
-import de.krakel.darkbeam.core.Section;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
@@ -42,7 +42,7 @@ public class ItemStage extends ItemBlock {
 		setHasSubtypes( true);
 	}
 
-	private static boolean canSectionAdd( World world, MovingObjectPosition pos, Section sec) {
+	private static boolean canSectionAdd( World world, MovingObjectPosition pos, ISection sec) {
 		TileSection tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileSection.class);
 		if (tile == null) {
 			return false;
@@ -53,7 +53,7 @@ public class ItemStage extends ItemBlock {
 	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {
 		LogHelper.info( "toPlacePos: %b, %s", world.isRemote, LogHelper.toString( pos));
 		int dmg = stk.getItemDamage();
-		Section sec = SectionLib.getForDmg( dmg);
+		ISection sec = SectionLib.getForDmg( dmg);
 		sec.updateArea( pos);
 		if (world.canPlaceEntityOnSide( BlockType.STAGE.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
 			LogHelper.info( "toPlacePosA");
@@ -112,7 +112,7 @@ public class ItemStage extends ItemBlock {
 	})
 	public void getSubItems( int blkID, CreativeTabs tab, List lst) {
 		for (Material mat : MaterialLib.values()) {
-			for (Section sec : SectionLib.values()) {
+			for (ISection sec : SectionLib.values()) {
 				if (sec.hasMaterials()) {
 					lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, mat.toDmg( sec)));
 				}
@@ -129,7 +129,7 @@ public class ItemStage extends ItemBlock {
 	@Override
 	public String getUnlocalizedName( ItemStack stk) {
 		int dmg = stk.getItemDamage();
-		Section sec = SectionLib.getForDmg( dmg);
+		ISection sec = SectionLib.getForDmg( dmg);
 		return sec.getSectionName( dmg);
 	}
 

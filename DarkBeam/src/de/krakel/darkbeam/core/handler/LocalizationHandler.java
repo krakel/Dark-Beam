@@ -10,10 +10,10 @@ package de.krakel.darkbeam.core.handler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Insulate;
-import de.krakel.darkbeam.core.Section;
-import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.Material;
+import de.krakel.darkbeam.core.SectionLib;
 
 public class LocalizationHandler {
 	private static final String LANG_LOCATION = "/mods/darkbeam/lang/";
@@ -61,7 +61,7 @@ public class LocalizationHandler {
 		LanguageRegistry reg = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
 			String matName = getLocalization( reg, mat.getMatKey(), loc);
-			for (Section sec : SectionLib.values()) {
+			for (ISection sec : SectionLib.values()) {
 				if (sec.hasMaterials()) {
 					String secKey = sec.getSectionKey();
 					String secName = getLocalization( reg, secKey, loc);

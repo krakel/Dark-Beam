@@ -11,7 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Section;
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.tile.TileSection;
 
 public interface IMaskRenderer {
@@ -24,7 +24,7 @@ public interface IMaskRenderer {
 
 	Icon getIcon( int side, int dmg);
 
-	String getNameForSection( Section sec, int dmg);
+	String getNameForSection( ISection sec, int dmg);
 
 	int getOpposite( int side, int area);
 

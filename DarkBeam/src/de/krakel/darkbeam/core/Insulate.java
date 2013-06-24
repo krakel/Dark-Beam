@@ -27,11 +27,11 @@ public class Insulate {
 		return "db.insulated." + mName;
 	}
 
-	public String getInsuName( Section sec) {
-		return "tile." + sec.mName + "." + mName;
+	public String getInsuName( ISection sec) {
+		return "tile." + sec.getName() + "." + mName;
 	}
 
-	public int toDmg( Section sec) {
+	public int toDmg( ISection sec) {
 		return sec.toDmg() | mInsuID;
 	}
 }

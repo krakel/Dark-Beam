@@ -12,9 +12,9 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Insulate;
 import de.krakel.darkbeam.core.InsulateLib;
-import de.krakel.darkbeam.core.Section;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileSection;
 
@@ -35,7 +35,7 @@ public class MaskInsulatedRenderer extends AWireRenderer {
 	}
 
 	@Override
-	public String getNameForSection( Section sec, int dmg) {
+	public String getNameForSection( ISection sec, int dmg) {
 		Insulate insu = InsulateLib.getForDmg( dmg);
 		return insu.getInsuName( sec);
 	}

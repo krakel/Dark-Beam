@@ -20,9 +20,9 @@ import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class SectionLib {
-	private static final Section UNKNOWN = new Section( -1, "unknown", new MaskCoverRenderer( 1));
-	private static Section[] sData = new Section[64];
-	private static Iterable<Section> sIter = new MaskIterable();
+	private static final Section UNKNOWN = new Section( 255, "unknown", new MaskCoverRenderer( 1));
+	private static ISection[] sData = new ISection[64];
+	private static Iterable<ISection> sIter = new MaskIterable();
 	private static int sNextID = 0;
 	public static Section sRedwire;
 	public static Section sInsuwire;
@@ -30,22 +30,18 @@ public class SectionLib {
 	private SectionLib() {
 	}
 
-	private static Section add( String name, IMaskRenderer renderer) {
+	private static void add( Section sec) {
 		try {
-			int id = nextID();
-			Section sec = new Section( id, name, renderer);
-			sData[id] = sec;
-			return sec;
+			sData[sec.mSecID] = sec;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			LogHelper.severe( ex, "caught an exception during access section");
 		}
-		return null;
 	}
 
-	public static Section get( int secID) {
+	public static ISection get( int secID) {
 		try {
-			Section sec = sData[secID];
+			ISection sec = sData[secID];
 			return sec != null ? sec : UNKNOWN;
 		}
 		catch (IndexOutOfBoundsException ex) {
@@ -54,12 +50,12 @@ public class SectionLib {
 		}
 	}
 
-	public static Section getForDmg( int dmg) {
+	public static ISection getForDmg( int dmg) {
 		return get( secID( dmg));
 	}
 
 	public static IMaskRenderer getRenderer( int secID) {
-		return get( secID).mRenderer;
+		return get( secID).getRenderer();
 	}
 
 	public static IMaskRenderer getRendererForDmg( int meta) {
@@ -68,19 +64,21 @@ public class SectionLib {
 
 	public static void init() {
 		for (int i = 1; i < 8; ++i) {
-			add( "cover." + i, new MaskCoverRenderer( i));
+			add( new Section( "cover." + i, new MaskCoverRenderer( i)));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( "strip." + i, new MaskStripRenderer( i));
+			add( new Section( "strip." + i, new MaskStripRenderer( i)));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( "corner." + i, new MaskCornerRenderer( i));
+			add( new Section( "corner." + i, new MaskCornerRenderer( i)));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( "hollow." + i, new MaskHollowRenderer( i));
+			add( new Section( "hollow." + i, new MaskHollowRenderer( i)));
 		}
-		sRedwire = add( "db.redwire", new MaskRedWireRender());
-		sInsuwire = add( "insuwire", new MaskInsulatedRenderer());
+		sRedwire = new Section( "db.redwire", new MaskRedWireRender());
+		add( sRedwire);
+		sInsuwire = new Section( "insuwire", new MaskInsulatedRenderer());
+		add( sInsuwire);
 	}
 
 	public static boolean isValid( int secID) {
@@ -96,7 +94,7 @@ public class SectionLib {
 		return isValid( secID( meta));
 	}
 
-	private static int nextID() {
+	public static int nextID() {
 		return sNextID++;
 	}
 
@@ -104,18 +102,18 @@ public class SectionLib {
 		return dmg >> 8;
 	}
 
-	public static Iterable<Section> values() {
+	public static Iterable<ISection> values() {
 		return sIter;
 	}
 
-	private static final class MaskIterable implements Iterable<Section> {
+	private static final class MaskIterable implements Iterable<ISection> {
 		@Override
-		public Iterator<Section> iterator() {
+		public Iterator<ISection> iterator() {
 			return new MaskIterator();
 		}
 	}
 
-	private static final class MaskIterator implements Iterator<Section> {
+	private static final class MaskIterator implements Iterator<ISection> {
 		private int mCursor;
 
 		private MaskIterator() {
@@ -134,11 +132,11 @@ public class SectionLib {
 		}
 
 		@Override
-		public Section next() {
+		public ISection next() {
 			if (mCursor >= sData.length) {
 				throw new NoSuchElementException( "No more elements");
 			}
-			Section mat = sData[mCursor++];
+			ISection mat = sData[mCursor++];
 			findNext();
 			return mat;
 		}

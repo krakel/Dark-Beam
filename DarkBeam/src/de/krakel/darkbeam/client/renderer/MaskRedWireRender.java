@@ -11,7 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.core.Section;
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileSection;
 
@@ -31,8 +31,8 @@ public class MaskRedWireRender extends AWireRenderer {
 	}
 
 	@Override
-	public String getNameForSection( Section sec, int dmg) {
-		return "tile." + sec.mName;
+	public String getNameForSection( ISection sec, int dmg) {
+		return "tile." + sec.getName();
 	}
 
 	@Override
