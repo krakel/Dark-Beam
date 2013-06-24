@@ -113,7 +113,7 @@ public class ItemStage extends ItemBlock {
 	public void getSubItems( int blkID, CreativeTabs tab, List lst) {
 		for (Material mat : MaterialLib.values()) {
 			for (ISection sec : SectionLib.values()) {
-				if (sec.hasMaterials()) {
+				if (sec.isStructure()) {
 					lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, mat.toDmg( sec)));
 				}
 			}

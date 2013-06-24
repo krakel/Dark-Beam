@@ -31,6 +31,6 @@ class SectionInsulated extends ASectionWire {
 	@Override
 	public String getSectionName( int dmg) {
 		Insulate insu = InsulateLib.getForDmg( dmg);
-		return insu.getInsuName( this);
+		return insu.getName( this);
 	}
 }

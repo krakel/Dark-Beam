@@ -9,7 +9,6 @@ package de.krakel.darkbeam.core.handler;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Insulate;
 import de.krakel.darkbeam.core.Material;
@@ -47,40 +46,31 @@ public class LocalizationHandler {
 	};
 
 	public static void addInsulate( Insulate insu) {
-		LanguageRegistry reg = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
-			String insuName = getLocalization( reg, insu.getInsuKey(), loc);
-			String secKey = SectionLib.sInsuwire.getSectionKey();
-			String secName = getLocalization( reg, secKey, loc);
-			String translation = DarkLib.format( secName, insuName);
-			reg.addStringLocalization( insu.getInsuName( SectionLib.sInsuwire) + ".name", loc, translation);
+			insu.addStringLocalization( SectionLib.sInsuwire, loc);
 		}
 	}
 
 	public static void addMaterial( Material mat) {
-		LanguageRegistry reg = LanguageRegistry.instance();
 		for (String loc : LOCALES) {
-			String matName = getLocalization( reg, mat.getMatKey(), loc);
 			for (ISection sec : SectionLib.values()) {
-				if (sec.hasMaterials()) {
-					String secKey = sec.getSectionKey();
-					String secName = getLocalization( reg, secKey, loc);
-					String translation = DarkLib.format( secName, matName);
-					reg.addStringLocalization( mat.getMatName( sec) + ".name", loc, translation);
+				if (sec.isStructure()) {
+					mat.addStringLocalization( sec, loc);
 				}
 			}
 		}
 	}
 
-	public static String getLocalization( LanguageRegistry reg, String secKey, String loc) {
-		String secName = reg.getStringLocalization( secKey, loc);
-		if ("".equals( secName)) {
-			secName = reg.getStringLocalization( secKey);
-			if ("".equals( secName)) {
-				secName = secKey;
+	public static String getLocalization( String key, String loc) {
+		LanguageRegistry reg = LanguageRegistry.instance();
+		String result = reg.getStringLocalization( key, loc);
+		if ("".equals( result)) {
+			result = reg.getStringLocalization( key);
+			if ("".equals( result)) {
+				result = key;
 			}
 		}
-		return secName;
+		return result;
 	}
 
 	public static void preInit() {

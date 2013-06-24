@@ -23,11 +23,9 @@ public interface ISection {
 
 	String getName();
 
-	String getSectionKey();
-
 	String getSectionName( int dmg);
 
-	boolean hasMaterials();
+	boolean isStructure();
 
 	boolean isValid( TileStage tile, int area);
 

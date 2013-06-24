@@ -13,12 +13,12 @@ import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 abstract class ASectionWire extends ASection {
-	protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
-	protected static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
-	protected static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
-	protected static final int VALID_S = S | DS | US | SW | SE | USW | USE | USW | USE;
-	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
-	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
+	private static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
+	private static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
+	private static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
+	private static final int VALID_S = S | DS | US | SW | SE | USW | USE | USW | USE;
+	private static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
+	private static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 
 	protected ASectionWire( String name, ASectionRenderer renderer) {
 		super( name, renderer);
@@ -44,7 +44,7 @@ abstract class ASectionWire extends ASection {
 	}
 
 	@Override
-	public boolean hasMaterials() {
+	public boolean isStructure() {
 		return false;
 	}
 

@@ -9,6 +9,9 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+
+import de.krakel.darkbeam.core.handler.LocalizationHandler;
 
 public class Material {
 	public final int mMatID;
@@ -23,15 +26,19 @@ public class Material {
 		mSubID = subID;
 	}
 
+	public void addStringLocalization( ISection sec, String lang) {
+		String key = getName( sec) + ".name";
+		String pattern = LocalizationHandler.getLocalization( "db.section." + sec.getName(), lang);
+		String matter = LocalizationHandler.getLocalization( "db.mat." + mName, lang);
+		String translation = DarkLib.format( pattern, matter);
+		LanguageRegistry.instance().addStringLocalization( key, lang, translation);
+	}
+
 	public Icon getIcon( int side) {
 		return mBlock.getIcon( side, mSubID);
 	}
 
-	public String getMatKey() {
-		return "db.mat." + mName;
-	}
-
-	public String getMatName( ISection sec) {
+	public String getName( ISection sec) {
 		return "tile." + sec.getName() + "." + mName;
 	}
 

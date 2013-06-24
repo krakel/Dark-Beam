@@ -16,8 +16,8 @@ import de.krakel.darkbeam.tile.TileStage;
 abstract class ASection implements ISection, IDirection, IArea {
 	static final double BOX_BORDER_MIN = 1D / 4D;
 	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
-	public String mName;
-	public int mSecID;
+	protected String mName;
+	private int mSecID;
 	private static int sNextID = 0;
 	private ASectionRenderer mRenderer;
 
@@ -45,11 +45,6 @@ abstract class ASection implements ISection, IDirection, IArea {
 	@Override
 	public String getName() {
 		return mName;
-	}
-
-	@Override
-	public String getSectionKey() {
-		return "db.section." + mName;
 	}
 
 	@Override

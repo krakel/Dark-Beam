@@ -35,11 +35,11 @@ abstract class ASectionStructure extends ASection {
 	@Override
 	public String getSectionName( int dmg) {
 		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getMatName( this);
+		return mat.getName( this);
 	}
 
 	@Override
-	public boolean hasMaterials() {
+	public boolean isStructure() {
 		return true;
 	}
 }

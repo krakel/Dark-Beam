@@ -29,6 +29,6 @@ class SectionRedWire extends ASectionWire {
 
 	@Override
 	public String getSectionName( int dmg) {
-		return "tile." + getName();
+		return "tile." + mName;
 	}
 }
