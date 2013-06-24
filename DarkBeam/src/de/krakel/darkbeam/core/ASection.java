@@ -18,11 +18,6 @@ abstract class ASection implements ISection, IDirection, IArea {
 		mName = name;
 	}
 
-	protected ASection( String name) {
-		mSecID = SectionLib.nextID();
-		mName = name;
-	}
-
 	@Override
 	public int getID() {
 		return mSecID;

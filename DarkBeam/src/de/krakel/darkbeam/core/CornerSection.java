@@ -7,14 +7,13 @@
  */
 package de.krakel.darkbeam.core;
 
-import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class CornerSection extends ASection {
+public class CornerSection extends AStructureSection {
 	private static final int VALID_DNW = D | N | W | DN | DW | NW | DNW;
 	private static final int VALID_UNW = U | N | W | UN | UW | NW | UNW;
 	private static final int VALID_DSW = D | S | W | DS | DW | SW | DSW;
@@ -26,7 +25,7 @@ public class CornerSection extends ASection {
 	private MaskCornerRenderer mRenderer;
 
 	public CornerSection( int nr) {
-		super( "corner." + nr);
+		super( SectionLib.nextID(), "corner." + nr);
 		mRenderer = new MaskCornerRenderer( nr);
 	}
 
@@ -135,31 +134,8 @@ public class CornerSection extends ASection {
 	}
 
 	@Override
-	public int getBlockID( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.mBlock.blockID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getIcon( side);
-	}
-
-	@Override
 	public AMaskRenderer getRenderer() {
 		return mRenderer;
-	}
-
-	@Override
-	public String getSectionName( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getMatName( this);
-	}
-
-	@Override
-	public boolean hasMaterials() {
-		return true;
 	}
 
 	@Override

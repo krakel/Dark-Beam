@@ -7,14 +7,13 @@
  */
 package de.krakel.darkbeam.core;
 
-import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class StripSection extends ASection {
+public class StripSection extends AStructureSection {
 	private static final int VALID_DN = D | N | DN | DNW | DNE;
 	private static final int VALID_DS = D | S | DS | DSW | DSE;
 	private static final int VALID_DW = D | W | DW | DNW | DSW;
@@ -33,7 +32,7 @@ public class StripSection extends ASection {
 	private MaskStripRenderer mRenderer;
 
 	public StripSection( int nr) {
-		super( "strip." + nr);
+		super( SectionLib.nextID(), "strip." + nr);
 		mRenderer = new MaskStripRenderer( nr);
 	}
 
@@ -286,65 +285,42 @@ public class StripSection extends ASection {
 	}
 
 	@Override
-	public int getBlockID( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.mBlock.blockID;
-	}
-
-	@Override
-	public Icon getIcon( int side, int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getIcon( side);
-	}
-
-	@Override
 	public AMaskRenderer getRenderer() {
 		return mRenderer;
 	}
 
 	@Override
-	public String getSectionName( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getMatName( this);
-	}
-
-	@Override
-	public boolean hasMaterials() {
-		return true;
-	}
-
-	@Override
 	public boolean isValid( TileStage tile, int area) {
 		switch (area) {
-			case IArea.EDGE_DOWN_NORTH:
+			case EDGE_DOWN_NORTH:
 				return tile.isValid( VALID_DN);
-			case IArea.EDGE_DOWN_SOUTH:
+			case EDGE_DOWN_SOUTH:
 				return tile.isValid( VALID_DS);
-			case IArea.EDGE_DOWN_WEST:
+			case EDGE_DOWN_WEST:
 				return tile.isValid( VALID_DW);
-			case IArea.EDGE_DOWN_EAST:
+			case EDGE_DOWN_EAST:
 				return tile.isValid( VALID_DE);
-			case IArea.EDGE_UP_NORTH:
+			case EDGE_UP_NORTH:
 				return tile.isValid( VALID_UN);
-			case IArea.EDGE_UP_SOUTH:
+			case EDGE_UP_SOUTH:
 				return tile.isValid( VALID_US);
-			case IArea.EDGE_UP_WEST:
+			case EDGE_UP_WEST:
 				return tile.isValid( VALID_UW);
-			case IArea.EDGE_UP_EAST:
+			case EDGE_UP_EAST:
 				return tile.isValid( VALID_UE);
-			case IArea.EDGE_NORTH_WEST:
+			case EDGE_NORTH_WEST:
 				return tile.isValid( VALID_NW);
-			case IArea.EDGE_NORTH_EAST:
+			case EDGE_NORTH_EAST:
 				return tile.isValid( VALID_NE);
-			case IArea.EDGE_SOUTH_WEST:
+			case EDGE_SOUTH_WEST:
 				return tile.isValid( VALID_SW);
-			case IArea.EDGE_SOUTH_EAST:
+			case EDGE_SOUTH_EAST:
 				return tile.isValid( VALID_SE);
-			case IArea.AXIS_DOWN_UP:
+			case AXIS_DOWN_UP:
 				return tile.isValid( VALID_DU);
-			case IArea.AXIS_NORTH_SOUTH:
+			case AXIS_NORTH_SOUTH:
 				return tile.isValid( VALID_NS);
-			case IArea.AXIS_WEST_EAST:
+			case AXIS_WEST_EAST:
 				return tile.isValid( VALID_WE);
 			default:
 				return false;
