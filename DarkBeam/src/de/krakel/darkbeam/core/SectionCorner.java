@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * CornerSection.java
+ * SectionCorner.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -10,11 +10,11 @@ package de.krakel.darkbeam.core;
 import net.minecraft.block.Block;
 import net.minecraft.util.MovingObjectPosition;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.client.renderer.SectionCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-class CornerSection extends AStructureSection {
+class SectionCorner extends ASectionStructure {
 	private static final int VALID_DNW = D | N | W | DN | DW | NW | DNW;
 	private static final int VALID_UNW = U | N | W | UN | UW | NW | UNW;
 	private static final int VALID_DSW = D | S | W | DS | DW | SW | DSW;
@@ -23,11 +23,11 @@ class CornerSection extends AStructureSection {
 	private static final int VALID_UNE = U | N | E | UN | UE | NE | UNE;
 	private static final int VALID_DSE = D | S | E | DS | DE | SE | DSE;
 	private static final int VALID_USE = U | S | E | US | UE | SE | USE;
-	private MaskCornerRenderer mRenderer;
+	private SectionCornerRenderer mRenderer;
 
-	public CornerSection( int nr) {
+	public SectionCorner( int nr) {
 		super( "corner." + nr);
-		mRenderer = new MaskCornerRenderer( nr);
+		mRenderer = new SectionCornerRenderer( nr);
 	}
 
 	private static int getArea( int side, double dx, double dy, double dz) {
@@ -135,7 +135,7 @@ class CornerSection extends AStructureSection {
 	}
 
 	@Override
-	public AMaskRenderer getRenderer() {
+	public ASectionRenderer getRenderer() {
 		return mRenderer;
 	}
 

@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * CoverSection.java
+ * SectionCover.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -9,19 +9,19 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.block.Block;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.client.renderer.SectionCoverRenderer;
 
-class CoverSection extends ACoverSection {
-	private MaskCoverRenderer mRenderer;
+class SectionCover extends ASectionCover {
+	private SectionCoverRenderer mRenderer;
 
-	public CoverSection( int nr) {
+	public SectionCover( int nr) {
 		super( "cover." + nr);
-		mRenderer = new MaskCoverRenderer( nr);
+		mRenderer = new SectionCoverRenderer( nr);
 	}
 
 	@Override
-	public AMaskRenderer getRenderer() {
+	public ASectionRenderer getRenderer() {
 		return mRenderer;
 	}
 

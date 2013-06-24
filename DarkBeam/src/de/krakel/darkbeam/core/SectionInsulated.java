@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * InsulatedSection.java
+ * SectionInsulated.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -11,15 +11,15 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskInsulatedRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.client.renderer.SectionInsulatedRenderer;
 
-class InsulatedSection extends AWireSection {
-	private MaskInsulatedRenderer mRenderer;
+class SectionInsulated extends ASectionWire {
+	private SectionInsulatedRenderer mRenderer;
 
-	public InsulatedSection() {
+	public SectionInsulated() {
 		super( "insuwire");
-		mRenderer = new MaskInsulatedRenderer();
+		mRenderer = new SectionInsulatedRenderer();
 	}
 
 	@Override
@@ -34,7 +34,7 @@ class InsulatedSection extends AWireSection {
 	}
 
 	@Override
-	public AMaskRenderer getRenderer() {
+	public ASectionRenderer getRenderer() {
 		return mRenderer;
 	}
 

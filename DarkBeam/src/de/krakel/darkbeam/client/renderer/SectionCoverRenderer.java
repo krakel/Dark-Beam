@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * MaskCornerRenderer.java
+ * SectionCover1Renderer.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -14,14 +14,14 @@ import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class MaskCornerRenderer extends AMaskRenderer implements IArea {
-	public MaskCornerRenderer( int base) {
+public class SectionCoverRenderer extends ASectionRenderer implements IArea {
+	public SectionCoverRenderer( int base) {
 		super( base);
 	}
 
 	@Override
 	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
-		rndrBlk.setRenderBounds( 0D, 0D, 0D, mSize, mSize, mSize);
+		rndrBlk.setRenderBounds( 0D, 0D, 0.5D - mThickness, 1D, 1D, 0.5D + mThickness);
 		renderStandardInventory( rndrBlk, blk, meta);
 	}
 
@@ -33,29 +33,23 @@ public class MaskCornerRenderer extends AMaskRenderer implements IArea {
 
 	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
-			case CORNER_DOWN_NORTH_WEST:
-				blk.setBlockBounds( 0F, 0F, 0F, mSize, mSize, mSize);
+			case SIDE_DOWN:
+				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);
 				break;
-			case CORNER_UP_NORTH_WEST:
-				blk.setBlockBounds( 0F, 1F - mSize, 0F, mSize, 1F, mSize);
+			case SIDE_UP:
+				blk.setBlockBounds( 0F, 1F - mSize, 0F, 1F, 1F, 1F);
 				break;
-			case CORNER_DOWN_SOUTH_WEST:
-				blk.setBlockBounds( 0F, 0F, 1F - mSize, mSize, mSize, 1F);
+			case SIDE_NORTH:
+				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mSize);
 				break;
-			case CORNER_UP_SOUTH_WEST:
-				blk.setBlockBounds( 0F, 1F - mSize, 1F - mSize, mSize, 1F, 1F);
+			case SIDE_SOUTH:
+				blk.setBlockBounds( 0F, 0F, 1F - mSize, 1F, 1F, 1F);
 				break;
-			case CORNER_DOWN_NORTH_EAST:
-				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, mSize, mSize);
+			case SIDE_WEST:
+				blk.setBlockBounds( 0F, 0F, 0F, mSize, 1F, 1F);
 				break;
-			case CORNER_UP_NORTH_EAST:
-				blk.setBlockBounds( 1F - mSize, 1F - mSize, 0F, 1F, 1F, mSize);
-				break;
-			case CORNER_DOWN_SOUTH_EAST:
-				blk.setBlockBounds( 1F - mSize, 0F, 1F - mSize, 1F, mSize, 1F);
-				break;
-			case CORNER_UP_SOUTH_EAST:
-				blk.setBlockBounds( 1F - mSize, 1F - mSize, 1F - mSize, 1F, 1F, 1F);
+			case SIDE_EAST:
+				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, 1F, 1F);
 				break;
 			default:
 				LogHelper.warning( "unknown area %d", area);

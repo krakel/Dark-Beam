@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * AItemMaskRenderer.java
+ * ASectionRenderer.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -17,11 +17,11 @@ import org.lwjgl.opengl.GL11;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.tile.TileStage;
 
-public abstract class AMaskRenderer implements IDirection {
+public abstract class ASectionRenderer implements IDirection {
 	protected float mThickness;
 	protected float mSize;
 
-	protected AMaskRenderer( int base) {
+	protected ASectionRenderer( int base) {
 		mThickness = base / 16F;
 		mSize = mThickness + mThickness;
 	}

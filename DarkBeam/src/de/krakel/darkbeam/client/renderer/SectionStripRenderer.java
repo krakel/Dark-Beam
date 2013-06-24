@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * MaskStripRenderer.java
+ * SectionStripRenderer.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -14,8 +14,8 @@ import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class MaskStripRenderer extends AMaskRenderer implements IArea {
-	public MaskStripRenderer( int base) {
+public class SectionStripRenderer extends ASectionRenderer implements IArea {
+	public SectionStripRenderer( int base) {
 		super( base);
 	}
 

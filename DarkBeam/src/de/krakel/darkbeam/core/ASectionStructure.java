@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * AStructureSection.java
+ * ASectionStructure.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -9,12 +9,12 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.util.Icon;
 
-abstract class AStructureSection extends ASection {
-	AStructureSection( int secID, String name) {
+abstract class ASectionStructure extends ASection {
+	ASectionStructure( int secID, String name) {
 		super( secID, name);
 	}
 
-	protected AStructureSection( String name) {
+	protected ASectionStructure( String name) {
 		super( name);
 	}
 

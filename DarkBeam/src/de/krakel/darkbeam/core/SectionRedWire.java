@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * RedWireSection.java
+ * SectionRedWire.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -10,15 +10,15 @@ package de.krakel.darkbeam.core;
 import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskRedWireRender;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.client.renderer.SectionRedWireRender;
 
-class RedWireSection extends AWireSection {
-	private MaskRedWireRender mRenderer;
+class SectionRedWire extends ASectionWire {
+	private SectionRedWireRender mRenderer;
 
-	public RedWireSection() {
+	public SectionRedWire() {
 		super( "db.redwire");
-		mRenderer = new MaskRedWireRender();
+		mRenderer = new SectionRedWireRender();
 	}
 
 	@Override
@@ -32,7 +32,7 @@ class RedWireSection extends AWireSection {
 	}
 
 	@Override
-	public AMaskRenderer getRenderer() {
+	public ASectionRenderer getRenderer() {
 		return mRenderer;
 	}
 

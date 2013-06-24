@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 public interface ISection {
@@ -24,7 +24,7 @@ public interface ISection {
 
 	String getName();
 
-	AMaskRenderer getRenderer();
+	ASectionRenderer getRenderer();
 
 	String getSectionKey();
 

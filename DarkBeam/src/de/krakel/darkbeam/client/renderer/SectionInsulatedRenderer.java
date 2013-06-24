@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * MaskRedWireRender.java
+ * SectionInsulatedRenderer.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -14,9 +14,9 @@ import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class MaskRedWireRender extends AMaskRenderer implements IArea {
-	public MaskRedWireRender() {
-		super( 1);
+public class SectionInsulatedRenderer extends ASectionRenderer implements IArea {
+	public SectionInsulatedRenderer() {
+		super( 2);
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class MaskRedWireRender extends AMaskRenderer implements IArea {
 		boolean isConnected = toDown || toUp || toNorth || toSouth || toWest || toEast || isSided;
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;
-		float min = isConnected ? minS : 0.3F;
-		float max = isConnected ? maxS : 0.7F;
+		float min = isConnected ? minS : 0.2F;
+		float max = isConnected ? maxS : 0.8F;
 		float minX = toWest || sideWest ? 0F : min;
 		float maxX = toEast || sideEast ? 1F : max;
 		float minY = toDown || sideDown ? 0F : min;

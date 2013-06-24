@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * AWireSection.java
+ * ASectionWire.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -11,7 +11,7 @@ import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.tile.TileStage;
 
-abstract class AWireSection extends ASection {
+abstract class ASectionWire extends ASection {
 	protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
 	protected static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
 	protected static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
@@ -19,7 +19,7 @@ abstract class AWireSection extends ASection {
 	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
 	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 
-	protected AWireSection( String name) {
+	protected ASectionWire( String name) {
 		super( name);
 	}
 

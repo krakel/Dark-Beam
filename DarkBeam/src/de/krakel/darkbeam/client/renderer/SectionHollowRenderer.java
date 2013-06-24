@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * MaskHollowRenderer.java
+ * SectionHollowRenderer.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -14,8 +14,8 @@ import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class MaskHollowRenderer extends AMaskRenderer implements IArea {
-	public MaskHollowRenderer( int base) {
+public class SectionHollowRenderer extends ASectionRenderer implements IArea {
+	public SectionHollowRenderer( int base) {
 		super( base);
 	}
 

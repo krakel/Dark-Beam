@@ -12,8 +12,8 @@ import java.util.NoSuchElementException;
 
 import net.minecraft.block.Block;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.client.renderer.SectionCoverRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class SectionLib {
@@ -52,20 +52,20 @@ public class SectionLib {
 
 	public static void init() {
 		for (int i = 1; i < 8; ++i) {
-			add( new CoverSection( i));
+			add( new SectionCover( i));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new StripSection( i));
+			add( new SectionStrip( i));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new CornerSection( i));
+			add( new SectionCorner( i));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new HollowSection( i));
+			add( new SectionHollow( i));
 		}
-		sRedwire = new RedWireSection();
+		sRedwire = new SectionRedWire();
 		add( sRedwire);
-		sInsuwire = new InsulatedSection();
+		sInsuwire = new SectionInsulated();
 		add( sInsuwire);
 	}
 
@@ -131,16 +131,16 @@ public class SectionLib {
 		}
 	}
 
-	private static class UnknownSection extends ACoverSection {
-		private MaskCoverRenderer mRenderer;
+	private static class UnknownSection extends ASectionCover {
+		private SectionCoverRenderer mRenderer;
 
 		public UnknownSection() {
 			super( 255, "unknown");
-			mRenderer = new MaskCoverRenderer( 1);
+			mRenderer = new SectionCoverRenderer( 1);
 		}
 
 		@Override
-		public AMaskRenderer getRenderer() {
+		public ASectionRenderer getRenderer() {
 			return mRenderer;
 		}
 

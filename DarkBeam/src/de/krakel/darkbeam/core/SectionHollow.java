@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * HollowSection.java
+ * SectionHollow.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -9,19 +9,19 @@ package de.krakel.darkbeam.core;
 
 import net.minecraft.block.Block;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.client.renderer.SectionHollowRenderer;
 
-class HollowSection extends ACoverSection {
-	private MaskHollowRenderer mRenderer;
+class SectionHollow extends ASectionCover {
+	private SectionHollowRenderer mRenderer;
 
-	public HollowSection( int nr) {
+	public SectionHollow( int nr) {
 		super( "hollow." + nr);
-		mRenderer = new MaskHollowRenderer( nr);
+		mRenderer = new SectionHollowRenderer( nr);
 	}
 
 	@Override
-	public AMaskRenderer getRenderer() {
+	public ASectionRenderer getRenderer() {
 		return mRenderer;
 	}
 

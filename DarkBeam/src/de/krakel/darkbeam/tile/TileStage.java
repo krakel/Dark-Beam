@@ -16,7 +16,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Position;
@@ -219,7 +219,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 //		}
 	}
 
-	public boolean validate( int area, AMaskRenderer rndr) {
+	public boolean validate( int area, ASectionRenderer rndr) {
 		return true;
 	}
 

@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * StripSection.java
+ * SectionStrip.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -10,11 +10,11 @@ package de.krakel.darkbeam.core;
 import net.minecraft.block.Block;
 import net.minecraft.util.MovingObjectPosition;
 
-import de.krakel.darkbeam.client.renderer.AMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
+import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.client.renderer.SectionStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-class StripSection extends AStructureSection {
+class SectionStrip extends ASectionStructure {
 	private static final int VALID_DN = D | N | DN | DNW | DNE;
 	private static final int VALID_DS = D | S | DS | DSW | DSE;
 	private static final int VALID_DW = D | W | DW | DNW | DSW;
@@ -30,11 +30,11 @@ class StripSection extends AStructureSection {
 	private static final int VALID_DU = DU | NS | WE;
 	private static final int VALID_NS = DU | NS | WE;
 	private static final int VALID_WE = DU | NS | WE;
-	private MaskStripRenderer mRenderer;
+	private SectionStripRenderer mRenderer;
 
-	public StripSection( int nr) {
+	public SectionStrip( int nr) {
 		super( "strip." + nr);
-		mRenderer = new MaskStripRenderer( nr);
+		mRenderer = new SectionStripRenderer( nr);
 	}
 
 	public static int getArea( int side, double dx, double dy, double dz) {
@@ -286,7 +286,7 @@ class StripSection extends AStructureSection {
 	}
 
 	@Override
-	public AMaskRenderer getRenderer() {
+	public ASectionRenderer getRenderer() {
 		return mRenderer;
 	}
 

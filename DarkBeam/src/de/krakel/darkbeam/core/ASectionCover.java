@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * ACoverSection.java
+ * ASectionCover.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -11,7 +11,7 @@ import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.tile.TileStage;
 
-abstract class ACoverSection extends AStructureSection {
+abstract class ASectionCover extends ASectionStructure {
 	protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
 	protected static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
 	protected static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
@@ -19,11 +19,11 @@ abstract class ACoverSection extends AStructureSection {
 	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
 	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 
-	ACoverSection( int secID, String name) {
+	ASectionCover( int secID, String name) {
 		super( secID, name);
 	}
 
-	protected ACoverSection( String name) {
+	protected ASectionCover( String name) {
 		super( name);
 	}
 
