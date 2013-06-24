@@ -23,7 +23,7 @@ abstract class ASectionStructure extends ASection {
 	@Override
 	public int getBlockID( int dmg) {
 		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.mBlock.blockID;
+		return mat.getBlock().blockID;
 	}
 
 	@Override

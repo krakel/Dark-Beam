@@ -14,8 +14,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 
 public class Insulate {
-	public final int mInsuID;
-	final String mName;
+	private int mInsuID;
+	private String mName;
 
 	Insulate( int insuID, String name) {
 		mInsuID = insuID;

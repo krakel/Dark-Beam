@@ -14,10 +14,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 
 public class Material {
-	public final int mMatID;
-	final String mName;
-	public final Block mBlock;
-	public final int mSubID;
+	private int mMatID;
+	private String mName;
+	private Block mBlock;
+	private int mSubID;
 
 	Material( int matID, String name, Block blk, int subID) {
 		mMatID = matID;
@@ -32,6 +32,10 @@ public class Material {
 		String matter = LocalizationHandler.getLocalization( "db.material." + mName, lang);
 		String translation = DarkLib.format( pattern, matter);
 		LanguageRegistry.instance().addStringLocalization( key, lang, translation);
+	}
+
+	public Block getBlock() {
+		return mBlock;
 	}
 
 	public Icon getIcon( int side) {
