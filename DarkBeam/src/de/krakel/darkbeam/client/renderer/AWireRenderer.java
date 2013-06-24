@@ -10,29 +10,9 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-abstract class AWireRenderer extends AMaskRenderer {
+public abstract class AWireRenderer extends AMaskRenderer {
 	protected AWireRenderer( int base) {
 		super( base);
-	}
-
-	@Override
-	public int getArea( int side, double dx, double dy, double dz) {
-		switch (side) {
-			case DIR_DOWN:
-				return SIDE_DOWN;
-			case DIR_UP:
-				return SIDE_UP;
-			case DIR_NORTH:
-				return SIDE_NORTH;
-			case DIR_SOUTH:
-				return SIDE_SOUTH;
-			case DIR_WEST:
-				return SIDE_WEST;
-			case DIR_EAST:
-				return SIDE_EAST;
-			default:
-				return -1;
-		}
 	}
 
 	@Override

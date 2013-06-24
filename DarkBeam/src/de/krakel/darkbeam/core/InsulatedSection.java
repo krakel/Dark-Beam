@@ -91,6 +91,6 @@ public class InsulatedSection extends ASection {
 		double dx = pos.hitVec.xCoord - pos.blockX;
 		double dy = pos.hitVec.yCoord - pos.blockY;
 		double dz = pos.hitVec.zCoord - pos.blockZ;
-		pos.subHit = mRenderer.getArea( pos.sideHit, dx, dy, dz);
+		pos.subHit = RedWireSection.getArea( pos.sideHit, dx, dy, dz);
 	}
 }

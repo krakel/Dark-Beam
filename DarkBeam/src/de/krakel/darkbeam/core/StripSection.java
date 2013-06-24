@@ -37,6 +37,169 @@ public class StripSection extends ASection {
 		mRenderer = new MaskStripRenderer( nr);
 	}
 
+	public static int getArea( int side, double dx, double dy, double dz) {
+		switch (side) {
+			case DIR_DOWN:
+				if (dx < BOX_BORDER_MIN) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_NORTH_WEST;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_SOUTH_WEST;
+					}
+					return EDGE_DOWN_WEST;
+				}
+				if (dx >= BOX_BORDER_MAX) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_NORTH_EAST;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_SOUTH_EAST;
+					}
+					return EDGE_DOWN_EAST;
+				}
+				if (dz < BOX_BORDER_MIN) {
+					return EDGE_DOWN_NORTH;
+				}
+				if (dz >= BOX_BORDER_MAX) {
+					return EDGE_DOWN_SOUTH;
+				}
+				return AXIS_DOWN_UP;
+			case DIR_UP:
+				if (dx < BOX_BORDER_MIN) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_NORTH_WEST;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_SOUTH_WEST;
+					}
+					return EDGE_UP_WEST;
+				}
+				if (dx >= BOX_BORDER_MAX) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_NORTH_EAST;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_SOUTH_EAST;
+					}
+					return EDGE_UP_EAST;
+				}
+				if (dz < BOX_BORDER_MIN) {
+					return EDGE_UP_NORTH;
+				}
+				if (dz >= BOX_BORDER_MAX) {
+					return EDGE_UP_SOUTH;
+				}
+				return AXIS_DOWN_UP;
+			case DIR_NORTH:
+				if (dx < BOX_BORDER_MIN) {
+					if (dy < BOX_BORDER_MIN) {
+						return EDGE_DOWN_WEST;
+					}
+					if (dy >= BOX_BORDER_MAX) {
+						return EDGE_UP_WEST;
+					}
+					return EDGE_NORTH_WEST;
+				}
+				if (dx >= BOX_BORDER_MAX) {
+					if (dy < BOX_BORDER_MIN) {
+						return EDGE_DOWN_EAST;
+					}
+					if (dy >= BOX_BORDER_MAX) {
+						return EDGE_UP_EAST;
+					}
+					return EDGE_NORTH_EAST;
+				}
+				if (dy < BOX_BORDER_MIN) {
+					return EDGE_DOWN_NORTH;
+				}
+				if (dy >= BOX_BORDER_MAX) {
+					return EDGE_UP_NORTH;
+				}
+				return AXIS_NORTH_SOUTH;
+			case DIR_SOUTH:
+				if (dx < BOX_BORDER_MIN) {
+					if (dy < BOX_BORDER_MIN) {
+						return EDGE_DOWN_WEST;
+					}
+					if (dy >= BOX_BORDER_MAX) {
+						return EDGE_UP_WEST;
+					}
+					return EDGE_SOUTH_WEST;
+				}
+				if (dx >= BOX_BORDER_MAX) {
+					if (dy < BOX_BORDER_MIN) {
+						return EDGE_DOWN_EAST;
+					}
+					if (dy >= BOX_BORDER_MAX) {
+						return EDGE_UP_EAST;
+					}
+					return EDGE_SOUTH_EAST;
+				}
+				if (dy < BOX_BORDER_MIN) {
+					return EDGE_DOWN_SOUTH;
+				}
+				if (dy >= BOX_BORDER_MAX) {
+					return EDGE_UP_SOUTH;
+				}
+				return AXIS_NORTH_SOUTH;
+			case DIR_WEST:
+				if (dy < BOX_BORDER_MIN) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_DOWN_NORTH;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_DOWN_SOUTH;
+					}
+					return EDGE_DOWN_WEST;
+				}
+				if (dy >= BOX_BORDER_MAX) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_UP_NORTH;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_UP_SOUTH;
+					}
+					return EDGE_UP_WEST;
+				}
+				if (dz < BOX_BORDER_MIN) {
+					return EDGE_NORTH_WEST;
+				}
+				if (dz >= BOX_BORDER_MAX) {
+					return EDGE_SOUTH_WEST;
+				}
+				return AXIS_WEST_EAST;
+			case DIR_EAST:
+				if (dy < BOX_BORDER_MIN) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_DOWN_NORTH;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_DOWN_SOUTH;
+					}
+					return EDGE_DOWN_EAST;
+				}
+				if (dy >= BOX_BORDER_MAX) {
+					if (dz < BOX_BORDER_MIN) {
+						return EDGE_UP_NORTH;
+					}
+					if (dz >= BOX_BORDER_MAX) {
+						return EDGE_UP_SOUTH;
+					}
+					return EDGE_UP_EAST;
+				}
+				if (dz < BOX_BORDER_MIN) {
+					return EDGE_NORTH_EAST;
+				}
+				if (dz >= BOX_BORDER_MAX) {
+					return EDGE_SOUTH_EAST;
+				}
+				return AXIS_WEST_EAST;
+			default:
+				return -1;
+		}
+	}
+
 	private static int getOpposite( int side, int area) {
 		switch (side) {
 			case DIR_DOWN:
@@ -198,6 +361,6 @@ public class StripSection extends ASection {
 		double dx = pos.hitVec.xCoord - pos.blockX;
 		double dy = pos.hitVec.yCoord - pos.blockY;
 		double dz = pos.hitVec.zCoord - pos.blockZ;
-		pos.subHit = mRenderer.getArea( pos.sideHit, dx, dy, dz);
+		pos.subHit = getArea( pos.sideHit, dx, dy, dz);
 	}
 }

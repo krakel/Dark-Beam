@@ -13,8 +13,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.tile.TileStage;
 
 public interface IMaskRenderer {
-	int getArea( int side, double dx, double dy, double dz);
-
 	void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
 
 	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile);

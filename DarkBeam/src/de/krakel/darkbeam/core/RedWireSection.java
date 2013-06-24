@@ -29,6 +29,25 @@ public class RedWireSection extends ASection {
 		mRenderer = new MaskRedWireRender();
 	}
 
+	public static int getArea( int side, double dx, double dy, double dz) {
+		switch (side) {
+			case DIR_DOWN:
+				return SIDE_DOWN;
+			case DIR_UP:
+				return SIDE_UP;
+			case DIR_NORTH:
+				return SIDE_NORTH;
+			case DIR_SOUTH:
+				return SIDE_SOUTH;
+			case DIR_WEST:
+				return SIDE_WEST;
+			case DIR_EAST:
+				return SIDE_EAST;
+			default:
+				return -1;
+		}
+	}
+
 	@Override
 	public int getBlockID( int dmg) {
 		return Block.blockRedstone.blockID;
@@ -89,6 +108,6 @@ public class RedWireSection extends ASection {
 		double dx = pos.hitVec.xCoord - pos.blockX;
 		double dy = pos.hitVec.yCoord - pos.blockY;
 		double dz = pos.hitVec.zCoord - pos.blockZ;
-		pos.subHit = mRenderer.getArea( pos.sideHit, dx, dy, dz);
+		pos.subHit = RedWireSection.getArea( pos.sideHit, dx, dy, dz);
 	}
 }

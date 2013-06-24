@@ -30,6 +30,43 @@ public class CornerSection extends ASection {
 		mRenderer = new MaskCornerRenderer( nr);
 	}
 
+	private static int getArea( int side, double dx, double dy, double dz) {
+		switch (side) {
+			case DIR_DOWN:
+				if (dx < 0.5D) {
+					return dz < 0.5D ? CORNER_DOWN_NORTH_WEST : CORNER_DOWN_SOUTH_WEST;
+				}
+				return dz < 0.5D ? CORNER_DOWN_NORTH_EAST : CORNER_DOWN_SOUTH_EAST;
+			case DIR_UP:
+				if (dx < 0.5D) {
+					return dz < 0.5D ? CORNER_UP_NORTH_WEST : CORNER_UP_SOUTH_WEST;
+				}
+				return dz < 0.5D ? CORNER_UP_NORTH_EAST : CORNER_UP_SOUTH_EAST;
+			case DIR_NORTH:
+				if (dx < 0.5D) {
+					return dy < 0.5D ? CORNER_DOWN_NORTH_WEST : CORNER_UP_NORTH_WEST;
+				}
+				return dy < 0.5D ? CORNER_DOWN_NORTH_EAST : CORNER_UP_NORTH_EAST;
+			case DIR_SOUTH:
+				if (dx < 0.5D) {
+					return dy < 0.5D ? CORNER_DOWN_SOUTH_WEST : CORNER_UP_SOUTH_WEST;
+				}
+				return dy < 0.5D ? CORNER_DOWN_SOUTH_EAST : CORNER_UP_SOUTH_EAST;
+			case DIR_WEST:
+				if (dy < 0.5D) {
+					return dz < 0.5D ? CORNER_DOWN_NORTH_WEST : CORNER_DOWN_SOUTH_WEST;
+				}
+				return dz < 0.5D ? CORNER_UP_NORTH_WEST : CORNER_UP_SOUTH_WEST;
+			case DIR_EAST:
+				if (dy < 0.5D) {
+					return dz < 0.5D ? CORNER_DOWN_NORTH_EAST : CORNER_DOWN_SOUTH_EAST;
+				}
+				return dz < 0.5D ? CORNER_UP_NORTH_EAST : CORNER_UP_SOUTH_EAST;
+			default:
+				return -1;
+		}
+	}
+
 	private static int getOpposite( int side, int area) {
 		switch (side) {
 			case DIR_DOWN:
@@ -159,6 +196,6 @@ public class CornerSection extends ASection {
 		double dx = pos.hitVec.xCoord - pos.blockX;
 		double dy = pos.hitVec.yCoord - pos.blockY;
 		double dz = pos.hitVec.zCoord - pos.blockZ;
-		pos.subHit = mRenderer.getArea( pos.sideHit, dx, dy, dz);
+		pos.subHit = getArea( pos.sideHit, dx, dy, dz);
 	}
 }
