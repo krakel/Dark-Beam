@@ -15,6 +15,14 @@ import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class CornerSection extends ASection {
+	private static final int VALID_DNW = D | N | W | DN | DW | NW | DNW;
+	private static final int VALID_UNW = U | N | W | UN | UW | NW | UNW;
+	private static final int VALID_DSW = D | S | W | DS | DW | SW | DSW;
+	private static final int VALID_USW = U | S | W | US | UW | DW | USW;
+	private static final int VALID_DNE = D | N | E | DN | DE | NE | DNE;
+	private static final int VALID_UNE = U | N | E | UN | UE | NE | UNE;
+	private static final int VALID_DSE = D | S | E | DS | DE | SE | DSE;
+	private static final int VALID_USE = U | S | E | US | UE | SE | USE;
 	private MaskCornerRenderer mRenderer;
 
 	public CornerSection( int nr) {
@@ -24,7 +32,8 @@ public class CornerSection extends ASection {
 
 	@Override
 	public int getBlockID( int dmg) {
-		return mRenderer.getBlockID( dmg);
+		Material mat = MaterialLib.getForDmg( dmg);
+		return mat.mBlock.blockID;
 	}
 
 	@Override
@@ -40,17 +49,37 @@ public class CornerSection extends ASection {
 
 	@Override
 	public String getSectionName( int dmg) {
-		return mRenderer.getNameForSection( this, dmg);
+		Material mat = MaterialLib.getForDmg( dmg);
+		return mat.getMatName( this);
 	}
 
 	@Override
 	public boolean hasMaterials() {
-		return mRenderer.hasMaterials();
+		return true;
 	}
 
 	@Override
 	public boolean isValid( TileStage tile, int area) {
-		return mRenderer.isValid( area, tile);
+		switch (area) {
+			case CORNER_DOWN_NORTH_WEST:
+				return tile.isValid( VALID_DNW);
+			case CORNER_UP_NORTH_WEST:
+				return tile.isValid( VALID_UNW);
+			case CORNER_DOWN_SOUTH_WEST:
+				return tile.isValid( VALID_DSW);
+			case CORNER_UP_SOUTH_WEST:
+				return tile.isValid( VALID_USW);
+			case CORNER_DOWN_NORTH_EAST:
+				return tile.isValid( VALID_DNE);
+			case CORNER_UP_NORTH_EAST:
+				return tile.isValid( VALID_UNE);
+			case CORNER_DOWN_SOUTH_EAST:
+				return tile.isValid( VALID_DSE);
+			case CORNER_UP_SOUTH_EAST:
+				return tile.isValid( VALID_USE);
+			default:
+				return false;
+		}
 	}
 
 	@Override

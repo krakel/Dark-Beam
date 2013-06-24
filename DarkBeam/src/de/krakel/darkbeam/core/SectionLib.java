@@ -139,6 +139,12 @@ public class SectionLib {
 	}
 
 	private static class UnknownSection extends ASection {
+		protected static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
+		protected static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
+		protected static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
+		protected static final int VALID_S = S | DS | US | SW | SE | USW | USE | USW | USE;
+		protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
+		protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 		private MaskCoverRenderer mRenderer;
 
 		public UnknownSection() {
@@ -148,7 +154,8 @@ public class SectionLib {
 
 		@Override
 		public int getBlockID( int dmg) {
-			return mRenderer.getBlockID( dmg);
+			Material mat = MaterialLib.getForDmg( dmg);
+			return mat.mBlock.blockID;
 		}
 
 		@Override
@@ -164,17 +171,33 @@ public class SectionLib {
 
 		@Override
 		public String getSectionName( int dmg) {
-			return mRenderer.getNameForSection( this, dmg);
+			Material mat = MaterialLib.getForDmg( dmg);
+			return mat.getMatName( this);
 		}
 
 		@Override
 		public boolean hasMaterials() {
-			return mRenderer.hasMaterials();
+			return true;
 		}
 
 		@Override
 		public boolean isValid( TileStage tile, int area) {
-			return mRenderer.isValid( area, tile);
+			switch (area) {
+				case SIDE_DOWN:
+					return tile.isValid( VALID_D);
+				case SIDE_UP:
+					return tile.isValid( VALID_U);
+				case SIDE_NORTH:
+					return tile.isValid( VALID_N);
+				case SIDE_SOUTH:
+					return tile.isValid( VALID_S);
+				case SIDE_WEST:
+					return tile.isValid( VALID_W);
+				case SIDE_EAST:
+					return tile.isValid( VALID_E);
+				default:
+					return false;
+			}
 		}
 
 		@Override

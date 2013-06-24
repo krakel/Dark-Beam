@@ -14,15 +14,6 @@ import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class MaskCornerRenderer extends AStructureRenderer {
-	private static final int VALID_DNW = D | N | W | DN | DW | NW | DNW;
-	private static final int VALID_UNW = U | N | W | UN | UW | NW | UNW;
-	private static final int VALID_DSW = D | S | W | DS | DW | SW | DSW;
-	private static final int VALID_USW = U | S | W | US | UW | DW | USW;
-	private static final int VALID_DNE = D | N | E | DN | DE | NE | DNE;
-	private static final int VALID_UNE = U | N | E | UN | UE | NE | UNE;
-	private static final int VALID_DSE = D | S | E | DS | DE | SE | DSE;
-	private static final int VALID_USE = U | S | E | US | UE | SE | USE;
-
 	public MaskCornerRenderer( int base) {
 		super( base);
 	}
@@ -130,30 +121,6 @@ public class MaskCornerRenderer extends AStructureRenderer {
 				}
 			default:
 				return area;
-		}
-	}
-
-	@Override
-	public boolean isValid( int area, TileStage tile) {
-		switch (area) {
-			case CORNER_DOWN_NORTH_WEST:
-				return tile.isValid( VALID_DNW);
-			case CORNER_UP_NORTH_WEST:
-				return tile.isValid( VALID_UNW);
-			case CORNER_DOWN_SOUTH_WEST:
-				return tile.isValid( VALID_DSW);
-			case CORNER_UP_SOUTH_WEST:
-				return tile.isValid( VALID_USW);
-			case CORNER_DOWN_NORTH_EAST:
-				return tile.isValid( VALID_DNE);
-			case CORNER_UP_NORTH_EAST:
-				return tile.isValid( VALID_UNE);
-			case CORNER_DOWN_SOUTH_EAST:
-				return tile.isValid( VALID_DSE);
-			case CORNER_UP_SOUTH_EAST:
-				return tile.isValid( VALID_USE);
-			default:
-				return false;
 		}
 	}
 

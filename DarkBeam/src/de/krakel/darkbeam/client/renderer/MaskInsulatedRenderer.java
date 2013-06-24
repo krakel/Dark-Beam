@@ -9,28 +9,13 @@ package de.krakel.darkbeam.client.renderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.Item;
 
-import de.krakel.darkbeam.core.ISection;
-import de.krakel.darkbeam.core.Insulate;
-import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class MaskInsulatedRenderer extends AWireRenderer {
 	public MaskInsulatedRenderer() {
 		super( 2);
-	}
-
-	@Override
-	public int getBlockID( int dmg) {
-		return Item.dyePowder.itemID;
-	}
-
-	@Override
-	public String getNameForSection( ISection sec, int dmg) {
-		Insulate insu = InsulateLib.getForDmg( dmg);
-		return insu.getInsuName( sec);
 	}
 
 	@Override

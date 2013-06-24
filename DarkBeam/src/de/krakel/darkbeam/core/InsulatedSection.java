@@ -7,6 +7,7 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
@@ -15,6 +16,12 @@ import de.krakel.darkbeam.client.renderer.MaskInsulatedRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class InsulatedSection extends ASection {
+	private static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
+	private static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
+	private static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
+	private static final int VALID_S = S | DS | US | SW | SE | USW | USE | USW | USE;
+	private static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
+	private static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 	private MaskInsulatedRenderer mRenderer;
 
 	public InsulatedSection() {
@@ -24,7 +31,7 @@ public class InsulatedSection extends ASection {
 
 	@Override
 	public int getBlockID( int dmg) {
-		return mRenderer.getBlockID( dmg);
+		return Item.dyePowder.itemID;
 	}
 
 	@Override
@@ -40,17 +47,33 @@ public class InsulatedSection extends ASection {
 
 	@Override
 	public String getSectionName( int dmg) {
-		return mRenderer.getNameForSection( this, dmg);
+		Insulate insu = InsulateLib.getForDmg( dmg);
+		return insu.getInsuName( this);
 	}
 
 	@Override
 	public boolean hasMaterials() {
-		return mRenderer.hasMaterials();
+		return false;
 	}
 
 	@Override
 	public boolean isValid( TileStage tile, int area) {
-		return mRenderer.isValid( area, tile);
+		switch (area) {
+			case SIDE_DOWN:
+				return tile.isValid( VALID_D);
+			case SIDE_UP:
+				return tile.isValid( VALID_U);
+			case SIDE_NORTH:
+				return tile.isValid( VALID_N);
+			case SIDE_SOUTH:
+				return tile.isValid( VALID_S);
+			case SIDE_WEST:
+				return tile.isValid( VALID_W);
+			case SIDE_EAST:
+				return tile.isValid( VALID_E);
+			default:
+				return false;
+		}
 	}
 
 	@Override

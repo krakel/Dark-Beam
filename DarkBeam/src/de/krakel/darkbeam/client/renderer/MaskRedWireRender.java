@@ -10,23 +10,12 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class MaskRedWireRender extends AWireRenderer {
 	public MaskRedWireRender() {
 		super( 1);
-	}
-
-	@Override
-	public int getBlockID( int dmg) {
-		return Block.blockRedstone.blockID;
-	}
-
-	@Override
-	public String getNameForSection( ISection sec, int dmg) {
-		return "tile." + sec.getName();
 	}
 
 	@Override

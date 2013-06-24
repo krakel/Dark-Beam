@@ -7,7 +7,7 @@
  */
 package de.krakel.darkbeam.core;
 
-abstract class ASection implements ISection {
+abstract class ASection implements ISection, IDirection, IArea {
 	public String mName;
 	public int mSecID;
 
