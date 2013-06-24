@@ -13,11 +13,11 @@ import net.minecraft.util.Icon;
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskRedWireRender;
 
-public class RedWireSection extends AWireSection {
+class RedWireSection extends AWireSection {
 	private MaskRedWireRender mRenderer;
 
 	public RedWireSection() {
-		super( SectionLib.nextID(), "db.redwire");
+		super( "db.redwire");
 		mRenderer = new MaskRedWireRender();
 	}
 

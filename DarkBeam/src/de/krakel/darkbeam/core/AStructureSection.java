@@ -10,8 +10,12 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.Icon;
 
 abstract class AStructureSection extends ASection {
-	protected AStructureSection( int secID, String name) {
+	AStructureSection( int secID, String name) {
 		super( secID, name);
+	}
+
+	protected AStructureSection( String name) {
+		super( name);
 	}
 
 	@Override

@@ -19,8 +19,8 @@ abstract class AWireSection extends ASection {
 	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
 	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 
-	protected AWireSection( int secID, String name) {
-		super( secID, name);
+	protected AWireSection( String name) {
+		super( name);
 	}
 
 	private static int getArea( int side, double dx, double dy, double dz) {

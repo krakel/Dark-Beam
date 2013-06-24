@@ -13,11 +13,11 @@ import net.minecraft.util.Icon;
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskInsulatedRenderer;
 
-public class InsulatedSection extends AWireSection {
+class InsulatedSection extends AWireSection {
 	private MaskInsulatedRenderer mRenderer;
 
 	public InsulatedSection() {
-		super( SectionLib.nextID(), "insuwire");
+		super( "insuwire");
 		mRenderer = new MaskInsulatedRenderer();
 	}
 

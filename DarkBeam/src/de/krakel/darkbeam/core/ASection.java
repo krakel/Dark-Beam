@@ -12,10 +12,20 @@ abstract class ASection implements ISection, IDirection, IArea {
 	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
 	public String mName;
 	public int mSecID;
+	private static int sNextID = 0;
 
-	protected ASection( int secID, String name) {
+	ASection( int secID, String name) {
 		mSecID = secID;
 		mName = name;
+	}
+
+	protected ASection( String name) {
+		mSecID = nextID();
+		mName = name;
+	}
+
+	private static int nextID() {
+		return sNextID++;
 	}
 
 	@Override

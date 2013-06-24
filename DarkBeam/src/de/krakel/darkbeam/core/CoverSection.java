@@ -10,11 +10,11 @@ package de.krakel.darkbeam.core;
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
 
-public class CoverSection extends ACoverSection {
+class CoverSection extends ACoverSection {
 	private MaskCoverRenderer mRenderer;
 
 	public CoverSection( int nr) {
-		super( SectionLib.nextID(), "cover." + nr);
+		super( "cover." + nr);
 		mRenderer = new MaskCoverRenderer( nr);
 	}
 

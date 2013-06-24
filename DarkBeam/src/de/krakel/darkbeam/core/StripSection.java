@@ -13,7 +13,7 @@ import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class StripSection extends AStructureSection {
+class StripSection extends AStructureSection {
 	private static final int VALID_DN = D | N | DN | DNW | DNE;
 	private static final int VALID_DS = D | S | DS | DSW | DSE;
 	private static final int VALID_DW = D | W | DW | DNW | DSW;
@@ -32,7 +32,7 @@ public class StripSection extends AStructureSection {
 	private MaskStripRenderer mRenderer;
 
 	public StripSection( int nr) {
-		super( SectionLib.nextID(), "strip." + nr);
+		super( "strip." + nr);
 		mRenderer = new MaskStripRenderer( nr);
 	}
 

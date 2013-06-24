@@ -19,8 +19,12 @@ abstract class ACoverSection extends AStructureSection {
 	protected static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
 	protected static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
 
-	public ACoverSection( int secID, String name) {
+	ACoverSection( int secID, String name) {
 		super( secID, name);
+	}
+
+	protected ACoverSection( String name) {
+		super( name);
 	}
 
 	private static int getArea( int side, double dx, double dy, double dz) {

@@ -10,11 +10,11 @@ package de.krakel.darkbeam.core;
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
 
-public class HollowSection extends ACoverSection {
+class HollowSection extends ACoverSection {
 	private MaskHollowRenderer mRenderer;
 
 	public HollowSection( int nr) {
-		super( SectionLib.nextID(), "hollow." + nr);
+		super( "hollow." + nr);
 		mRenderer = new MaskHollowRenderer( nr);
 	}
 

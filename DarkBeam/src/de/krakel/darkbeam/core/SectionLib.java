@@ -18,7 +18,6 @@ public class SectionLib {
 	private static final ISection UNKNOWN = new UnknownSection();
 	private static ISection[] sData = new ISection[64];
 	private static Iterable<ISection> sIter = new MaskIterable();
-	private static int sNextID = 0;
 	public static ISection sRedwire;
 	public static ISection sInsuwire;
 
@@ -79,10 +78,6 @@ public class SectionLib {
 
 	public static boolean isValidForMeta( int meta) {
 		return isValid( secID( meta));
-	}
-
-	public static int nextID() {
-		return sNextID++;
 	}
 
 	public static int secID( int dmg) {
