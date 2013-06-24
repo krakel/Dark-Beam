@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.SectionLib;
@@ -28,6 +29,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	private static final String NBT_AREAS = "areas";
 	private static final String NBT_SECTIONS = "secs";
 	private int mArea;
+	private int mInner;
 	private int[] mArr = new int[32];
 
 	public TileStage() {
@@ -55,14 +57,10 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 
 	public ISection getSection( int area) {
 		int dmg = getMeta( area);
-		ISection sec = SectionLib.getForDmg( dmg);
-		return sec;
+		return SectionLib.getForDmg( dmg);
 	}
 
 	public boolean isConnect( int area, int meta, int side, int x, int y, int z) {
-		if (isConnectInner( area, meta, side)) {
-			return true;
-		}
 		if (worldObj == null) {
 			LogHelper.info( "missing world");
 			return false;
@@ -77,12 +75,13 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return false;
 	}
 
-	private boolean isConnectInner( int area, int meta, int side) {
-		return area != side && isMeta( side, meta);
-	}
-
 	public boolean isEmpty() {
 		return mArea == 0;
+	}
+
+	public boolean isInner( int side) {
+		int off = 1 << side;
+		return (mInner & off) != 0;
 	}
 
 	public boolean isInUse( int area) {
@@ -156,8 +155,22 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		mArea |= areas;
 	}
 
+	public void refresh() {
+		mInner = 0;
+		for (int area = 0; area < IArea.MAX_DIR; ++area) {
+			int off = 1 << area;
+			if (!isValid( off)) {
+				ISection sec = getSection( area);
+				if (sec.isWire()) {
+					mInner |= off;
+				}
+			}
+		}
+	}
+
 	public void reset() {
 		mArea = 0;
+		mInner = 0;
 	}
 
 	@Override

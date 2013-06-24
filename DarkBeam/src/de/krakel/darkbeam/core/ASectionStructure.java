@@ -42,4 +42,9 @@ abstract class ASectionStructure extends ASection {
 	public boolean isStructure() {
 		return true;
 	}
+
+	@Override
+	public boolean isWire() {
+		return false;
+	}
 }

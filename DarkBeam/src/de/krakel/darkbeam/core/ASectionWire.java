@@ -69,6 +69,11 @@ abstract class ASectionWire extends ASection {
 	}
 
 	@Override
+	public boolean isWire() {
+		return true;
+	}
+
+	@Override
 	public void oppositeArea( MovingObjectPosition pos) {
 		if (pos.subHit == pos.sideHit) {
 			pos.subHit = pos.subHit ^= 1;

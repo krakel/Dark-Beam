@@ -14,13 +14,13 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-import de.krakel.darkbeam.client.renderer.BlockSectionRender;
+import de.krakel.darkbeam.client.renderer.BlockStageRender;
 import de.krakel.darkbeam.client.renderer.DrawBlockHighlightHandler;
 
 @SuppressWarnings( "unused")
 public class ClientProxy extends CommonProxy {
 	private static void regeisterRendering() {
-		RenderingRegistry.registerBlockHandler( new BlockSectionRender());
+		RenderingRegistry.registerBlockHandler( new BlockStageRender());
 		MinecraftForge.EVENT_BUS.register( new DrawBlockHighlightHandler());
 	}
 

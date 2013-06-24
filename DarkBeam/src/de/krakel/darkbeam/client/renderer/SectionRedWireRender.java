@@ -37,12 +37,17 @@ public class SectionRedWireRender extends ASectionRenderer implements IArea {
 		boolean sideSouth = tile.isSided( area, meta, SIDE_SOUTH, x, y, z);
 		boolean sideWest = tile.isSided( area, meta, SIDE_WEST, x, y, z);
 		boolean sideEast = tile.isSided( area, meta, SIDE_EAST, x, y, z);
-		boolean toDown = tile.isConnect( area, meta, SIDE_DOWN, x, y, z);
-		boolean toUp = tile.isConnect( area, meta, SIDE_UP, x, y, z);
-		boolean toNorth = tile.isConnect( area, meta, SIDE_NORTH, x, y, z);
-		boolean toSouth = tile.isConnect( area, meta, SIDE_SOUTH, x, y, z);
-		boolean toWest = tile.isConnect( area, meta, SIDE_WEST, x, y, z);
-		boolean toEast = tile.isConnect( area, meta, SIDE_EAST, x, y, z);
+		boolean toDown = area != SIDE_DOWN && tile.isInner( SIDE_DOWN)
+			|| tile.isConnect( area, meta, SIDE_DOWN, x, y, z);
+		boolean toUp = area != SIDE_UP && tile.isInner( SIDE_UP) || tile.isConnect( area, meta, SIDE_UP, x, y, z);
+		boolean toNorth = area != SIDE_NORTH && tile.isInner( SIDE_NORTH)
+			|| tile.isConnect( area, meta, SIDE_NORTH, x, y, z);
+		boolean toSouth = area != SIDE_SOUTH && tile.isInner( SIDE_SOUTH)
+			|| tile.isConnect( area, meta, SIDE_SOUTH, x, y, z);
+		boolean toWest = area != SIDE_WEST && tile.isInner( SIDE_WEST)
+			|| tile.isConnect( area, meta, SIDE_WEST, x, y, z);
+		boolean toEast = area != SIDE_EAST && tile.isInner( SIDE_EAST)
+			|| tile.isConnect( area, meta, SIDE_EAST, x, y, z);
 		boolean isSided = sideDown || sideUp || sideNorth || sideSouth || sideWest || sideEast;
 		boolean isConnected = toDown || toUp || toNorth || toSouth || toWest || toEast || isSided;
 		float minS = 0.5F - mThickness;

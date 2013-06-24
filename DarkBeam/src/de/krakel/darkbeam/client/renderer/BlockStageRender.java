@@ -16,13 +16,12 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
-import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class BlockSectionRender implements ISimpleBlockRenderingHandler {
+public class BlockStageRender implements ISimpleBlockRenderingHandler {
 	public static final int ID = RenderingRegistry.getNextAvailableRenderId();
 
-	public BlockSectionRender() {
+	public BlockStageRender() {
 	}
 
 	@Override
@@ -38,15 +37,16 @@ public class BlockSectionRender implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndrBlk) {
-		LogHelper.info( "renderWorldBlockA: %s", LogHelper.toString( x, y, z));
+//		LogHelper.info( "renderWorldBlockA: %s", LogHelper.toString( x, y, z));
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {
-			LogHelper.info( "renderWorldBlockB: %s", tile);
-			for (int i : tile) {
+//			LogHelper.info( "renderWorldBlockB: %s", tile);
+			tile.refresh();
+			for (int area : tile) {
 //				LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
-				int dmg = tile.getMeta( i);
+				int dmg = tile.getMeta( area);
 				ISection sec = SectionLib.getForDmg( dmg);
-				sec.renderSide( rndrBlk, i, blk, dmg, x, y, z, tile);
+				sec.renderSide( rndrBlk, area, blk, dmg, x, y, z, tile);
 			}
 		}
 		return false;

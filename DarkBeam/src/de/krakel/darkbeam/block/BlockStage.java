@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
-import de.krakel.darkbeam.client.renderer.BlockSectionRender;
+import de.krakel.darkbeam.client.renderer.BlockStageRender;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
@@ -99,7 +99,7 @@ public class BlockStage extends Block {
 
 	@Override
 	public int getRenderType() {
-		return BlockSectionRender.ID;
+		return BlockStageRender.ID;
 	}
 
 	@Override
