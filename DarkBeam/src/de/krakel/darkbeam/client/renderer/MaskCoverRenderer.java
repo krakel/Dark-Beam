@@ -10,10 +10,11 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
+import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class MaskCoverRenderer extends AMaskRenderer {
+public class MaskCoverRenderer extends AMaskRenderer implements IArea {
 	public MaskCoverRenderer( int base) {
 		super( base);
 	}

@@ -14,12 +14,10 @@ import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
-import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.IDirection;
+import de.krakel.darkbeam.tile.TileStage;
 
-public abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea {
-	static final double BOX_BORDER_MIN = 1D / 4D;
-	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
+public abstract class AMaskRenderer implements IDirection {
 	protected float mThickness;
 	protected float mSize;
 
@@ -65,4 +63,10 @@ public abstract class AMaskRenderer implements IMaskRenderer, IDirection, IArea 
 		tess.draw();
 		GL11.glTranslatef( 0.5F, 0.5F, 0.5F);
 	}
+
+	public abstract void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
+
+	public abstract void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile);
+
+	public abstract void setSectionBounds( int area, Block blk);
 }
