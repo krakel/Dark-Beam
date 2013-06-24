@@ -13,9 +13,19 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class MaskRedWireRender extends AWireRenderer {
+public class MaskRedWireRender extends AMaskRenderer {
 	public MaskRedWireRender() {
 		super( 1);
+	}
+
+	@Override
+	public void renderItem( RenderBlocks rndrBlk, Block blk, int meta) {
+		double minS = 0.5D - mThickness;
+		double maxS = 0.5D + mThickness;
+		rndrBlk.setRenderBounds( 0D, minS, minS, 1D, maxS, maxS);
+		renderStandardInventory( rndrBlk, blk, meta);
+		rndrBlk.setRenderBounds( minS, minS, 0D, maxS, maxS, 1D);
+		renderStandardInventory( rndrBlk, blk, meta);
 	}
 
 	@Override
