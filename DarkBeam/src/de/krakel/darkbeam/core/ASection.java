@@ -7,10 +7,11 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 abstract class ASection implements ISection {
 	public final String mName;
@@ -32,6 +33,11 @@ abstract class ASection implements ISection {
 	@Override
 	public int getBlockID( int dmg) {
 		return mRenderer.getBlockID( dmg);
+	}
+
+	@Override
+	public Icon getIcon( int side, int dmg) {
+		return mRenderer.getIcon( side, dmg);
 	}
 
 	@Override
@@ -65,7 +71,7 @@ abstract class ASection implements ISection {
 	}
 
 	@Override
-	public boolean isValid( TileSection tile, int area) {
+	public boolean isValid( TileStage tile, int area) {
 		return mRenderer.isValid( area, tile);
 	}
 

@@ -7,10 +7,10 @@
  */
 package de.krakel.darkbeam.core;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
 
 public class CornerSection extends ASection {
-	public CornerSection( String name, IMaskRenderer renderer) {
-		super( name, renderer);
+	public CornerSection( int nr) {
+		super( "corner." + nr, new MaskCornerRenderer( nr));
 	}
 }

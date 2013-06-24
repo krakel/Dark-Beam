@@ -18,18 +18,19 @@ import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
 
-public class TileSection extends TileEntity implements Iterable<Integer> {
+public class TileStage extends TileEntity implements Iterable<Integer> {
 	private static final String NBT_AREAS = "areas";
 	private static final String NBT_SECTIONS = "secs";
 	private int mArea;
 	private int[] mArr = new int[32];
 
-	public TileSection() {
+	public TileStage() {
 	}
 
 	public int getArea() {
@@ -53,8 +54,9 @@ public class TileSection extends TileEntity implements Iterable<Integer> {
 	}
 
 	public IMaskRenderer getSectionRenderer( int area) {
-		int meta = getMeta( area);
-		return SectionLib.getRendererForDmg( meta);
+		int dmg = getMeta( area);
+		ISection sec = SectionLib.getForDmg( dmg);
+		return sec.getRenderer();
 	}
 
 	public boolean isConnect( int area, int meta, int side, int x, int y, int z) {
@@ -68,7 +70,7 @@ public class TileSection extends TileEntity implements Iterable<Integer> {
 		x += Position.relX( side);
 		y += Position.relY( side);
 		z += Position.relZ( side);
-		TileSection tile1 = DarkLib.getTileEntity( worldObj, x, y, z, TileSection.class);
+		TileStage tile1 = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 		if (tile1 != null && tile1.isMeta( area, meta)) {
 			return true;
 		}
@@ -116,7 +118,7 @@ public class TileSection extends TileEntity implements Iterable<Integer> {
 		x += Position.relX( area);
 		y += Position.relY( area);
 		z += Position.relZ( area);
-		TileSection tile = DarkLib.getTileEntity( worldObj, x, y, z, TileSection.class);
+		TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 		if (tile == null) {
 			return false;
 		}

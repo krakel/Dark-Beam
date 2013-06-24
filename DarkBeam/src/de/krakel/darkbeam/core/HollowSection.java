@@ -7,10 +7,10 @@
  */
 package de.krakel.darkbeam.core;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
 
 public class HollowSection extends ASection {
-	public HollowSection( String name, IMaskRenderer renderer) {
-		super( name, renderer);
+	public HollowSection( int nr) {
+		super( "hollow." + nr, new MaskHollowRenderer( nr));
 	}
 }

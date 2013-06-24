@@ -33,7 +33,7 @@ import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 public class ItemStage extends ItemBlock {
 	public ItemStage( int id) {
@@ -43,7 +43,7 @@ public class ItemStage extends ItemBlock {
 	}
 
 	private static boolean canSectionAdd( World world, MovingObjectPosition pos, ISection sec) {
-		TileSection tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileSection.class);
+		TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
 		if (tile == null) {
 			return false;
 		}
@@ -160,7 +160,7 @@ public class ItemStage extends ItemBlock {
 			if (world.canPlaceEntityOnSide( stk.itemID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, player, stk)) {
 				world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
 			}
-			TileSection tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileSection.class);
+			TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
 			if (tile != null && tile.tryAdd( pos.subHit, dmg)) {
 //				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;

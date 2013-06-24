@@ -13,7 +13,7 @@ import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 public class MaskRedWireRender extends AWireRenderer {
 	public MaskRedWireRender() {
@@ -36,7 +36,7 @@ public class MaskRedWireRender extends AWireRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile) {
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile) {
 		boolean sideDown = tile.isSided( area, meta, SIDE_DOWN, x, y, z);
 		boolean sideUp = tile.isSided( area, meta, SIDE_UP, x, y, z);
 		boolean sideNorth = tile.isSided( area, meta, SIDE_NORTH, x, y, z);

@@ -49,7 +49,7 @@ public class BlockRedWireRender implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public void renderInventoryBlock( Block block, int metadata, int modelID, RenderBlocks renderer) {
+	public void renderInventoryBlock( Block block, int meta, int modelID, RenderBlocks renderer) {
 	}
 
 	@Override

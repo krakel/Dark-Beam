@@ -7,10 +7,10 @@
  */
 package de.krakel.darkbeam.core;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.MaskInsulatedRenderer;
 
 public class InsulatedSection extends ASection {
-	public InsulatedSection( String name, IMaskRenderer renderer) {
-		super( name, renderer);
+	public InsulatedSection() {
+		super( "insuwire", new MaskInsulatedRenderer());
 	}
 }

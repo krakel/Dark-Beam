@@ -7,13 +7,16 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 public interface ISection {
 	int getBlockID( int dmg);
+
+	Icon getIcon( int side, int dmg);
 
 	int getID();
 
@@ -27,7 +30,7 @@ public interface ISection {
 
 	boolean hasMaterials();
 
-	boolean isValid( TileSection tile, int area);
+	boolean isValid( TileStage tile, int area);
 
 	void oppositeArea( MovingObjectPosition pos);
 

@@ -11,12 +11,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import de.krakel.darkbeam.client.renderer.IMaskRenderer;
-import de.krakel.darkbeam.client.renderer.MaskCornerRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
-import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
-import de.krakel.darkbeam.client.renderer.MaskInsulatedRenderer;
-import de.krakel.darkbeam.client.renderer.MaskRedWireRender;
-import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class SectionLib {
@@ -54,30 +49,26 @@ public class SectionLib {
 		return get( secID( dmg));
 	}
 
-	public static IMaskRenderer getRenderer( int secID) {
-		return get( secID).getRenderer();
-	}
-
-	public static IMaskRenderer getRendererForDmg( int meta) {
-		return getRenderer( secID( meta));
+	public static IMaskRenderer getRendererForDmg( int dmg) {
+		return getForDmg( dmg).getRenderer();
 	}
 
 	public static void init() {
 		for (int i = 1; i < 8; ++i) {
-			add( new CoverSection( "cover." + i, new MaskCoverRenderer( i)));
+			add( new CoverSection( i));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new StripSection( "strip." + i, new MaskStripRenderer( i)));
+			add( new StripSection( i));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new CornerSection( "corner." + i, new MaskCornerRenderer( i)));
+			add( new CornerSection( i));
 		}
 		for (int i = 1; i < 8; ++i) {
-			add( new HollowSection( "hollow." + i, new MaskHollowRenderer( i)));
+			add( new HollowSection( i));
 		}
-		sRedwire = new RedWireSection( "db.redwire", new MaskRedWireRender());
+		sRedwire = new RedWireSection();
 		add( sRedwire);
-		sInsuwire = new InsulatedSection( "insuwire", new MaskInsulatedRenderer());
+		sInsuwire = new InsulatedSection();
 		add( sInsuwire);
 	}
 

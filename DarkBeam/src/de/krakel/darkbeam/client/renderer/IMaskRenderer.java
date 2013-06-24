@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.core.ISection;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 public interface IMaskRenderer {
 	static final double BOX_BORDER_MIN = 1D / 4D;
@@ -30,11 +30,11 @@ public interface IMaskRenderer {
 
 	boolean hasMaterials();
 
-	boolean isValid( int area, TileSection tile);
+	boolean isValid( int area, TileStage tile);
 
 	void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
 
-	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile);
+	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile);
 
 	void setSectionBounds( int area, Block blk);
 }

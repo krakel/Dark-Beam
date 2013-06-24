@@ -16,7 +16,7 @@ import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Insulate;
 import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 public class MaskInsulatedRenderer extends AWireRenderer {
 	public MaskInsulatedRenderer() {
@@ -41,7 +41,7 @@ public class MaskInsulatedRenderer extends AWireRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile) {
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile) {
 		boolean sideDown = tile.isSided( area, meta, SIDE_DOWN, x, y, z);
 		boolean sideUp = tile.isSided( area, meta, SIDE_UP, x, y, z);
 		boolean sideNorth = tile.isSided( area, meta, SIDE_NORTH, x, y, z);

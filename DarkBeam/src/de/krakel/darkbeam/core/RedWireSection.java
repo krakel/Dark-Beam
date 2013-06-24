@@ -7,10 +7,10 @@
  */
 package de.krakel.darkbeam.core;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.MaskRedWireRender;
 
 public class RedWireSection extends ASection {
-	public RedWireSection( String name, IMaskRenderer renderer) {
-		super( name, renderer);
+	public RedWireSection() {
+		super( "db.redwire", new MaskRedWireRender());
 	}
 }

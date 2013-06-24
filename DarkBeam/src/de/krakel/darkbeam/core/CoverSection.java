@@ -7,10 +7,10 @@
  */
 package de.krakel.darkbeam.core;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
 
 public class CoverSection extends ASection {
-	public CoverSection( String name, IMaskRenderer renderer) {
-		super( name, renderer);
+	public CoverSection( int nr) {
+		super( "cover." + nr, new MaskCoverRenderer( nr));
 	}
 }

@@ -26,12 +26,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockSectionRender;
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 public class BlockStage extends Block {
 	public BlockStage( int id) {
@@ -42,7 +42,7 @@ public class BlockStage extends Block {
 
 	@Override
 	public MovingObjectPosition collisionRayTrace( World world, int x, int y, int z, Vec3 start, Vec3 end) {
-		TileSection tile = DarkLib.getTileEntity( world, x, y, z, TileSection.class);
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return null;
 		}
@@ -70,13 +70,13 @@ public class BlockStage extends Block {
 	@Override
 	public TileEntity createTileEntity( World world, int meta) {
 		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
-		return new TileSection();
+		return new TileStage();
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
 	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
-		TileSection tile = DarkLib.getTileEntity( world, x, y, z, TileSection.class);
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return super.getBlockTexture( world, x, y, z, side);
 		}
@@ -90,9 +90,9 @@ public class BlockStage extends Block {
 
 	@Override
 	@SideOnly( Side.CLIENT)
-	public Icon getIcon( int side, int meta) {
-		IMaskRenderer rndr = SectionLib.getRendererForDmg( meta);
-		return rndr.getIcon( side, meta);
+	public Icon getIcon( int side, int dmg) {
+		ISection sec = SectionLib.getForDmg( dmg);
+		return sec.getIcon( side, dmg);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class BlockStage extends Block {
 		if (pos.typeOfHit != EnumMovingObjectType.TILE) {
 			return false;
 		}
-		TileSection tile = DarkLib.getTileEntity( world, x, y, z, TileSection.class);
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return false;
 		}

@@ -11,7 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 public class MaskCornerRenderer extends AStructureRenderer {
 	private static final int VALID_DNW = D | N | W | DN | DW | NW | DNW;
@@ -134,7 +134,7 @@ public class MaskCornerRenderer extends AStructureRenderer {
 	}
 
 	@Override
-	public boolean isValid( int area, TileSection tile) {
+	public boolean isValid( int area, TileStage tile) {
 		switch (area) {
 			case CORNER_DOWN_NORTH_WEST:
 				return tile.isValid( VALID_DNW);
@@ -164,7 +164,7 @@ public class MaskCornerRenderer extends AStructureRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileSection tile) {
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile) {
 		setSectionBounds( area, blk);
 		renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 	}

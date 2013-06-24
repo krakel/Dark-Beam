@@ -43,7 +43,7 @@ import de.krakel.darkbeam.item.ModItems;
 import de.krakel.darkbeam.lib.References;
 import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
-import de.krakel.darkbeam.tile.TileSection;
+import de.krakel.darkbeam.tile.TileStage;
 
 @Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
 	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
@@ -60,7 +60,7 @@ public class DarkBeam {
 	@Init
 	public void init( FMLInitializationEvent event) {
 		NetworkRegistry.instance().registerGuiHandler( sInstance, sProxy);
-		GameRegistry.registerTileEntity( TileSection.class, Strings.TE_SECTION_NAME);
+		GameRegistry.registerTileEntity( TileStage.class, Strings.TE_SECTION_NAME);
 		sProxy.init();
 		SectionLib.init();
 		MaterialLib.init();

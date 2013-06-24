@@ -7,10 +7,10 @@
  */
 package de.krakel.darkbeam.core;
 
-import de.krakel.darkbeam.client.renderer.IMaskRenderer;
+import de.krakel.darkbeam.client.renderer.MaskStripRenderer;
 
 public class StripSection extends ASection {
-	public StripSection( String name, IMaskRenderer renderer) {
-		super( name, renderer);
+	public StripSection( int nr) {
+		super( "strip." + nr, new MaskStripRenderer( nr));
 	}
 }
