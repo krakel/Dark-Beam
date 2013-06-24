@@ -7,6 +7,8 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.block.Block;
+
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskHollowRenderer;
 
@@ -21,5 +23,10 @@ class HollowSection extends ACoverSection {
 	@Override
 	public AMaskRenderer getRenderer() {
 		return mRenderer;
+	}
+
+	@Override
+	public void setSectionBounds( int area, Block blk) {
+		mRenderer.setSectionBounds( area, blk);
 	}
 }

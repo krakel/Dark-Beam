@@ -10,6 +10,8 @@ package de.krakel.darkbeam.core;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import net.minecraft.block.Block;
+
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
 import de.krakel.darkbeam.client.renderer.MaskCoverRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
@@ -140,6 +142,11 @@ public class SectionLib {
 		@Override
 		public AMaskRenderer getRenderer() {
 			return mRenderer;
+		}
+
+		@Override
+		public void setSectionBounds( int area, Block blk) {
+			mRenderer.setSectionBounds( area, blk);
 		}
 	}
 }

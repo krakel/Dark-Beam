@@ -7,6 +7,8 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
@@ -33,6 +35,12 @@ public interface ISection {
 	boolean isValid( TileStage tile, int area);
 
 	void oppositeArea( MovingObjectPosition pos);
+
+	void renderItem( RenderBlocks rndrBlk, Block blk, int dmg);
+
+	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int dmg, int x, int y, int z, TileStage tile);
+
+	void setSectionBounds( int area, Block blk);
 
 	int toDmg();
 

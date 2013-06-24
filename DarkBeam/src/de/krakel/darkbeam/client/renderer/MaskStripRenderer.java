@@ -31,7 +31,6 @@ public class MaskStripRenderer extends AMaskRenderer implements IArea {
 		renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 	}
 
-	@Override
 	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
 			case EDGE_DOWN_NORTH:

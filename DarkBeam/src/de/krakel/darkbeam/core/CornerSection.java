@@ -7,6 +7,7 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.AMaskRenderer;
@@ -165,6 +166,11 @@ class CornerSection extends AStructureSection {
 	@Override
 	public void oppositeArea( MovingObjectPosition pos) {
 		pos.subHit = getOpposite( pos.sideHit, pos.subHit);
+	}
+
+	@Override
+	public void setSectionBounds( int area, Block blk) {
+		mRenderer.setSectionBounds( area, blk);
 	}
 
 	@Override

@@ -7,6 +7,7 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 
@@ -41,5 +42,10 @@ class InsulatedSection extends AWireSection {
 	public String getSectionName( int dmg) {
 		Insulate insu = InsulateLib.getForDmg( dmg);
 		return insu.getInsuName( this);
+	}
+
+	@Override
+	public void setSectionBounds( int area, Block blk) {
+		mRenderer.setSectionBounds( area, blk);
 	}
 }

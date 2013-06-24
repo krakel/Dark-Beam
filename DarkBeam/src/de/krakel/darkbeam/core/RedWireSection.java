@@ -40,4 +40,9 @@ class RedWireSection extends AWireSection {
 	public String getSectionName( int dmg) {
 		return "tile." + getName();
 	}
+
+	@Override
+	public void setSectionBounds( int area, Block blk) {
+		mRenderer.setSectionBounds( area, blk);
+	}
 }

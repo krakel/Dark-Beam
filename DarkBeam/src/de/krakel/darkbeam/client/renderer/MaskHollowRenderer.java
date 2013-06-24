@@ -107,7 +107,6 @@ public class MaskHollowRenderer extends AMaskRenderer implements IArea {
 		}
 	}
 
-	@Override
 	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
 			case SIDE_DOWN:
