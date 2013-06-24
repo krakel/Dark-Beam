@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class MaskCornerRenderer extends AStructureRenderer {
+public class MaskCornerRenderer extends AMaskRenderer {
 	public MaskCornerRenderer( int base) {
 		super( base);
 	}
