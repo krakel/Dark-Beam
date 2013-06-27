@@ -12,6 +12,9 @@ import java.lang.reflect.Constructor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.Configuration;
+
+import com.sun.istack.internal.Nullable;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import de.krakel.darkbeam.core.helper.LogHelper;
@@ -42,6 +45,7 @@ public enum BlockType {
 		return sBlockIds++;
 	}
 
+	@Nullable
 	public <T extends Block> T create( Class<T> cls) {
 		try {
 			Constructor<T> ctor = cls.getConstructor( int.class);

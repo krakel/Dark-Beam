@@ -31,71 +31,87 @@ public class SectionRedWireRender extends ASectionRenderer implements IArea {
 
 	@Override
 	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile) {
-		boolean sideDown = tile.isSided( area, meta, SIDE_DOWN, x, y, z);
-		boolean sideUp = tile.isSided( area, meta, SIDE_UP, x, y, z);
-		boolean sideNorth = tile.isSided( area, meta, SIDE_NORTH, x, y, z);
-		boolean sideSouth = tile.isSided( area, meta, SIDE_SOUTH, x, y, z);
-		boolean sideWest = tile.isSided( area, meta, SIDE_WEST, x, y, z);
-		boolean sideEast = tile.isSided( area, meta, SIDE_EAST, x, y, z);
-		boolean toDown = area != SIDE_DOWN && tile.isInner( SIDE_DOWN)
-			|| tile.isConnect( area, meta, SIDE_DOWN, x, y, z);
-		boolean toUp = area != SIDE_UP && tile.isInner( SIDE_UP) || tile.isConnect( area, meta, SIDE_UP, x, y, z);
-		boolean toNorth = area != SIDE_NORTH && tile.isInner( SIDE_NORTH)
-			|| tile.isConnect( area, meta, SIDE_NORTH, x, y, z);
-		boolean toSouth = area != SIDE_SOUTH && tile.isInner( SIDE_SOUTH)
-			|| tile.isConnect( area, meta, SIDE_SOUTH, x, y, z);
-		boolean toWest = area != SIDE_WEST && tile.isInner( SIDE_WEST)
-			|| tile.isConnect( area, meta, SIDE_WEST, x, y, z);
-		boolean toEast = area != SIDE_EAST && tile.isInner( SIDE_EAST)
-			|| tile.isConnect( area, meta, SIDE_EAST, x, y, z);
-		boolean isSided = sideDown || sideUp || sideNorth || sideSouth || sideWest || sideEast;
-		boolean isConnected = toDown || toUp || toNorth || toSouth || toWest || toEast || isSided;
+//		boolean sideDown = tile.isSided( area, meta, SIDE_DOWN, x, y, z);
+//		boolean sideUp = tile.isSided( area, meta, SIDE_UP, x, y, z);
+//		boolean sideNorth = tile.isSided( area, meta, SIDE_NORTH, x, y, z);
+//		boolean sideSouth = tile.isSided( area, meta, SIDE_SOUTH, x, y, z);
+//		boolean sideWest = tile.isSided( area, meta, SIDE_WEST, x, y, z);
+//		boolean sideEast = tile.isSided( area, meta, SIDE_EAST, x, y, z);
+//		boolean toDown = area != SIDE_DOWN && tile.isInner( SIDE_DOWN)
+//			|| tile.isConnect( area, meta, SIDE_DOWN, x, y, z);
+//		boolean toUp = area != SIDE_UP && tile.isInner( SIDE_UP) || tile.isConnect( area, meta, SIDE_UP, x, y, z);
+//		boolean toNorth = area != SIDE_NORTH && tile.isInner( SIDE_NORTH)
+//			|| tile.isConnect( area, meta, SIDE_NORTH, x, y, z);
+//		boolean toSouth = area != SIDE_SOUTH && tile.isInner( SIDE_SOUTH)
+//			|| tile.isConnect( area, meta, SIDE_SOUTH, x, y, z);
+//		boolean toWest = area != SIDE_WEST && tile.isInner( SIDE_WEST)
+//			|| tile.isConnect( area, meta, SIDE_WEST, x, y, z);
+//		boolean toEast = area != SIDE_EAST && tile.isInner( SIDE_EAST)
+//			|| tile.isConnect( area, meta, SIDE_EAST, x, y, z);
+//		boolean isSided = sideDown || sideUp || sideNorth || sideSouth || sideWest || sideEast;
+		boolean isConnected = tile.isConnected( area); //  toDown || toUp || toNorth || toSouth || toWest || toEast || isSided;
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;
 		float min = isConnected ? minS : 0.3F;
 		float max = isConnected ? maxS : 0.7F;
-		float minX = toWest || sideWest ? 0F : min;
-		float maxX = toEast || sideEast ? 1F : max;
-		float minY = toDown || sideDown ? 0F : min;
-		float maxY = toUp || sideUp ? 1F : max;
-		float minZ = toNorth || sideNorth ? 0F : min;
-		float maxZ = toSouth || sideSouth ? 1F : max;
+		float minX;
+		float maxX;
+		float minY;
+		float maxY;
+		float minZ;
+		float maxZ;
 		switch (area) {
 			case SIDE_DOWN:
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min; // toWest || sideWest
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max; // toEast || sideEast
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min; // toNorth || sideNorth
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max; // toSouth || sideSouth
 				blk.setBlockBounds( minX, 0F, minS, maxX, mSize, maxS);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
 				blk.setBlockBounds( minS, 0F, minZ, maxS, mSize, maxZ);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
 				break;
 			case SIDE_UP:
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min; // toWest || sideWest
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max; // toEast || sideEast
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min; // toNorth || sideNorth
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max; // toSouth || sideSouth
 				blk.setBlockBounds( minX, 1F - mSize, minS, maxX, 1F, maxS);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
 				blk.setBlockBounds( minS, 1F - mSize, minZ, maxS, 1F, maxZ);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
 				break;
 			case SIDE_NORTH:
-				if (sideDown) {
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min; // toWest || sideWest
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max; // toEast || sideEast
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min; // toDown || sideDown
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max; // toUp || sideUp
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mSize;
 				}
-				if (sideUp) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mSize;
 				}
-				if (sideEast) {
+				if (tile.isAngled( area, SIDE_EAST)) {
 					maxX += mSize;
 				}
 				blk.setBlockBounds( minX, minS, 0F, maxX, maxS, mSize);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
 				blk.setBlockBounds( minS, minY, 0F, maxS, maxY, mSize);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
 				break;
 			case SIDE_SOUTH:
-				if (sideDown) {
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min; // toWest || sideWest
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max; // toEast || sideEast
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min; // toDown || sideDown
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max; // toUp || sideUp
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mSize;
 				}
-				if (sideUp) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mSize;
 				}
-				if (sideWest) {
+				if (tile.isAngled( area, SIDE_WEST)) {
 					minX -= mSize;
 				}
 				blk.setBlockBounds( minX, minS, 1F - mSize, maxX, maxS, 1F);
@@ -104,38 +120,46 @@ public class SectionRedWireRender extends ASectionRenderer implements IArea {
 				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_WEST:
-				if (sideDown) {
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min; // toDown || sideDown
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max; // toUp || sideUp
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min; // toNorth || sideNorth
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max; // toSouth || sideSouth
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mSize;
 				}
-				if (sideUp) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mSize;
 				}
-				if (sideNorth) {
+				if (tile.isAngled( area, SIDE_NORTH)) {
 					minZ -= mSize;
 				}
 				blk.setBlockBounds( 0F, minY, minS, mSize, maxY, maxS);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_WEST, meta, x, y, z);
 				blk.setBlockBounds( 0F, minS, minZ, mSize, maxS, maxZ);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_WEST, meta, x, y, z);
 				break;
 			case SIDE_EAST:
-				if (sideDown) {
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min; // toDown || sideDown
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max; // toUp || sideUp
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min; // toNorth || sideNorth
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max; // toSouth || sideSouth
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mSize;
 				}
-				if (sideUp) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mSize;
 				}
-				if (sideSouth) {
+				if (tile.isAngled( area, SIDE_SOUTH)) {
 					maxZ += mSize;
 				}
 				blk.setBlockBounds( 1F - mSize, minY, minS, 1F, maxY, maxS);
 				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 1F - mSize, minS, minZ, 1F, maxS, maxZ);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_EAST, meta, x, y, z);
 				break;
 			default:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, DIR_EAST, meta, x, y, z);
 				break;
 		}
 	}

@@ -21,6 +21,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.sun.istack.internal.Nullable;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,6 +44,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
+	@Nullable
 	public MovingObjectPosition collisionRayTrace( World world, int x, int y, int z, Vec3 start, Vec3 end) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
@@ -86,6 +90,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
+	@Nullable
 	public AxisAlignedBB getCollisionBoundingBoxFromPool( World par1World, int par2, int par3, int par4) {
 		return null;
 	}

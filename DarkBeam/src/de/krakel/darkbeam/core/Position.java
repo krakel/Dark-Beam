@@ -20,18 +20,18 @@ public class Position implements IDirection {
 	private static final int[] REL_Z = {
 		0, 0, -1, 1, 0, 0
 	};
-	private static final int[] ANTI = {
-		DIR_UP, DIR_DOWN, DIR_SOUTH, DIR_NORTH, DIR_EAST, DIR_WEST
-	};
-	private static final int[] ANTI_X = {
-		0, 0, 0, 0, 1, -1
-	};
-	private static final int[] ANTI_Y = {
-		1, -1, 0, 0, 0, 0
-	};
-	private static final int[] ANTI_Z = {
-		0, 0, 1, -1, 0, 0
-	};
+//	private static final int[] ANTI = {
+//		DIR_UP, DIR_DOWN, DIR_SOUTH, DIR_NORTH, DIR_EAST, DIR_WEST
+//	};
+//	private static final int[] ANTI_X = {
+//		0, 0, 0, 0, 1, -1
+//	};
+//	private static final int[] ANTI_Y = {
+//		1, -1, 0, 0, 0, 0
+//	};
+//	private static final int[] ANTI_Z = {
+//		0, 0, 1, -1, 0, 0
+//	};
 	private static final float[] NORM_X = {
 		0F, 0F, 0F, 0F, -1F, 1F
 	};
@@ -41,9 +41,9 @@ public class Position implements IDirection {
 	private static final float[] NORM_Z = {
 		0F, 0F, -1F, 1F, 0F, 0F
 	};
-	private static final int[] OFFSET = {
-		0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020
-	};
+//	private static final int[] OFFSET = {
+//		0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020
+//	};
 	private static final ForgeDirection[] FORGE = {
 		ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST,
 		ForgeDirection.EAST
@@ -60,30 +60,33 @@ public class Position implements IDirection {
 	}
 
 	public static int antiX( int side) {
-		try {
-			return ANTI_X[side];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return 0;
-		}
+//		try {
+//			return ANTI_X[side];
+//		}
+//		catch (IndexOutOfBoundsException ex) {
+//			return 0;
+//		}
+		return relX( side ^ 1);
 	}
 
 	public static int antiY( int side) {
-		try {
-			return ANTI_Y[side];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return 0;
-		}
+//		try {
+//			return ANTI_Y[side];
+//		}
+//		catch (IndexOutOfBoundsException ex) {
+//			return 0;
+//		}
+		return relY( side ^ 1);
 	}
 
 	public static int antiZ( int side) {
-		try {
-			return ANTI_Z[side];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return 0;
-		}
+//		try {
+//			return ANTI_Z[side];
+//		}
+//		catch (IndexOutOfBoundsException ex) {
+//			return 0;
+//		}
+		return relZ( side ^ 1);
 	}
 
 	public static void move( MovingObjectPosition pos) {
@@ -138,14 +141,14 @@ public class Position implements IDirection {
 		}
 	}
 
-	// 1 << side
 	public static int offset( int side) {
-		try {
-			return OFFSET[side];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return 0;
-		}
+//		try {
+//			return OFFSET[side];
+//		}
+//		catch (IndexOutOfBoundsException ex) {
+//			return 0;
+//		}
+		return 1 << side;
 	}
 
 	public static int relX( int side) {
@@ -176,12 +179,13 @@ public class Position implements IDirection {
 	}
 
 	public static int toAnti( int side) {
-		try {
-			return ANTI[side];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return 0;
-		}
+//		try {
+//			return ANTI[side];
+//		}
+//		catch (IndexOutOfBoundsException ex) {
+//			return 0;
+//		}
+		return side ^ 1;
 	}
 
 	public static ForgeDirection toForge( int side) {

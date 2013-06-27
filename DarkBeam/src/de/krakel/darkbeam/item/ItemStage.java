@@ -18,6 +18,9 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
+import com.sun.istack.internal.Nullable;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -50,6 +53,7 @@ public class ItemStage extends ItemBlock {
 		return sec.isValid( tile, pos.subHit);
 	}
 
+	@Nullable
 	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {
 		LogHelper.info( "toPlacePos: %b, %s", world.isRemote, LogHelper.toString( pos));
 		int dmg = stk.getItemDamage();
@@ -84,6 +88,7 @@ public class ItemStage extends ItemBlock {
 
 	@Override
 	@SideOnly( Side.CLIENT)
+	@Nullable
 	public CreativeTabs getCreativeTab() {
 		return null;
 	}
@@ -97,6 +102,7 @@ public class ItemStage extends ItemBlock {
 
 	@Override
 	@SideOnly( Side.CLIENT)
+	@Nullable
 	public Icon getIconFromDamage( int dmg) {
 		Block blk = Block.blocksList[itemID];
 		if (blk == null) {

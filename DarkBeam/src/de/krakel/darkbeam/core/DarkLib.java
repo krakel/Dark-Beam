@@ -18,13 +18,15 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.sun.istack.internal.Nullable;
+
 public class DarkLib implements IDirection {
 	public static final double BOX_BORDER_HEIGHT = 1D / 512D;
 
 	private DarkLib() {
 	}
 
-	public static <T> boolean different( T obj1, T obj2) {
+	public static <T> boolean different( @Nullable T obj1, @Nullable T obj2) {
 		if (obj1 == null) {
 			return obj2 != null;
 		}
@@ -44,14 +46,14 @@ public class DarkLib implements IDirection {
 		world.spawnEntityInWorld( entity);
 	}
 
-	public static <T> boolean equals( T obj1, T obj2) {
+	public static <T> boolean equals( @Nullable T obj1, @Nullable T obj2) {
 		if (obj1 == null) {
 			return obj2 == null;
 		}
 		return obj1.equals( obj2);
 	}
 
-	public static String format( String msg, Object... data) {
+	public static String format( @Nullable String msg, Object... data) {
 		if (data == null || data.length == 0) {
 			return msg;
 		}
@@ -74,6 +76,7 @@ public class DarkLib implements IDirection {
 	}
 
 	@SuppressWarnings( "unchecked")
+	@Nullable
 	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z, Class<T> type) {
 		TileEntity tile = world.getBlockTileEntity( x, y, z);
 		if (type.isInstance( tile)) {
@@ -89,7 +92,8 @@ public class DarkLib implements IDirection {
 		}
 	}
 
-	public static MovingObjectPosition retraceBlock( World world, EntityLiving player, int x, int y, int z) {
+	@Nullable
+	public static MovingObjectPosition retraceBlock( @Nullable World world, EntityLiving player, int x, int y, int z) {
 		int id = world.getBlockId( x, y, z);
 		Block blk = Block.blocksList[id];
 		if (blk == null) {
