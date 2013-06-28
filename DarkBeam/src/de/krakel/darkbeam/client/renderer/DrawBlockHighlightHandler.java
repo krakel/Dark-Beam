@@ -15,11 +15,13 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import com.sun.istack.internal.Nullable;
+
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class DrawBlockHighlightHandler {
-	private static void highlight( World world, int x, int y, int z) {
+	private static void highlight( @Nullable World world, int x, int y, int z) {
 		int id = world.getBlockId( x, y, z);
 		if (id > 0) {
 			GL11.glEnable( GL11.GL_BLEND);

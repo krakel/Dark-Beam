@@ -18,6 +18,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 public class DarkLib implements IDirection {
@@ -33,7 +34,7 @@ public class DarkLib implements IDirection {
 		return !obj1.equals( obj2);
 	}
 
-	public static void dropItem( World world, int x, int y, int z, ItemStack stk) {
+	public static void dropItem( @Nullable World world, int x, int y, int z, ItemStack stk) {
 		if (world.isRemote) {
 			return;
 		}
@@ -77,7 +78,7 @@ public class DarkLib implements IDirection {
 
 	@SuppressWarnings( "unchecked")
 	@Nullable
-	public static <T extends TileEntity> T getTileEntity( IBlockAccess world, int x, int y, int z, Class<T> type) {
+	public static <T extends TileEntity> T getTileEntity( @NotNull IBlockAccess world, int x, int y, int z, Class<T> type) {
 		TileEntity tile = world.getBlockTileEntity( x, y, z);
 		if (type.isInstance( tile)) {
 			return (T) tile;
@@ -85,7 +86,7 @@ public class DarkLib implements IDirection {
 		return null;
 	}
 
-	public static void placeNoise( World world, int x, int y, int z, int id) {
+	public static void placeNoise( @Nullable World world, int x, int y, int z, int id) {
 		Block blk = Block.blocksList[id];
 		if (blk != null) {
 			world.playSoundEffect( x + 0.5F, y + 0.5F, z + 0.5F, "step.stone", (blk.stepSound.getVolume() + 1F) * 0.5F, blk.stepSound.getPitch() * 0.8F);
@@ -93,7 +94,7 @@ public class DarkLib implements IDirection {
 	}
 
 	@Nullable
-	public static MovingObjectPosition retraceBlock( @Nullable World world, EntityLiving player, int x, int y, int z) {
+	public static MovingObjectPosition retraceBlock( @NotNull World world, EntityLiving player, int x, int y, int z) {
 		int id = world.getBlockId( x, y, z);
 		Block blk = Block.blocksList[id];
 		if (blk == null) {

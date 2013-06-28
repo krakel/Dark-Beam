@@ -22,6 +22,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import cpw.mods.fml.relauncher.Side;
@@ -45,7 +46,7 @@ public class BlockStage extends Block {
 
 	@Override
 	@Nullable
-	public MovingObjectPosition collisionRayTrace( World world, int x, int y, int z, Vec3 start, Vec3 end) {
+	public MovingObjectPosition collisionRayTrace( @Nullable World world, int x, int y, int z, Vec3 start, Vec3 end) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return null;
@@ -74,14 +75,14 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public TileEntity createTileEntity( World world, int meta) {
+	public TileEntity createTileEntity( @NotNull World world, int meta) {
 		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
 		return new TileStage();
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
-	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
+	public Icon getBlockTexture( @NotNull IBlockAccess world, int x, int y, int z, int side) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return super.getBlockTexture( world, x, y, z, side);
@@ -91,7 +92,7 @@ public class BlockStage extends Block {
 
 	@Override
 	@Nullable
-	public AxisAlignedBB getCollisionBoundingBoxFromPool( World par1World, int par2, int par3, int par4) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool( @NotNull World par1World, int par2, int par3, int par4) {
 		return null;
 	}
 
@@ -108,7 +109,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public void harvestBlock( World world, EntityPlayer player, int x, int y, int z, int meta) {
+	public void harvestBlock( @NotNull World world, EntityPlayer player, int x, int y, int z, int meta) {
 	}
 
 	@Override
@@ -127,7 +128,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public void onBlockClicked( World world, int x, int y, int z, EntityPlayer player) {
+	public void onBlockClicked( @Nullable World world, int x, int y, int z, EntityPlayer player) {
 		LogHelper.info( "onBlockClicked: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
 		super.onBlockClicked( world, x, y, z, player);
 	}
@@ -138,7 +139,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
+	public boolean removeBlockByPlayer( @Nullable World world, EntityPlayer player, int x, int y, int z) {
 		LogHelper.info( "removeBlockByPlayer: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
 //		if (world.isRemote) {
 //			return false;
