@@ -31,6 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockStageRender;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
@@ -42,6 +43,20 @@ public class BlockStage extends Block {
 		super( id, DarkBeam.MAT_DARK);
 		setHardness( 0.1F);
 		disableStats();
+	}
+
+	@Override
+	public boolean canConnectRedstone( IBlockAccess world, int x, int y, int z, int side) {
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+		if (tile == null) {
+			return false;
+		}
+		return tile.isUsed( IArea.D) && tile.getSection( IArea.SIDE_DOWN).isWire();
+	}
+
+	@Override
+	public boolean canProvidePower() {
+		return true;
 	}
 
 	@Override

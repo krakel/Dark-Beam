@@ -44,6 +44,9 @@ public class Position implements IDirection {
 //	private static final int[] OFFSET = {
 //		0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020
 //	};
+	private static final int[] REDSTONE = {
+		-1, -1, 0, 2, 3, 1
+	};
 	private static final ForgeDirection[] FORGE = {
 		ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST,
 		ForgeDirection.EAST
@@ -149,6 +152,15 @@ public class Position implements IDirection {
 //			return 0;
 //		}
 		return 1 << side;
+	}
+
+	public static int redstone( int side) {
+		try {
+			return REDSTONE[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return -1;
+		}
 	}
 
 	public static int relX( int side) {

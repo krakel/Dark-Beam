@@ -83,6 +83,9 @@ public class Cube implements IArea {
 	private static final int[] ANTI_OFFSET_EDGE = {
 		US, UN, UE, UW, DS, DN, DE, DW, SE, SW, NE, NW
 	};
+	private static final int[] REDSTONE = {
+		SIDE_UP, SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST
+	};
 
 	private Cube() {
 	}
@@ -117,6 +120,15 @@ public class Cube implements IArea {
 	public static int offEdges( int side) {
 		try {
 			return EDGE_OFFSETS_OF_SIDE[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
+		}
+	}
+
+	public static int redstone( int side) {
+		try {
+			return REDSTONE[side + 1];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;

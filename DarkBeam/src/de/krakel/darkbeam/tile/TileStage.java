@@ -10,6 +10,7 @@ package de.krakel.darkbeam.tile;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -39,6 +40,14 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	private int[] mArr = new int[32];
 
 	public TileStage() {
+	}
+
+	private boolean canPowered( int id) {
+		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
+			|| id == Block.stoneButton.blockID || id == Block.woodenButton.blockID || id == Block.lever.blockID
+			|| id == Block.torchRedstoneIdle.blockID || id == Block.torchRedstoneActive.blockID
+			|| id == Block.redstoneRepeaterIdle.blockID || id == Block.redstoneRepeaterActive.blockID
+			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
 	}
 
 	private int getAngled() {
@@ -163,6 +172,18 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			if (tile != null) {
 				refreshAngled( tile, edge);
 			}
+			else {
+				int id = worldObj.getBlockId( x, y, z);
+				if (canPowered( id)) {
+					mAngledConn |= 1 << edge;
+				}
+				else {
+					Block blk = Block.blocksList[id];
+					if (blk != null && blk.canProvidePower()) {
+						mAngledConn |= 1 << edge;
+					}
+				}
+			}
 		}
 	}
 
@@ -217,13 +238,25 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			int x = xCoord + Position.relX( side);
 			int y = yCoord + Position.relY( side);
 			int z = zCoord + Position.relZ( side);
-			if (!worldObj.isAirBlock( x, y, z)) {
-				TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
-				if (tile != null) {
-					refreshNeighbor( tile, side);
+			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
+			if (tile != null) {
+				refreshNeighbor( tile, side);
+			}
+			else if (!isUsed( 1 << side)) {
+				int id = worldObj.getBlockId( x, y, z);
+				if (canPowered( id)) {
+					mNeighborConn |= Cube.offEdges( side);
 				}
-				else if (!isUsed( 1 << side)) {
-					mAngledBlock &= ~Cube.offEdges( side);
+				else {
+					Block blk = Block.blocksList[id];
+					if (blk != null) {
+						if (blk.canProvidePower()) {
+							mNeighborConn |= Cube.offEdges( side);
+						}
+						else if (blk.blockMaterial.isOpaque() && blk.renderAsNormalBlock()) {
+							mAngledBlock &= ~Cube.offEdges( side);
+						}
+					}
 				}
 			}
 		}
