@@ -41,8 +41,16 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	public TileStage() {
 	}
 
+	private int getAngled() {
+		return mInnerBlock & mNeighborBlock & mAngledBlock & mAngledConn;
+	}
+
 	public int getArea() {
 		return mArea;
+	}
+
+	private int getConnections() {
+		return mInnerBlock & (mInnerConn | mNeighborBlock & (mNeighborConn | mAngledBlock & mAngledConn));
 	}
 
 	@Override
@@ -67,44 +75,18 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	public boolean isAngled( int area, int side) {
-		int off = Cube.edge( area, side) << 1;
-		return (mAngledBlock & mAngledConn & off) != 0;
+		int off = Cube.offEdge( area, side);
+		return (getAngled() & off) != 0;
 	}
 
-//	public boolean isBlocked( int area, int side) {
-//		int off = Cube.edge( area, side) << 1;
-//		return ((mBlocked | mBlockedN) & off) != 0;
-//	}
-//
-//	public boolean isConnect( int area, int meta, int side, int x, int y, int z) {
-//		if (worldObj == null) {
-//			LogHelper.info( "missing world");
-//			return false;
-//		}
-//		x += Position.relX( side);
-//		y += Position.relY( side);
-//		z += Position.relZ( side);
-//		TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
-//		if (tile != null && tile.isMeta( area, meta)) {
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	public boolean isConnected() {
-//		return (mConnect | mNeighbor | mAngled) != 0; // && mBlocked == 0 && mBlockedN == 0;
-//	}
-//
 	public boolean isConnected( int area) {
 		int off = Cube.offEdges( area);
-		int con = mInnerBlock & (mInnerConn | mNeighborBlock & (mNeighborConn | mAngledBlock & mAngledConn)) & off;
-		return con != 0;
+		return (getConnections() & off) != 0;
 	}
 
 	public boolean isConnected( int area, int side) {
-		int off = Cube.edge( area, side) << 1;
-		int con = mInnerBlock & (mInnerConn | mNeighborBlock & (mNeighborConn | mAngledBlock & mAngledConn)) & off;
-		return con != 0;
+		int off = Cube.offEdge( area, side);
+		return (getConnections() & off) != 0;
 	}
 
 	public boolean isEmpty() {
@@ -130,32 +112,6 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 	}
 
-//	public boolean isSided( int area, int meta, int side, int x, int y, int z) {
-//		if (worldObj == null) {
-//			LogHelper.info( "missing world");
-//			return false;
-//		}
-//		int anti = Position.toAnti( side);
-//		if (area == anti) {
-//			return false;
-//		}
-//		x += Position.relX( side);
-//		y += Position.relY( side);
-//		z += Position.relZ( side);
-//		int id = worldObj.getBlockId( x, y, z);
-//		if (id != 0 && id != BlockType.STAGE.getId()) {
-//			return false;
-//		}
-//		x += Position.relX( area);
-//		y += Position.relY( area);
-//		z += Position.relZ( area);
-//		TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
-//		if (tile == null) {
-//			return false;
-//		}
-//		return tile.isMeta( anti, meta);
-//	}
-//
 	public boolean isUsed( int value) {
 		return (mArea & value) != 0;
 	}
@@ -194,58 +150,49 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	public void refresh() {
 		reset();
 		refreshInner();
-		for (int side = 0; side < IArea.MAX_SIDE; ++side) {
-			int x = xCoord + Position.relX( side);
-			int y = yCoord + Position.relY( side);
-			int z = zCoord + Position.relZ( side);
-			if (!worldObj.isAirBlock( x, y, z)) {
-				TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
-				if (tile != null) {
-					refreshNeighbor( tile, side);
-				}
-				else {
-					mNeighborBlock &= ~Cube.offEdges( side);
-				}
-			}
-		}
-		for (int side = IArea.MAX_SIDE; side < IArea.MAX_EDGE; ++side) {
-			int x = xCoord + Cube.relEdgeX( side);
-			int y = yCoord + Cube.relEdgeY( side);
-			int z = zCoord + Cube.relEdgeZ( side);
+		refreshNeighbor();
+		refreshAngled();
+	}
+
+	private void refreshAngled() {
+		for (int edge = IArea.MIN_EDGE; edge < IArea.MAX_EDGE; ++edge) {
+			int x = xCoord + Cube.relEdgeX( edge);
+			int y = yCoord + Cube.relEdgeY( edge);
+			int z = zCoord + Cube.relEdgeZ( edge);
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
-				refreshAngled( tile, side);
+				refreshAngled( tile, edge);
 			}
 		}
 	}
 
-	private void refreshAngled( @NotNull TileStage tile, int side) {
-		int sideA = Cube.sideA( side);
-		int sideB = Cube.sideB( side);
-		if (tile.isUsed( 1 << sideA) || tile.isUsed( 1 << sideB)) {
-			ISection secA = tile.getSection( sideA);
-			ISection secB = tile.getSection( sideB);
-			if (secA.isWire() || secB.isWire()) {
-				if (secA.isWire()) {
-					mAngledConn |= 1 << (sideB ^ 1);
-				}
-				if (secB.isWire()) {
-					mAngledConn |= 1 << (sideA ^ 1);
-				}
+	private void refreshAngled( @NotNull TileStage tile, int edge) {
+		int sideA = Cube.sideA( edge) ^ 1;
+		if (tile.isUsed( 1 << sideA)) {
+			if (tile.getSection( sideA).isWire()) {
+				mAngledConn |= 1 << edge;
 			}
 			else {
-				mAngledBlock &= ~(1 << side);
+				mAngledBlock &= ~(1 << edge);
 			}
 		}
-		int anti = Cube.antiEdge( side);
-		if (tile.isUsed( 1 << anti)) {
-			mAngledBlock &= ~(1 << side);
+		int sideB = Cube.sideB( edge) ^ 1;
+		if (tile.isUsed( 1 << sideB)) {
+			if (tile.getSection( sideB).isWire()) {
+				mAngledConn |= 1 << edge;
+			}
+			else {
+				mAngledBlock &= ~(1 << edge);
+			}
+		}
+		if (tile.isUsed( Cube.offAnti( edge))) {
+			mAngledBlock &= ~(1 << edge);
 		}
 	}
 
 	private void refreshInner() {
 		int temp = 0;
-		for (int side = 0; side < IArea.MAX_SIDE; ++side) {
+		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
 			if (isUsed( 1 << side)) {
 				if (getSection( side).isWire()) {
 					int edges = Cube.offEdges( side);
@@ -257,7 +204,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 				}
 			}
 		}
-		for (int edge = IArea.MAX_SIDE; edge < IArea.MAX_EDGE; ++edge) {
+		for (int edge = IArea.MIN_EDGE; edge < IArea.MAX_EDGE; ++edge) {
 			int off = 1 << edge;
 			if (isUsed( off)) {
 				mInnerBlock &= ~off;
@@ -265,28 +212,45 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 	}
 
+	private void refreshNeighbor() {
+		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
+			int x = xCoord + Position.relX( side);
+			int y = yCoord + Position.relY( side);
+			int z = zCoord + Position.relZ( side);
+			if (!worldObj.isAirBlock( x, y, z)) {
+				TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
+				if (tile != null) {
+					refreshNeighbor( tile, side);
+				}
+				else if (!isUsed( 1 << side)) {
+					mAngledBlock &= ~Cube.offEdges( side);
+				}
+			}
+		}
+	}
+
 	private void refreshNeighbor( @NotNull TileStage tile, int side) {
 		int[] sides = Cube.sides( side ^ 1);
 		for (int sideB : sides) {
-			int off1 = 1 << sideB;
-			if (isUsed( off1) && tile.isUsed( off1)) {
-				if (getSection( sideB).isWire() && tile.getSection( sideB).isWire()) {
-					mNeighborConn |= Cube.edge( side, sideB);
+			int offW = 1 << sideB;
+			if (tile.isUsed( offW)) {
+				if (!tile.getSection( sideB).isWire()) {
+					mNeighborBlock &= ~Cube.offEdge( side, sideB);
+				}
+				else if (isUsed( offW) && getSection( sideB).isWire()) {
+					mNeighborConn |= Cube.offEdge( side, sideB);
 				}
 			}
-			int off2 = Cube.edge( side ^ 1, sideB);
-			if (tile.isUsed( off2)) {
-				mNeighborBlock &= ~Cube.edge( side, sideB);
+			if (tile.isUsed( Cube.offEdge( side ^ 1, sideB))) {
+				mNeighborBlock &= ~Cube.offEdge( side, sideB);
 			}
 		}
-		int off = 1 << (side ^ 1);
-		if (tile.isUsed( off)) {
+		if (tile.isUsed( 1 << (side ^ 1))) {
 			mNeighborBlock &= ~Cube.offEdges( side);
 		}
 	}
 
 	public void reset() {
-//		mArea = 0;
 		mInnerConn = 0;
 		mNeighborConn = 0;
 		mAngledConn = 0;

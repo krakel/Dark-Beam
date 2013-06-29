@@ -39,19 +39,19 @@ public class Cube implements IArea {
 			SIDE_DOWN, SIDE_UP, SIDE_NORTH, SIDE_SOUTH
 		}
 	};
-	private static final int[][] EAGE_OF_SIDES = {
+	private static final int[][] EDGE_OFFSETS_OF_SIDES = {
 		{ // SIDE_DOWN
-			-1, -1, EDGE_DOWN_NORTH, EDGE_DOWN_SOUTH, EDGE_DOWN_WEST, EDGE_DOWN_EAST
+			0, 0, DN, DS, DW, DE
 		}, { // SIDE_UP
-			-1, -1, EDGE_UP_NORTH, EDGE_UP_SOUTH, EDGE_UP_WEST, EDGE_UP_EAST
+			0, 0, UN, US, UW, UE
 		}, { // SIDE_NORTH
-			EDGE_DOWN_NORTH, EDGE_UP_NORTH, -1, -1, EDGE_NORTH_WEST, EDGE_NORTH_EAST
+			DN, UN, 0, 0, NW, NE
 		}, { // SIDE_SOUTH
-			EDGE_DOWN_SOUTH, EDGE_UP_SOUTH, -1, -1, EDGE_SOUTH_WEST, EDGE_SOUTH_EAST
+			DS, US, 0, 0, SW, SE
 		}, { // SIDE_WEST
-			EDGE_DOWN_WEST, EDGE_UP_WEST, EDGE_NORTH_WEST, EDGE_SOUTH_WEST, -1, -1
+			DW, UW, NW, SW, 0, 0
 		}, { // SIDE_EAST
-			EDGE_DOWN_EAST, EDGE_UP_EAST, EDGE_NORTH_EAST, EDGE_SOUTH_EAST, -1, -1
+			DE, UE, NE, SE, 0, 0
 		}
 	};
 	private static final int[] EDGE_OFFSETS_OF_SIDE = {
@@ -80,30 +80,11 @@ public class Cube implements IArea {
 		SIDE_NORTH, SIDE_SOUTH, SIDE_WEST, SIDE_EAST, SIDE_NORTH, SIDE_SOUTH, SIDE_WEST, SIDE_EAST, SIDE_WEST,
 		SIDE_EAST, SIDE_WEST, SIDE_EAST
 	};
-	private static final int[] ANTI_EDGE = {
-		EDGE_UP_SOUTH, EDGE_UP_NORTH, EDGE_UP_EAST, EDGE_UP_WEST, EDGE_DOWN_SOUTH, EDGE_DOWN_NORTH, EDGE_DOWN_EAST,
-		EDGE_DOWN_WEST, EDGE_SOUTH_EAST, EDGE_SOUTH_WEST, EDGE_NORTH_EAST, EDGE_NORTH_WEST
+	private static final int[] ANTI_OFFSET_EDGE = {
+		US, UN, UE, UW, DS, DN, DE, DW, SE, SW, NE, NW
 	};
 
 	private Cube() {
-	}
-
-	public static int antiEdge( int edge) {
-		try {
-			return ANTI_EDGE[edge];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return 0;
-		}
-	}
-
-	public static int edge( int sideA, int sideB) {
-		try {
-			return EAGE_OF_SIDES[sideA][sideB];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return 0;
-		}
 	}
 
 	public static int[] edges( int side) {
@@ -112,6 +93,24 @@ public class Cube implements IArea {
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return EMPTY;
+		}
+	}
+
+	public static int offAnti( int edge) {
+		try {
+			return ANTI_OFFSET_EDGE[edge - IArea.MIN_EDGE];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
+		}
+	}
+
+	public static int offEdge( int sideA, int sideB) {
+		try {
+			return EDGE_OFFSETS_OF_SIDES[sideA][sideB];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
 		}
 	}
 
@@ -126,7 +125,7 @@ public class Cube implements IArea {
 
 	public static int relEdgeX( int edge) {
 		try {
-			return REL_EDGE_X[edge];
+			return REL_EDGE_X[edge - IArea.MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -135,7 +134,7 @@ public class Cube implements IArea {
 
 	public static int relEdgeY( int edge) {
 		try {
-			return REL_EDGE_Y[edge];
+			return REL_EDGE_Y[edge - IArea.MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -144,7 +143,7 @@ public class Cube implements IArea {
 
 	public static int relEdgeZ( int edge) {
 		try {
-			return REL_EDGE_Z[edge];
+			return REL_EDGE_Z[edge - IArea.MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -153,7 +152,7 @@ public class Cube implements IArea {
 
 	public static int sideA( int edge) {
 		try {
-			return SIDE_OF_EDGE_A[edge];
+			return SIDE_OF_EDGE_A[edge - IArea.MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -162,7 +161,7 @@ public class Cube implements IArea {
 
 	public static int sideB( int edge) {
 		try {
-			return SIDE_OF_EDGE_B[edge];
+			return SIDE_OF_EDGE_B[edge - IArea.MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
