@@ -33,4 +33,9 @@ class SectionInsulated extends ASectionWire {
 		Insulate insu = InsulateLib.getForDmg( dmg);
 		return insu.getName( this);
 	}
+
+	@Override
+	public boolean isRedwire() {
+		return true;
+	}
 }

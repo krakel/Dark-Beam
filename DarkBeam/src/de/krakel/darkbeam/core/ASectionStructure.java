@@ -39,6 +39,11 @@ abstract class ASectionStructure extends ASection {
 	}
 
 	@Override
+	public boolean isRedwire() {
+		return false;
+	}
+
+	@Override
 	public boolean isStructure() {
 		return true;
 	}

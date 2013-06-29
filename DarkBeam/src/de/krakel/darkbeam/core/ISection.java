@@ -25,6 +25,8 @@ public interface ISection {
 
 	String getSectionName( int dmg);
 
+	boolean isRedwire();
+
 	boolean isStructure();
 
 	boolean isValid( TileStage tile, int area);

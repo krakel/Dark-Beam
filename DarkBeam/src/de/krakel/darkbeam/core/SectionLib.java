@@ -19,6 +19,7 @@ public class SectionLib {
 	private static Iterable<ISection> sIter = new MaskIterable();
 	public static ISection sRedwire;
 	public static ISection sInsuwire;
+	public static ISection sCable;
 
 	private SectionLib() {
 	}
@@ -64,6 +65,8 @@ public class SectionLib {
 		add( sRedwire);
 		sInsuwire = new SectionInsulated();
 		add( sInsuwire);
+		sCable = new SectionCable();
+		add( sCable);
 	}
 
 	public static boolean isValid( int secID) {

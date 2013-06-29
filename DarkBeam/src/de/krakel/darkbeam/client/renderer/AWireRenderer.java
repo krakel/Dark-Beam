@@ -16,10 +16,12 @@ import de.krakel.darkbeam.tile.TileStage;
 
 abstract class AWireRenderer extends ASectionRenderer implements IArea {
 	protected float mCrossness;
+	private float mHigh;
 
 	protected AWireRenderer( int base, float crossness) {
 		super( base);
 		mCrossness = crossness;
+		mHigh = (base + 1) / 16F;
 	}
 
 	@Override
@@ -48,9 +50,9 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				maxX = tile.isConnected( side, SIDE_EAST) ? 1F : max;
 				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
 				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
-				blk.setBlockBounds( minX, 0F, minS, maxX, mSize, maxS);
+				blk.setBlockBounds( minX, 0F, minS, maxX, mHigh, maxS);
 				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
-				blk.setBlockBounds( minS, 0F, minZ, maxS, mSize, maxZ);
+				blk.setBlockBounds( minS, 0F, minZ, maxS, mHigh, maxZ);
 				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
 				break;
 			case SIDE_UP:
@@ -58,9 +60,9 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				maxX = tile.isConnected( side, SIDE_EAST) ? 1F : max;
 				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
 				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
-				blk.setBlockBounds( minX, 1F - mSize, minS, maxX, 1F, maxS);
+				blk.setBlockBounds( minX, 1F - mHigh, minS, maxX, 1F, maxS);
 				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
-				blk.setBlockBounds( minS, 1F - mSize, minZ, maxS, 1F, maxZ);
+				blk.setBlockBounds( minS, 1F - mHigh, minZ, maxS, 1F, maxZ);
 				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
 				break;
 			case SIDE_NORTH:
@@ -69,17 +71,17 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				minY = tile.isConnected( side, SIDE_DOWN) ? 0F : min;
 				maxY = tile.isConnected( side, SIDE_UP) ? 1F : max;
 				if (tile.isAngled( side, SIDE_DOWN)) {
-					minY -= mSize;
+					minY -= mHigh;
 				}
 				if (tile.isAngled( side, SIDE_UP)) {
-					maxY += mSize;
+					maxY += mHigh;
 				}
 				if (tile.isAngled( side, SIDE_EAST)) {
-					maxX += mSize;
+					maxX += mHigh;
 				}
-				blk.setBlockBounds( minX, minS, 0F, maxX, maxS, mSize);
+				blk.setBlockBounds( minX, minS, 0F, maxX, maxS, mHigh);
 				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
-				blk.setBlockBounds( minS, minY, 0F, maxS, maxY, mSize);
+				blk.setBlockBounds( minS, minY, 0F, maxS, maxY, mHigh);
 				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
 				break;
 			case SIDE_SOUTH:
@@ -88,17 +90,17 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				minY = tile.isConnected( side, SIDE_DOWN) ? 0F : min;
 				maxY = tile.isConnected( side, SIDE_UP) ? 1F : max;
 				if (tile.isAngled( side, SIDE_DOWN)) {
-					minY -= mSize;
+					minY -= mHigh;
 				}
 				if (tile.isAngled( side, SIDE_UP)) {
-					maxY += mSize;
+					maxY += mHigh;
 				}
 				if (tile.isAngled( side, SIDE_WEST)) {
-					minX -= mSize;
+					minX -= mHigh;
 				}
-				blk.setBlockBounds( minX, minS, 1F - mSize, maxX, maxS, 1F);
+				blk.setBlockBounds( minX, minS, 1F - mHigh, maxX, maxS, 1F);
 				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
-				blk.setBlockBounds( minS, minY, 1F - mSize, maxS, maxY, 1F);
+				blk.setBlockBounds( minS, minY, 1F - mHigh, maxS, maxY, 1F);
 				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_WEST:
@@ -107,17 +109,17 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
 				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
 				if (tile.isAngled( side, SIDE_DOWN)) {
-					minY -= mSize;
+					minY -= mHigh;
 				}
 				if (tile.isAngled( side, SIDE_UP)) {
-					maxY += mSize;
+					maxY += mHigh;
 				}
 				if (tile.isAngled( side, SIDE_NORTH)) {
-					minZ -= mSize;
+					minZ -= mHigh;
 				}
-				blk.setBlockBounds( 0F, minY, minS, mSize, maxY, maxS);
+				blk.setBlockBounds( 0F, minY, minS, mHigh, maxY, maxS);
 				renderStandard( rndrBlk, blk, DIR_WEST, meta, x, y, z);
-				blk.setBlockBounds( 0F, minS, minZ, mSize, maxS, maxZ);
+				blk.setBlockBounds( 0F, minS, minZ, mHigh, maxS, maxZ);
 				renderStandard( rndrBlk, blk, DIR_WEST, meta, x, y, z);
 				break;
 			case SIDE_EAST:
@@ -126,17 +128,17 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
 				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
 				if (tile.isAngled( side, SIDE_DOWN)) {
-					minY -= mSize;
+					minY -= mHigh;
 				}
 				if (tile.isAngled( side, SIDE_UP)) {
-					maxY += mSize;
+					maxY += mHigh;
 				}
 				if (tile.isAngled( side, SIDE_SOUTH)) {
-					maxZ += mSize;
+					maxZ += mHigh;
 				}
-				blk.setBlockBounds( 1F - mSize, minY, minS, 1F, maxY, maxS);
+				blk.setBlockBounds( 1F - mHigh, minY, minS, 1F, maxY, maxS);
 				renderStandard( rndrBlk, blk, DIR_EAST, meta, x, y, z);
-				blk.setBlockBounds( 1F - mSize, minS, minZ, 1F, maxS, maxZ);
+				blk.setBlockBounds( 1F - mHigh, minS, minZ, 1F, maxS, maxZ);
 				renderStandard( rndrBlk, blk, DIR_EAST, meta, x, y, z);
 				break;
 			default:
@@ -150,22 +152,22 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 	public void setSectionBounds( int area, Block blk) {
 		switch (area) {
 			case SIDE_DOWN:
-				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);
+				blk.setBlockBounds( 0F, 0F, 0F, 1F, mHigh, 1F);
 				break;
 			case SIDE_UP:
-				blk.setBlockBounds( 0F, 1F - mSize, 0F, 1F, 1F, 1F);
+				blk.setBlockBounds( 0F, 1F - mHigh, 0F, 1F, 1F, 1F);
 				break;
 			case SIDE_NORTH:
-				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mSize);
+				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mHigh);
 				break;
 			case SIDE_SOUTH:
-				blk.setBlockBounds( 0F, 0F, 1F - mSize, 1F, 1F, 1F);
+				blk.setBlockBounds( 0F, 0F, 1F - mHigh, 1F, 1F, 1F);
 				break;
 			case SIDE_WEST:
-				blk.setBlockBounds( 0F, 0F, 0F, mSize, 1F, 1F);
+				blk.setBlockBounds( 0F, 0F, 0F, mHigh, 1F, 1F);
 				break;
 			case SIDE_EAST:
-				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, 1F, 1F);
+				blk.setBlockBounds( 1F - mHigh, 0F, 0F, 1F, 1F, 1F);
 				break;
 			default:
 				LogHelper.warning( "unknown area %d", area);

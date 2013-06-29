@@ -128,6 +128,7 @@ public class ItemStage extends ItemBlock {
 		for (Insulate insu : InsulateLib.values()) {
 			lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, insu.toDmg( SectionLib.sInsuwire)));
 		}
+		lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, SectionLib.sCable.toDmg()));
 //		if (tab == ModTabs.sSubTabSection) {
 //		}
 	}

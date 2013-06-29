@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * SectionRedWire.java
+ * SectionCable.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -10,21 +10,21 @@ package de.krakel.darkbeam.core;
 import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
 
-import de.krakel.darkbeam.client.renderer.SectionRedWireRender;
+import de.krakel.darkbeam.client.renderer.SectionCableRenderer;
 
-class SectionRedWire extends ASectionWire {
-	public SectionRedWire() {
-		super( "db.redwire", new SectionRedWireRender());
+class SectionCable extends ASectionWire {
+	public SectionCable() {
+		super( "db.cable", new SectionCableRenderer());
 	}
 
 	@Override
 	public int getBlockID( int dmg) {
-		return Block.blockRedstone.blockID;
+		return Block.sandStone.blockID;
 	}
 
 	@Override
 	public Icon getIcon( int side, int dmg) {
-		return Block.blockRedstone.getIcon( side, 0);
+		return Block.sandStone.getIcon( side, 0); // TODO
 	}
 
 	@Override
@@ -34,6 +34,6 @@ class SectionRedWire extends ASectionWire {
 
 	@Override
 	public boolean isRedwire() {
-		return true;
+		return false;
 	}
 }
