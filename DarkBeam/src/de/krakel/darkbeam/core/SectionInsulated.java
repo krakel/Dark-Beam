@@ -29,6 +29,11 @@ class SectionInsulated extends ASectionWire {
 	}
 
 	@Override
+	public int getLevel() {
+		return 2;
+	}
+
+	@Override
 	public String getSectionName( int dmg) {
 		Insulate insu = InsulateLib.getForDmg( dmg);
 		return insu.getName( this);

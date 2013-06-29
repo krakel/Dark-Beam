@@ -28,6 +28,11 @@ class SectionCable extends ASectionWire {
 	}
 
 	@Override
+	public int getLevel() {
+		return 3;
+	}
+
+	@Override
 	public String getSectionName( int dmg) {
 		return "tile." + getName();
 	}

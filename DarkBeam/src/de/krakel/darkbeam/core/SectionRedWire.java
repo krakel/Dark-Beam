@@ -28,6 +28,11 @@ class SectionRedWire extends ASectionWire {
 	}
 
 	@Override
+	public int getLevel() {
+		return 1;
+	}
+
+	@Override
 	public String getSectionName( int dmg) {
 		return "tile." + getName();
 	}

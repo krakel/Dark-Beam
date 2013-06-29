@@ -21,6 +21,8 @@ public interface ISection {
 
 	int getID();
 
+	int getLevel();
+
 	String getName();
 
 	String getSectionName( int dmg);

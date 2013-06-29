@@ -149,6 +149,17 @@ public class BlockStage extends Block {
 	}
 
 	@Override
+	public void onNeighborBlockChange( @Nullable World world, int x, int y, int z, int side) {
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+		if (tile != null) {
+			tile.refresh();
+		}
+		else {
+			world.setBlockToAir( x, y, z);
+		}
+	}
+
+	@Override
 	@SideOnly( Side.CLIENT)
 	public void registerIcons( IconRegister reg) {
 	}
@@ -175,6 +186,7 @@ public class BlockStage extends Block {
 			ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), 1, meta);
 			DarkLib.dropItem( world, x, y, z, stk);
 			if (tile.isEmpty()) {
+				tile.invalidate();
 				world.setBlockToAir( x, y, z);
 			}
 			else {

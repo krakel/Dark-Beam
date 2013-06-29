@@ -38,8 +38,18 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	private int mNeighborConn;
 	private int mNeighborBlock;
 	private int[] mArr = new int[32];
+	private int mWireMeta;
+	private boolean mNeedUpdate = true;
 
 	public TileStage() {
+	}
+
+	private boolean canConnect( TileStage other) {
+		if (mWireMeta == other.mWireMeta) {
+			return true;
+		}
+		int diff = SectionLib.getForDmg( mWireMeta).getLevel() - SectionLib.getForDmg( other.mWireMeta).getLevel();
+		return diff == 1 || diff == -1;
 	}
 
 	private boolean canPowered( int id) {
@@ -48,6 +58,15 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			|| id == Block.torchRedstoneIdle.blockID || id == Block.torchRedstoneActive.blockID
 			|| id == Block.redstoneRepeaterIdle.blockID || id == Block.redstoneRepeaterActive.blockID
 			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
+	}
+
+	private boolean containeWire() {
+		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
+			if (mArr[side] == mWireMeta) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private int getAngled() {
@@ -158,9 +177,13 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 
 	public void refresh() {
 		reset();
+		setWire();
 		refreshInner();
 		refreshNeighbor();
 		refreshAngled();
+		if (isEmpty()) {
+			invalidate();
+		}
 	}
 
 	private void refreshAngled() {
@@ -265,12 +288,12 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	private void refreshNeighbor( @NotNull TileStage tile, int side) {
 		int[] sides = Cube.sides( side ^ 1);
 		for (int sideB : sides) {
-			int offW = 1 << sideB;
-			if (tile.isUsed( offW)) {
+			int offB = 1 << sideB;
+			if (tile.isUsed( offB) && canConnect( tile)) {
 				if (!tile.getSection( sideB).isWire()) {
 					mNeighborBlock &= ~Cube.offEdge( side, sideB);
 				}
-				else if (isUsed( offW) && getSection( sideB).isWire()) {
+				else if (isUsed( offB) && getSection( sideB).isWire()) {
 					mNeighborConn |= Cube.offEdge( side, sideB);
 				}
 			}
@@ -290,6 +313,17 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		mInnerBlock = -1;
 		mNeighborBlock = -1;
 		mAngledBlock = -1;
+	}
+
+	private void setWire() {
+		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
+			int dmg = getMeta( side);
+			if (SectionLib.getForDmg( dmg).isWire()) {
+				mWireMeta = dmg;
+				return;
+			}
+		}
+		mWireMeta = 0;
 	}
 
 	@Override
@@ -317,6 +351,15 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		try {
 			int off = 1 << area;
 			if (isValid( off)) {
+				ISection sec = SectionLib.getForDmg( meta);
+				if (sec.isWire()) {
+					if (mWireMeta == 0) {
+						mWireMeta = meta;
+					}
+					else if (mWireMeta != meta) {
+						return false;
+					}
+				}
 				mArr[area] = meta;
 				mArea |= off;
 				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( area), toString());
@@ -332,11 +375,14 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		try {
 			int off = 1 << area;
 			if (isUsed( off)) {
-				int value = mArr[area];
+				int meta = mArr[area];
 				mArr[area] = 0;
 				mArea &= ~off;
+				if (meta == mWireMeta && !containeWire()) {
+					mWireMeta = 0;
+				}
 				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( area), toString());
-				return value;
+				return meta;
 			}
 		}
 		catch (IndexOutOfBoundsException ex) {
@@ -346,9 +392,11 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 
 	@Override
 	public void updateEntity() {
-//		if (worldObj != null) {
-//			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
-//		}
+		refresh();
+		if (mNeedUpdate && worldObj.isRemote) {
+			worldObj.markBlockForRenderUpdate( xCoord, yCoord, zCoord);
+			mNeedUpdate = false;
+		}
 	}
 
 	@Override
