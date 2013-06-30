@@ -27,6 +27,8 @@ public interface ISection {
 
 	String getSectionName( int dmg);
 
+	boolean isJoinable();
+
 	boolean isRedwire();
 
 	boolean isStructure();
@@ -41,7 +43,7 @@ public interface ISection {
 
 	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int dmg, int x, int y, int z, TileStage tile);
 
-	void setSectionBounds( int area, Block blk);
+	void setSectionBounds( int area, Block blk, TileStage tile);
 
 	int toDmg();
 

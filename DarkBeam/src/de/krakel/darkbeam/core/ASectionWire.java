@@ -13,12 +13,12 @@ import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 abstract class ASectionWire extends ASection {
-	private static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
-	private static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
-	private static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
-	private static final int VALID_S = S | DS | US | SW | SE | USW | USE | USW | USE;
-	private static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
-	private static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
+	private static final int VALID_D = D | DU;
+	private static final int VALID_U = U | DU;
+	private static final int VALID_N = N | NS;
+	private static final int VALID_S = S | NS;
+	private static final int VALID_W = W | WE;
+	private static final int VALID_E = E | WE;
 
 	protected ASectionWire( String name, ASectionRenderer renderer) {
 		super( name, renderer);
@@ -41,6 +41,11 @@ abstract class ASectionWire extends ASection {
 			default:
 				return -1;
 		}
+	}
+
+	@Override
+	public boolean isJoinable() {
+		return true;
 	}
 
 	@Override

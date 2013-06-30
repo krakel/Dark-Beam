@@ -73,10 +73,6 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return mInnerBlock & mNeighborBlock & mAngledBlock & mAngledConn;
 	}
 
-	public int getArea() {
-		return mArea;
-	}
-
 	private int getConnections() {
 		return mInnerBlock & (mInnerConn | mNeighborBlock & (mNeighborConn | mAngledBlock & mAngledConn));
 	}
@@ -131,21 +127,24 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return (mArea & off) != 0;
 	}
 
-	public boolean isMeta( int area, int meta) {
-		try {
-			return mArr[area] == meta;
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return false;
-		}
-	}
-
 	public boolean isUsed( int value) {
 		return (mArea & value) != 0;
 	}
 
 	public boolean isValid( int value) {
 		return (mArea & value) == 0;
+	}
+
+	public boolean isWire( int area) {
+		if (mWireMeta == 0) {
+			return false;
+		}
+		try {
+			return mArr[area] == mWireMeta;
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return false;
+		}
 	}
 
 	@Override
@@ -313,6 +312,11 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		mInnerBlock = -1;
 		mNeighborBlock = -1;
 		mAngledBlock = -1;
+	}
+
+	public void setSectionBounds( int area, Block blk) {
+		ISection sec = getSection( area);
+		sec.setSectionBounds( area, blk, this);
 	}
 
 	private void setWire() {

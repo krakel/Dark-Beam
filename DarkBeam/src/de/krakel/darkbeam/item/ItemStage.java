@@ -60,9 +60,19 @@ public class ItemStage extends ItemBlock {
 		ISection sec = SectionLib.getForDmg( dmg);
 		sec.updateArea( pos);
 		if (world.canPlaceEntityOnSide( BlockType.STAGE.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
-			LogHelper.info( "toPlacePosA");
+			LogHelper.info( "toPlacePos0");
 			return pos;
 		}
+		if (sec.isJoinable()) {
+			pos.sideHit ^= 1;
+			sec.updateArea( pos);
+			if (canSectionAdd( world, pos, sec)) {
+				LogHelper.info( "toPlacePos1");
+				return pos;
+			}
+			pos.sideHit ^= 1;
+		}
+		sec.updateArea( pos);
 		if (canSectionAdd( world, pos, sec)) {
 			LogHelper.info( "toPlacePosB");
 			return pos;

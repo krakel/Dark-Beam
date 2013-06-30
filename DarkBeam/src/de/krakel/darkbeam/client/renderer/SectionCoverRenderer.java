@@ -27,12 +27,12 @@ public class SectionCoverRenderer extends ASectionRenderer implements IArea {
 
 	@Override
 	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile) {
-		setSectionBounds( area, blk);
+		setSectionBounds( area, blk, tile);
 		renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 	}
 
 	@Override
-	public void setSectionBounds( int area, Block blk) {
+	public void setSectionBounds( int area, Block blk, TileStage tile) {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);

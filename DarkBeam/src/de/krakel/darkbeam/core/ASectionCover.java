@@ -84,6 +84,11 @@ abstract class ASectionCover extends ASectionStructure {
 	}
 
 	@Override
+	public boolean isJoinable() {
+		return false;
+	}
+
+	@Override
 	public boolean isValid( TileStage tile, int area) {
 		switch (area) {
 			case SIDE_DOWN:

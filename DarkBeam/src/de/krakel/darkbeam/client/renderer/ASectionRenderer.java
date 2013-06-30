@@ -68,5 +68,5 @@ public abstract class ASectionRenderer implements IDirection {
 
 	public abstract void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile);
 
-	public abstract void setSectionBounds( int area, Block blk);
+	public abstract void setSectionBounds( int area, Block blk, TileStage tile);
 }

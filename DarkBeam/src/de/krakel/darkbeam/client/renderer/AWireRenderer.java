@@ -35,8 +35,8 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int side, Block blk, int meta, int x, int y, int z, TileStage tile) {
-		boolean isConnected = tile.isConnected( side);
+	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile) {
+		boolean isConnected = tile.isConnected( area);
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;
 		float min = isConnected ? minS : mCrossness;
@@ -44,39 +44,39 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 		float minX, maxX;
 		float minY, maxY;
 		float minZ, maxZ;
-		switch (side) {
+		switch (area) {
 			case SIDE_DOWN:
-				minX = tile.isConnected( side, SIDE_WEST) ? 0F : min;
-				maxX = tile.isConnected( side, SIDE_EAST) ? 1F : max;
-				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
-				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 0F, minS, maxX, mHigh, maxS);
 				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
 				blk.setBlockBounds( minS, 0F, minZ, maxS, mHigh, maxZ);
 				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
 				break;
 			case SIDE_UP:
-				minX = tile.isConnected( side, SIDE_WEST) ? 0F : min;
-				maxX = tile.isConnected( side, SIDE_EAST) ? 1F : max;
-				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
-				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 1F - mHigh, minS, maxX, 1F, maxS);
 				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
 				blk.setBlockBounds( minS, 1F - mHigh, minZ, maxS, 1F, maxZ);
 				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
 				break;
 			case SIDE_NORTH:
-				minX = tile.isConnected( side, SIDE_WEST) ? 0F : min;
-				maxX = tile.isConnected( side, SIDE_EAST) ? 1F : max;
-				minY = tile.isConnected( side, SIDE_DOWN) ? 0F : min;
-				maxY = tile.isConnected( side, SIDE_UP) ? 1F : max;
-				if (tile.isAngled( side, SIDE_DOWN)) {
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mHigh;
 				}
-				if (tile.isAngled( side, SIDE_UP)) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mHigh;
 				}
-				if (tile.isAngled( side, SIDE_EAST)) {
+				if (tile.isAngled( area, SIDE_EAST)) {
 					maxX += mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 0F, maxX, maxS, mHigh);
@@ -85,17 +85,17 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
 				break;
 			case SIDE_SOUTH:
-				minX = tile.isConnected( side, SIDE_WEST) ? 0F : min;
-				maxX = tile.isConnected( side, SIDE_EAST) ? 1F : max;
-				minY = tile.isConnected( side, SIDE_DOWN) ? 0F : min;
-				maxY = tile.isConnected( side, SIDE_UP) ? 1F : max;
-				if (tile.isAngled( side, SIDE_DOWN)) {
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mHigh;
 				}
-				if (tile.isAngled( side, SIDE_UP)) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mHigh;
 				}
-				if (tile.isAngled( side, SIDE_WEST)) {
+				if (tile.isAngled( area, SIDE_WEST)) {
 					minX -= mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 1F - mHigh, maxX, maxS, 1F);
@@ -104,17 +104,17 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_WEST:
-				minY = tile.isConnected( side, SIDE_DOWN) ? 0F : min;
-				maxY = tile.isConnected( side, SIDE_UP) ? 1F : max;
-				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
-				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
-				if (tile.isAngled( side, SIDE_DOWN)) {
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mHigh;
 				}
-				if (tile.isAngled( side, SIDE_UP)) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mHigh;
 				}
-				if (tile.isAngled( side, SIDE_NORTH)) {
+				if (tile.isAngled( area, SIDE_NORTH)) {
 					minZ -= mHigh;
 				}
 				blk.setBlockBounds( 0F, minY, minS, mHigh, maxY, maxS);
@@ -123,17 +123,17 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 				renderStandard( rndrBlk, blk, DIR_WEST, meta, x, y, z);
 				break;
 			case SIDE_EAST:
-				minY = tile.isConnected( side, SIDE_DOWN) ? 0F : min;
-				maxY = tile.isConnected( side, SIDE_UP) ? 1F : max;
-				minZ = tile.isConnected( side, SIDE_NORTH) ? 0F : min;
-				maxZ = tile.isConnected( side, SIDE_SOUTH) ? 1F : max;
-				if (tile.isAngled( side, SIDE_DOWN)) {
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
+				if (tile.isAngled( area, SIDE_DOWN)) {
 					minY -= mHigh;
 				}
-				if (tile.isAngled( side, SIDE_UP)) {
+				if (tile.isAngled( area, SIDE_UP)) {
 					maxY += mHigh;
 				}
-				if (tile.isAngled( side, SIDE_SOUTH)) {
+				if (tile.isAngled( area, SIDE_SOUTH)) {
 					maxZ += mHigh;
 				}
 				blk.setBlockBounds( 1F - mHigh, minY, minS, 1F, maxY, maxS);
@@ -149,25 +149,63 @@ abstract class AWireRenderer extends ASectionRenderer implements IArea {
 	}
 
 	@Override
-	public void setSectionBounds( int area, Block blk) {
+	public void setSectionBounds( int area, Block blk, TileStage tile) {
+		boolean isConnected = tile.isConnected( area);
+		float minS = 0.5F - mThickness;
+		float maxS = 0.5F + mThickness;
+		float min = isConnected ? minS : mCrossness;
+		float max = isConnected ? maxS : 1F - mCrossness;
+		float minX, maxX;
+		float minY, maxY;
+		float minZ, maxZ;
 		switch (area) {
 			case SIDE_DOWN:
-				blk.setBlockBounds( 0F, 0F, 0F, 1F, mHigh, 1F);
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
+				blk.setBlockBounds( minX, 0F, minZ, maxX, mHigh, maxZ);
+//				blk.setBlockBounds( 0F, 0F, 0F, 1F, mHigh, 1F);
 				break;
 			case SIDE_UP:
-				blk.setBlockBounds( 0F, 1F - mHigh, 0F, 1F, 1F, 1F);
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
+				blk.setBlockBounds( minX, 1F - mHigh, minZ, maxX, 1F, maxZ);
+//				blk.setBlockBounds( 0F, 1F - mHigh, 0F, 1F, 1F, 1F);
 				break;
 			case SIDE_NORTH:
-				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mHigh);
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				blk.setBlockBounds( minX, minY, 0F, maxX, maxY, mHigh);
+//				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mHigh);
 				break;
 			case SIDE_SOUTH:
-				blk.setBlockBounds( 0F, 0F, 1F - mHigh, 1F, 1F, 1F);
+				minX = tile.isConnected( area, SIDE_WEST) ? 0F : min;
+				maxX = tile.isConnected( area, SIDE_EAST) ? 1F : max;
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				blk.setBlockBounds( minX, minY, 1F - mHigh, maxX, maxY, 1F);
+//				blk.setBlockBounds( 0F, 0F, 1F - mHigh, 1F, 1F, 1F);
 				break;
 			case SIDE_WEST:
-				blk.setBlockBounds( 0F, 0F, 0F, mHigh, 1F, 1F);
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
+				blk.setBlockBounds( 0F, minY, minZ, mHigh, maxY, maxZ);
+//				blk.setBlockBounds( 0F, 0F, 0F, mHigh, 1F, 1F);
 				break;
 			case SIDE_EAST:
-				blk.setBlockBounds( 1F - mHigh, 0F, 0F, 1F, 1F, 1F);
+				minY = tile.isConnected( area, SIDE_DOWN) ? 0F : min;
+				maxY = tile.isConnected( area, SIDE_UP) ? 1F : max;
+				minZ = tile.isConnected( area, SIDE_NORTH) ? 0F : min;
+				maxZ = tile.isConnected( area, SIDE_SOUTH) ? 1F : max;
+				blk.setBlockBounds( 1F - mHigh, minY, minZ, 1F, maxY, maxZ);
+//				blk.setBlockBounds( 1F - mHigh, 0F, 0F, 1F, 1F, 1F);
 				break;
 			default:
 				LogHelper.warning( "unknown area %d", area);

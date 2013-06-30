@@ -58,8 +58,8 @@ abstract class ASection implements ISection, IDirection, IArea {
 	}
 
 	@Override
-	public void setSectionBounds( int area, Block blk) {
-		mRenderer.setSectionBounds( area, blk);
+	public void setSectionBounds( int area, Block blk, TileStage tile) {
+		mRenderer.setSectionBounds( area, blk, tile);
 	}
 
 	@Override

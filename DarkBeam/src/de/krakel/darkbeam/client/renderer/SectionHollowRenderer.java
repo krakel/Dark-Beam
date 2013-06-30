@@ -108,7 +108,7 @@ public class SectionHollowRenderer extends ASectionRenderer implements IArea {
 	}
 
 	@Override
-	public void setSectionBounds( int area, Block blk) {
+	public void setSectionBounds( int area, Block blk, TileStage tile) {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);

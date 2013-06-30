@@ -13,18 +13,18 @@ import de.krakel.darkbeam.client.renderer.SectionStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 class SectionStrip extends ASectionStructure {
-	private static final int VALID_DN = D | N | DN | DNW | DNE;
-	private static final int VALID_DS = D | S | DS | DSW | DSE;
-	private static final int VALID_DW = D | W | DW | DNW | DSW;
-	private static final int VALID_DE = D | E | DE | DNE | DSE;
-	private static final int VALID_UN = U | N | UN | UNW | UNE;
-	private static final int VALID_US = U | S | US | USW | USE;
-	private static final int VALID_UW = U | W | UW | UNW | USW;
-	private static final int VALID_UE = U | E | UE | UNE | USE;
-	private static final int VALID_NW = N | W | NW | DNW | UNW;
-	private static final int VALID_NE = N | E | NE | DNE | UNE;
-	private static final int VALID_SW = S | W | SW | DSW | USW;
-	private static final int VALID_SE = S | E | SE | DSE | USE;
+	private static final int VALID_DN = DN | DNW | DNE;
+	private static final int VALID_DS = DS | DSW | DSE;
+	private static final int VALID_DW = DW | DNW | DSW;
+	private static final int VALID_DE = DE | DNE | DSE;
+	private static final int VALID_UN = UN | UNW | UNE;
+	private static final int VALID_US = US | USW | USE;
+	private static final int VALID_UW = UW | UNW | USW;
+	private static final int VALID_UE = UE | UNE | USE;
+	private static final int VALID_NW = NW | DNW | UNW;
+	private static final int VALID_NE = NE | DNE | UNE;
+	private static final int VALID_SW = SW | DSW | USW;
+	private static final int VALID_SE = SE | DSE | USE;
 	private static final int VALID_DU = DU | NS | WE;
 	private static final int VALID_NS = DU | NS | WE;
 	private static final int VALID_WE = DU | NS | WE;
@@ -282,41 +282,55 @@ class SectionStrip extends ASectionStructure {
 	}
 
 	@Override
+	public boolean isJoinable() {
+		return true;
+	}
+
+	@Override
 	public boolean isValid( TileStage tile, int area) {
 		switch (area) {
 			case EDGE_DOWN_NORTH:
-				return tile.isValid( VALID_DN);
+				return tile.isValid( VALID_DN) && isValidForStrip( tile, SIDE_DOWN, SIDE_NORTH);
 			case EDGE_DOWN_SOUTH:
-				return tile.isValid( VALID_DS);
+				return tile.isValid( VALID_DS) && isValidForStrip( tile, SIDE_DOWN, SIDE_SOUTH);
 			case EDGE_DOWN_WEST:
-				return tile.isValid( VALID_DW);
+				return tile.isValid( VALID_DW) && isValidForStrip( tile, SIDE_DOWN, SIDE_WEST);
 			case EDGE_DOWN_EAST:
-				return tile.isValid( VALID_DE);
+				return tile.isValid( VALID_DE) && isValidForStrip( tile, SIDE_DOWN, SIDE_EAST);
 			case EDGE_UP_NORTH:
-				return tile.isValid( VALID_UN);
+				return tile.isValid( VALID_UN) && isValidForStrip( tile, SIDE_UP, SIDE_NORTH);
 			case EDGE_UP_SOUTH:
-				return tile.isValid( VALID_US);
+				return tile.isValid( VALID_US) && isValidForStrip( tile, SIDE_UP, SIDE_SOUTH);
 			case EDGE_UP_WEST:
-				return tile.isValid( VALID_UW);
+				return tile.isValid( VALID_UW) && isValidForStrip( tile, SIDE_UP, SIDE_WEST);
 			case EDGE_UP_EAST:
-				return tile.isValid( VALID_UE);
+				return tile.isValid( VALID_UE) && isValidForStrip( tile, SIDE_UP, SIDE_EAST);
 			case EDGE_NORTH_WEST:
-				return tile.isValid( VALID_NW);
+				return tile.isValid( VALID_NW) && isValidForStrip( tile, SIDE_NORTH, SIDE_WEST);
 			case EDGE_NORTH_EAST:
-				return tile.isValid( VALID_NE);
+				return tile.isValid( VALID_NE) && isValidForStrip( tile, SIDE_NORTH, SIDE_EAST);
 			case EDGE_SOUTH_WEST:
-				return tile.isValid( VALID_SW);
+				return tile.isValid( VALID_SW) && isValidForStrip( tile, SIDE_SOUTH, SIDE_WEST);
 			case EDGE_SOUTH_EAST:
-				return tile.isValid( VALID_SE);
+				return tile.isValid( VALID_SE) && isValidForStrip( tile, SIDE_SOUTH, SIDE_EAST);
 			case AXIS_DOWN_UP:
-				return tile.isValid( VALID_DU);
+				return tile.isValid( VALID_DU) && isValidForAxis( tile, SIDE_DOWN, SIDE_UP);
 			case AXIS_NORTH_SOUTH:
-				return tile.isValid( VALID_NS);
+				return tile.isValid( VALID_NS) && isValidForAxis( tile, SIDE_NORTH, SIDE_SOUTH);
 			case AXIS_WEST_EAST:
-				return tile.isValid( VALID_WE);
+				return tile.isValid( VALID_WE) && isValidForAxis( tile, SIDE_WEST, SIDE_EAST);
 			default:
 				return false;
 		}
+	}
+
+	private boolean isValidForAxis( TileStage tile, int sideA, int sideB) {
+		return (tile.isValid( 1 << sideA) || !tile.isWire( sideA))
+			&& (tile.isValid( 1 << sideB) || !tile.isWire( sideB));
+	}
+
+	private boolean isValidForStrip( TileStage tile, int sideA, int sideB) {
+		return (tile.isValid( 1 << sideA) || tile.isWire( sideA)) && (tile.isValid( 1 << sideB) || tile.isWire( sideB));
 	}
 
 	@Override

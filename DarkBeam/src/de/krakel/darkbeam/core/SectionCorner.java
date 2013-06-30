@@ -131,6 +131,11 @@ class SectionCorner extends ASectionStructure {
 	}
 
 	@Override
+	public boolean isJoinable() {
+		return false;
+	}
+
+	@Override
 	public boolean isValid( TileStage tile, int area) {
 		switch (area) {
 			case CORNER_DOWN_NORTH_WEST:
