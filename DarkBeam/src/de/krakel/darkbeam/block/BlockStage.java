@@ -164,9 +164,6 @@ public class BlockStage extends Block {
 	@Override
 	public boolean removeBlockByPlayer( @Nullable World world, EntityPlayer player, int x, int y, int z) {
 		LogHelper.info( "removeBlockByPlayer: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
-//		if (world.isRemote) {
-//			return false;
-//		}
 		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {
 			return false;
@@ -180,7 +177,8 @@ public class BlockStage extends Block {
 		}
 		int meta = tile.tryRemove( pos.subHit);
 		if (meta >= 0) {
-			ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), 1, meta);
+			int count = tile.getCount( meta);
+			ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), count, meta);
 			DarkLib.dropItem( world, x, y, z, stk);
 			if (tile.isEmpty()) {
 				tile.invalidate();

@@ -77,6 +77,46 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return mInnerBlock & (mInnerConn | mNeighborBlock & (mNeighborConn | mAngledBlock & mAngledConn));
 	}
 
+	public int getCount( int meta) {
+		if (meta != mWireMeta) {
+			return 1;
+		}
+		int n = 0;
+		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
+			if (mArr[side] == meta) {
+				++n;
+			}
+		}
+		if (n != 2) {
+			return 1;
+		}
+		if (mArr[IArea.SIDE_DOWN] == meta && mArr[IArea.SIDE_UP] == meta) {
+			mArr[IArea.SIDE_DOWN] = 0;
+			mArea &= ~IArea.D;
+			mArr[IArea.SIDE_UP] = 0;
+			mArea &= ~IArea.U;
+			mWireMeta = 0;
+			return 3;
+		}
+		if (mArr[IArea.SIDE_NORTH] == meta && mArr[IArea.SIDE_SOUTH] == meta) {
+			mArr[IArea.SIDE_NORTH] = 0;
+			mArea &= ~IArea.N;
+			mArr[IArea.SIDE_SOUTH] = 0;
+			mArea &= ~IArea.S;
+			mWireMeta = 0;
+			return 3;
+		}
+		if (mArr[IArea.SIDE_WEST] == meta && mArr[IArea.SIDE_EAST] == meta) {
+			mArr[IArea.SIDE_WEST] = 0;
+			mArea &= ~IArea.W;
+			mArr[IArea.SIDE_EAST] = 0;
+			mArea &= ~IArea.E;
+			mWireMeta = 0;
+			return 3;
+		}
+		return 1;
+	}
+
 	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
@@ -136,15 +176,18 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	public boolean isWire( int area) {
-		if (mWireMeta == 0) {
-			return false;
+		if (mWireMeta != 0) {
+			try {
+				return mArr[area] == mWireMeta;
+			}
+			catch (IndexOutOfBoundsException ex) {
+			}
 		}
-		try {
-			return mArr[area] == mWireMeta;
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return false;
-		}
+		return false;
+	}
+
+	public boolean isWired() {
+		return mWireMeta != 0;
 	}
 
 	@Override

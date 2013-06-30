@@ -57,17 +57,25 @@ abstract class ASectionWire extends ASection {
 	public boolean isValid( TileStage tile, int area) {
 		switch (area) {
 			case SIDE_DOWN:
-				return tile.isValid( VALID_D);
+				return tile.isValid( VALID_D)
+					&& (!tile.isWired() || tile.isWire( SIDE_NORTH) || tile.isWire( SIDE_SOUTH)
+						|| tile.isWire( SIDE_WEST) || tile.isWire( SIDE_EAST));
 			case SIDE_UP:
-				return tile.isValid( VALID_U);
+				return tile.isValid( VALID_U)
+					&& (!tile.isWired() || tile.isWire( SIDE_NORTH) || tile.isWire( SIDE_SOUTH)
+						|| tile.isWire( SIDE_WEST) || tile.isWire( SIDE_EAST));
 			case SIDE_NORTH:
-				return tile.isValid( VALID_N);
+				return tile.isValid( VALID_N)
+					&& (!tile.isWired() || tile.isWire( SIDE_DOWN) || tile.isWire( SIDE_UP) || tile.isWire( SIDE_WEST) || tile.isWire( SIDE_EAST));
 			case SIDE_SOUTH:
-				return tile.isValid( VALID_S);
+				return tile.isValid( VALID_S)
+					&& (!tile.isWired() || tile.isWire( SIDE_DOWN) || tile.isWire( SIDE_UP) || tile.isWire( SIDE_WEST) || tile.isWire( SIDE_EAST));
 			case SIDE_WEST:
-				return tile.isValid( VALID_W);
+				return tile.isValid( VALID_W)
+					&& (!tile.isWired() || tile.isWire( SIDE_DOWN) || tile.isWire( SIDE_UP) || tile.isWire( SIDE_NORTH) || tile.isWire( SIDE_SOUTH));
 			case SIDE_EAST:
-				return tile.isValid( VALID_E);
+				return tile.isValid( VALID_E)
+					&& (!tile.isWired() || tile.isWire( SIDE_DOWN) || tile.isWire( SIDE_UP) || tile.isWire( SIDE_NORTH) || tile.isWire( SIDE_SOUTH));
 			default:
 				return false;
 		}
