@@ -30,6 +30,7 @@ import de.krakel.darkbeam.core.helper.LogHelper;
 public class TileStage extends TileEntity implements Iterable<Integer> {
 	private static final String NBT_AREAS = "as";
 	private static final String NBT_SECTIONS = "ss";
+	private static final String NBT_POWER = "pwr";
 	private int mArea;
 	private int mAngledConn;
 	private int mAngledBlock;
@@ -40,8 +41,17 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	private int[] mArr = new int[32];
 	private int mWireMeta;
 	private boolean mNeedUpdate = true;
+	private int mPower;
 
 	public TileStage() {
+	}
+
+	private static boolean canPowered( int id) {
+		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
+			|| id == Block.stoneButton.blockID || id == Block.woodenButton.blockID || id == Block.lever.blockID
+			|| id == Block.torchRedstoneIdle.blockID || id == Block.torchRedstoneActive.blockID
+			|| id == Block.redstoneRepeaterIdle.blockID || id == Block.redstoneRepeaterActive.blockID
+			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
 	}
 
 	private boolean canConnect( TileStage other) {
@@ -50,14 +60,6 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 		int diff = SectionLib.getForDmg( mWireMeta).getLevel() - SectionLib.getForDmg( other.mWireMeta).getLevel();
 		return diff == 1 || diff == -1;
-	}
-
-	private boolean canPowered( int id) {
-		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
-			|| id == Block.stoneButton.blockID || id == Block.woodenButton.blockID || id == Block.lever.blockID
-			|| id == Block.torchRedstoneIdle.blockID || id == Block.torchRedstoneActive.blockID
-			|| id == Block.redstoneRepeaterIdle.blockID || id == Block.redstoneRepeaterActive.blockID
-			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
 	}
 
 	private boolean containeWire() {
@@ -167,6 +169,20 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return (mArea & off) != 0;
 	}
 
+	public int isProvidingStrongPower( int side) {
+		if (mPower > 0 && isWire( side)) {
+			return 15;
+		}
+		return 0;
+	}
+
+	public int isProvidingWeakPower( int side) {
+		if (mPower > 0 && isWire( side)) {
+			return 15;
+		}
+		return 0;
+	}
+
 	public boolean isUsed( int value) {
 		return (mArea & value) != 0;
 	}
@@ -215,6 +231,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			}
 		}
 		mArea |= areas;
+		mPower = nbt.getInteger( NBT_POWER);
 	}
 
 	public void refresh() {
@@ -466,6 +483,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			}
 		}
 		nbt.setByteArray( NBT_SECTIONS, arr);
+		nbt.setInteger( NBT_POWER, mPower);
 		LogHelper.info( "writeToNBT: %s", nbt);
 	}
 

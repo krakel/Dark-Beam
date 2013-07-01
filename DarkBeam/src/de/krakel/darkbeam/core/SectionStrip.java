@@ -281,6 +281,15 @@ class SectionStrip extends ASectionStructure {
 		}
 	}
 
+	private static boolean isValidForAxis( TileStage tile, int sideA, int sideB) {
+		return (tile.isValid( 1 << sideA) || !tile.isWire( sideA))
+			&& (tile.isValid( 1 << sideB) || !tile.isWire( sideB));
+	}
+
+	private static boolean isValidForStrip( TileStage tile, int sideA, int sideB) {
+		return (tile.isValid( 1 << sideA) || tile.isWire( sideA)) && (tile.isValid( 1 << sideB) || tile.isWire( sideB));
+	}
+
 	@Override
 	public boolean isJoinable() {
 		return true;
@@ -322,15 +331,6 @@ class SectionStrip extends ASectionStructure {
 			default:
 				return false;
 		}
-	}
-
-	private boolean isValidForAxis( TileStage tile, int sideA, int sideB) {
-		return (tile.isValid( 1 << sideA) || !tile.isWire( sideA))
-			&& (tile.isValid( 1 << sideB) || !tile.isWire( sideB));
-	}
-
-	private boolean isValidForStrip( TileStage tile, int sideA, int sideB) {
-		return (tile.isValid( 1 << sideA) || tile.isWire( sideA)) && (tile.isValid( 1 << sideB) || tile.isWire( sideB));
 	}
 
 	@Override

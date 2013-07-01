@@ -33,6 +33,7 @@ import de.krakel.darkbeam.client.renderer.BlockStageRender;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.ISection;
+import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
@@ -137,6 +138,24 @@ public class BlockStage extends Block {
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
+	}
+
+	@Override
+	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int relate) {
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+		if (tile == null) {
+			return 0;
+		}
+		return tile.isProvidingStrongPower( Position.toSide( relate));
+	}
+
+	@Override
+	public int isProvidingWeakPower( IBlockAccess world, int x, int y, int z, int relate) {
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+		if (tile == null) {
+			return 0;
+		}
+		return tile.isProvidingWeakPower( Position.toSide( relate));
 	}
 
 	@Override
