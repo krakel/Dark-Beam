@@ -165,7 +165,10 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public void onNeighborBlockChange( @Nullable World world, int x, int y, int z, int side) {
+	public void onNeighborBlockChange( @Nullable World world, int x, int y, int z, int blockID) {
+		if (world.isRemote) {
+			return;
+		}
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {
 			tile.refresh();

@@ -23,9 +23,9 @@ import de.krakel.darkbeam.core.Cube;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.ISection;
-import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
+import de.krakel.darkbeam.lib.BlockType;
 
 public class TileStage extends TileEntity implements Iterable<Integer> {
 	private static final String NBT_AREAS = "as";
@@ -44,14 +44,6 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	private int mPower;
 
 	public TileStage() {
-	}
-
-	private static boolean canPowered( int id) {
-		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
-			|| id == Block.stoneButton.blockID || id == Block.woodenButton.blockID || id == Block.lever.blockID
-			|| id == Block.torchRedstoneIdle.blockID || id == Block.torchRedstoneActive.blockID
-			|| id == Block.redstoneRepeaterIdle.blockID || id == Block.redstoneRepeaterActive.blockID
-			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
 	}
 
 	private boolean canConnect( TileStage other) {
@@ -216,6 +208,32 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		readFromNBT( paket.customParam1);
 	}
 
+	private void powerAngled() {
+		for (int edge = IArea.MIN_EDGE; edge < IArea.MAX_EDGE; ++edge) {
+			int x = xCoord + Cube.relX( edge);
+			int y = yCoord + Cube.relY( edge);
+			int z = zCoord + Cube.relZ( edge);
+			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
+			if (tile != null) {
+			}
+			else {
+			}
+		}
+	}
+
+	private void powerNeighbor() {
+		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
+			int x = xCoord + Cube.relX( side);
+			int y = yCoord + Cube.relY( side);
+			int z = zCoord + Cube.relZ( side);
+			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
+			if (tile != null) {
+			}
+			else {
+			}
+		}
+	}
+
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
 		LogHelper.info( "readFromNBT: %s", nbt);
@@ -235,13 +253,22 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	public void refresh() {
-		reset();
-		setWire();
+		mInnerConn = 0;
+		mNeighborConn = 0;
+		mAngledConn = 0;
+		mInnerBlock = -1;
+		mNeighborBlock = -1;
+		mAngledBlock = -1;
+		refreshWire();
 		refreshInner();
 		refreshNeighbor();
 		refreshAngled();
 		if (isEmpty()) {
 			invalidate();
+		}
+		else {
+			powerNeighbor();
+			powerAngled();
 		}
 	}
 
@@ -256,7 +283,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			}
 			else {
 				int id = worldObj.getBlockId( x, y, z);
-				if (canPowered( id)) {
+				if (DarkLib.canPowered( id)) {
 					mAngledConn |= 1 << edge;
 				}
 				else {
@@ -317,16 +344,16 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 
 	private void refreshNeighbor() {
 		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
-			int x = xCoord + Position.relX( side);
-			int y = yCoord + Position.relY( side);
-			int z = zCoord + Position.relZ( side);
+			int x = xCoord + Cube.relX( side);
+			int y = yCoord + Cube.relY( side);
+			int z = zCoord + Cube.relZ( side);
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
 				refreshNeighbor( tile, side);
 			}
 			else if (!isUsed( 1 << side)) {
 				int id = worldObj.getBlockId( x, y, z);
-				if (canPowered( id)) {
+				if (DarkLib.canPowered( id)) {
 					mNeighborConn |= Cube.offEdges( side);
 				}
 				else {
@@ -365,21 +392,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 	}
 
-	public void reset() {
-		mInnerConn = 0;
-		mNeighborConn = 0;
-		mAngledConn = 0;
-		mInnerBlock = -1;
-		mNeighborBlock = -1;
-		mAngledBlock = -1;
-	}
-
-	public void setSectionBounds( int area, Block blk) {
-		ISection sec = getSection( area);
-		sec.setSectionBounds( area, blk, this);
-	}
-
-	private void setWire() {
+	private void refreshWire() {
 		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
 			int dmg = getMeta( side);
 			if (SectionLib.getForDmg( dmg).isWire()) {
@@ -388,6 +401,11 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			}
 		}
 		mWireMeta = 0;
+	}
+
+	public void setSectionBounds( int area, Block blk) {
+		ISection sec = getSection( area);
+		sec.setSectionBounds( area, blk, this);
 	}
 
 	@Override
@@ -426,7 +444,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 				}
 				mArr[area] = meta;
 				mArea |= off;
-				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( area), toString());
+				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, Cube.toString( area), toString());
 				return true;
 			}
 		}
@@ -445,13 +463,26 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 				if (meta == mWireMeta && !containeWire()) {
 					mWireMeta = 0;
 				}
-				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, Position.toString( area), toString());
+				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, Cube.toString( area), toString());
 				return meta;
 			}
 		}
 		catch (IndexOutOfBoundsException ex) {
 		}
 		return -1;
+	}
+
+	@SuppressWarnings( "unused")
+	private void updateAll() {
+		int blockID = BlockType.STAGE.getId();
+//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord, blockID);
+//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord + 1, zCoord, blockID, IDirection.DIR_DOWN);
+//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord - 1, zCoord, blockID, IDirection.DIR_UP);
+//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord + 1, blockID, IDirection.DIR_NORTH);
+//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord - 1, blockID, IDirection.DIR_SOUTH);
+//		worldObj.notifyBlocksOfNeighborChange( xCoord + 1, yCoord, zCoord, blockID, IDirection.DIR_WEST);
+//		worldObj.notifyBlocksOfNeighborChange( xCoord - 1, yCoord, zCoord, blockID, IDirection.DIR_EAST);
+		Cube.updateAll( worldObj, xCoord, yCoord, zCoord, blockID);
 	}
 
 	@Override

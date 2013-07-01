@@ -7,6 +7,8 @@
  */
 package de.krakel.darkbeam.core;
 
+import net.minecraft.world.World;
+
 public class Cube implements IArea {
 	private static final int[] EMPTY = {};
 	private static final int[][] EAGES_OF_SIDE = {
@@ -55,12 +57,21 @@ public class Cube implements IArea {
 		}
 	};
 	private static final int[] EDGE_OFFSETS_OF_SIDE = {
-		DN | DS | DW | DE, // SIDE_DOWN
+		DN | DS | DW | DE, // SIDE_DOWN 
 		UN | US | UW | UE, // SIDE_UP
 		DN | UN | NW | NE, // SIDE_NORTH
 		DS | US | SW | SE, // SIDE_SOUTH
 		DW | UW | NW | SW, // SIDE_WEST
 		DE | UE | NE | SE // SIDE_EAST
+	};
+	private static final int[] REL_X = {
+		0, 0, 0, 0, -1, 1
+	};
+	private static final int[] REL_Y = {
+		-1, 1, 0, 0, 0, 0
+	};
+	private static final int[] REL_Z = {
+		0, 0, -1, 1, 0, 0
 	};
 	// DN DS DW DE UN US UW UE NW NE SW SE
 	private static final int[] REL_EDGE_X = {
@@ -86,6 +97,12 @@ public class Cube implements IArea {
 	private static final int[] REDSTONE = {
 		SIDE_UP, SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST
 	};
+	private static final String[] NAMES = {
+		"DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST", "DOWN_NORTH", "DOWN_SOUTH", "DOWN_WEST", "DOWN_EAST",
+		"UP_NORTH", "UP_SOUTH", "UP_WEST", "UP_EAST", "NORTH_WEST", "NORTH_EAST", "SOUTH_WEST", "SOUTH_EAST",
+		"DOWN_NORTH_WEST", "UP_NORTH_WEST", "DOWN_SOUTH_WEST", "UP_SOUTH_WEST", "DOWN_NORTH_EAST", "UP_NORTH_EAST",
+		"DOWN_SOUTH_EAST", "UP_SOUTH_EAST", "DOWN_UP", "NORTH_SOUTH", "WEST_EAST"
+	};
 
 	private Cube() {
 	}
@@ -101,7 +118,7 @@ public class Cube implements IArea {
 
 	public static int offAnti( int edge) {
 		try {
-			return ANTI_OFFSET_EDGE[edge - IArea.MIN_EDGE];
+			return ANTI_OFFSET_EDGE[edge - MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -135,9 +152,21 @@ public class Cube implements IArea {
 		}
 	}
 
+	public static int rel2X( int side) {
+		return relX( side) << 1;
+	}
+
+	public static int rel2Y( int side) {
+		return relY( side) << 1;
+	}
+
+	public static int rel2Z( int side) {
+		return relZ( side) << 1;
+	}
+
 	public static int relEdgeX( int edge) {
 		try {
-			return REL_EDGE_X[edge - IArea.MIN_EDGE];
+			return REL_EDGE_X[edge - MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -146,7 +175,7 @@ public class Cube implements IArea {
 
 	public static int relEdgeY( int edge) {
 		try {
-			return REL_EDGE_Y[edge - IArea.MIN_EDGE];
+			return REL_EDGE_Y[edge - MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -155,7 +184,34 @@ public class Cube implements IArea {
 
 	public static int relEdgeZ( int edge) {
 		try {
-			return REL_EDGE_Z[edge - IArea.MIN_EDGE];
+			return REL_EDGE_Z[edge - MIN_EDGE];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
+		}
+	}
+
+	public static int relX( int side) {
+		try {
+			return REL_X[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
+		}
+	}
+
+	public static int relY( int side) {
+		try {
+			return REL_Y[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
+		}
+	}
+
+	public static int relZ( int side) {
+		try {
+			return REL_Z[side];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -164,7 +220,7 @@ public class Cube implements IArea {
 
 	public static int sideA( int edge) {
 		try {
-			return SIDE_OF_EDGE_A[edge - IArea.MIN_EDGE];
+			return SIDE_OF_EDGE_A[edge - MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -173,7 +229,7 @@ public class Cube implements IArea {
 
 	public static int sideB( int edge) {
 		try {
-			return SIDE_OF_EDGE_B[edge - IArea.MIN_EDGE];
+			return SIDE_OF_EDGE_B[edge - MIN_EDGE];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
@@ -186,6 +242,48 @@ public class Cube implements IArea {
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return EMPTY;
+		}
+	}
+
+	public static String toString( int side) {
+		try {
+			return NAMES[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return "UNKNOWN" + side;
+		}
+	}
+
+	public static void updateAll( World world, int x, int y, int z, int blockID) {
+		updateNeighbor( world, x, y, z, blockID);
+		updateEdges( world, x, y, z, blockID);
+		updateNeighbor2( world, x, y, z, blockID);
+	}
+
+	public static void updateEdges( World world, int x, int y, int z, int blockID) {
+		for (int edge = MIN_EDGE; edge < MAX_EDGE; ++edge) {
+			int x1 = x + relEdgeX( edge);
+			int y1 = y + relEdgeY( edge);
+			int z1 = z + relEdgeZ( edge);
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void updateNeighbor( World world, int x, int y, int z, int blockID) {
+		for (int side = MIN_SIDE; side < MAX_SIDE; ++side) {
+			int x1 = x + relX( side);
+			int y1 = y + relY( side);
+			int z1 = z + relZ( side);
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void updateNeighbor2( World world, int x, int y, int z, int blockID) {
+		for (int side = MIN_SIDE; side < MAX_SIDE; ++side) {
+			int x1 = x + rel2X( side);
+			int y1 = y + rel2Y( side);
+			int z1 = z + rel2Z( side);
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
 		}
 	}
 }

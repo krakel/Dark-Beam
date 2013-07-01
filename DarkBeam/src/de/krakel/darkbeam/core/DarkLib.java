@@ -27,6 +27,14 @@ public class DarkLib implements IDirection {
 	private DarkLib() {
 	}
 
+	public static boolean canPowered( int id) {
+		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
+			|| id == Block.stoneButton.blockID || id == Block.woodenButton.blockID || id == Block.lever.blockID
+			|| id == Block.torchRedstoneIdle.blockID || id == Block.torchRedstoneActive.blockID
+			|| id == Block.redstoneRepeaterIdle.blockID || id == Block.redstoneRepeaterActive.blockID
+			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
+	}
+
 	public static <T> boolean different( @Nullable T obj1, @Nullable T obj2) {
 		if (obj1 == null) {
 			return obj2 != null;
