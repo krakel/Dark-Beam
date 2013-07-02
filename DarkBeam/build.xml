@@ -6,7 +6,7 @@
 
 	<target name="clean">
 		<delete file="${dir.forge}\src\minecraft\mcmod.info" />
-		<delete dir="${dir.forge}\src\minecraft\de\krakel" />
+		<delete dir="${dir.forge}\src\minecraft\de" />
 		<delete dir="${dir.forge}\reobf\minecraft" />
 	</target>
 
