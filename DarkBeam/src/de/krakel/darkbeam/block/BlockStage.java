@@ -21,10 +21,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -61,8 +57,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	@Nullable
-	public MovingObjectPosition collisionRayTrace( @Nullable World world, int x, int y, int z, Vec3 start, Vec3 end) {
+	public MovingObjectPosition collisionRayTrace( World world, int x, int y, int z, Vec3 start, Vec3 end) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return null;
@@ -88,14 +83,14 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public TileEntity createTileEntity( @NotNull World world, int meta) {
+	public TileEntity createTileEntity( World world, int meta) {
 		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
 		return new TileStage();
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
-	public Icon getBlockTexture( @NotNull IBlockAccess world, int x, int y, int z, int side) {
+	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return super.getBlockTexture( world, x, y, z, side);
@@ -104,8 +99,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	@Nullable
-	public AxisAlignedBB getCollisionBoundingBoxFromPool( @NotNull World par1World, int par2, int par3, int par4) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool( World par1World, int par2, int par3, int par4) {
 		return null;
 	}
 
@@ -122,7 +116,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public void harvestBlock( @NotNull World world, EntityPlayer player, int x, int y, int z, int meta) {
+	public void harvestBlock( World world, EntityPlayer player, int x, int y, int z, int meta) {
 	}
 
 	@Override
@@ -159,13 +153,13 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public void onBlockClicked( @Nullable World world, int x, int y, int z, EntityPlayer player) {
+	public void onBlockClicked( World world, int x, int y, int z, EntityPlayer player) {
 		LogHelper.info( "onBlockClicked: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
 		super.onBlockClicked( world, x, y, z, player);
 	}
 
 	@Override
-	public void onNeighborBlockChange( @Nullable World world, int x, int y, int z, int blockID) {
+	public void onNeighborBlockChange( World world, int x, int y, int z, int blockID) {
 		if (world.isRemote) {
 			return;
 		}
@@ -184,7 +178,7 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public boolean removeBlockByPlayer( @Nullable World world, EntityPlayer player, int x, int y, int z) {
+	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
 		LogHelper.info( "removeBlockByPlayer: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
 		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {

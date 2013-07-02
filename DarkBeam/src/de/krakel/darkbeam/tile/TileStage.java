@@ -17,8 +17,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
-import com.sun.istack.internal.NotNull;
-
 import de.krakel.darkbeam.core.Cube;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IArea;
@@ -296,7 +294,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 	}
 
-	private void refreshAngled( @NotNull TileStage tile, int edge) {
+	private void refreshAngled( TileStage tile, int edge) {
 		int sideA = Cube.sideA( edge) ^ 1;
 		if (tile.isUsed( 1 << sideA)) {
 			if (tile.getSection( sideA).isWire()) {
@@ -371,7 +369,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 	}
 
-	private void refreshNeighbor( @NotNull TileStage tile, int side) {
+	private void refreshNeighbor( TileStage tile, int side) {
 		int[] sides = Cube.sides( side ^ 1);
 		for (int sideB : sides) {
 			int offB = 1 << sideB;

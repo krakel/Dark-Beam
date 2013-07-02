@@ -10,9 +10,6 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-
-import com.sun.istack.internal.NotNull;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -39,7 +36,7 @@ public class BlockStageRender implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public boolean renderWorldBlock( @NotNull IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndrBlk) {
+	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndrBlk) {
 //		LogHelper.info( "renderWorldBlockA: %s", LogHelper.toString( x, y, z));
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {

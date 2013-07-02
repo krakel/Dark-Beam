@@ -10,8 +10,6 @@ package de.krakel.darkbeam.network;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
-import com.sun.istack.internal.Nullable;
-
 public enum PacketTypeHandler {
 //    KEY(PacketKeyPressed.class), 
 //    TILE(PacketTileUpdate.class),
@@ -27,7 +25,6 @@ public enum PacketTypeHandler {
 		mCls = cls;
 	}
 
-	@Nullable
 	public static PacketDB buildPacket( byte[] data) {
 		ByteArrayInputStream bis = new ByteArrayInputStream( data);
 		int sel = bis.read();

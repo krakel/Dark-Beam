@@ -18,9 +18,6 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-
-import com.sun.istack.internal.Nullable;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -45,7 +42,7 @@ public class ItemStage extends ItemBlock {
 		setHasSubtypes( true);
 	}
 
-	private static boolean canSectionAdd( @Nullable World world, MovingObjectPosition pos, ISection sec) {
+	private static boolean canSectionAdd( World world, MovingObjectPosition pos, ISection sec) {
 		TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
 		if (tile == null) {
 			return false;
@@ -53,8 +50,7 @@ public class ItemStage extends ItemBlock {
 		return sec.isValid( tile, pos.subHit);
 	}
 
-	@Nullable
-	private static MovingObjectPosition toPlacePos( @Nullable World world, MovingObjectPosition pos, ItemStack stk) {
+	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {
 		LogHelper.info( "toPlacePos: %b, %s", world.isRemote, LogHelper.toString( pos));
 		int dmg = stk.getItemDamage();
 		ISection sec = SectionLib.getForDmg( dmg);
@@ -92,13 +88,12 @@ public class ItemStage extends ItemBlock {
 
 	@Override
 	@SideOnly( Side.CLIENT)
-	public boolean canPlaceItemBlockOnSide( @Nullable World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stack) {
+	public boolean canPlaceItemBlockOnSide( World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stack) {
 		return true;
 	}
 
 	@Override
 	@SideOnly( Side.CLIENT)
-	@Nullable
 	public CreativeTabs getCreativeTab() {
 		return null;
 	}
@@ -112,7 +107,6 @@ public class ItemStage extends ItemBlock {
 
 	@Override
 	@SideOnly( Side.CLIENT)
-	@Nullable
 	public Icon getIconFromDamage( int dmg) {
 		Block blk = Block.blocksList[itemID];
 		if (blk == null) {
@@ -151,7 +145,7 @@ public class ItemStage extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse( ItemStack stk, EntityPlayer player, @Nullable World world, int x, int y, int z, int dir, float dx, float dy, float dz) {
+	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int dir, float dx, float dy, float dz) {
 //		LogHelper.info( "a: %b, %s", world.isRemote, LogHelper.toString( x, y, z, dir, dx, dy, dz, null));
 		if (player.isSneaking()) {
 			return false;
@@ -191,7 +185,7 @@ public class ItemStage extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUseFirst( ItemStack stack, EntityPlayer player, @Nullable World world, int x, int y, int z, int dir, float dx, float dy, float dz) {
+	public boolean onItemUseFirst( ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int dir, float dx, float dy, float dz) {
 		if (world.isRemote) {
 			return false;
 		}

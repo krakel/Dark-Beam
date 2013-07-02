@@ -12,8 +12,6 @@ import java.lang.reflect.Constructor;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 
-import com.sun.istack.internal.Nullable;
-
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 
@@ -34,7 +32,6 @@ public enum ItemType {
 		return sItemIds++;
 	}
 
-	@Nullable
 	public <T extends Item> T create( Class<T> cls) {
 		try {
 			Constructor<T> ctor = cls.getConstructor( int.class);
