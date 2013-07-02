@@ -10,12 +10,8 @@ package de.krakel.darkbeam;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.FingerprintWarning;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLFingerprintViolationEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -30,8 +26,8 @@ import cpw.mods.fml.relauncher.Side;
 
 import de.krakel.darkbeam.block.ModBlocks;
 import de.krakel.darkbeam.core.InsulateLib;
-import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.MaterialLib;
+import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.handler.ConfigurationHandler;
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.handler.VersionCheckTickHandler;
@@ -45,8 +41,12 @@ import de.krakel.darkbeam.lib.Strings;
 import de.krakel.darkbeam.network.PacketHandler;
 import de.krakel.darkbeam.tile.TileStage;
 
-@Mod( modid = References.MOD_ID, name = References.MOD_NAME, version = References.VERSION,
-	dependencies = References.DEPENDENCIES, certificateFingerprint = References.FINGERPRINT)
+@Mod(
+	modid = References.MOD_ID,
+	name = References.MOD_NAME,
+	version = References.VERSION,
+	dependencies = References.DEPENDENCIES,
+	certificateFingerprint = References.FINGERPRINT)
 @NetworkMod( channels = {
 	References.MOD_CHANNEL
 }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
@@ -57,7 +57,7 @@ public class DarkBeam {
 	@SidedProxy( clientSide = References.CLASS_CLIENT_PROXY, serverSide = References.CLASS_SERVER_PROXY)
 	public static CommonProxy sProxy;
 
-	@Init
+	@EventHandler
 	public void init( FMLInitializationEvent event) {
 		NetworkRegistry.instance().registerGuiHandler( sInstance, sProxy);
 		GameRegistry.registerTileEntity( TileStage.class, Strings.TE_SECTION_NAME);
@@ -67,16 +67,16 @@ public class DarkBeam {
 		InsulateLib.init();
 	}
 
-	@FingerprintWarning
+	@EventHandler
 	public void invalidFingerprint( FMLFingerprintViolationEvent event) {
 		LogHelper.severe( Strings.INVALID_FINGERPRINT);
 	}
 
-	@PostInit
+	@EventHandler
 	public void postInit( FMLPostInitializationEvent event) {
 	}
 
-	@PreInit
+	@EventHandler
 	public void preInit( FMLPreInitializationEvent event) {
 		LogHelper.preInit();
 		LocalizationHandler.preInit();
@@ -89,7 +89,7 @@ public class DarkBeam {
 		ModBlocks.preInit();
 	}
 
-	@ServerStarting
+	@EventHandler
 	public void serverStarting( FMLServerStartingEvent event) {
 	}
 }

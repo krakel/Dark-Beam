@@ -8,8 +8,8 @@
 package de.krakel.darkbeam.core;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -74,7 +74,7 @@ public class DarkLib implements IDirection {
 		}
 	}
 
-	private static double getBlockReachDistance( EntityLiving player) {
+	private static double getBlockReachDistance( EntityPlayer player) {
 		try {
 			EntityPlayerMP p = (EntityPlayerMP) player;
 			return p.theItemInWorldManager.getBlockReachDistance();
@@ -102,7 +102,7 @@ public class DarkLib implements IDirection {
 	}
 
 	@Nullable
-	public static MovingObjectPosition retraceBlock( @NotNull World world, EntityLiving player, int x, int y, int z) {
+	public static MovingObjectPosition retraceBlock( @NotNull World world, EntityPlayer player, int x, int y, int z) {
 		int id = world.getBlockId( x, y, z);
 		Block blk = Block.blocksList[id];
 		if (blk == null) {
