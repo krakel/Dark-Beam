@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-abstract class ASection implements ISection, IDirection, IArea {
+abstract class ASection implements ISection, IDirection {
 	static final double BOX_BORDER_MIN = 1D / 4D;
 	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
 	protected String mName;
@@ -53,12 +53,12 @@ abstract class ASection implements ISection, IDirection, IArea {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int dmg, int x, int y, int z, TileStage tile) {
+	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int dmg, int x, int y, int z, TileStage tile) {
 		mRenderer.renderSide( rndrBlk, area, blk, dmg, x, y, z, tile);
 	}
 
 	@Override
-	public void setSectionBounds( int area, Block blk, TileStage tile) {
+	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
 		mRenderer.setSectionBounds( area, blk, tile);
 	}
 

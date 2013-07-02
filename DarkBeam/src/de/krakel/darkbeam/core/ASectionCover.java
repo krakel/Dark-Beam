@@ -13,12 +13,12 @@ import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 abstract class ASectionCover extends ASectionStructure {
-	private static final int VALID_D = D | DN | DS | DW | DE | DNW | DNE | DSW | DSE;
-	private static final int VALID_U = U | UN | US | UW | UE | UNW | UNE | USW | USE;
-	private static final int VALID_N = N | DN | UN | NW | NE | DNW | DNE | UNW | UNE;
-	private static final int VALID_S = S | DS | US | SW | SE | USW | USE | USW | USE;
-	private static final int VALID_W = W | DW | UW | NW | SW | DNW | DSW | UNW | USW;
-	private static final int VALID_E = E | DE | UE | NE | SE | DNE | DSE | UNE | USE;
+	private static final int VALID_D = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_DOWN_SOUTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_DOWN_EAST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_EAST, AreaType.CORNER_DOWN_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_EAST);
+	private static final int VALID_U = AreaType.toMask( AreaType.SIDE_UP, AreaType.EDGE_UP_NORTH, AreaType.EDGE_UP_SOUTH, AreaType.EDGE_UP_WEST, AreaType.EDGE_UP_EAST, AreaType.CORNER_UP_NORTH_WEST, AreaType.CORNER_UP_NORTH_EAST, AreaType.CORNER_UP_SOUTH_WEST, AreaType.CORNER_UP_SOUTH_EAST);
+	private static final int VALID_N = AreaType.toMask( AreaType.SIDE_NORTH, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_UP_NORTH, AreaType.EDGE_NORTH_WEST, AreaType.EDGE_NORTH_EAST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_EAST, AreaType.CORNER_UP_NORTH_WEST, AreaType.CORNER_UP_NORTH_EAST);
+	private static final int VALID_S = AreaType.toMask( AreaType.SIDE_SOUTH, AreaType.EDGE_DOWN_SOUTH, AreaType.EDGE_UP_SOUTH, AreaType.EDGE_SOUTH_WEST, AreaType.EDGE_SOUTH_EAST, AreaType.CORNER_DOWN_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_EAST, AreaType.CORNER_UP_SOUTH_WEST, AreaType.CORNER_UP_SOUTH_EAST);
+	private static final int VALID_W = AreaType.toMask( AreaType.SIDE_WEST, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_UP_WEST, AreaType.EDGE_NORTH_WEST, AreaType.EDGE_SOUTH_WEST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_SOUTH_WEST, AreaType.CORNER_UP_NORTH_WEST, AreaType.CORNER_UP_SOUTH_WEST);
+	private static final int VALID_E = AreaType.toMask( AreaType.SIDE_EAST, AreaType.EDGE_DOWN_EAST, AreaType.EDGE_UP_EAST, AreaType.EDGE_NORTH_EAST, AreaType.EDGE_SOUTH_EAST, AreaType.CORNER_DOWN_NORTH_EAST, AreaType.CORNER_DOWN_SOUTH_EAST, AreaType.CORNER_UP_NORTH_EAST, AreaType.CORNER_UP_SOUTH_EAST);
 
 	ASectionCover( int secID, String name, ASectionRenderer renderer) {
 		super( secID, name, renderer);
@@ -28,58 +28,58 @@ abstract class ASectionCover extends ASectionStructure {
 		super( name, renderer);
 	}
 
-	private static int getArea( int side, double dx, double dy, double dz) {
+	private static AreaType getArea( int side, double dx, double dy, double dz) {
 		switch (side) {
 			case DIR_DOWN:
 				if (BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
-					return SIDE_DOWN;
+					return AreaType.SIDE_DOWN;
 				}
 				if (dz > dx) {
-					return dz + dx > 1D ? SIDE_SOUTH : SIDE_WEST;
+					return dz + dx > 1D ? AreaType.SIDE_SOUTH : AreaType.SIDE_WEST;
 				}
-				return dz + dx > 1D ? SIDE_EAST : SIDE_NORTH;
+				return dz + dx > 1D ? AreaType.SIDE_EAST : AreaType.SIDE_NORTH;
 			case DIR_UP:
 				if (BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
-					return SIDE_UP;
+					return AreaType.SIDE_UP;
 				}
 				if (dz > dx) {
-					return dz + dx > 1D ? SIDE_SOUTH : SIDE_WEST;
+					return dz + dx > 1D ? AreaType.SIDE_SOUTH : AreaType.SIDE_WEST;
 				}
-				return dz + dx > 1D ? SIDE_EAST : SIDE_NORTH;
+				return dz + dx > 1D ? AreaType.SIDE_EAST : AreaType.SIDE_NORTH;
 			case DIR_NORTH:
 				if (BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX && BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX) {
-					return SIDE_NORTH;
+					return AreaType.SIDE_NORTH;
 				}
 				if (dy > dx) {
-					return dy + dx > 1D ? SIDE_UP : SIDE_WEST;
+					return dy + dx > 1D ? AreaType.SIDE_UP : AreaType.SIDE_WEST;
 				}
-				return dy + dx > 1D ? SIDE_EAST : SIDE_DOWN;
+				return dy + dx > 1D ? AreaType.SIDE_EAST : AreaType.SIDE_DOWN;
 			case DIR_SOUTH:
 				if (BOX_BORDER_MIN < dx && dx < BOX_BORDER_MAX && BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX) {
-					return SIDE_SOUTH;
+					return AreaType.SIDE_SOUTH;
 				}
 				if (dy > dx) {
-					return dy + dx > 1D ? SIDE_UP : SIDE_WEST;
+					return dy + dx > 1D ? AreaType.SIDE_UP : AreaType.SIDE_WEST;
 				}
-				return dy + dx > 1D ? SIDE_EAST : SIDE_DOWN;
+				return dy + dx > 1D ? AreaType.SIDE_EAST : AreaType.SIDE_DOWN;
 			case DIR_WEST:
 				if (BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
-					return SIDE_WEST;
+					return AreaType.SIDE_WEST;
 				}
 				if (dy > dz) {
-					return dy + dz > 1D ? SIDE_UP : SIDE_NORTH;
+					return dy + dz > 1D ? AreaType.SIDE_UP : AreaType.SIDE_NORTH;
 				}
-				return dy + dz > 1D ? SIDE_SOUTH : SIDE_DOWN;
+				return dy + dz > 1D ? AreaType.SIDE_SOUTH : AreaType.SIDE_DOWN;
 			case DIR_EAST:
 				if (BOX_BORDER_MIN < dy && dy < BOX_BORDER_MAX && BOX_BORDER_MIN < dz && dz < BOX_BORDER_MAX) {
-					return SIDE_EAST;
+					return AreaType.SIDE_EAST;
 				}
 				if (dy > dz) {
-					return dy + dz > 1D ? SIDE_UP : SIDE_NORTH;
+					return dy + dz > 1D ? AreaType.SIDE_UP : AreaType.SIDE_NORTH;
 				}
-				return dy + dz > 1D ? SIDE_SOUTH : SIDE_DOWN;
+				return dy + dz > 1D ? AreaType.SIDE_SOUTH : AreaType.SIDE_DOWN;
 			default:
-				return -1;
+				return AreaType.SIDE_DOWN;
 		}
 	}
 
@@ -89,7 +89,7 @@ abstract class ASectionCover extends ASectionStructure {
 	}
 
 	@Override
-	public boolean isValid( TileStage tile, int area) {
+	public boolean isValid( TileStage tile, AreaType area) {
 		switch (area) {
 			case SIDE_DOWN:
 				return tile.isValid( VALID_D);
@@ -123,6 +123,6 @@ abstract class ASectionCover extends ASectionStructure {
 		double dx = pos.hitVec.xCoord - pos.blockX;
 		double dy = pos.hitVec.yCoord - pos.blockY;
 		double dz = pos.hitVec.zCoord - pos.blockZ;
-		pos.subHit = getArea( pos.sideHit, dx, dy, dz);
+		pos.subHit = getArea( pos.sideHit, dx, dy, dz).ordinal();
 	}
 }

@@ -66,16 +66,14 @@ public enum BlockType {
 	}
 
 	public void register() {
-		if (mBlock != null) {
-			if (mItemClass != null) {
-				GameRegistry.registerBlock( mBlock, mItemClass, mName);
-			}
-			else {
-				GameRegistry.registerBlock( mBlock, mName);
-			}
+		if (mBlock == null) {
+			LogHelper.severe( "Missing block for registration");
+		}
+		else if (mItemClass == null) {
+			GameRegistry.registerBlock( mBlock, mName);
 		}
 		else {
-			LogHelper.severe( "Missing block for registration");
+			GameRegistry.registerBlock( mBlock, mItemClass, mName);
 		}
 	}
 

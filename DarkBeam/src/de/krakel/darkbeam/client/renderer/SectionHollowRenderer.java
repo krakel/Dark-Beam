@@ -10,11 +10,11 @@ package de.krakel.darkbeam.client.renderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-import de.krakel.darkbeam.core.IArea;
+import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
-public class SectionHollowRenderer extends ASectionRenderer implements IArea {
+public class SectionHollowRenderer extends ASectionRenderer {
 	public SectionHollowRenderer( int base) {
 		super( base);
 	}
@@ -36,7 +36,7 @@ public class SectionHollowRenderer extends ASectionRenderer implements IArea {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile) {
+	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int meta, int x, int y, int z, TileStage tile) {
 		float min = 0.25F;
 		float max = 1F - min;
 		switch (area) {
@@ -108,7 +108,7 @@ public class SectionHollowRenderer extends ASectionRenderer implements IArea {
 	}
 
 	@Override
-	public void setSectionBounds( int area, Block blk, TileStage tile) {
+	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
 		switch (area) {
 			case SIDE_DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);

@@ -26,8 +26,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import de.krakel.darkbeam.DarkBeam;
 import de.krakel.darkbeam.client.renderer.BlockStageRender;
+import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.SectionLib;
@@ -48,7 +48,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return false;
 		}
-		return tile.isUsed( IArea.D) && tile.getSection( IArea.SIDE_DOWN).isRedwire();
+		return tile.isUsed( AreaType.SIDE_DOWN.mMask) && tile.getSection( AreaType.SIDE_DOWN.ordinal()).isRedwire();
 	}
 
 	@Override
@@ -64,20 +64,20 @@ public class BlockStage extends Block {
 		}
 		double min = 0.0D;
 		MovingObjectPosition result = null;
-		for (int i : tile) {
+		for (AreaType i : tile) {
 			tile.setSectionBounds( i, this);
 			MovingObjectPosition hit = super.collisionRayTrace( world, x, y, z, start, end);
 			if (hit != null) {
 				double dist = hit.hitVec.squareDistanceTo( start);
 				if (result == null || dist < min) {
 					result = hit;
-					result.subHit = i;
+					result.subHit = i.ordinal();
 					min = dist;
 				}
 			}
 		}
 		if (result != null) {
-			tile.setSectionBounds( result.subHit, this);
+			tile.setSectionBounds( AreaType.values()[result.subHit], this);
 		}
 		return result;
 	}
@@ -140,7 +140,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingStrongPower( Position.toSide( relate));
+		return tile.isProvidingStrongPower( AreaType.values()[Position.toSide( relate)]);
 	}
 
 	@Override
@@ -149,7 +149,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingWeakPower( Position.toSide( relate));
+		return tile.isProvidingWeakPower( AreaType.values()[Position.toSide( relate)]);
 	}
 
 	@Override

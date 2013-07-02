@@ -33,7 +33,7 @@ public interface ISection {
 
 	boolean isStructure();
 
-	boolean isValid( TileStage tile, int area);
+	boolean isValid( TileStage tile, AreaType area);
 
 	boolean isWire();
 
@@ -41,9 +41,9 @@ public interface ISection {
 
 	void renderItem( RenderBlocks rndrBlk, Block blk, int dmg);
 
-	void renderSide( RenderBlocks rndrBlk, int area, Block blk, int dmg, int x, int y, int z, TileStage tile);
+	void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int dmg, int x, int y, int z, TileStage tile);
 
-	void setSectionBounds( int area, Block blk, TileStage tile);
+	void setSectionBounds( AreaType area, Block blk, TileStage tile);
 
 	int toDmg();
 

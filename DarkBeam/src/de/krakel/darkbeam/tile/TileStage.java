@@ -17,15 +17,15 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
+import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.Cube;
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.IArea;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
 
-public class TileStage extends TileEntity implements Iterable<Integer> {
+public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private static final String NBT_AREAS = "as";
 	private static final String NBT_SECTIONS = "ss";
 	private static final String NBT_POWER = "pwr";
@@ -53,8 +53,8 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	private boolean containeWire() {
-		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
-			if (mArr[side] == mWireMeta) {
+		for (AreaType side : AreaType.sides()) {
+			if (mArr[side.ordinal()] == mWireMeta) {
 				return true;
 			}
 		}
@@ -74,35 +74,35 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			return 1;
 		}
 		int n = 0;
-		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
-			if (mArr[side] == meta) {
+		for (AreaType side : AreaType.sides()) {
+			if (mArr[side.ordinal()] == meta) {
 				++n;
 			}
 		}
 		if (n != 2) {
 			return 1;
 		}
-		if (mArr[IArea.SIDE_DOWN] == meta && mArr[IArea.SIDE_UP] == meta) {
-			mArr[IArea.SIDE_DOWN] = 0;
-			mArea &= ~IArea.D;
-			mArr[IArea.SIDE_UP] = 0;
-			mArea &= ~IArea.U;
+		if (mArr[AreaType.SIDE_DOWN.ordinal()] == meta && mArr[AreaType.SIDE_UP.ordinal()] == meta) {
+			mArr[AreaType.SIDE_DOWN.ordinal()] = 0;
+			mArea &= ~AreaType.SIDE_DOWN.mMask;
+			mArr[AreaType.SIDE_UP.ordinal()] = 0;
+			mArea &= ~AreaType.SIDE_UP.mMask;
 			mWireMeta = 0;
 			return 3;
 		}
-		if (mArr[IArea.SIDE_NORTH] == meta && mArr[IArea.SIDE_SOUTH] == meta) {
-			mArr[IArea.SIDE_NORTH] = 0;
-			mArea &= ~IArea.N;
-			mArr[IArea.SIDE_SOUTH] = 0;
-			mArea &= ~IArea.S;
+		if (mArr[AreaType.SIDE_NORTH.ordinal()] == meta && mArr[AreaType.SIDE_SOUTH.ordinal()] == meta) {
+			mArr[AreaType.SIDE_NORTH.ordinal()] = 0;
+			mArea &= ~AreaType.SIDE_NORTH.mMask;
+			mArr[AreaType.SIDE_SOUTH.ordinal()] = 0;
+			mArea &= ~AreaType.SIDE_SOUTH.mMask;
 			mWireMeta = 0;
 			return 3;
 		}
-		if (mArr[IArea.SIDE_WEST] == meta && mArr[IArea.SIDE_EAST] == meta) {
-			mArr[IArea.SIDE_WEST] = 0;
-			mArea &= ~IArea.W;
-			mArr[IArea.SIDE_EAST] = 0;
-			mArea &= ~IArea.E;
+		if (mArr[AreaType.SIDE_WEST.ordinal()] == meta && mArr[AreaType.SIDE_EAST.ordinal()] == meta) {
+			mArr[AreaType.SIDE_WEST.ordinal()] = 0;
+			mArea &= ~AreaType.SIDE_WEST.mMask;
+			mArr[AreaType.SIDE_EAST.ordinal()] = 0;
+			mArea &= ~AreaType.SIDE_EAST.mMask;
 			mWireMeta = 0;
 			return 3;
 		}
@@ -130,18 +130,18 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return SectionLib.getForDmg( dmg);
 	}
 
-	public boolean isAngled( int area, int side) {
-		int off = Cube.offEdge( area, side);
+	public boolean isAngled( AreaType area, AreaType side) {
+		int off = Cube.offEdge( area.ordinal(), side.ordinal());
 		return (getAngled() & off) != 0;
 	}
 
-	public boolean isConnected( int area) {
-		int off = Cube.offEdges( area);
+	public boolean isConnected( AreaType area) {
+		int off = Cube.offEdges( area.ordinal());
 		return (getConnections() & off) != 0;
 	}
 
-	public boolean isConnected( int area, int side) {
-		int off = Cube.offEdge( area, side);
+	public boolean isConnected( AreaType area, AreaType side) {
+		int off = Cube.offEdge( area.ordinal(), side.ordinal());
 		return (getConnections() & off) != 0;
 	}
 
@@ -159,14 +159,14 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return (mArea & off) != 0;
 	}
 
-	public int isProvidingStrongPower( int side) {
+	public int isProvidingStrongPower( AreaType side) {
 		if (mPower > 0 && isWire( side)) {
 			return 15;
 		}
 		return 0;
 	}
 
-	public int isProvidingWeakPower( int side) {
+	public int isProvidingWeakPower( AreaType side) {
 		if (mPower > 0 && isWire( side)) {
 			return 15;
 		}
@@ -181,10 +181,10 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		return (mArea & value) == 0;
 	}
 
-	public boolean isWire( int area) {
+	public boolean isWire( AreaType area) {
 		if (mWireMeta != 0) {
 			try {
-				return mArr[area] == mWireMeta;
+				return mArr[area.ordinal()] == mWireMeta;
 			}
 			catch (IndexOutOfBoundsException ex) {
 			}
@@ -197,7 +197,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	@Override
-	public Iterator<Integer> iterator() {
+	public Iterator<AreaType> iterator() {
 		return new AreaIterator( mArea);
 	}
 
@@ -207,10 +207,10 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	private void powerAngled() {
-		for (int edge = IArea.MIN_EDGE; edge < IArea.MAX_EDGE; ++edge) {
-			int x = xCoord + Cube.relX( edge);
-			int y = yCoord + Cube.relY( edge);
-			int z = zCoord + Cube.relZ( edge);
+		for (AreaType edge : AreaType.edges()) {
+			int x = xCoord + Cube.relX( edge.ordinal());
+			int y = yCoord + Cube.relY( edge.ordinal());
+			int z = zCoord + Cube.relZ( edge.ordinal());
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
 			}
@@ -220,10 +220,10 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	private void powerNeighbor() {
-		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
-			int x = xCoord + Cube.relX( side);
-			int y = yCoord + Cube.relY( side);
-			int z = zCoord + Cube.relZ( side);
+		for (AreaType side : AreaType.sides()) {
+			int x = xCoord + Cube.relX( side.ordinal());
+			int y = yCoord + Cube.relY( side.ordinal());
+			int z = zCoord + Cube.relZ( side.ordinal());
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
 			}
@@ -271,23 +271,23 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	private void refreshAngled() {
-		for (int edge = IArea.MIN_EDGE; edge < IArea.MAX_EDGE; ++edge) {
-			int x = xCoord + Cube.relEdgeX( edge);
-			int y = yCoord + Cube.relEdgeY( edge);
-			int z = zCoord + Cube.relEdgeZ( edge);
+		for (AreaType edge : AreaType.edges()) {
+			int x = xCoord + Cube.relEdgeX( edge.ordinal());
+			int y = yCoord + Cube.relEdgeY( edge.ordinal());
+			int z = zCoord + Cube.relEdgeZ( edge.ordinal());
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
-				refreshAngled( tile, edge);
+				refreshAngled( tile, edge.ordinal());
 			}
 			else {
 				int id = worldObj.getBlockId( x, y, z);
 				if (DarkLib.canPowered( id)) {
-					mAngledConn |= 1 << edge;
+					mAngledConn |= edge.mMask;
 				}
 				else {
 					Block blk = Block.blocksList[id];
 					if (blk != null && blk.canProvidePower()) {
-						mAngledConn |= 1 << edge;
+						mAngledConn |= edge.mMask;
 					}
 				}
 			}
@@ -320,48 +320,47 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 
 	private void refreshInner() {
 		int temp = 0;
-		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
-			if (isUsed( 1 << side)) {
-				if (getSection( side).isWire()) {
-					int edges = Cube.offEdges( side);
+		for (AreaType side : AreaType.sides()) {
+			if (isUsed( side.mMask)) {
+				if (getSection( side.ordinal()).isWire()) {
+					int edges = Cube.offEdges( side.ordinal());
 					mInnerConn |= temp & edges;
 					temp |= edges;
 				}
 				else {
-					mInnerBlock &= ~Cube.offEdges( side);
+					mInnerBlock &= ~Cube.offEdges( side.ordinal());
 				}
 			}
 		}
-		for (int edge = IArea.MIN_EDGE; edge < IArea.MAX_EDGE; ++edge) {
-			int off = 1 << edge;
-			if (isUsed( off)) {
-				mInnerBlock &= ~off;
+		for (AreaType edge : AreaType.edges()) {
+			if (isUsed( edge.mMask)) {
+				mInnerBlock &= ~edge.mMask;
 			}
 		}
 	}
 
 	private void refreshNeighbor() {
-		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
-			int x = xCoord + Cube.relX( side);
-			int y = yCoord + Cube.relY( side);
-			int z = zCoord + Cube.relZ( side);
+		for (AreaType side : AreaType.sides()) {
+			int x = xCoord + Cube.relX( side.ordinal());
+			int y = yCoord + Cube.relY( side.ordinal());
+			int z = zCoord + Cube.relZ( side.ordinal());
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
-				refreshNeighbor( tile, side);
+				refreshNeighbor( tile, side.ordinal());
 			}
-			else if (!isUsed( 1 << side)) {
+			else if (!isUsed( side.mMask)) {
 				int id = worldObj.getBlockId( x, y, z);
 				if (DarkLib.canPowered( id)) {
-					mNeighborConn |= Cube.offEdges( side);
+					mNeighborConn |= Cube.offEdges( side.ordinal());
 				}
 				else {
 					Block blk = Block.blocksList[id];
 					if (blk != null) {
 						if (blk.canProvidePower()) {
-							mNeighborConn |= Cube.offEdges( side);
+							mNeighborConn |= Cube.offEdges( side.ordinal());
 						}
 						else if (blk.blockMaterial.isOpaque() && blk.renderAsNormalBlock()) {
-							mAngledBlock &= ~Cube.offEdges( side);
+							mAngledBlock &= ~Cube.offEdges( side.ordinal());
 						}
 					}
 				}
@@ -391,8 +390,8 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 	}
 
 	private void refreshWire() {
-		for (int side = IArea.MIN_SIDE; side < IArea.MAX_SIDE; ++side) {
-			int dmg = getMeta( side);
+		for (AreaType side : AreaType.sides()) {
+			int dmg = getMeta( side.ordinal());
 			if (SectionLib.getForDmg( dmg).isWire()) {
 				mWireMeta = dmg;
 				return;
@@ -401,8 +400,8 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		mWireMeta = 0;
 	}
 
-	public void setSectionBounds( int area, Block blk) {
-		ISection sec = getSection( area);
+	public void setSectionBounds( AreaType area, Block blk) {
+		ISection sec = getSection( area.ordinal());
 		sec.setSectionBounds( area, blk, this);
 	}
 
@@ -516,7 +515,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		LogHelper.info( "writeToNBT: %s", nbt);
 	}
 
-	private static final class AreaIterator implements Iterator<Integer> {
+	private static final class AreaIterator implements Iterator<AreaType> {
 		private int mArea;
 		private int mIndex;
 
@@ -538,7 +537,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 		}
 
 		@Override
-		public Integer next() {
+		public AreaType next() {
 			if (mArea == 0) {
 				throw new NoSuchElementException( "No more elements");
 			}
@@ -546,7 +545,7 @@ public class TileStage extends TileEntity implements Iterable<Integer> {
 			mArea >>>= 1;
 			++mIndex;
 			findNext();
-			return n;
+			return AreaType.values()[n];
 		}
 
 		@Override

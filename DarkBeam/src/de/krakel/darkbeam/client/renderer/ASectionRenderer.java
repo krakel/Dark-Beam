@@ -14,6 +14,7 @@ import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
+import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.tile.TileStage;
 
@@ -66,7 +67,7 @@ public abstract class ASectionRenderer implements IDirection {
 
 	public abstract void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
 
-	public abstract void renderSide( RenderBlocks rndrBlk, int area, Block blk, int meta, int x, int y, int z, TileStage tile);
+	public abstract void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int meta, int x, int y, int z, TileStage tile);
 
-	public abstract void setSectionBounds( int area, Block blk, TileStage tile);
+	public abstract void setSectionBounds( AreaType area, Block blk, TileStage tile);
 }

@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.ISection;
@@ -47,7 +48,7 @@ public class ItemStage extends ItemBlock {
 		if (tile == null) {
 			return false;
 		}
-		return sec.isValid( tile, pos.subHit);
+		return sec.isValid( tile, AreaType.values()[pos.subHit]);
 	}
 
 	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {

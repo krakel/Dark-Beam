@@ -13,6 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
+import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
@@ -42,9 +43,9 @@ public class BlockStageRender implements ISimpleBlockRenderingHandler {
 		if (tile != null) {
 //			LogHelper.info( "renderWorldBlockB: %s", tile);
 			tile.refresh();
-			for (int area : tile) {
+			for (AreaType area : tile) {
 //				LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
-				int dmg = tile.getMeta( area);
+				int dmg = tile.getMeta( area.ordinal());
 				ISection sec = SectionLib.getForDmg( dmg);
 				sec.renderSide( rndrBlk, area, blk, dmg, x, y, z, tile);
 			}
