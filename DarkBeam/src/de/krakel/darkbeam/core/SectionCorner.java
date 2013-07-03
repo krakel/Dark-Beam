@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import de.krakel.darkbeam.client.renderer.SectionCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-class SectionCorner extends ASectionStructure implements IDirection {
+class SectionCorner extends ASectionStructure {
 	private static final int VALID_DNW = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_NORTH, AreaType.SIDE_WEST, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_WEST);
 	private static final int VALID_UNW = AreaType.toMask( AreaType.SIDE_UP, AreaType.SIDE_NORTH, AreaType.SIDE_WEST, AreaType.EDGE_UP_NORTH, AreaType.EDGE_UP_WEST, AreaType.EDGE_NORTH_WEST, AreaType.CORNER_UP_NORTH_WEST);
 	private static final int VALID_DSW = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_SOUTH, AreaType.SIDE_WEST, AreaType.EDGE_DOWN_SOUTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_WEST);
@@ -28,32 +28,32 @@ class SectionCorner extends ASectionStructure implements IDirection {
 
 	private static AreaType getArea( int side, double dx, double dy, double dz) {
 		switch (side) {
-			case DIR_DOWN:
+			case IDirection.DIR_DOWN:
 				if (dx < 0.5D) {
 					return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_WEST : AreaType.CORNER_DOWN_SOUTH_WEST;
 				}
 				return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_EAST : AreaType.CORNER_DOWN_SOUTH_EAST;
-			case DIR_UP:
+			case IDirection.DIR_UP:
 				if (dx < 0.5D) {
 					return dz < 0.5D ? AreaType.CORNER_UP_NORTH_WEST : AreaType.CORNER_UP_SOUTH_WEST;
 				}
 				return dz < 0.5D ? AreaType.CORNER_UP_NORTH_EAST : AreaType.CORNER_UP_SOUTH_EAST;
-			case DIR_NORTH:
+			case IDirection.DIR_NORTH:
 				if (dx < 0.5D) {
 					return dy < 0.5D ? AreaType.CORNER_DOWN_NORTH_WEST : AreaType.CORNER_UP_NORTH_WEST;
 				}
 				return dy < 0.5D ? AreaType.CORNER_DOWN_NORTH_EAST : AreaType.CORNER_UP_NORTH_EAST;
-			case DIR_SOUTH:
+			case IDirection.DIR_SOUTH:
 				if (dx < 0.5D) {
 					return dy < 0.5D ? AreaType.CORNER_DOWN_SOUTH_WEST : AreaType.CORNER_UP_SOUTH_WEST;
 				}
 				return dy < 0.5D ? AreaType.CORNER_DOWN_SOUTH_EAST : AreaType.CORNER_UP_SOUTH_EAST;
-			case DIR_WEST:
+			case IDirection.DIR_WEST:
 				if (dy < 0.5D) {
 					return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_WEST : AreaType.CORNER_DOWN_SOUTH_WEST;
 				}
 				return dz < 0.5D ? AreaType.CORNER_UP_NORTH_WEST : AreaType.CORNER_UP_SOUTH_WEST;
-			case DIR_EAST:
+			case IDirection.DIR_EAST:
 				if (dy < 0.5D) {
 					return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_EAST : AreaType.CORNER_DOWN_SOUTH_EAST;
 				}
@@ -65,7 +65,7 @@ class SectionCorner extends ASectionStructure implements IDirection {
 
 	private static AreaType getOpposite( int side, AreaType area) {
 		switch (side) {
-			case DIR_DOWN:
+			case IDirection.DIR_DOWN:
 				switch (area) {
 					case CORNER_DOWN_NORTH_WEST:
 						return AreaType.CORNER_UP_NORTH_WEST;
@@ -78,7 +78,7 @@ class SectionCorner extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_UP:
+			case IDirection.DIR_UP:
 				switch (area) {
 					case CORNER_UP_NORTH_WEST:
 						return AreaType.CORNER_DOWN_NORTH_WEST;
@@ -91,7 +91,7 @@ class SectionCorner extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_NORTH:
+			case IDirection.DIR_NORTH:
 				switch (area) {
 					case CORNER_DOWN_NORTH_WEST:
 						return AreaType.CORNER_DOWN_SOUTH_WEST;
@@ -104,7 +104,7 @@ class SectionCorner extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_SOUTH:
+			case IDirection.DIR_SOUTH:
 				switch (area) {
 					case CORNER_DOWN_SOUTH_WEST:
 						return AreaType.CORNER_DOWN_NORTH_WEST;
@@ -117,7 +117,7 @@ class SectionCorner extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_WEST:
+			case IDirection.DIR_WEST:
 				switch (area) {
 					case CORNER_DOWN_NORTH_WEST:
 						return AreaType.CORNER_DOWN_NORTH_EAST;
@@ -130,7 +130,7 @@ class SectionCorner extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_EAST:
+			case IDirection.DIR_EAST:
 				switch (area) {
 					case CORNER_DOWN_NORTH_EAST:
 						return AreaType.CORNER_DOWN_NORTH_WEST;

@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import de.krakel.darkbeam.client.renderer.SectionStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-class SectionStrip extends ASectionStructure implements IDirection {
+class SectionStrip extends ASectionStructure {
 	private static final int VALID_DN = AreaType.toMask( AreaType.EDGE_DOWN_NORTH, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_EAST);
 	private static final int VALID_DS = AreaType.toMask( AreaType.EDGE_DOWN_SOUTH, AreaType.CORNER_DOWN_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_EAST);
 	private static final int VALID_DW = AreaType.toMask( AreaType.EDGE_DOWN_WEST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_SOUTH_WEST);
@@ -35,7 +35,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 
 	public static AreaType getArea( int side, double dx, double dy, double dz) {
 		switch (side) {
-			case DIR_DOWN:
+			case IDirection.DIR_DOWN:
 				if (dx < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
 						return AreaType.EDGE_NORTH_WEST;
@@ -61,7 +61,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					return AreaType.EDGE_DOWN_SOUTH;
 				}
 				return AreaType.AXIS_DOWN_UP;
-			case DIR_UP:
+			case IDirection.DIR_UP:
 				if (dx < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
 						return AreaType.EDGE_NORTH_WEST;
@@ -87,7 +87,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					return AreaType.EDGE_UP_SOUTH;
 				}
 				return AreaType.AXIS_DOWN_UP;
-			case DIR_NORTH:
+			case IDirection.DIR_NORTH:
 				if (dx < BOX_BORDER_MIN) {
 					if (dy < BOX_BORDER_MIN) {
 						return AreaType.EDGE_DOWN_WEST;
@@ -113,7 +113,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					return AreaType.EDGE_UP_NORTH;
 				}
 				return AreaType.AXIS_NORTH_SOUTH;
-			case DIR_SOUTH:
+			case IDirection.DIR_SOUTH:
 				if (dx < BOX_BORDER_MIN) {
 					if (dy < BOX_BORDER_MIN) {
 						return AreaType.EDGE_DOWN_WEST;
@@ -139,7 +139,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					return AreaType.EDGE_UP_SOUTH;
 				}
 				return AreaType.AXIS_NORTH_SOUTH;
-			case DIR_WEST:
+			case IDirection.DIR_WEST:
 				if (dy < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
 						return AreaType.EDGE_DOWN_NORTH;
@@ -165,7 +165,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					return AreaType.EDGE_SOUTH_WEST;
 				}
 				return AreaType.AXIS_WEST_EAST;
-			case DIR_EAST:
+			case IDirection.DIR_EAST:
 				if (dy < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
 						return AreaType.EDGE_DOWN_NORTH;
@@ -198,7 +198,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 
 	private static AreaType getOpposite( int side, AreaType area) {
 		switch (side) {
-			case DIR_DOWN:
+			case IDirection.DIR_DOWN:
 				switch (area) {
 					case EDGE_DOWN_NORTH:
 						return AreaType.EDGE_UP_NORTH;
@@ -211,7 +211,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_UP:
+			case IDirection.DIR_UP:
 				switch (area) {
 					case EDGE_UP_NORTH:
 						return AreaType.EDGE_DOWN_NORTH;
@@ -224,7 +224,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_NORTH:
+			case IDirection.DIR_NORTH:
 				switch (area) {
 					case EDGE_DOWN_NORTH:
 						return AreaType.EDGE_DOWN_SOUTH;
@@ -237,7 +237,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_SOUTH:
+			case IDirection.DIR_SOUTH:
 				switch (area) {
 					case EDGE_DOWN_SOUTH:
 						return AreaType.EDGE_DOWN_NORTH;
@@ -250,7 +250,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_WEST:
+			case IDirection.DIR_WEST:
 				switch (area) {
 					case EDGE_DOWN_WEST:
 						return AreaType.EDGE_DOWN_EAST;
@@ -263,7 +263,7 @@ class SectionStrip extends ASectionStructure implements IDirection {
 					default:
 						return area;
 				}
-			case DIR_EAST:
+			case IDirection.DIR_EAST:
 				switch (area) {
 					case EDGE_DOWN_EAST:
 						return AreaType.EDGE_DOWN_WEST;
