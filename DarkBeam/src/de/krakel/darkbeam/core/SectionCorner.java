@@ -13,14 +13,14 @@ import de.krakel.darkbeam.client.renderer.SectionCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 class SectionCorner extends ASectionStructure {
-	private static final int VALID_DNW = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_NORTH, AreaType.SIDE_WEST, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_WEST);
-	private static final int VALID_UNW = AreaType.toMask( AreaType.SIDE_UP, AreaType.SIDE_NORTH, AreaType.SIDE_WEST, AreaType.EDGE_UP_NORTH, AreaType.EDGE_UP_WEST, AreaType.EDGE_NORTH_WEST, AreaType.CORNER_UP_NORTH_WEST);
-	private static final int VALID_DSW = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_SOUTH, AreaType.SIDE_WEST, AreaType.EDGE_DOWN_SOUTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_WEST);
-	private static final int VALID_USW = AreaType.toMask( AreaType.SIDE_UP, AreaType.SIDE_SOUTH, AreaType.SIDE_WEST, AreaType.EDGE_UP_SOUTH, AreaType.EDGE_UP_WEST, AreaType.EDGE_DOWN_WEST, AreaType.CORNER_UP_SOUTH_WEST);
-	private static final int VALID_DNE = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_NORTH, AreaType.SIDE_EAST, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_DOWN_EAST, AreaType.EDGE_NORTH_EAST, AreaType.CORNER_DOWN_NORTH_EAST);
-	private static final int VALID_UNE = AreaType.toMask( AreaType.SIDE_UP, AreaType.SIDE_NORTH, AreaType.SIDE_EAST, AreaType.EDGE_UP_NORTH, AreaType.EDGE_UP_EAST, AreaType.EDGE_NORTH_EAST, AreaType.CORNER_UP_NORTH_EAST);
-	private static final int VALID_DSE = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_SOUTH, AreaType.SIDE_EAST, AreaType.EDGE_DOWN_SOUTH, AreaType.EDGE_DOWN_EAST, AreaType.EDGE_SOUTH_EAST, AreaType.CORNER_DOWN_SOUTH_EAST);
-	private static final int VALID_USE = AreaType.toMask( AreaType.SIDE_UP, AreaType.SIDE_SOUTH, AreaType.SIDE_EAST, AreaType.EDGE_UP_SOUTH, AreaType.EDGE_UP_EAST, AreaType.EDGE_SOUTH_EAST, AreaType.CORNER_UP_SOUTH_EAST);
+	private static final int VALID_DNW = AreaType.toMask( AreaType.DOWN, AreaType.NORTH, AreaType.WEST, AreaType.DOWN_NORTH, AreaType.DOWN_WEST, AreaType.NORTH_WEST, AreaType.DOWN_NORTH_WEST);
+	private static final int VALID_UNW = AreaType.toMask( AreaType.UP, AreaType.NORTH, AreaType.WEST, AreaType.UP_NORTH, AreaType.UP_WEST, AreaType.NORTH_WEST, AreaType.UP_NORTH_WEST);
+	private static final int VALID_DSW = AreaType.toMask( AreaType.DOWN, AreaType.SOUTH, AreaType.WEST, AreaType.DOWN_SOUTH, AreaType.DOWN_WEST, AreaType.SOUTH_WEST, AreaType.DOWN_SOUTH_WEST);
+	private static final int VALID_USW = AreaType.toMask( AreaType.UP, AreaType.SOUTH, AreaType.WEST, AreaType.UP_SOUTH, AreaType.UP_WEST, AreaType.DOWN_WEST, AreaType.UP_SOUTH_WEST);
+	private static final int VALID_DNE = AreaType.toMask( AreaType.DOWN, AreaType.NORTH, AreaType.EAST, AreaType.DOWN_NORTH, AreaType.DOWN_EAST, AreaType.NORTH_EAST, AreaType.DOWN_NORTH_EAST);
+	private static final int VALID_UNE = AreaType.toMask( AreaType.UP, AreaType.NORTH, AreaType.EAST, AreaType.UP_NORTH, AreaType.UP_EAST, AreaType.NORTH_EAST, AreaType.UP_NORTH_EAST);
+	private static final int VALID_DSE = AreaType.toMask( AreaType.DOWN, AreaType.SOUTH, AreaType.EAST, AreaType.DOWN_SOUTH, AreaType.DOWN_EAST, AreaType.SOUTH_EAST, AreaType.DOWN_SOUTH_EAST);
+	private static final int VALID_USE = AreaType.toMask( AreaType.UP, AreaType.SOUTH, AreaType.EAST, AreaType.UP_SOUTH, AreaType.UP_EAST, AreaType.SOUTH_EAST, AreaType.UP_SOUTH_EAST);
 
 	public SectionCorner( int nr) {
 		super( "corner." + nr, new SectionCornerRenderer( nr));
@@ -30,34 +30,34 @@ class SectionCorner extends ASectionStructure {
 		switch (side) {
 			case IDirection.DIR_DOWN:
 				if (dx < 0.5D) {
-					return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_WEST : AreaType.CORNER_DOWN_SOUTH_WEST;
+					return dz < 0.5D ? AreaType.DOWN_NORTH_WEST : AreaType.DOWN_SOUTH_WEST;
 				}
-				return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_EAST : AreaType.CORNER_DOWN_SOUTH_EAST;
+				return dz < 0.5D ? AreaType.DOWN_NORTH_EAST : AreaType.DOWN_SOUTH_EAST;
 			case IDirection.DIR_UP:
 				if (dx < 0.5D) {
-					return dz < 0.5D ? AreaType.CORNER_UP_NORTH_WEST : AreaType.CORNER_UP_SOUTH_WEST;
+					return dz < 0.5D ? AreaType.UP_NORTH_WEST : AreaType.UP_SOUTH_WEST;
 				}
-				return dz < 0.5D ? AreaType.CORNER_UP_NORTH_EAST : AreaType.CORNER_UP_SOUTH_EAST;
+				return dz < 0.5D ? AreaType.UP_NORTH_EAST : AreaType.UP_SOUTH_EAST;
 			case IDirection.DIR_NORTH:
 				if (dx < 0.5D) {
-					return dy < 0.5D ? AreaType.CORNER_DOWN_NORTH_WEST : AreaType.CORNER_UP_NORTH_WEST;
+					return dy < 0.5D ? AreaType.DOWN_NORTH_WEST : AreaType.UP_NORTH_WEST;
 				}
-				return dy < 0.5D ? AreaType.CORNER_DOWN_NORTH_EAST : AreaType.CORNER_UP_NORTH_EAST;
+				return dy < 0.5D ? AreaType.DOWN_NORTH_EAST : AreaType.UP_NORTH_EAST;
 			case IDirection.DIR_SOUTH:
 				if (dx < 0.5D) {
-					return dy < 0.5D ? AreaType.CORNER_DOWN_SOUTH_WEST : AreaType.CORNER_UP_SOUTH_WEST;
+					return dy < 0.5D ? AreaType.DOWN_SOUTH_WEST : AreaType.UP_SOUTH_WEST;
 				}
-				return dy < 0.5D ? AreaType.CORNER_DOWN_SOUTH_EAST : AreaType.CORNER_UP_SOUTH_EAST;
+				return dy < 0.5D ? AreaType.DOWN_SOUTH_EAST : AreaType.UP_SOUTH_EAST;
 			case IDirection.DIR_WEST:
 				if (dy < 0.5D) {
-					return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_WEST : AreaType.CORNER_DOWN_SOUTH_WEST;
+					return dz < 0.5D ? AreaType.DOWN_NORTH_WEST : AreaType.DOWN_SOUTH_WEST;
 				}
-				return dz < 0.5D ? AreaType.CORNER_UP_NORTH_WEST : AreaType.CORNER_UP_SOUTH_WEST;
+				return dz < 0.5D ? AreaType.UP_NORTH_WEST : AreaType.UP_SOUTH_WEST;
 			case IDirection.DIR_EAST:
 				if (dy < 0.5D) {
-					return dz < 0.5D ? AreaType.CORNER_DOWN_NORTH_EAST : AreaType.CORNER_DOWN_SOUTH_EAST;
+					return dz < 0.5D ? AreaType.DOWN_NORTH_EAST : AreaType.DOWN_SOUTH_EAST;
 				}
-				return dz < 0.5D ? AreaType.CORNER_UP_NORTH_EAST : AreaType.CORNER_UP_SOUTH_EAST;
+				return dz < 0.5D ? AreaType.UP_NORTH_EAST : AreaType.UP_SOUTH_EAST;
 			default:
 				return AreaType.UNKNOWN;
 		}
@@ -67,79 +67,79 @@ class SectionCorner extends ASectionStructure {
 		switch (side) {
 			case IDirection.DIR_DOWN:
 				switch (area) {
-					case CORNER_DOWN_NORTH_WEST:
-						return AreaType.CORNER_UP_NORTH_WEST;
-					case CORNER_DOWN_SOUTH_WEST:
-						return AreaType.CORNER_UP_SOUTH_WEST;
-					case CORNER_DOWN_NORTH_EAST:
-						return AreaType.CORNER_UP_NORTH_EAST;
-					case CORNER_DOWN_SOUTH_EAST:
-						return AreaType.CORNER_UP_SOUTH_EAST;
+					case DOWN_NORTH_WEST:
+						return AreaType.UP_NORTH_WEST;
+					case DOWN_SOUTH_WEST:
+						return AreaType.UP_SOUTH_WEST;
+					case DOWN_NORTH_EAST:
+						return AreaType.UP_NORTH_EAST;
+					case DOWN_SOUTH_EAST:
+						return AreaType.UP_SOUTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_UP:
 				switch (area) {
-					case CORNER_UP_NORTH_WEST:
-						return AreaType.CORNER_DOWN_NORTH_WEST;
-					case CORNER_UP_SOUTH_WEST:
-						return AreaType.CORNER_DOWN_SOUTH_WEST;
-					case CORNER_UP_NORTH_EAST:
-						return AreaType.CORNER_DOWN_NORTH_EAST;
-					case CORNER_UP_SOUTH_EAST:
-						return AreaType.CORNER_DOWN_SOUTH_EAST;
+					case UP_NORTH_WEST:
+						return AreaType.DOWN_NORTH_WEST;
+					case UP_SOUTH_WEST:
+						return AreaType.DOWN_SOUTH_WEST;
+					case UP_NORTH_EAST:
+						return AreaType.DOWN_NORTH_EAST;
+					case UP_SOUTH_EAST:
+						return AreaType.DOWN_SOUTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_NORTH:
 				switch (area) {
-					case CORNER_DOWN_NORTH_WEST:
-						return AreaType.CORNER_DOWN_SOUTH_WEST;
-					case CORNER_DOWN_NORTH_EAST:
-						return AreaType.CORNER_DOWN_SOUTH_EAST;
-					case CORNER_UP_NORTH_WEST:
-						return AreaType.CORNER_UP_SOUTH_WEST;
-					case CORNER_UP_NORTH_EAST:
-						return AreaType.CORNER_UP_SOUTH_EAST;
+					case DOWN_NORTH_WEST:
+						return AreaType.DOWN_SOUTH_WEST;
+					case DOWN_NORTH_EAST:
+						return AreaType.DOWN_SOUTH_EAST;
+					case UP_NORTH_WEST:
+						return AreaType.UP_SOUTH_WEST;
+					case UP_NORTH_EAST:
+						return AreaType.UP_SOUTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_SOUTH:
 				switch (area) {
-					case CORNER_DOWN_SOUTH_WEST:
-						return AreaType.CORNER_DOWN_NORTH_WEST;
-					case CORNER_DOWN_SOUTH_EAST:
-						return AreaType.CORNER_DOWN_NORTH_EAST;
-					case CORNER_UP_SOUTH_WEST:
-						return AreaType.CORNER_UP_NORTH_WEST;
-					case CORNER_UP_SOUTH_EAST:
-						return AreaType.CORNER_UP_NORTH_EAST;
+					case DOWN_SOUTH_WEST:
+						return AreaType.DOWN_NORTH_WEST;
+					case DOWN_SOUTH_EAST:
+						return AreaType.DOWN_NORTH_EAST;
+					case UP_SOUTH_WEST:
+						return AreaType.UP_NORTH_WEST;
+					case UP_SOUTH_EAST:
+						return AreaType.UP_NORTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_WEST:
 				switch (area) {
-					case CORNER_DOWN_NORTH_WEST:
-						return AreaType.CORNER_DOWN_NORTH_EAST;
-					case CORNER_DOWN_SOUTH_WEST:
-						return AreaType.CORNER_DOWN_SOUTH_EAST;
-					case CORNER_UP_NORTH_WEST:
-						return AreaType.CORNER_UP_NORTH_EAST;
-					case CORNER_UP_SOUTH_WEST:
-						return AreaType.CORNER_UP_SOUTH_EAST;
+					case DOWN_NORTH_WEST:
+						return AreaType.DOWN_NORTH_EAST;
+					case DOWN_SOUTH_WEST:
+						return AreaType.DOWN_SOUTH_EAST;
+					case UP_NORTH_WEST:
+						return AreaType.UP_NORTH_EAST;
+					case UP_SOUTH_WEST:
+						return AreaType.UP_SOUTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_EAST:
 				switch (area) {
-					case CORNER_DOWN_NORTH_EAST:
-						return AreaType.CORNER_DOWN_NORTH_WEST;
-					case CORNER_DOWN_SOUTH_EAST:
-						return AreaType.CORNER_DOWN_SOUTH_WEST;
-					case CORNER_UP_NORTH_EAST:
-						return AreaType.CORNER_UP_NORTH_WEST;
-					case CORNER_UP_SOUTH_EAST:
-						return AreaType.CORNER_UP_SOUTH_WEST;
+					case DOWN_NORTH_EAST:
+						return AreaType.DOWN_NORTH_WEST;
+					case DOWN_SOUTH_EAST:
+						return AreaType.DOWN_SOUTH_WEST;
+					case UP_NORTH_EAST:
+						return AreaType.UP_NORTH_WEST;
+					case UP_SOUTH_EAST:
+						return AreaType.UP_SOUTH_WEST;
 					default:
 						return area;
 				}
@@ -156,21 +156,21 @@ class SectionCorner extends ASectionStructure {
 	@Override
 	public boolean isValid( TileStage tile, AreaType area) {
 		switch (area) {
-			case CORNER_DOWN_NORTH_WEST:
+			case DOWN_NORTH_WEST:
 				return tile.isValid( VALID_DNW);
-			case CORNER_UP_NORTH_WEST:
+			case UP_NORTH_WEST:
 				return tile.isValid( VALID_UNW);
-			case CORNER_DOWN_SOUTH_WEST:
+			case DOWN_SOUTH_WEST:
 				return tile.isValid( VALID_DSW);
-			case CORNER_UP_SOUTH_WEST:
+			case UP_SOUTH_WEST:
 				return tile.isValid( VALID_USW);
-			case CORNER_DOWN_NORTH_EAST:
+			case DOWN_NORTH_EAST:
 				return tile.isValid( VALID_DNE);
-			case CORNER_UP_NORTH_EAST:
+			case UP_NORTH_EAST:
 				return tile.isValid( VALID_UNE);
-			case CORNER_DOWN_SOUTH_EAST:
+			case DOWN_SOUTH_EAST:
 				return tile.isValid( VALID_DSE);
-			case CORNER_UP_SOUTH_EAST:
+			case UP_SOUTH_EAST:
 				return tile.isValid( VALID_USE);
 			default:
 				return false;

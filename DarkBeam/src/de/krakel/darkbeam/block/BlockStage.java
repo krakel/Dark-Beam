@@ -47,7 +47,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return false;
 		}
-		return tile.isUsed( AreaType.SIDE_DOWN) && tile.getSection( AreaType.SIDE_DOWN).isRedwire();
+		return tile.isUsed( AreaType.DOWN) && tile.getSection( AreaType.DOWN).isRedwire();
 	}
 
 	@Override

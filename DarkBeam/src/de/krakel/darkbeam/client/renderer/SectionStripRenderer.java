@@ -35,49 +35,49 @@ public class SectionStripRenderer extends ASectionRenderer {
 	@Override
 	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
 		switch (area) {
-			case EDGE_DOWN_NORTH:
+			case DOWN_NORTH:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, mSize);
 				break;
-			case EDGE_DOWN_SOUTH:
+			case DOWN_SOUTH:
 				blk.setBlockBounds( 0F, 0F, 1F - mSize, 1F, mSize, 1F);
 				break;
-			case EDGE_DOWN_WEST:
+			case DOWN_WEST:
 				blk.setBlockBounds( 0F, 0F, 0F, mSize, mSize, 1F);
 				break;
-			case EDGE_DOWN_EAST:
+			case DOWN_EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, mSize, 1F);
 				break;
-			case EDGE_UP_NORTH:
+			case UP_NORTH:
 				blk.setBlockBounds( 0F, 1F - mSize, 0F, 1F, 1F, mSize);
 				break;
-			case EDGE_UP_SOUTH:
+			case UP_SOUTH:
 				blk.setBlockBounds( 0F, 1F - mSize, 1F - mSize, 1F, 1F, 1F);
 				break;
-			case EDGE_UP_WEST:
+			case UP_WEST:
 				blk.setBlockBounds( 0F, 1F - mSize, 0F, mSize, 1F, 1F);
 				break;
-			case EDGE_UP_EAST:
+			case UP_EAST:
 				blk.setBlockBounds( 1F - mSize, 1F - mSize, 0F, 1F, 1F, 1F);
 				break;
-			case EDGE_NORTH_WEST:
+			case NORTH_WEST:
 				blk.setBlockBounds( 0F, 0F, 0F, mSize, 1F, mSize);
 				break;
-			case EDGE_NORTH_EAST:
+			case NORTH_EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, 1F, mSize);
 				break;
-			case EDGE_SOUTH_WEST:
+			case SOUTH_WEST:
 				blk.setBlockBounds( 0F, 0F, 1F - mSize, mSize, 1F, 1F);
 				break;
-			case EDGE_SOUTH_EAST:
+			case SOUTH_EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 1F - mSize, 1F, 1F, 1F);
 				break;
-			case AXIS_DOWN_UP:
+			case DOWN_UP:
 				blk.setBlockBounds( 0.5F - mThickness, 0F, 0.5F - mThickness, 0.5F + mThickness, 1F, 0.5F + mThickness);
 				break;
-			case AXIS_NORTH_SOUTH:
+			case NORTH_SOUTH:
 				blk.setBlockBounds( 0.5F - mThickness, 0.5F - mThickness, 0F, 0.5F + mThickness, 0.5F + mThickness, 1F);
 				break;
-			case AXIS_WEST_EAST:
+			case WEST_EAST:
 				blk.setBlockBounds( 0F, 0.5F - mThickness, 0.5F - mThickness, 1F, 0.5F + mThickness, 0.5F + mThickness);
 				break;
 			default:

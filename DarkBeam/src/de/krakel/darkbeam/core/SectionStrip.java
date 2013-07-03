@@ -13,21 +13,21 @@ import de.krakel.darkbeam.client.renderer.SectionStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 class SectionStrip extends ASectionStructure {
-	private static final int VALID_DN = AreaType.toMask( AreaType.EDGE_DOWN_NORTH, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_EAST);
-	private static final int VALID_DS = AreaType.toMask( AreaType.EDGE_DOWN_SOUTH, AreaType.CORNER_DOWN_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_EAST);
-	private static final int VALID_DW = AreaType.toMask( AreaType.EDGE_DOWN_WEST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_SOUTH_WEST);
-	private static final int VALID_DE = AreaType.toMask( AreaType.EDGE_DOWN_EAST, AreaType.CORNER_DOWN_NORTH_EAST, AreaType.CORNER_DOWN_SOUTH_EAST);
-	private static final int VALID_UN = AreaType.toMask( AreaType.EDGE_UP_NORTH, AreaType.CORNER_UP_NORTH_WEST, AreaType.CORNER_UP_NORTH_EAST);
-	private static final int VALID_US = AreaType.toMask( AreaType.EDGE_UP_SOUTH, AreaType.CORNER_UP_SOUTH_WEST, AreaType.CORNER_UP_SOUTH_EAST);
-	private static final int VALID_UW = AreaType.toMask( AreaType.EDGE_UP_WEST, AreaType.CORNER_UP_NORTH_WEST, AreaType.CORNER_UP_SOUTH_WEST);
-	private static final int VALID_UE = AreaType.toMask( AreaType.EDGE_UP_EAST, AreaType.CORNER_UP_NORTH_EAST, AreaType.CORNER_UP_SOUTH_EAST);
-	private static final int VALID_NW = AreaType.toMask( AreaType.EDGE_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_UP_NORTH_WEST);
-	private static final int VALID_NE = AreaType.toMask( AreaType.EDGE_NORTH_EAST, AreaType.CORNER_DOWN_NORTH_EAST, AreaType.CORNER_UP_NORTH_EAST);
-	private static final int VALID_SW = AreaType.toMask( AreaType.EDGE_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_WEST, AreaType.CORNER_UP_SOUTH_WEST);
-	private static final int VALID_SE = AreaType.toMask( AreaType.EDGE_SOUTH_EAST, AreaType.CORNER_DOWN_SOUTH_EAST, AreaType.CORNER_UP_SOUTH_EAST);
-	private static final int VALID_DU = AreaType.toMask( AreaType.AXIS_DOWN_UP, AreaType.AXIS_NORTH_SOUTH, AreaType.AXIS_WEST_EAST);
-	private static final int VALID_NS = AreaType.toMask( AreaType.AXIS_DOWN_UP, AreaType.AXIS_NORTH_SOUTH, AreaType.AXIS_WEST_EAST);
-	private static final int VALID_WE = AreaType.toMask( AreaType.AXIS_DOWN_UP, AreaType.AXIS_NORTH_SOUTH, AreaType.AXIS_WEST_EAST);
+	private static final int VALID_DN = AreaType.toMask( AreaType.DOWN_NORTH, AreaType.DOWN_NORTH_WEST, AreaType.DOWN_NORTH_EAST);
+	private static final int VALID_DS = AreaType.toMask( AreaType.DOWN_SOUTH, AreaType.DOWN_SOUTH_WEST, AreaType.DOWN_SOUTH_EAST);
+	private static final int VALID_DW = AreaType.toMask( AreaType.DOWN_WEST, AreaType.DOWN_NORTH_WEST, AreaType.DOWN_SOUTH_WEST);
+	private static final int VALID_DE = AreaType.toMask( AreaType.DOWN_EAST, AreaType.DOWN_NORTH_EAST, AreaType.DOWN_SOUTH_EAST);
+	private static final int VALID_UN = AreaType.toMask( AreaType.UP_NORTH, AreaType.UP_NORTH_WEST, AreaType.UP_NORTH_EAST);
+	private static final int VALID_US = AreaType.toMask( AreaType.UP_SOUTH, AreaType.UP_SOUTH_WEST, AreaType.UP_SOUTH_EAST);
+	private static final int VALID_UW = AreaType.toMask( AreaType.UP_WEST, AreaType.UP_NORTH_WEST, AreaType.UP_SOUTH_WEST);
+	private static final int VALID_UE = AreaType.toMask( AreaType.UP_EAST, AreaType.UP_NORTH_EAST, AreaType.UP_SOUTH_EAST);
+	private static final int VALID_NW = AreaType.toMask( AreaType.NORTH_WEST, AreaType.DOWN_NORTH_WEST, AreaType.UP_NORTH_WEST);
+	private static final int VALID_NE = AreaType.toMask( AreaType.NORTH_EAST, AreaType.DOWN_NORTH_EAST, AreaType.UP_NORTH_EAST);
+	private static final int VALID_SW = AreaType.toMask( AreaType.SOUTH_WEST, AreaType.DOWN_SOUTH_WEST, AreaType.UP_SOUTH_WEST);
+	private static final int VALID_SE = AreaType.toMask( AreaType.SOUTH_EAST, AreaType.DOWN_SOUTH_EAST, AreaType.UP_SOUTH_EAST);
+	private static final int VALID_DU = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST);
+	private static final int VALID_NS = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST);
+	private static final int VALID_WE = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST);
 
 	public SectionStrip( int nr) {
 		super( "strip." + nr, new SectionStripRenderer( nr));
@@ -38,159 +38,159 @@ class SectionStrip extends ASectionStructure {
 			case IDirection.DIR_DOWN:
 				if (dx < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_NORTH_WEST;
+						return AreaType.NORTH_WEST;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_SOUTH_WEST;
+						return AreaType.SOUTH_WEST;
 					}
-					return AreaType.EDGE_DOWN_WEST;
+					return AreaType.DOWN_WEST;
 				}
 				if (dx >= BOX_BORDER_MAX) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_NORTH_EAST;
+						return AreaType.NORTH_EAST;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_SOUTH_EAST;
+						return AreaType.SOUTH_EAST;
 					}
-					return AreaType.EDGE_DOWN_EAST;
+					return AreaType.DOWN_EAST;
 				}
 				if (dz < BOX_BORDER_MIN) {
-					return AreaType.EDGE_DOWN_NORTH;
+					return AreaType.DOWN_NORTH;
 				}
 				if (dz >= BOX_BORDER_MAX) {
-					return AreaType.EDGE_DOWN_SOUTH;
+					return AreaType.DOWN_SOUTH;
 				}
-				return AreaType.AXIS_DOWN_UP;
+				return AreaType.DOWN_UP;
 			case IDirection.DIR_UP:
 				if (dx < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_NORTH_WEST;
+						return AreaType.NORTH_WEST;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_SOUTH_WEST;
+						return AreaType.SOUTH_WEST;
 					}
-					return AreaType.EDGE_UP_WEST;
+					return AreaType.UP_WEST;
 				}
 				if (dx >= BOX_BORDER_MAX) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_NORTH_EAST;
+						return AreaType.NORTH_EAST;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_SOUTH_EAST;
+						return AreaType.SOUTH_EAST;
 					}
-					return AreaType.EDGE_UP_EAST;
+					return AreaType.UP_EAST;
 				}
 				if (dz < BOX_BORDER_MIN) {
-					return AreaType.EDGE_UP_NORTH;
+					return AreaType.UP_NORTH;
 				}
 				if (dz >= BOX_BORDER_MAX) {
-					return AreaType.EDGE_UP_SOUTH;
+					return AreaType.UP_SOUTH;
 				}
-				return AreaType.AXIS_DOWN_UP;
+				return AreaType.DOWN_UP;
 			case IDirection.DIR_NORTH:
 				if (dx < BOX_BORDER_MIN) {
 					if (dy < BOX_BORDER_MIN) {
-						return AreaType.EDGE_DOWN_WEST;
+						return AreaType.DOWN_WEST;
 					}
 					if (dy >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_UP_WEST;
+						return AreaType.UP_WEST;
 					}
-					return AreaType.EDGE_NORTH_WEST;
+					return AreaType.NORTH_WEST;
 				}
 				if (dx >= BOX_BORDER_MAX) {
 					if (dy < BOX_BORDER_MIN) {
-						return AreaType.EDGE_DOWN_EAST;
+						return AreaType.DOWN_EAST;
 					}
 					if (dy >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_UP_EAST;
+						return AreaType.UP_EAST;
 					}
-					return AreaType.EDGE_NORTH_EAST;
+					return AreaType.NORTH_EAST;
 				}
 				if (dy < BOX_BORDER_MIN) {
-					return AreaType.EDGE_DOWN_NORTH;
+					return AreaType.DOWN_NORTH;
 				}
 				if (dy >= BOX_BORDER_MAX) {
-					return AreaType.EDGE_UP_NORTH;
+					return AreaType.UP_NORTH;
 				}
-				return AreaType.AXIS_NORTH_SOUTH;
+				return AreaType.NORTH_SOUTH;
 			case IDirection.DIR_SOUTH:
 				if (dx < BOX_BORDER_MIN) {
 					if (dy < BOX_BORDER_MIN) {
-						return AreaType.EDGE_DOWN_WEST;
+						return AreaType.DOWN_WEST;
 					}
 					if (dy >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_UP_WEST;
+						return AreaType.UP_WEST;
 					}
-					return AreaType.EDGE_SOUTH_WEST;
+					return AreaType.SOUTH_WEST;
 				}
 				if (dx >= BOX_BORDER_MAX) {
 					if (dy < BOX_BORDER_MIN) {
-						return AreaType.EDGE_DOWN_EAST;
+						return AreaType.DOWN_EAST;
 					}
 					if (dy >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_UP_EAST;
+						return AreaType.UP_EAST;
 					}
-					return AreaType.EDGE_SOUTH_EAST;
+					return AreaType.SOUTH_EAST;
 				}
 				if (dy < BOX_BORDER_MIN) {
-					return AreaType.EDGE_DOWN_SOUTH;
+					return AreaType.DOWN_SOUTH;
 				}
 				if (dy >= BOX_BORDER_MAX) {
-					return AreaType.EDGE_UP_SOUTH;
+					return AreaType.UP_SOUTH;
 				}
-				return AreaType.AXIS_NORTH_SOUTH;
+				return AreaType.NORTH_SOUTH;
 			case IDirection.DIR_WEST:
 				if (dy < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_DOWN_NORTH;
+						return AreaType.DOWN_NORTH;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_DOWN_SOUTH;
+						return AreaType.DOWN_SOUTH;
 					}
-					return AreaType.EDGE_DOWN_WEST;
+					return AreaType.DOWN_WEST;
 				}
 				if (dy >= BOX_BORDER_MAX) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_UP_NORTH;
+						return AreaType.UP_NORTH;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_UP_SOUTH;
+						return AreaType.UP_SOUTH;
 					}
-					return AreaType.EDGE_UP_WEST;
+					return AreaType.UP_WEST;
 				}
 				if (dz < BOX_BORDER_MIN) {
-					return AreaType.EDGE_NORTH_WEST;
+					return AreaType.NORTH_WEST;
 				}
 				if (dz >= BOX_BORDER_MAX) {
-					return AreaType.EDGE_SOUTH_WEST;
+					return AreaType.SOUTH_WEST;
 				}
-				return AreaType.AXIS_WEST_EAST;
+				return AreaType.WEST_EAST;
 			case IDirection.DIR_EAST:
 				if (dy < BOX_BORDER_MIN) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_DOWN_NORTH;
+						return AreaType.DOWN_NORTH;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_DOWN_SOUTH;
+						return AreaType.DOWN_SOUTH;
 					}
-					return AreaType.EDGE_DOWN_EAST;
+					return AreaType.DOWN_EAST;
 				}
 				if (dy >= BOX_BORDER_MAX) {
 					if (dz < BOX_BORDER_MIN) {
-						return AreaType.EDGE_UP_NORTH;
+						return AreaType.UP_NORTH;
 					}
 					if (dz >= BOX_BORDER_MAX) {
-						return AreaType.EDGE_UP_SOUTH;
+						return AreaType.UP_SOUTH;
 					}
-					return AreaType.EDGE_UP_EAST;
+					return AreaType.UP_EAST;
 				}
 				if (dz < BOX_BORDER_MIN) {
-					return AreaType.EDGE_NORTH_EAST;
+					return AreaType.NORTH_EAST;
 				}
 				if (dz >= BOX_BORDER_MAX) {
-					return AreaType.EDGE_SOUTH_EAST;
+					return AreaType.SOUTH_EAST;
 				}
-				return AreaType.AXIS_WEST_EAST;
+				return AreaType.WEST_EAST;
 			default:
 				return AreaType.UNKNOWN;
 		}
@@ -200,79 +200,79 @@ class SectionStrip extends ASectionStructure {
 		switch (side) {
 			case IDirection.DIR_DOWN:
 				switch (area) {
-					case EDGE_DOWN_NORTH:
-						return AreaType.EDGE_UP_NORTH;
-					case EDGE_DOWN_SOUTH:
-						return AreaType.EDGE_UP_SOUTH;
-					case EDGE_DOWN_WEST:
-						return AreaType.EDGE_UP_WEST;
-					case EDGE_DOWN_EAST:
-						return AreaType.EDGE_UP_EAST;
+					case DOWN_NORTH:
+						return AreaType.UP_NORTH;
+					case DOWN_SOUTH:
+						return AreaType.UP_SOUTH;
+					case DOWN_WEST:
+						return AreaType.UP_WEST;
+					case DOWN_EAST:
+						return AreaType.UP_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_UP:
 				switch (area) {
-					case EDGE_UP_NORTH:
-						return AreaType.EDGE_DOWN_NORTH;
-					case EDGE_UP_SOUTH:
-						return AreaType.EDGE_DOWN_SOUTH;
-					case EDGE_UP_WEST:
-						return AreaType.EDGE_DOWN_WEST;
-					case EDGE_UP_EAST:
-						return AreaType.EDGE_DOWN_EAST;
+					case UP_NORTH:
+						return AreaType.DOWN_NORTH;
+					case UP_SOUTH:
+						return AreaType.DOWN_SOUTH;
+					case UP_WEST:
+						return AreaType.DOWN_WEST;
+					case UP_EAST:
+						return AreaType.DOWN_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_NORTH:
 				switch (area) {
-					case EDGE_DOWN_NORTH:
-						return AreaType.EDGE_DOWN_SOUTH;
-					case EDGE_UP_NORTH:
-						return AreaType.EDGE_UP_SOUTH;
-					case EDGE_NORTH_WEST:
-						return AreaType.EDGE_SOUTH_WEST;
-					case EDGE_NORTH_EAST:
-						return AreaType.EDGE_SOUTH_EAST;
+					case DOWN_NORTH:
+						return AreaType.DOWN_SOUTH;
+					case UP_NORTH:
+						return AreaType.UP_SOUTH;
+					case NORTH_WEST:
+						return AreaType.SOUTH_WEST;
+					case NORTH_EAST:
+						return AreaType.SOUTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_SOUTH:
 				switch (area) {
-					case EDGE_DOWN_SOUTH:
-						return AreaType.EDGE_DOWN_NORTH;
-					case EDGE_UP_SOUTH:
-						return AreaType.EDGE_UP_NORTH;
-					case EDGE_SOUTH_WEST:
-						return AreaType.EDGE_NORTH_WEST;
-					case EDGE_SOUTH_EAST:
-						return AreaType.EDGE_NORTH_EAST;
+					case DOWN_SOUTH:
+						return AreaType.DOWN_NORTH;
+					case UP_SOUTH:
+						return AreaType.UP_NORTH;
+					case SOUTH_WEST:
+						return AreaType.NORTH_WEST;
+					case SOUTH_EAST:
+						return AreaType.NORTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_WEST:
 				switch (area) {
-					case EDGE_DOWN_WEST:
-						return AreaType.EDGE_DOWN_EAST;
-					case EDGE_UP_WEST:
-						return AreaType.EDGE_UP_EAST;
-					case EDGE_NORTH_WEST:
-						return AreaType.EDGE_NORTH_EAST;
-					case EDGE_SOUTH_WEST:
-						return AreaType.EDGE_SOUTH_EAST;
+					case DOWN_WEST:
+						return AreaType.DOWN_EAST;
+					case UP_WEST:
+						return AreaType.UP_EAST;
+					case NORTH_WEST:
+						return AreaType.NORTH_EAST;
+					case SOUTH_WEST:
+						return AreaType.SOUTH_EAST;
 					default:
 						return area;
 				}
 			case IDirection.DIR_EAST:
 				switch (area) {
-					case EDGE_DOWN_EAST:
-						return AreaType.EDGE_DOWN_WEST;
-					case EDGE_UP_EAST:
-						return AreaType.EDGE_UP_WEST;
-					case EDGE_NORTH_EAST:
-						return AreaType.EDGE_NORTH_WEST;
-					case EDGE_SOUTH_EAST:
-						return AreaType.EDGE_SOUTH_WEST;
+					case DOWN_EAST:
+						return AreaType.DOWN_WEST;
+					case UP_EAST:
+						return AreaType.UP_WEST;
+					case NORTH_EAST:
+						return AreaType.NORTH_WEST;
+					case SOUTH_EAST:
+						return AreaType.SOUTH_WEST;
 					default:
 						return area;
 				}
@@ -299,36 +299,36 @@ class SectionStrip extends ASectionStructure {
 	@Override
 	public boolean isValid( TileStage tile, AreaType area) {
 		switch (area) {
-			case EDGE_DOWN_NORTH:
-				return tile.isValid( VALID_DN) && isValidForStrip( tile, AreaType.SIDE_DOWN, AreaType.SIDE_NORTH);
-			case EDGE_DOWN_SOUTH:
-				return tile.isValid( VALID_DS) && isValidForStrip( tile, AreaType.SIDE_DOWN, AreaType.SIDE_SOUTH);
-			case EDGE_DOWN_WEST:
-				return tile.isValid( VALID_DW) && isValidForStrip( tile, AreaType.SIDE_DOWN, AreaType.SIDE_WEST);
-			case EDGE_DOWN_EAST:
-				return tile.isValid( VALID_DE) && isValidForStrip( tile, AreaType.SIDE_DOWN, AreaType.SIDE_EAST);
-			case EDGE_UP_NORTH:
-				return tile.isValid( VALID_UN) && isValidForStrip( tile, AreaType.SIDE_UP, AreaType.SIDE_NORTH);
-			case EDGE_UP_SOUTH:
-				return tile.isValid( VALID_US) && isValidForStrip( tile, AreaType.SIDE_UP, AreaType.SIDE_SOUTH);
-			case EDGE_UP_WEST:
-				return tile.isValid( VALID_UW) && isValidForStrip( tile, AreaType.SIDE_UP, AreaType.SIDE_WEST);
-			case EDGE_UP_EAST:
-				return tile.isValid( VALID_UE) && isValidForStrip( tile, AreaType.SIDE_UP, AreaType.SIDE_EAST);
-			case EDGE_NORTH_WEST:
-				return tile.isValid( VALID_NW) && isValidForStrip( tile, AreaType.SIDE_NORTH, AreaType.SIDE_WEST);
-			case EDGE_NORTH_EAST:
-				return tile.isValid( VALID_NE) && isValidForStrip( tile, AreaType.SIDE_NORTH, AreaType.SIDE_EAST);
-			case EDGE_SOUTH_WEST:
-				return tile.isValid( VALID_SW) && isValidForStrip( tile, AreaType.SIDE_SOUTH, AreaType.SIDE_WEST);
-			case EDGE_SOUTH_EAST:
-				return tile.isValid( VALID_SE) && isValidForStrip( tile, AreaType.SIDE_SOUTH, AreaType.SIDE_EAST);
-			case AXIS_DOWN_UP:
-				return tile.isValid( VALID_DU) && isValidForAxis( tile, AreaType.SIDE_DOWN, AreaType.SIDE_UP);
-			case AXIS_NORTH_SOUTH:
-				return tile.isValid( VALID_NS) && isValidForAxis( tile, AreaType.SIDE_NORTH, AreaType.SIDE_SOUTH);
-			case AXIS_WEST_EAST:
-				return tile.isValid( VALID_WE) && isValidForAxis( tile, AreaType.SIDE_WEST, AreaType.SIDE_EAST);
+			case DOWN_NORTH:
+				return tile.isValid( VALID_DN) && isValidForStrip( tile, AreaType.DOWN, AreaType.NORTH);
+			case DOWN_SOUTH:
+				return tile.isValid( VALID_DS) && isValidForStrip( tile, AreaType.DOWN, AreaType.SOUTH);
+			case DOWN_WEST:
+				return tile.isValid( VALID_DW) && isValidForStrip( tile, AreaType.DOWN, AreaType.WEST);
+			case DOWN_EAST:
+				return tile.isValid( VALID_DE) && isValidForStrip( tile, AreaType.DOWN, AreaType.EAST);
+			case UP_NORTH:
+				return tile.isValid( VALID_UN) && isValidForStrip( tile, AreaType.UP, AreaType.NORTH);
+			case UP_SOUTH:
+				return tile.isValid( VALID_US) && isValidForStrip( tile, AreaType.UP, AreaType.SOUTH);
+			case UP_WEST:
+				return tile.isValid( VALID_UW) && isValidForStrip( tile, AreaType.UP, AreaType.WEST);
+			case UP_EAST:
+				return tile.isValid( VALID_UE) && isValidForStrip( tile, AreaType.UP, AreaType.EAST);
+			case NORTH_WEST:
+				return tile.isValid( VALID_NW) && isValidForStrip( tile, AreaType.NORTH, AreaType.WEST);
+			case NORTH_EAST:
+				return tile.isValid( VALID_NE) && isValidForStrip( tile, AreaType.NORTH, AreaType.EAST);
+			case SOUTH_WEST:
+				return tile.isValid( VALID_SW) && isValidForStrip( tile, AreaType.SOUTH, AreaType.WEST);
+			case SOUTH_EAST:
+				return tile.isValid( VALID_SE) && isValidForStrip( tile, AreaType.SOUTH, AreaType.EAST);
+			case DOWN_UP:
+				return tile.isValid( VALID_DU) && isValidForAxis( tile, AreaType.DOWN, AreaType.UP);
+			case NORTH_SOUTH:
+				return tile.isValid( VALID_NS) && isValidForAxis( tile, AreaType.NORTH, AreaType.SOUTH);
+			case WEST_EAST:
+				return tile.isValid( VALID_WE) && isValidForAxis( tile, AreaType.WEST, AreaType.EAST);
 			default:
 				return false;
 		}

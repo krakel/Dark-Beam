@@ -35,28 +35,28 @@ public class SectionCornerRenderer extends ASectionRenderer {
 	@Override
 	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
 		switch (area) {
-			case CORNER_DOWN_NORTH_WEST:
+			case DOWN_NORTH_WEST:
 				blk.setBlockBounds( 0F, 0F, 0F, mSize, mSize, mSize);
 				break;
-			case CORNER_UP_NORTH_WEST:
+			case UP_NORTH_WEST:
 				blk.setBlockBounds( 0F, 1F - mSize, 0F, mSize, 1F, mSize);
 				break;
-			case CORNER_DOWN_SOUTH_WEST:
+			case DOWN_SOUTH_WEST:
 				blk.setBlockBounds( 0F, 0F, 1F - mSize, mSize, mSize, 1F);
 				break;
-			case CORNER_UP_SOUTH_WEST:
+			case UP_SOUTH_WEST:
 				blk.setBlockBounds( 0F, 1F - mSize, 1F - mSize, mSize, 1F, 1F);
 				break;
-			case CORNER_DOWN_NORTH_EAST:
+			case DOWN_NORTH_EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, mSize, mSize);
 				break;
-			case CORNER_UP_NORTH_EAST:
+			case UP_NORTH_EAST:
 				blk.setBlockBounds( 1F - mSize, 1F - mSize, 0F, 1F, 1F, mSize);
 				break;
-			case CORNER_DOWN_SOUTH_EAST:
+			case DOWN_SOUTH_EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 1F - mSize, 1F, mSize, 1F);
 				break;
-			case CORNER_UP_SOUTH_EAST:
+			case UP_SOUTH_EAST:
 				blk.setBlockBounds( 1F - mSize, 1F - mSize, 1F - mSize, 1F, 1F, 1F);
 				break;
 			default:

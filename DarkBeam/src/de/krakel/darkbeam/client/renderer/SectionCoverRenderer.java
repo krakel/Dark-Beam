@@ -35,22 +35,22 @@ public class SectionCoverRenderer extends ASectionRenderer {
 	@Override
 	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
 		switch (area) {
-			case SIDE_DOWN:
+			case DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);
 				break;
-			case SIDE_UP:
+			case UP:
 				blk.setBlockBounds( 0F, 1F - mSize, 0F, 1F, 1F, 1F);
 				break;
-			case SIDE_NORTH:
+			case NORTH:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mSize);
 				break;
-			case SIDE_SOUTH:
+			case SOUTH:
 				blk.setBlockBounds( 0F, 0F, 1F - mSize, 1F, 1F, 1F);
 				break;
-			case SIDE_WEST:
+			case WEST:
 				blk.setBlockBounds( 0F, 0F, 0F, mSize, 1F, 1F);
 				break;
-			case SIDE_EAST:
+			case EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, 1F, 1F);
 				break;
 			default:

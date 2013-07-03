@@ -13,12 +13,12 @@ import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
 abstract class ASectionWire extends ASection {
-	private static final int VALID_D = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.AXIS_DOWN_UP);
-	private static final int VALID_U = AreaType.toMask( AreaType.SIDE_UP, AreaType.AXIS_DOWN_UP);
-	private static final int VALID_N = AreaType.toMask( AreaType.SIDE_NORTH, AreaType.AXIS_NORTH_SOUTH);
-	private static final int VALID_S = AreaType.toMask( AreaType.SIDE_SOUTH, AreaType.AXIS_NORTH_SOUTH);
-	private static final int VALID_W = AreaType.toMask( AreaType.SIDE_WEST, AreaType.AXIS_WEST_EAST);
-	private static final int VALID_E = AreaType.toMask( AreaType.SIDE_EAST, AreaType.AXIS_WEST_EAST);
+	private static final int VALID_D = AreaType.toMask( AreaType.DOWN, AreaType.DOWN_UP);
+	private static final int VALID_U = AreaType.toMask( AreaType.UP, AreaType.DOWN_UP);
+	private static final int VALID_N = AreaType.toMask( AreaType.NORTH, AreaType.NORTH_SOUTH);
+	private static final int VALID_S = AreaType.toMask( AreaType.SOUTH, AreaType.NORTH_SOUTH);
+	private static final int VALID_W = AreaType.toMask( AreaType.WEST, AreaType.WEST_EAST);
+	private static final int VALID_E = AreaType.toMask( AreaType.EAST, AreaType.WEST_EAST);
 
 	protected ASectionWire( String name, ASectionRenderer renderer) {
 		super( name, renderer);
@@ -27,19 +27,19 @@ abstract class ASectionWire extends ASection {
 	private static AreaType getArea( int side, double dx, double dy, double dz) {
 		switch (side) {
 			case IDirection.DIR_DOWN:
-				return AreaType.SIDE_DOWN;
+				return AreaType.DOWN;
 			case IDirection.DIR_UP:
-				return AreaType.SIDE_UP;
+				return AreaType.UP;
 			case IDirection.DIR_NORTH:
-				return AreaType.SIDE_NORTH;
+				return AreaType.NORTH;
 			case IDirection.DIR_SOUTH:
-				return AreaType.SIDE_SOUTH;
+				return AreaType.SOUTH;
 			case IDirection.DIR_WEST:
-				return AreaType.SIDE_WEST;
+				return AreaType.WEST;
 			case IDirection.DIR_EAST:
-				return AreaType.SIDE_EAST;
+				return AreaType.EAST;
 			default:
-				return AreaType.SIDE_DOWN;
+				return AreaType.DOWN;
 		}
 	}
 
@@ -56,30 +56,30 @@ abstract class ASectionWire extends ASection {
 	@Override
 	public boolean isValid( TileStage tile, AreaType area) {
 		switch (area) {
-			case SIDE_DOWN:
+			case DOWN:
 				return tile.isValid( VALID_D)
-					&& (!tile.isWired() || tile.isWire( AreaType.SIDE_NORTH) || tile.isWire( AreaType.SIDE_SOUTH)
-						|| tile.isWire( AreaType.SIDE_WEST) || tile.isWire( AreaType.SIDE_EAST));
-			case SIDE_UP:
+					&& (!tile.isWired() || tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH)
+						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+			case UP:
 				return tile.isValid( VALID_U)
-					&& (!tile.isWired() || tile.isWire( AreaType.SIDE_NORTH) || tile.isWire( AreaType.SIDE_SOUTH)
-						|| tile.isWire( AreaType.SIDE_WEST) || tile.isWire( AreaType.SIDE_EAST));
-			case SIDE_NORTH:
+					&& (!tile.isWired() || tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH)
+						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+			case NORTH:
 				return tile.isValid( VALID_N)
-					&& (!tile.isWired() || tile.isWire( AreaType.SIDE_DOWN) || tile.isWire( AreaType.SIDE_UP)
-						|| tile.isWire( AreaType.SIDE_WEST) || tile.isWire( AreaType.SIDE_EAST));
-			case SIDE_SOUTH:
+					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
+						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+			case SOUTH:
 				return tile.isValid( VALID_S)
-					&& (!tile.isWired() || tile.isWire( AreaType.SIDE_DOWN) || tile.isWire( AreaType.SIDE_UP)
-						|| tile.isWire( AreaType.SIDE_WEST) || tile.isWire( AreaType.SIDE_EAST));
-			case SIDE_WEST:
+					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
+						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+			case WEST:
 				return tile.isValid( VALID_W)
-					&& (!tile.isWired() || tile.isWire( AreaType.SIDE_DOWN) || tile.isWire( AreaType.SIDE_UP)
-						|| tile.isWire( AreaType.SIDE_NORTH) || tile.isWire( AreaType.SIDE_SOUTH));
-			case SIDE_EAST:
+					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
+						|| tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH));
+			case EAST:
 				return tile.isValid( VALID_E)
-					&& (!tile.isWired() || tile.isWire( AreaType.SIDE_DOWN) || tile.isWire( AreaType.SIDE_UP)
-						|| tile.isWire( AreaType.SIDE_NORTH) || tile.isWire( AreaType.SIDE_SOUTH));
+					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
+						|| tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH));
 			default:
 				return false;
 		}

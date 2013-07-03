@@ -81,27 +81,27 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		if (n != 2) {
 			return 1;
 		}
-		if (mArr[AreaType.SIDE_DOWN.ordinal()] == meta && mArr[AreaType.SIDE_UP.ordinal()] == meta) {
-			mArr[AreaType.SIDE_DOWN.ordinal()] = 0;
-			mArea &= ~AreaType.SIDE_DOWN.mMask;
-			mArr[AreaType.SIDE_UP.ordinal()] = 0;
-			mArea &= ~AreaType.SIDE_UP.mMask;
+		if (mArr[AreaType.DOWN.ordinal()] == meta && mArr[AreaType.UP.ordinal()] == meta) {
+			mArr[AreaType.DOWN.ordinal()] = 0;
+			mArea &= ~AreaType.DOWN.mMask;
+			mArr[AreaType.UP.ordinal()] = 0;
+			mArea &= ~AreaType.UP.mMask;
 			mWireMeta = 0;
 			return 3;
 		}
-		if (mArr[AreaType.SIDE_NORTH.ordinal()] == meta && mArr[AreaType.SIDE_SOUTH.ordinal()] == meta) {
-			mArr[AreaType.SIDE_NORTH.ordinal()] = 0;
-			mArea &= ~AreaType.SIDE_NORTH.mMask;
-			mArr[AreaType.SIDE_SOUTH.ordinal()] = 0;
-			mArea &= ~AreaType.SIDE_SOUTH.mMask;
+		if (mArr[AreaType.NORTH.ordinal()] == meta && mArr[AreaType.SOUTH.ordinal()] == meta) {
+			mArr[AreaType.NORTH.ordinal()] = 0;
+			mArea &= ~AreaType.NORTH.mMask;
+			mArr[AreaType.SOUTH.ordinal()] = 0;
+			mArea &= ~AreaType.SOUTH.mMask;
 			mWireMeta = 0;
 			return 3;
 		}
-		if (mArr[AreaType.SIDE_WEST.ordinal()] == meta && mArr[AreaType.SIDE_EAST.ordinal()] == meta) {
-			mArr[AreaType.SIDE_WEST.ordinal()] = 0;
-			mArea &= ~AreaType.SIDE_WEST.mMask;
-			mArr[AreaType.SIDE_EAST.ordinal()] = 0;
-			mArea &= ~AreaType.SIDE_EAST.mMask;
+		if (mArr[AreaType.WEST.ordinal()] == meta && mArr[AreaType.EAST.ordinal()] == meta) {
+			mArr[AreaType.WEST.ordinal()] = 0;
+			mArea &= ~AreaType.WEST.mMask;
+			mArr[AreaType.EAST.ordinal()] = 0;
+			mArea &= ~AreaType.EAST.mMask;
 			mWireMeta = 0;
 			return 3;
 		}

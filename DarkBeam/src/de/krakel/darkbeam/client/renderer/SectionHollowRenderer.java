@@ -41,7 +41,7 @@ public class SectionHollowRenderer extends ASectionRenderer {
 		float min = 0.25F;
 		float max = 1F - min;
 		switch (area) {
-			case SIDE_DOWN:
+			case DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, min);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 0F, max, 1F, mSize, 1F);
@@ -51,7 +51,7 @@ public class SectionHollowRenderer extends ASectionRenderer {
 				blk.setBlockBounds( max, 0F, min, 1F, mSize, max);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				break;
-			case SIDE_UP:
+			case UP:
 				blk.setBlockBounds( 0F, 1F - mSize, 0F, 1F, 1F, min);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 1F - mSize, max, 1F, 1F, 1F);
@@ -61,7 +61,7 @@ public class SectionHollowRenderer extends ASectionRenderer {
 				blk.setBlockBounds( max, 1F - mSize, min, 1F, 1F, max);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				break;
-			case SIDE_NORTH:
+			case NORTH:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, min, mSize);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, max, 0F, 1F, 1F, mSize);
@@ -71,7 +71,7 @@ public class SectionHollowRenderer extends ASectionRenderer {
 				blk.setBlockBounds( max, min, 0F, 1F, max, mSize);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				break;
-			case SIDE_SOUTH:
+			case SOUTH:
 				blk.setBlockBounds( 0F, 0F, 1F - mSize, 1F, min, 1F);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, max, 1F - mSize, 1F, 1F, 1F);
@@ -81,7 +81,7 @@ public class SectionHollowRenderer extends ASectionRenderer {
 				blk.setBlockBounds( max, min, 1F - mSize, 1F, max, 1F);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				break;
-			case SIDE_WEST:
+			case WEST:
 				blk.setBlockBounds( 0F, 0F, 0F, mSize, 1F, min);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 0F, 0F, max, mSize, 1F, 1F);
@@ -91,7 +91,7 @@ public class SectionHollowRenderer extends ASectionRenderer {
 				blk.setBlockBounds( 0F, max, min, mSize, 1F, max);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				break;
-			case SIDE_EAST:
+			case EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, 1F, min);
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( 1F - mSize, 0F, max, 1F, 1F, 1F);
@@ -111,22 +111,22 @@ public class SectionHollowRenderer extends ASectionRenderer {
 	@Override
 	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
 		switch (area) {
-			case SIDE_DOWN:
+			case DOWN:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, mSize, 1F);
 				break;
-			case SIDE_UP:
+			case UP:
 				blk.setBlockBounds( 0F, 1F - mSize, 0F, 1F, 1F, 1F);
 				break;
-			case SIDE_NORTH:
+			case NORTH:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mSize);
 				break;
-			case SIDE_SOUTH:
+			case SOUTH:
 				blk.setBlockBounds( 0F, 0F, 1F - mSize, 1F, 1F, 1F);
 				break;
-			case SIDE_WEST:
+			case WEST:
 				blk.setBlockBounds( 0F, 0F, 0F, mSize, 1F, 1F);
 				break;
-			case SIDE_EAST:
+			case EAST:
 				blk.setBlockBounds( 1F - mSize, 0F, 0F, 1F, 1F, 1F);
 				break;
 			default:
