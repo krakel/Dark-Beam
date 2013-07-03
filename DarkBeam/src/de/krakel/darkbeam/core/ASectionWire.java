@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-abstract class ASectionWire extends ASection {
+abstract class ASectionWire extends ASection implements IDirection {
 	private static final int VALID_D = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.AXIS_DOWN_UP);
 	private static final int VALID_U = AreaType.toMask( AreaType.SIDE_UP, AreaType.AXIS_DOWN_UP);
 	private static final int VALID_N = AreaType.toMask( AreaType.SIDE_NORTH, AreaType.AXIS_NORTH_SOUTH);

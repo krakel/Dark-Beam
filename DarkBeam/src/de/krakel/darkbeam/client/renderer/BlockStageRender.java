@@ -45,7 +45,7 @@ public class BlockStageRender implements ISimpleBlockRenderingHandler {
 			tile.refresh();
 			for (AreaType area : tile) {
 //				LogHelper.info( "renderWorldBlock: side=%s", Position.toString( side));
-				int dmg = tile.getMeta( area.ordinal());
+				int dmg = tile.getMeta( area);
 				ISection sec = SectionLib.getForDmg( dmg);
 				sec.renderSide( rndrBlk, area, blk, dmg, x, y, z, tile);
 			}

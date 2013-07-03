@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
 import de.krakel.darkbeam.core.AreaType;
+import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
@@ -28,7 +29,7 @@ public class SectionCoverRenderer extends ASectionRenderer {
 	@Override
 	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int meta, int x, int y, int z, TileStage tile) {
 		setSectionBounds( area, blk, tile);
-		renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+		renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 	}
 
 	@Override

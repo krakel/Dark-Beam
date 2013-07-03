@@ -29,7 +29,6 @@ import de.krakel.darkbeam.core.Insulate;
 import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
-import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
@@ -49,6 +48,31 @@ public class ItemStage extends ItemBlock {
 			return false;
 		}
 		return sec.isValid( tile, AreaType.values()[pos.subHit]);
+	}
+
+	private static void move( MovingObjectPosition pos) {
+		switch (pos.sideHit) {
+			case IDirection.DIR_DOWN:
+				--pos.blockY;
+				break;
+			case IDirection.DIR_UP:
+				++pos.blockY;
+				break;
+			case IDirection.DIR_NORTH:
+				--pos.blockZ;
+				break;
+			case IDirection.DIR_SOUTH:
+				++pos.blockZ;
+				break;
+			case IDirection.DIR_WEST:
+				--pos.blockX;
+				break;
+			case IDirection.DIR_EAST:
+				++pos.blockX;
+				break;
+			default:
+				--pos.blockY;
+		}
 	}
 
 	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {
@@ -74,7 +98,7 @@ public class ItemStage extends ItemBlock {
 			LogHelper.info( "toPlacePosB");
 			return pos;
 		}
-		Position.move( pos); // next block
+		ItemStage.move( pos); // next block
 		sec.oppositeArea( pos);
 		if (world.canPlaceEntityOnSide( BlockType.STAGE.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
 			LogHelper.info( "toPlacePosC");
@@ -173,7 +197,7 @@ public class ItemStage extends ItemBlock {
 				world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
 			}
 			TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
-			if (tile != null && tile.tryAdd( pos.subHit, dmg)) {
+			if (tile != null && tile.tryAdd( AreaType.values()[pos.subHit], dmg)) {
 //				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;
 				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-abstract class ASection implements ISection, IDirection {
+abstract class ASection implements ISection {
 	static final double BOX_BORDER_MIN = 1D / 4D;
 	static final double BOX_BORDER_MAX = 1D - BOX_BORDER_MIN;
 	protected String mName;

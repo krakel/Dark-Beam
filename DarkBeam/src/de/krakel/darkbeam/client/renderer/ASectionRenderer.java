@@ -18,7 +18,7 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.tile.TileStage;
 
-public abstract class ASectionRenderer implements IDirection {
+public abstract class ASectionRenderer {
 	protected float mThickness;
 	protected float mSize;
 
@@ -40,27 +40,27 @@ public abstract class ASectionRenderer implements IDirection {
 		Tessellator tess = Tessellator.instance;
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, -1F, 0F);
-		rndrBlk.renderFaceYNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_UP, meta));
+		rndrBlk.renderFaceYNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, IDirection.DIR_UP, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, 1F, 0F);
-		rndrBlk.renderFaceYPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_DOWN, meta));
+		rndrBlk.renderFaceYPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, IDirection.DIR_DOWN, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, 0F, -1F);
-		rndrBlk.renderFaceZNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_NORTH, meta));
+		rndrBlk.renderFaceZNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, IDirection.DIR_NORTH, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 0F, 0F, 1F);
-		rndrBlk.renderFaceZPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_SOUTH, meta));
+		rndrBlk.renderFaceZPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, IDirection.DIR_SOUTH, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( -1F, 0F, 0F);
-		rndrBlk.renderFaceXNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_WEST, meta));
+		rndrBlk.renderFaceXNeg( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, IDirection.DIR_WEST, meta));
 		tess.draw();
 		tess.startDrawingQuads();
 		tess.setNormal( 1F, 0F, 0F);
-		rndrBlk.renderFaceXPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, DIR_EAST, meta));
+		rndrBlk.renderFaceXPos( blk, 0D, 0D, 0D, rndrBlk.getBlockIconFromSideAndMetadata( blk, IDirection.DIR_EAST, meta));
 		tess.draw();
 		GL11.glTranslatef( 0.5F, 0.5F, 0.5F);
 	}

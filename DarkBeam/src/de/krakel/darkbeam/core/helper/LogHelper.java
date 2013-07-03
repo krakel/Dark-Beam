@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.FMLLog;
 
 import de.krakel.darkbeam.core.DarkLib;
-import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.lib.References;
 
 public class LogHelper {
@@ -99,7 +99,8 @@ public class LogHelper {
 	}
 
 	public static String toString( int x, int y, int z, int dir, double dx, double dy, double dz, EnumMovingObjectType type) {
-		return DarkLib.format( "obj=[dir=%s, %s, %s, type=%s]", Position.toString( dir), toString( x, y, z), toString( dx, dy, dz), type);
+		ForgeDirection orient = ForgeDirection.getOrientation( dir);
+		return DarkLib.format( "obj=[dir=%s, %s, %s, type=%s]", orient.name(), toString( x, y, z), toString( dx, dy, dz), type);
 	}
 
 	public static String toString( MovingObjectPosition pos) {

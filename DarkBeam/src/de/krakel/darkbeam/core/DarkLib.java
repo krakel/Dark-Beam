@@ -18,7 +18,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class DarkLib implements IDirection {
+public class DarkLib {
 	public static final double BOX_BORDER_HEIGHT = 1D / 512D;
 
 	private DarkLib() {

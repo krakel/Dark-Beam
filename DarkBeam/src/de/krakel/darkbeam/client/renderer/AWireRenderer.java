@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
 import de.krakel.darkbeam.core.AreaType;
+import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
@@ -51,9 +52,9 @@ abstract class AWireRenderer extends ASectionRenderer {
 				minZ = tile.isConnected( area, AreaType.SIDE_NORTH) ? 0F : min;
 				maxZ = tile.isConnected( area, AreaType.SIDE_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 0F, minS, maxX, mHigh, maxS);
-				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_DOWN, meta, x, y, z);
 				blk.setBlockBounds( minS, 0F, minZ, maxS, mHigh, maxZ);
-				renderStandard( rndrBlk, blk, DIR_DOWN, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_DOWN, meta, x, y, z);
 				break;
 			case SIDE_UP:
 				minX = tile.isConnected( area, AreaType.SIDE_WEST) ? 0F : min;
@@ -61,9 +62,9 @@ abstract class AWireRenderer extends ASectionRenderer {
 				minZ = tile.isConnected( area, AreaType.SIDE_NORTH) ? 0F : min;
 				maxZ = tile.isConnected( area, AreaType.SIDE_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 1F - mHigh, minS, maxX, 1F, maxS);
-				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_UP, meta, x, y, z);
 				blk.setBlockBounds( minS, 1F - mHigh, minZ, maxS, 1F, maxZ);
-				renderStandard( rndrBlk, blk, DIR_UP, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_UP, meta, x, y, z);
 				break;
 			case SIDE_NORTH:
 				minX = tile.isConnected( area, AreaType.SIDE_WEST) ? 0F : min;
@@ -80,9 +81,9 @@ abstract class AWireRenderer extends ASectionRenderer {
 					maxX += mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 0F, maxX, maxS, mHigh);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_NORTH, meta, x, y, z);
 				blk.setBlockBounds( minS, minY, 0F, maxS, maxY, mHigh);
-				renderStandard( rndrBlk, blk, DIR_NORTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_NORTH, meta, x, y, z);
 				break;
 			case SIDE_SOUTH:
 				minX = tile.isConnected( area, AreaType.SIDE_WEST) ? 0F : min;
@@ -99,9 +100,9 @@ abstract class AWireRenderer extends ASectionRenderer {
 					minX -= mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 1F - mHigh, maxX, maxS, 1F);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				blk.setBlockBounds( minS, minY, 1F - mHigh, maxS, maxY, 1F);
-				renderStandard( rndrBlk, blk, DIR_SOUTH, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				break;
 			case SIDE_WEST:
 				minY = tile.isConnected( area, AreaType.SIDE_DOWN) ? 0F : min;
@@ -118,9 +119,9 @@ abstract class AWireRenderer extends ASectionRenderer {
 					minZ -= mHigh;
 				}
 				blk.setBlockBounds( 0F, minY, minS, mHigh, maxY, maxS);
-				renderStandard( rndrBlk, blk, DIR_WEST, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_WEST, meta, x, y, z);
 				blk.setBlockBounds( 0F, minS, minZ, mHigh, maxS, maxZ);
-				renderStandard( rndrBlk, blk, DIR_WEST, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_WEST, meta, x, y, z);
 				break;
 			case SIDE_EAST:
 				minY = tile.isConnected( area, AreaType.SIDE_DOWN) ? 0F : min;
@@ -137,13 +138,13 @@ abstract class AWireRenderer extends ASectionRenderer {
 					maxZ += mHigh;
 				}
 				blk.setBlockBounds( 1F - mHigh, minY, minS, 1F, maxY, maxS);
-				renderStandard( rndrBlk, blk, DIR_EAST, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_EAST, meta, x, y, z);
 				blk.setBlockBounds( 1F - mHigh, minS, minZ, 1F, maxS, maxZ);
-				renderStandard( rndrBlk, blk, DIR_EAST, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_EAST, meta, x, y, z);
 				break;
 			default:
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
-				renderStandard( rndrBlk, blk, DIR_EAST, meta, x, y, z);
+				renderStandard( rndrBlk, blk, IDirection.DIR_EAST, meta, x, y, z);
 				break;
 		}
 	}

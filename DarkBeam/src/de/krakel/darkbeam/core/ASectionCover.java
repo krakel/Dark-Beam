@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-abstract class ASectionCover extends ASectionStructure {
+abstract class ASectionCover extends ASectionStructure implements IDirection {
 	private static final int VALID_D = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_DOWN_SOUTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_DOWN_EAST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_EAST, AreaType.CORNER_DOWN_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_EAST);
 	private static final int VALID_U = AreaType.toMask( AreaType.SIDE_UP, AreaType.EDGE_UP_NORTH, AreaType.EDGE_UP_SOUTH, AreaType.EDGE_UP_WEST, AreaType.EDGE_UP_EAST, AreaType.CORNER_UP_NORTH_WEST, AreaType.CORNER_UP_NORTH_EAST, AreaType.CORNER_UP_SOUTH_WEST, AreaType.CORNER_UP_SOUTH_EAST);
 	private static final int VALID_N = AreaType.toMask( AreaType.SIDE_NORTH, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_UP_NORTH, AreaType.EDGE_NORTH_WEST, AreaType.EDGE_NORTH_EAST, AreaType.CORNER_DOWN_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_EAST, AreaType.CORNER_UP_NORTH_WEST, AreaType.CORNER_UP_NORTH_EAST);
@@ -79,7 +79,7 @@ abstract class ASectionCover extends ASectionStructure {
 				}
 				return dy + dz > 1D ? AreaType.SIDE_SOUTH : AreaType.SIDE_DOWN;
 			default:
-				return AreaType.SIDE_DOWN;
+				return AreaType.UNKNOWN;
 		}
 	}
 

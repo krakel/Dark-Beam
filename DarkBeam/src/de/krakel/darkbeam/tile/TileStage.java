@@ -18,7 +18,6 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.core.AreaType;
-import de.krakel.darkbeam.core.Cube;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
@@ -116,32 +115,32 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, nbt);
 	}
 
-	public int getMeta( int area) {
+	public int getMeta( AreaType area) {
 		try {
-			return mArr[area];
+			return mArr[area.ordinal()];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return 0;
 		}
 	}
 
-	public ISection getSection( int area) {
+	public ISection getSection( AreaType area) {
 		int dmg = getMeta( area);
 		return SectionLib.getForDmg( dmg);
 	}
 
 	public boolean isAngled( AreaType area, AreaType side) {
-		int off = Cube.offEdge( area.ordinal(), side.ordinal());
+		int off = AreaType.edge( area, side).mMask;
 		return (getAngled() & off) != 0;
 	}
 
 	public boolean isConnected( AreaType area) {
-		int off = Cube.offEdges( area.ordinal());
+		int off = AreaType.offEdges( area);
 		return (getConnections() & off) != 0;
 	}
 
 	public boolean isConnected( AreaType area, AreaType side) {
-		int off = Cube.offEdge( area.ordinal(), side.ordinal());
+		int off = AreaType.edge( area, side).mMask;
 		return (getConnections() & off) != 0;
 	}
 
@@ -149,14 +148,12 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return mArea == 0;
 	}
 
-	public boolean isInner( int side) {
-		int off = 1 << side;
-		return (mInnerConn & off) != 0;
+	public boolean isInner( AreaType side) {
+		return (mInnerConn & side.mMask) != 0;
 	}
 
-	public boolean isInUse( int area) {
-		int off = 1 << area;
-		return (mArea & off) != 0;
+	public boolean isInUse( AreaType area) {
+		return (mArea & area.mMask) != 0;
 	}
 
 	public int isProvidingStrongPower( AreaType side) {
@@ -173,8 +170,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return 0;
 	}
 
-	public boolean isUsed( int value) {
-		return (mArea & value) != 0;
+	public boolean isUsed( AreaType area) {
+		return (mArea & area.mMask) != 0;
 	}
 
 	public boolean isValid( int value) {
@@ -208,9 +205,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	private void powerAngled() {
 		for (AreaType edge : AreaType.edges()) {
-			int x = xCoord + Cube.relX( edge.ordinal());
-			int y = yCoord + Cube.relY( edge.ordinal());
-			int z = zCoord + Cube.relZ( edge.ordinal());
+			int x = xCoord + edge.mDx;
+			int y = yCoord + edge.mDy;
+			int z = zCoord + edge.mDz;
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
 			}
@@ -221,9 +218,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	private void powerNeighbor() {
 		for (AreaType side : AreaType.sides()) {
-			int x = xCoord + Cube.relX( side.ordinal());
-			int y = yCoord + Cube.relY( side.ordinal());
-			int z = zCoord + Cube.relZ( side.ordinal());
+			int x = xCoord + side.mDx;
+			int y = yCoord + side.mDy;
+			int z = zCoord + side.mDz;
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
 			}
@@ -272,12 +269,12 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	private void refreshAngled() {
 		for (AreaType edge : AreaType.edges()) {
-			int x = xCoord + Cube.relEdgeX( edge.ordinal());
-			int y = yCoord + Cube.relEdgeY( edge.ordinal());
-			int z = zCoord + Cube.relEdgeZ( edge.ordinal());
+			int x = xCoord + edge.mDx;
+			int y = yCoord + edge.mDy;
+			int z = zCoord + edge.mDz;
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
-				refreshAngled( tile, edge.ordinal());
+				refreshAngled( tile, edge);
 			}
 			else {
 				int id = worldObj.getBlockId( x, y, z);
@@ -294,46 +291,46 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		}
 	}
 
-	private void refreshAngled( TileStage tile, int edge) {
-		int sideA = Cube.sideA( edge) ^ 1;
-		if (tile.isUsed( 1 << sideA)) {
+	private void refreshAngled( TileStage tile, AreaType edge) {
+		AreaType sideA = AreaType.anti( AreaType.sideA( edge));
+		if (tile.isUsed( sideA)) {
 			if (tile.getSection( sideA).isWire()) {
-				mAngledConn |= 1 << edge;
+				mAngledConn |= edge.mMask;
 			}
 			else {
-				mAngledBlock &= ~(1 << edge);
+				mAngledBlock &= ~edge.mMask;
 			}
 		}
-		int sideB = Cube.sideB( edge) ^ 1;
-		if (tile.isUsed( 1 << sideB)) {
+		AreaType sideB = AreaType.anti( AreaType.sideB( edge));
+		if (tile.isUsed( sideB)) {
 			if (tile.getSection( sideB).isWire()) {
-				mAngledConn |= 1 << edge;
+				mAngledConn |= edge.mMask;
 			}
 			else {
-				mAngledBlock &= ~(1 << edge);
+				mAngledBlock &= ~edge.mMask;
 			}
 		}
-		if (tile.isUsed( Cube.offAnti( edge))) {
-			mAngledBlock &= ~(1 << edge);
+		if (tile.isUsed( AreaType.anti( edge))) {
+			mAngledBlock &= ~edge.mMask;
 		}
 	}
 
 	private void refreshInner() {
 		int temp = 0;
 		for (AreaType side : AreaType.sides()) {
-			if (isUsed( side.mMask)) {
-				if (getSection( side.ordinal()).isWire()) {
-					int edges = Cube.offEdges( side.ordinal());
+			if (isUsed( side)) {
+				if (getSection( side).isWire()) {
+					int edges = AreaType.offEdges( side);
 					mInnerConn |= temp & edges;
 					temp |= edges;
 				}
 				else {
-					mInnerBlock &= ~Cube.offEdges( side.ordinal());
+					mInnerBlock &= ~AreaType.offEdges( side);
 				}
 			}
 		}
 		for (AreaType edge : AreaType.edges()) {
-			if (isUsed( edge.mMask)) {
+			if (isUsed( edge)) {
 				mInnerBlock &= ~edge.mMask;
 			}
 		}
@@ -341,26 +338,26 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	private void refreshNeighbor() {
 		for (AreaType side : AreaType.sides()) {
-			int x = xCoord + Cube.relX( side.ordinal());
-			int y = yCoord + Cube.relY( side.ordinal());
-			int z = zCoord + Cube.relZ( side.ordinal());
+			int x = xCoord + side.mDx;
+			int y = yCoord + side.mDy;
+			int z = zCoord + side.mDz;
 			TileStage tile = DarkLib.getTileEntity( worldObj, x, y, z, TileStage.class);
 			if (tile != null) {
-				refreshNeighbor( tile, side.ordinal());
+				refreshNeighbor( tile, side);
 			}
-			else if (!isUsed( side.mMask)) {
+			else if (!isUsed( side)) {
 				int id = worldObj.getBlockId( x, y, z);
 				if (DarkLib.canPowered( id)) {
-					mNeighborConn |= Cube.offEdges( side.ordinal());
+					mNeighborConn |= AreaType.offEdges( side);
 				}
 				else {
 					Block blk = Block.blocksList[id];
 					if (blk != null) {
 						if (blk.canProvidePower()) {
-							mNeighborConn |= Cube.offEdges( side.ordinal());
+							mNeighborConn |= AreaType.offEdges( side);
 						}
 						else if (blk.blockMaterial.isOpaque() && blk.renderAsNormalBlock()) {
-							mAngledBlock &= ~Cube.offEdges( side.ordinal());
+							mAngledBlock &= ~AreaType.offEdges( side);
 						}
 					}
 				}
@@ -368,30 +365,29 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		}
 	}
 
-	private void refreshNeighbor( TileStage tile, int side) {
-		int[] sides = Cube.sides( side ^ 1);
-		for (int sideB : sides) {
-			int offB = 1 << sideB;
-			if (tile.isUsed( offB) && canConnect( tile)) {
+	private void refreshNeighbor( TileStage tile, AreaType side) {
+		AreaType[] sides = AreaType.sides( AreaType.anti( side));
+		for (AreaType sideB : sides) {
+			if (tile.isUsed( sideB) && canConnect( tile)) {
 				if (!tile.getSection( sideB).isWire()) {
-					mNeighborBlock &= ~Cube.offEdge( side, sideB);
+					mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
 				}
-				else if (isUsed( offB) && getSection( sideB).isWire()) {
-					mNeighborConn |= Cube.offEdge( side, sideB);
+				else if (isUsed( sideB) && getSection( sideB).isWire()) {
+					mNeighborConn |= AreaType.edge( side, sideB).mMask;
 				}
 			}
-			if (tile.isUsed( Cube.offEdge( side ^ 1, sideB))) {
-				mNeighborBlock &= ~Cube.offEdge( side, sideB);
+			if (tile.isUsed( AreaType.edge( AreaType.anti( side), sideB))) {
+				mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
 			}
 		}
-		if (tile.isUsed( 1 << (side ^ 1))) {
-			mNeighborBlock &= ~Cube.offEdges( side);
+		if (tile.isUsed( AreaType.anti( side))) {
+			mNeighborBlock &= ~AreaType.offEdges( side);
 		}
 	}
 
 	private void refreshWire() {
 		for (AreaType side : AreaType.sides()) {
-			int dmg = getMeta( side.ordinal());
+			int dmg = getMeta( side);
 			if (SectionLib.getForDmg( dmg).isWire()) {
 				mWireMeta = dmg;
 				return;
@@ -401,7 +397,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public void setSectionBounds( AreaType area, Block blk) {
-		ISection sec = getSection( area.ordinal());
+		ISection sec = getSection( area);
 		sec.setSectionBounds( area, blk, this);
 	}
 
@@ -426,9 +422,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return sb.toString();
 	}
 
-	public boolean tryAdd( int area, int meta) {
+	public boolean tryAdd( AreaType area, int meta) {
 		try {
-			int off = 1 << area;
+			int off = area.mMask;
 			if (isValid( off)) {
 				ISection sec = SectionLib.getForDmg( meta);
 				if (sec.isWire()) {
@@ -439,9 +435,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 						return false;
 					}
 				}
-				mArr[area] = meta;
+				mArr[area.ordinal()] = meta;
 				mArea |= off;
-				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, Cube.toString( area), toString());
+				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
 				return true;
 			}
 		}
@@ -450,17 +446,16 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return false;
 	}
 
-	public int tryRemove( int area) {
+	public int tryRemove( AreaType area) {
 		try {
-			int off = 1 << area;
-			if (isUsed( off)) {
-				int meta = mArr[area];
-				mArr[area] = 0;
-				mArea &= ~off;
+			if (isUsed( area)) {
+				int meta = mArr[area.ordinal()];
+				mArr[area.ordinal()] = 0;
+				mArea &= ~area.mMask;
 				if (meta == mWireMeta && !containeWire()) {
 					mWireMeta = 0;
 				}
-				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, Cube.toString( area), toString());
+				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
 				return meta;
 			}
 		}
@@ -479,7 +474,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 //		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord - 1, blockID, IDirection.DIR_SOUTH);
 //		worldObj.notifyBlocksOfNeighborChange( xCoord + 1, yCoord, zCoord, blockID, IDirection.DIR_WEST);
 //		worldObj.notifyBlocksOfNeighborChange( xCoord - 1, yCoord, zCoord, blockID, IDirection.DIR_EAST);
-		Cube.updateAll( worldObj, xCoord, yCoord, zCoord, blockID);
+		AreaType.updateAll( worldObj, xCoord, yCoord, zCoord, blockID);
 	}
 
 	@Override

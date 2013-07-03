@@ -29,7 +29,6 @@ import de.krakel.darkbeam.client.renderer.BlockStageRender;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
-import de.krakel.darkbeam.core.Position;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
@@ -48,7 +47,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return false;
 		}
-		return tile.isUsed( AreaType.SIDE_DOWN.mMask) && tile.getSection( AreaType.SIDE_DOWN.ordinal()).isRedwire();
+		return tile.isUsed( AreaType.SIDE_DOWN) && tile.getSection( AreaType.SIDE_DOWN).isRedwire();
 	}
 
 	@Override
@@ -140,7 +139,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingStrongPower( AreaType.values()[Position.toSide( relate)]);
+		return tile.isProvidingStrongPower( AreaType.toSide( relate));
 	}
 
 	@Override
@@ -149,7 +148,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingWeakPower( AreaType.values()[Position.toSide( relate)]);
+		return tile.isProvidingWeakPower( AreaType.toSide( relate));
 	}
 
 	@Override
@@ -191,7 +190,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return false;
 		}
-		int meta = tile.tryRemove( pos.subHit);
+		int meta = tile.tryRemove( AreaType.values()[pos.subHit]);
 		if (meta >= 0) {
 			int count = tile.getCount( meta);
 			ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), count, meta);

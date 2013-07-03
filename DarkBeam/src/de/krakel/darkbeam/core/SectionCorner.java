@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import de.krakel.darkbeam.client.renderer.SectionCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-class SectionCorner extends ASectionStructure {
+class SectionCorner extends ASectionStructure implements IDirection {
 	private static final int VALID_DNW = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_NORTH, AreaType.SIDE_WEST, AreaType.EDGE_DOWN_NORTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_NORTH_WEST, AreaType.CORNER_DOWN_NORTH_WEST);
 	private static final int VALID_UNW = AreaType.toMask( AreaType.SIDE_UP, AreaType.SIDE_NORTH, AreaType.SIDE_WEST, AreaType.EDGE_UP_NORTH, AreaType.EDGE_UP_WEST, AreaType.EDGE_NORTH_WEST, AreaType.CORNER_UP_NORTH_WEST);
 	private static final int VALID_DSW = AreaType.toMask( AreaType.SIDE_DOWN, AreaType.SIDE_SOUTH, AreaType.SIDE_WEST, AreaType.EDGE_DOWN_SOUTH, AreaType.EDGE_DOWN_WEST, AreaType.EDGE_SOUTH_WEST, AreaType.CORNER_DOWN_SOUTH_WEST);
@@ -59,7 +59,7 @@ class SectionCorner extends ASectionStructure {
 				}
 				return dz < 0.5D ? AreaType.CORNER_UP_NORTH_EAST : AreaType.CORNER_UP_SOUTH_EAST;
 			default:
-				return AreaType.SIDE_DOWN;
+				return AreaType.UNKNOWN;
 		}
 	}
 
