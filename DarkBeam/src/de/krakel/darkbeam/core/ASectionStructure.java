@@ -10,14 +10,20 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.tile.IConnetable;
 
-abstract class ASectionStructure extends ASection {
+public abstract class ASectionStructure extends ASection {
 	ASectionStructure( int secID, String name, ASectionRenderer renderer) {
 		super( secID, name, renderer);
 	}
 
 	protected ASectionStructure( String name, ASectionRenderer renderer) {
 		super( name, renderer);
+	}
+
+	@Override
+	public IConnetable createConnect() {
+		return IConnetable.NO_CONNECT;
 	}
 
 	@Override

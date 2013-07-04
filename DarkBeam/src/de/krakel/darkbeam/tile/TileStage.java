@@ -27,7 +27,6 @@ import de.krakel.darkbeam.lib.BlockType;
 public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private static final String NBT_AREAS = "as";
 	private static final String NBT_SECTIONS = "ss";
-	private static final String NBT_POWER = "pwr";
 	private int mArea;
 	private int mAngledConn;
 	private int mAngledBlock;
@@ -36,9 +35,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private int mNeighborConn;
 	private int mNeighborBlock;
 	private int[] mArr = new int[32];
+	private IConnetable mConnet = IConnetable.NO_CONNECT;
 	private int mWireMeta;
 	private boolean mNeedUpdate = true;
-	private int mPower;
 
 	public TileStage() {
 	}
@@ -155,14 +154,14 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public int isProvidingStrongPower( AreaType side) {
-		if (mPower > 0 && isWire( side)) {
+		if (mConnet.isPowerd() && isWire( side)) {
 			return 15;
 		}
 		return 0;
 	}
 
 	public int isProvidingWeakPower( AreaType side) {
-		if (mPower > 0 && isWire( side)) {
+		if (mConnet.isPowerd() && isWire( side)) {
 			return 15;
 		}
 		return 0;
@@ -242,7 +241,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 			}
 		}
 		mArea |= areas;
-		mPower = nbt.getInteger( NBT_POWER);
+		mConnet.readFromNBT( nbt);
 	}
 
 	public void refresh() {
@@ -424,6 +423,15 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		try {
 			if (isValid( area.mMask)) {
 				ISection sec = SectionLib.getForDmg( meta);
+				if (mConnet == IConnetable.NO_CONNECT) {
+					mConnet = sec.createConnect();
+				}
+				if (mConnet.isAllowed( sec)) {
+					mConnet.add( area);
+				}
+				else {
+					return false;
+				}
 				if (sec.isWire()) {
 					if (mWireMeta == 0) {
 						mWireMeta = meta;
@@ -449,6 +457,10 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				int meta = mArr[area.ordinal()];
 				mArr[area.ordinal()] = 0;
 				mArea &= ~area.mMask;
+				mConnet.remove( area);
+				if (mConnet.isEmpty()) {
+					mConnet = IConnetable.NO_CONNECT;
+				}
 				if (meta == mWireMeta && !containeWire()) {
 					mWireMeta = 0;
 				}
@@ -498,7 +510,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 			}
 		}
 		nbt.setByteArray( NBT_SECTIONS, arr);
-		nbt.setInteger( NBT_POWER, mPower);
+		mConnet.writeToNBT( nbt);
 		LogHelper.info( "writeToNBT: %s", nbt);
 	}
 

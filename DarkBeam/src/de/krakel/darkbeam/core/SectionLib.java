@@ -132,7 +132,7 @@ public class SectionLib {
 	}
 
 	static class UnknownSection extends ASectionCover {
-		public UnknownSection() {
+		UnknownSection() {
 			super( 255, "unknown", new SectionCoverRenderer( 1));
 		}
 	}

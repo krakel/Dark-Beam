@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import de.krakel.darkbeam.client.renderer.SectionStripRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-class SectionStrip extends ASectionStructure {
+public class SectionStrip extends ASectionStructure {
 	private static final int VALID_DN = AreaType.toMask( AreaType.DOWN_NORTH, AreaType.DOWN_NORTH_WEST, AreaType.DOWN_NORTH_EAST);
 	private static final int VALID_DS = AreaType.toMask( AreaType.DOWN_SOUTH, AreaType.DOWN_SOUTH_WEST, AreaType.DOWN_SOUTH_EAST);
 	private static final int VALID_DW = AreaType.toMask( AreaType.DOWN_WEST, AreaType.DOWN_NORTH_WEST, AreaType.DOWN_SOUTH_WEST);
@@ -29,7 +29,7 @@ class SectionStrip extends ASectionStructure {
 	private static final int VALID_NS = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST, AreaType.CENTER);
 	private static final int VALID_WE = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST, AreaType.CENTER);
 
-	public SectionStrip( int nr) {
+	SectionStrip( int nr) {
 		super( "strip." + nr, new SectionStripRenderer( nr));
 	}
 

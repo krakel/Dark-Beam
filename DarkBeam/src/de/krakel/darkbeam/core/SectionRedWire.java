@@ -11,10 +11,17 @@ import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.client.renderer.SectionRedWireRender;
+import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.WireConnect;
 
-class SectionRedWire extends ASectionWire {
-	public SectionRedWire() {
+public class SectionRedWire extends ASectionWire {
+	SectionRedWire() {
 		super( "db.redwire", new SectionRedWireRender());
+	}
+
+	@Override
+	public IConnetable createConnect() {
+		return new WireConnect( this);
 	}
 
 	@Override

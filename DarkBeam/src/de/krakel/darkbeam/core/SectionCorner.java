@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import de.krakel.darkbeam.client.renderer.SectionCornerRenderer;
 import de.krakel.darkbeam.tile.TileStage;
 
-class SectionCorner extends ASectionStructure {
+public class SectionCorner extends ASectionStructure {
 	private static final int VALID_DNW = AreaType.toMask( AreaType.DOWN, AreaType.NORTH, AreaType.WEST, AreaType.DOWN_NORTH, AreaType.DOWN_WEST, AreaType.NORTH_WEST, AreaType.DOWN_NORTH_WEST);
 	private static final int VALID_UNW = AreaType.toMask( AreaType.UP, AreaType.NORTH, AreaType.WEST, AreaType.UP_NORTH, AreaType.UP_WEST, AreaType.NORTH_WEST, AreaType.UP_NORTH_WEST);
 	private static final int VALID_DSW = AreaType.toMask( AreaType.DOWN, AreaType.SOUTH, AreaType.WEST, AreaType.DOWN_SOUTH, AreaType.DOWN_WEST, AreaType.SOUTH_WEST, AreaType.DOWN_SOUTH_WEST);
@@ -22,7 +22,7 @@ class SectionCorner extends ASectionStructure {
 	private static final int VALID_DSE = AreaType.toMask( AreaType.DOWN, AreaType.SOUTH, AreaType.EAST, AreaType.DOWN_SOUTH, AreaType.DOWN_EAST, AreaType.SOUTH_EAST, AreaType.DOWN_SOUTH_EAST);
 	private static final int VALID_USE = AreaType.toMask( AreaType.UP, AreaType.SOUTH, AreaType.EAST, AreaType.UP_SOUTH, AreaType.UP_EAST, AreaType.SOUTH_EAST, AreaType.UP_SOUTH_EAST);
 
-	public SectionCorner( int nr) {
+	SectionCorner( int nr) {
 		super( "corner." + nr, new SectionCornerRenderer( nr));
 	}
 

@@ -12,9 +12,12 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
+import de.krakel.darkbeam.tile.IConnetable;
 import de.krakel.darkbeam.tile.TileStage;
 
 public interface ISection {
+	IConnetable createConnect();
+
 	int getBlockID( int dmg);
 
 	Icon getIcon( int side, int dmg);

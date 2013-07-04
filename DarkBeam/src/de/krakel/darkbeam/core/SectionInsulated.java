@@ -11,10 +11,17 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.client.renderer.SectionInsulatedRenderer;
+import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.WireConnect;
 
-class SectionInsulated extends ASectionWire {
-	public SectionInsulated() {
+public class SectionInsulated extends ASectionWire {
+	SectionInsulated() {
 		super( "insuwire", new SectionInsulatedRenderer());
+	}
+
+	@Override
+	public IConnetable createConnect() {
+		return new WireConnect( this);
 	}
 
 	@Override

@@ -9,8 +9,8 @@ package de.krakel.darkbeam.core;
 
 import de.krakel.darkbeam.client.renderer.SectionCoverRenderer;
 
-class SectionCover extends ASectionCover {
-	public SectionCover( int nr) {
+public class SectionCover extends ASectionCover {
+	SectionCover( int nr) {
 		super( "cover." + nr, new SectionCoverRenderer( nr));
 	}
 }

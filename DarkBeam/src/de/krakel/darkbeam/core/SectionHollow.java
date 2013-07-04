@@ -9,8 +9,8 @@ package de.krakel.darkbeam.core;
 
 import de.krakel.darkbeam.client.renderer.SectionHollowRenderer;
 
-class SectionHollow extends ASectionCover {
-	public SectionHollow( int nr) {
+public class SectionHollow extends ASectionCover {
+	SectionHollow( int nr) {
 		super( "hollow." + nr, new SectionHollowRenderer( nr));
 	}
 }
