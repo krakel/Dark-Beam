@@ -13,7 +13,13 @@ import java.util.NoSuchElementException;
 import net.minecraft.world.World;
 
 public enum AreaType {
-	DOWN( 0, -1, 0), UP( 0, 1, 0), NORTH( 0, 0, -1), SOUTH( 0, 0, 1), WEST( -1, 0, 0), EAST( 1, 0, 0),
+	//@formatter:off
+	DOWN( 0, -1, 0), 
+	UP( 0, 1, 0), 
+	NORTH( 0, 0, -1), 
+	SOUTH( 0, 0, 1), 
+	WEST( -1, 0, 0), 
+	EAST( 1, 0, 0),
 	//
 	DOWN_NORTH( 0, -1, -1),
 	DOWN_SOUTH( 0, -1, 1),
@@ -42,6 +48,7 @@ public enum AreaType {
 	WEST_EAST( -1, 0, 0),
 	//
 	UNKNOWN( 0, 0, 0);
+	//@formatter:on
 	private static final AreaType[] EMPTY = {};
 	private static final AreaType[] SIDES_WEST_EAST = {
 		DOWN, UP, NORTH, SOUTH
@@ -270,7 +277,24 @@ public enum AreaType {
 		}
 	}
 
-	public static AreaType redstone( int side) {
+	public static int redstoneFromSide( AreaType side) {
+		switch (side) {
+			case UP:
+				return -1;
+			case NORTH:
+				return 0;
+			case EAST:
+				return 1;
+			case SOUTH:
+				return 2;
+			case WEST:
+				return 3;
+			default:
+				return -1;
+		}
+	}
+
+	public static AreaType redstoneToSide( int side) {
 		try {
 			return REDSTONE[side + 1];
 		}
@@ -351,23 +375,6 @@ public enum AreaType {
 			result |= at.mMask;
 		}
 		return result;
-	}
-
-	public static AreaType toSide( int relate) {
-		switch (relate) {
-			case -1:
-				return DOWN;
-			case 0:
-				return NORTH;
-			case 1:
-				return WEST;
-			case 2:
-				return SOUTH;
-			case 3:
-				return EAST;
-			default:
-				return UNKNOWN;
-		}
 	}
 
 	public static void updateAll( World world, int x, int y, int z, int blockID) {

@@ -139,7 +139,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingStrongPower( AreaType.toSide( relate));
+		return tile.isProvidingStrongPower( AreaType.redstoneToSide( relate));
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingWeakPower( AreaType.toSide( relate));
+		return tile.isProvidingWeakPower( AreaType.redstoneToSide( relate));
 	}
 
 	@Override
