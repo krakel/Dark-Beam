@@ -47,6 +47,7 @@ public enum AreaType {
 	NORTH_SOUTH( 0, 0, -1),
 	WEST_EAST( -1, 0, 0),
 	//
+	CENTER( 0, 0, 0),
 	UNKNOWN( 0, 0, 0);
 	//@formatter:on
 	private static final AreaType[] EMPTY = {};
@@ -384,6 +385,15 @@ public enum AreaType {
 			result |= at.mMask;
 		}
 		return result;
+	}
+
+	public static void updateCorners( World world, int x, int y, int z, int blockID) {
+		for (AreaType corner : corners()) {
+			int x1 = x + corner.mDx;
+			int y1 = y + corner.mDy;
+			int z1 = z + corner.mDz;
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
 	}
 
 	public static void updateEdges( World world, int x, int y, int z, int blockID) {

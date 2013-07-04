@@ -25,9 +25,9 @@ class SectionStrip extends ASectionStructure {
 	private static final int VALID_NE = AreaType.toMask( AreaType.NORTH_EAST, AreaType.DOWN_NORTH_EAST, AreaType.UP_NORTH_EAST);
 	private static final int VALID_SW = AreaType.toMask( AreaType.SOUTH_WEST, AreaType.DOWN_SOUTH_WEST, AreaType.UP_SOUTH_WEST);
 	private static final int VALID_SE = AreaType.toMask( AreaType.SOUTH_EAST, AreaType.DOWN_SOUTH_EAST, AreaType.UP_SOUTH_EAST);
-	private static final int VALID_DU = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST);
-	private static final int VALID_NS = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST);
-	private static final int VALID_WE = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST);
+	private static final int VALID_DU = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST, AreaType.CENTER);
+	private static final int VALID_NS = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST, AreaType.CENTER);
+	private static final int VALID_WE = AreaType.toMask( AreaType.DOWN_UP, AreaType.NORTH_SOUTH, AreaType.WEST_EAST, AreaType.CENTER);
 
 	public SectionStrip( int nr) {
 		super( "strip." + nr, new SectionStripRenderer( nr));
