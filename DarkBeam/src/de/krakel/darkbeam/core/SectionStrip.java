@@ -336,7 +336,7 @@ class SectionStrip extends ASectionStructure {
 
 	@Override
 	public void oppositeArea( MovingObjectPosition pos) {
-		pos.subHit = getOpposite( pos.sideHit, AreaType.values()[pos.subHit]).ordinal();
+		pos.subHit = getOpposite( pos.sideHit, AreaType.toArea( pos.subHit)).ordinal();
 	}
 
 	@Override

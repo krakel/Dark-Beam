@@ -369,18 +369,21 @@ public enum AreaType {
 		}
 	}
 
+	public static AreaType toArea( int side) {
+		try {
+			return AreaType.values()[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return UNKNOWN;
+		}
+	}
+
 	public static int toMask( AreaType... areas) {
 		int result = 0;
 		for (AreaType at : areas) {
 			result |= at.mMask;
 		}
 		return result;
-	}
-
-	public static void updateAll( World world, int x, int y, int z, int blockID) {
-		updateNeighbor( world, x, y, z, blockID);
-		updateEdges( world, x, y, z, blockID);
-		updateNeighbor2( world, x, y, z, blockID);
 	}
 
 	public static void updateEdges( World world, int x, int y, int z, int blockID) {

@@ -47,7 +47,7 @@ public class ItemStage extends ItemBlock {
 		if (tile == null) {
 			return false;
 		}
-		return sec.isValid( tile, AreaType.values()[pos.subHit]);
+		return sec.isValid( tile, AreaType.toArea( pos.subHit));
 	}
 
 	private static void move( MovingObjectPosition pos) {
@@ -197,7 +197,7 @@ public class ItemStage extends ItemBlock {
 				world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
 			}
 			TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
-			if (tile != null && tile.tryAdd( AreaType.values()[pos.subHit], dmg)) {
+			if (tile != null && tile.tryAdd( AreaType.toArea( pos.subHit), dmg)) {
 //				LogHelper.info( "e: %b, %s", world.isRemote, tile);
 				--stk.stackSize;
 				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());

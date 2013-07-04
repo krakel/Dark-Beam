@@ -130,18 +130,18 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public boolean isAngled( AreaType area, AreaType side) {
-		int off = AreaType.edge( area, side).mMask;
-		return (getAngled() & off) != 0;
+		AreaType edge = AreaType.edge( area, side);
+		return (getAngled() & edge.mMask) != 0;
 	}
 
 	public boolean isConnected( AreaType area) {
-		int off = AreaType.offEdges( area);
-		return (getConnections() & off) != 0;
+		int offs = AreaType.offEdges( area);
+		return (getConnections() & offs) != 0;
 	}
 
 	public boolean isConnected( AreaType area, AreaType side) {
-		int off = AreaType.edge( area, side).mMask;
-		return (getConnections() & off) != 0;
+		AreaType edge = AreaType.edge( area, side);
+		return (getConnections() & edge.mMask) != 0;
 	}
 
 	public boolean isEmpty() {
@@ -424,8 +424,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	public boolean tryAdd( AreaType area, int meta) {
 		try {
-			int off = area.mMask;
-			if (isValid( off)) {
+			if (isValid( area.mMask)) {
 				ISection sec = SectionLib.getForDmg( meta);
 				if (sec.isWire()) {
 					if (mWireMeta == 0) {
@@ -436,7 +435,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 					}
 				}
 				mArr[area.ordinal()] = meta;
-				mArea |= off;
+				mArea |= area.mMask;
 				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
 				return true;
 			}
@@ -467,14 +466,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	@SuppressWarnings( "unused")
 	private void updateAll() {
 		int blockID = BlockType.STAGE.getId();
-//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord, blockID);
-//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord + 1, zCoord, blockID, IDirection.DIR_DOWN);
-//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord - 1, zCoord, blockID, IDirection.DIR_UP);
-//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord + 1, blockID, IDirection.DIR_NORTH);
-//		worldObj.notifyBlocksOfNeighborChange( xCoord, yCoord, zCoord - 1, blockID, IDirection.DIR_SOUTH);
-//		worldObj.notifyBlocksOfNeighborChange( xCoord + 1, yCoord, zCoord, blockID, IDirection.DIR_WEST);
-//		worldObj.notifyBlocksOfNeighborChange( xCoord - 1, yCoord, zCoord, blockID, IDirection.DIR_EAST);
-		AreaType.updateAll( worldObj, xCoord, yCoord, zCoord, blockID);
+		AreaType.updateNeighbor( worldObj, xCoord, yCoord, zCoord, blockID);
+		AreaType.updateEdges( worldObj, xCoord, yCoord, zCoord, blockID);
+		AreaType.updateNeighbor2( worldObj, xCoord, yCoord, zCoord, blockID);
 	}
 
 	@Override
@@ -513,6 +507,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private static final class AreaIterator implements Iterator<AreaType> {
 		private int mArea;
 		private int mIndex;
+		private AreaType[] mValues = AreaType.values();
 
 		private AreaIterator( int area) {
 			mArea = area;
@@ -540,7 +535,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 			mArea >>>= 1;
 			++mIndex;
 			findNext();
-			return AreaType.values()[n];
+			return mValues[n];
 		}
 
 		@Override

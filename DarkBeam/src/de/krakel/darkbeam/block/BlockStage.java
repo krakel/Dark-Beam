@@ -76,7 +76,7 @@ public class BlockStage extends Block {
 			}
 		}
 		if (result != null) {
-			tile.setSectionBounds( AreaType.values()[result.subHit], this);
+			tile.setSectionBounds( AreaType.toArea( result.subHit), this);
 		}
 		return result;
 	}
@@ -190,7 +190,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return false;
 		}
-		int meta = tile.tryRemove( AreaType.values()[pos.subHit]);
+		int meta = tile.tryRemove( AreaType.toArea( pos.subHit));
 		if (meta >= 0) {
 			int count = tile.getCount( meta);
 			ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), count, meta);
