@@ -129,19 +129,17 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return SectionLib.getForDmg( dmg);
 	}
 
-	public boolean isAngled( AreaType area, AreaType side) {
-		AreaType edge = AreaType.edge( area, side);
-		return (getAngled() & edge.mMask) != 0;
+	public boolean isConnected( AreaType edge) {
+		return (getConnections() & edge.mMask) != 0;
 	}
 
-	public boolean isConnected( AreaType area) {
+	public boolean isConnection( AreaType area) {
 		int offs = AreaType.offEdges( area);
 		return (getConnections() & offs) != 0;
 	}
 
-	public boolean isConnected( AreaType area, AreaType side) {
-		AreaType edge = AreaType.edge( area, side);
-		return (getConnections() & edge.mMask) != 0;
+	public boolean isEdged( AreaType edge) {
+		return (getAngled() & edge.mMask) != 0;
 	}
 
 	public boolean isEmpty() {
