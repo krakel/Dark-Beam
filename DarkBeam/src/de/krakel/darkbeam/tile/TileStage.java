@@ -36,27 +36,17 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private int mNeighborBlock;
 	private int[] mArr = new int[32];
 	private IConnetable mConnet = IConnetable.NO_CONNECT;
-	private int mWireMeta;
 	private boolean mNeedUpdate = true;
 
 	public TileStage() {
 	}
 
 	private boolean canConnect( TileStage other) {
-		if (mWireMeta == other.mWireMeta) {
+		if (mConnet == other.mConnet) {
 			return true;
 		}
-		int diff = SectionLib.getForDmg( mWireMeta).getLevel() - SectionLib.getForDmg( other.mWireMeta).getLevel();
+		int diff = mConnet.getLevel() - other.mConnet.getLevel();
 		return diff == 1 || diff == -1;
-	}
-
-	private boolean containeWire() {
-		for (AreaType side : AreaType.sides()) {
-			if (mArr[side.ordinal()] == mWireMeta) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private int getAngled() {
@@ -68,40 +58,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public int getCount( int meta) {
-		if (meta != mWireMeta) {
-			return 1;
-		}
-		int n = 0;
-		for (AreaType side : AreaType.sides()) {
-			if (mArr[side.ordinal()] == meta) {
-				++n;
-			}
-		}
-		if (n != 2) {
-			return 1;
-		}
-		if (mArr[AreaType.DOWN.ordinal()] == meta && mArr[AreaType.UP.ordinal()] == meta) {
-			mArr[AreaType.DOWN.ordinal()] = 0;
-			mArea &= ~AreaType.DOWN.mMask;
-			mArr[AreaType.UP.ordinal()] = 0;
-			mArea &= ~AreaType.UP.mMask;
-			mWireMeta = 0;
-			return 3;
-		}
-		if (mArr[AreaType.NORTH.ordinal()] == meta && mArr[AreaType.SOUTH.ordinal()] == meta) {
-			mArr[AreaType.NORTH.ordinal()] = 0;
-			mArea &= ~AreaType.NORTH.mMask;
-			mArr[AreaType.SOUTH.ordinal()] = 0;
-			mArea &= ~AreaType.SOUTH.mMask;
-			mWireMeta = 0;
-			return 3;
-		}
-		if (mArr[AreaType.WEST.ordinal()] == meta && mArr[AreaType.EAST.ordinal()] == meta) {
-			mArr[AreaType.WEST.ordinal()] = 0;
-			mArea &= ~AreaType.WEST.mMask;
-			mArr[AreaType.EAST.ordinal()] = 0;
-			mArea &= ~AreaType.EAST.mMask;
-			mWireMeta = 0;
+		ISection sec = SectionLib.getForDmg( meta);
+		if (mConnet.isAllowed( sec) && mConnet.isInvalid()) {
+			mConnet = IConnetable.NO_CONNECT;
 			return 3;
 		}
 		return 1;
@@ -154,14 +113,14 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public int isProvidingStrongPower( AreaType side) {
-		if (mConnet.isPowerd() && isWire( side)) {
+		if (mConnet.isPowerd() && isWired( side)) {
 			return 15;
 		}
 		return 0;
 	}
 
 	public int isProvidingWeakPower( AreaType side) {
-		if (mConnet.isPowerd() && isWire( side)) {
+		if (mConnet.isPowerd() && isWired( side)) {
 			return 15;
 		}
 		return 0;
@@ -175,19 +134,12 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return (mArea & value) == 0;
 	}
 
-	public boolean isWire( AreaType area) {
-		if (mWireMeta != 0) {
-			try {
-				return mArr[area.ordinal()] == mWireMeta;
-			}
-			catch (IndexOutOfBoundsException ex) {
-			}
-		}
-		return false;
+	public boolean isWired() {
+		return mConnet != IConnetable.NO_CONNECT;
 	}
 
-	public boolean isWired() {
-		return mWireMeta != 0;
+	public boolean isWired( AreaType area) {
+		return mConnet.isWired( area);
 	}
 
 	@Override
@@ -385,12 +337,14 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private void refreshWire() {
 		for (AreaType side : AreaType.sides()) {
 			int dmg = getMeta( side);
-			if (SectionLib.getForDmg( dmg).isWire()) {
-				mWireMeta = dmg;
-				return;
+			ISection sec = SectionLib.getForDmg( dmg);
+			if (mConnet.isAllowed( sec)) {
+				mConnet.set( side);
 			}
 		}
-		mWireMeta = 0;
+		if (mConnet.isEmpty()) {
+			mConnet = IConnetable.NO_CONNECT;
+		}
 	}
 
 	public void setSectionBounds( AreaType area, Block blk) {
@@ -427,18 +381,10 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 					mConnet = sec.createConnect();
 				}
 				if (mConnet.isAllowed( sec)) {
-					mConnet.add( area);
+					mConnet.set( area);
 				}
 				else {
 					return false;
-				}
-				if (sec.isWire()) {
-					if (mWireMeta == 0) {
-						mWireMeta = meta;
-					}
-					else if (mWireMeta != meta) {
-						return false;
-					}
 				}
 				mArr[area.ordinal()] = meta;
 				mArea |= area.mMask;
@@ -457,12 +403,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				int meta = mArr[area.ordinal()];
 				mArr[area.ordinal()] = 0;
 				mArea &= ~area.mMask;
-				mConnet.remove( area);
+				mConnet.delete( area);
 				if (mConnet.isEmpty()) {
 					mConnet = IConnetable.NO_CONNECT;
-				}
-				if (meta == mWireMeta && !containeWire()) {
-					mWireMeta = 0;
 				}
 				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
 				return meta;

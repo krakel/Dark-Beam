@@ -14,18 +14,32 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.ISection;
 
 abstract class AConnet implements IConnetable {
+	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
+	private static final int INVALID_NS = AreaType.toMask( AreaType.NORTH, AreaType.SOUTH);
+	private static final int INVALID_DU = AreaType.toMask( AreaType.DOWN, AreaType.UP);
 	private static final String NBT_POWER = "pwr";
 	protected ASectionWire mWire;
 	protected int mArea;
 	private int mPower;
 
+//	private int mWireMeta;
 	protected AConnet( ASectionWire wire) {
 		mWire = wire;
 	}
 
 	@Override
-	public void add( AreaType area) {
-		mArea |= area.mMask;
+	public void delete( AreaType area) {
+		mArea &= ~area.mMask;
+	}
+
+	@Override
+	public int getCount() {
+		return Integer.bitCount( mArea);
+	}
+
+	@Override
+	public int getLevel() {
+		return mWire.getLevel();
 	}
 
 	@Override
@@ -38,8 +52,28 @@ abstract class AConnet implements IConnetable {
 		return mArea == 0;
 	}
 
+	@Override
+	public boolean isInvalid() {
+		if (mArea == INVALID_DU) {
+			return true;
+		}
+		if (mArea == INVALID_NS) {
+			return true;
+		}
+		if (mArea == INVALID_WE) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public boolean isPowerd() {
 		return mPower > 0;
+	}
+
+	@Override
+	public boolean isWired( AreaType area) {
+		return (mArea & area.mMask) != 0;
 	}
 
 	@Override
@@ -48,8 +82,8 @@ abstract class AConnet implements IConnetable {
 	}
 
 	@Override
-	public void remove( AreaType area) {
-		mArea &= ~area.mMask;
+	public void set( AreaType area) {
+		mArea |= area.mMask;
 	}
 
 	@Override

@@ -17,12 +17,22 @@ class NoConnect implements IConnetable {
 	}
 
 	@Override
-	public void add( AreaType area) {
+	public void delete( AreaType area) {
+	}
+
+	@Override
+	public int getCount() {
+		return 0;
+	}
+
+	@Override
+	public int getLevel() {
+		return 0;
 	}
 
 	@Override
 	public boolean isAllowed( ISection sec) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -31,7 +41,17 @@ class NoConnect implements IConnetable {
 	}
 
 	@Override
+	public boolean isInvalid() {
+		return false;
+	}
+
+	@Override
 	public boolean isPowerd() {
+		return false;
+	}
+
+	@Override
+	public boolean isWired( AreaType area) {
 		return false;
 	}
 
@@ -40,7 +60,7 @@ class NoConnect implements IConnetable {
 	}
 
 	@Override
-	public void remove( AreaType area) {
+	public void set( AreaType area) {
 	}
 
 	@Override

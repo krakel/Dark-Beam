@@ -15,17 +15,25 @@ import de.krakel.darkbeam.core.ISection;
 public interface IConnetable {
 	public static final IConnetable NO_CONNECT = new NoConnect();
 
-	void add( AreaType area);
+	void delete( AreaType area);
+
+	int getCount();
+
+	int getLevel();
 
 	boolean isAllowed( ISection sec);
 
 	boolean isEmpty();
 
+	boolean isInvalid();
+
 	boolean isPowerd();
+
+	boolean isWired( AreaType area);
 
 	void readFromNBT( NBTTagCompound nbt);
 
-	void remove( AreaType area);
+	void set( AreaType area);
 
 	void writeToNBT( NBTTagCompound nbt);
 }

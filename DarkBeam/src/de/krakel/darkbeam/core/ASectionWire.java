@@ -58,28 +58,28 @@ public abstract class ASectionWire extends ASection {
 		switch (area) {
 			case DOWN:
 				return tile.isValid( VALID_D)
-					&& (!tile.isWired() || tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH)
-						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+					&& (!tile.isWired() || tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH)
+						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
 			case UP:
 				return tile.isValid( VALID_U)
-					&& (!tile.isWired() || tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH)
-						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+					&& (!tile.isWired() || tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH)
+						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
 			case NORTH:
 				return tile.isValid( VALID_N)
-					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
-						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
+						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
 			case SOUTH:
 				return tile.isValid( VALID_S)
-					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
-						|| tile.isWire( AreaType.WEST) || tile.isWire( AreaType.EAST));
+					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
+						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
 			case WEST:
 				return tile.isValid( VALID_W)
-					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
-						|| tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH));
+					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
+						|| tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH));
 			case EAST:
 				return tile.isValid( VALID_E)
-					&& (!tile.isWired() || tile.isWire( AreaType.DOWN) || tile.isWire( AreaType.UP)
-						|| tile.isWire( AreaType.NORTH) || tile.isWire( AreaType.SOUTH));
+					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
+						|| tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH));
 			default:
 				return false;
 		}
