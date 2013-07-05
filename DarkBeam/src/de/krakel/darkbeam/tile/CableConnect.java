@@ -9,7 +9,7 @@ package de.krakel.darkbeam.tile;
 
 import de.krakel.darkbeam.core.ASectionWire;
 
-public class CableConnect extends AConnet {
+public class CableConnect extends AConnect {
 	public CableConnect( ASectionWire wire) {
 		super( wire);
 	}

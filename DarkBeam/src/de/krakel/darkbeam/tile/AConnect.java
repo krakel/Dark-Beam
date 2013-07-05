@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * AConnet.java
+ * AConnect.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -15,7 +15,7 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 
-abstract class AConnet implements IConnectable {
+abstract class AConnect implements IConnectable {
 	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
 	private static final int INVALID_NS = AreaType.toMask( AreaType.NORTH, AreaType.SOUTH);
 	private static final int INVALID_DU = AreaType.toMask( AreaType.DOWN, AreaType.UP);
@@ -31,7 +31,7 @@ abstract class AConnet implements IConnectable {
 	private int mInnerBlock;
 
 //	private int mWireMeta;
-	protected AConnet( ASectionWire wire) {
+	protected AConnect( ASectionWire wire) {
 		mWire = wire;
 	}
 

@@ -283,13 +283,13 @@ public class SectionStrip extends ASectionStructure {
 	}
 
 	private static boolean isValidForAxis( TileStage tile, AreaType sideA, AreaType sideB) {
-		IConnectable connet = tile.getConnect();
-		return !connet.isWired( sideA) && !connet.isWired( sideB);
+		IConnectable connect = tile.getConnect();
+		return !connect.isWired( sideA) && !connect.isWired( sideB);
 	}
 
 	private static boolean isValidForStrip( TileStage tile, AreaType sideA, AreaType sideB) {
-		IConnectable connet = tile.getConnect();
-		return (!tile.isUsed( sideA) || connet.isWired( sideA)) && (!tile.isUsed( sideB) || connet.isWired( sideB));
+		IConnectable connect = tile.getConnect();
+		return (!tile.isUsed( sideA) || connect.isWired( sideA)) && (!tile.isUsed( sideB) || connect.isWired( sideB));
 	}
 
 	@Override

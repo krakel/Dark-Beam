@@ -59,20 +59,20 @@ public abstract class ASectionWire extends ASection {
 
 	@Override
 	public boolean isValid( TileStage tile, AreaType area) {
-		IConnectable connet = tile.getConnect();
+		IConnectable connect = tile.getConnect();
 		switch (area) {
 			case DOWN:
-				return tile.isValid( VALID_D) && connet.isValid( VALID_DU);
+				return tile.isValid( VALID_D) && connect.isValid( VALID_DU);
 			case UP:
-				return tile.isValid( VALID_U) && connet.isValid( VALID_DU);
+				return tile.isValid( VALID_U) && connect.isValid( VALID_DU);
 			case NORTH:
-				return tile.isValid( VALID_N) && connet.isValid( VALID_NS);
+				return tile.isValid( VALID_N) && connect.isValid( VALID_NS);
 			case SOUTH:
-				return tile.isValid( VALID_S) && connet.isValid( VALID_NS);
+				return tile.isValid( VALID_S) && connect.isValid( VALID_NS);
 			case WEST:
-				return tile.isValid( VALID_W) && connet.isValid( VALID_WE);
+				return tile.isValid( VALID_W) && connect.isValid( VALID_WE);
 			case EAST:
-				return tile.isValid( VALID_E) && connet.isValid( VALID_WE);
+				return tile.isValid( VALID_E) && connect.isValid( VALID_WE);
 			default:
 				return false;
 		}

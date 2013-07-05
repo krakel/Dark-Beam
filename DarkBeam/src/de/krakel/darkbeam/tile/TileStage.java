@@ -145,7 +145,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				sb.append( "-|-");
 			}
 		}
-//		sb.append( mConnet.toString());
+//		sb.append( mConnect.toString());
 		sb.append( "]");
 		return sb.toString();
 	}
