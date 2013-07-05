@@ -29,7 +29,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private static final String NBT_SECTIONS = "ss";
 	private int mArea;
 	private int[] mArr = new int[32];
-	private IConnetable mConnet = IConnetable.NO_CONNECT;
+	private IConnectable mConnect = IConnectable.NO_CONNECT;
 	private boolean mNeedUpdate = true;
 
 	public TileStage() {
@@ -41,8 +41,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		DarkLib.dropItem( worldObj, xCoord, yCoord, zCoord, stk);
 	}
 
-	public IConnetable getConnet() {
-		return mConnet;
+	public IConnectable getConnect() {
+		return mConnect;
 	}
 
 	@Override
@@ -53,8 +53,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	private int getDropCount( ISection sec) {
-		if (mConnet.isAllowed( sec) && mConnet.isInvalid()) {
-			mConnet = IConnetable.NO_CONNECT;
+		if (mConnect.isAllowed( sec) && mConnect.isInvalid()) {
+			mConnect = IConnectable.NO_CONNECT;
 			return 3;
 		}
 		return 1;
@@ -70,8 +70,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public ISection getSection( AreaType area) {
-		int dmg = getMeta( area);
-		return SectionLib.getForDmg( dmg);
+		int meta = getMeta( area);
+		return SectionLib.getForDmg( meta);
 	}
 
 	public boolean isEmpty() {
@@ -110,13 +110,13 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				tryAdd( AreaType.toArea( i), sec << 8 | mat);
 			}
 		}
-		mConnet.readFromNBT( nbt);
+		mConnect.readFromNBT( nbt);
 	}
 
 	public void refresh() {
-		mConnet.refresh( this);
-		if (mConnet.isEmpty()) {
-			mConnet = IConnetable.NO_CONNECT;
+		mConnect.refresh( this);
+		if (mConnect.isEmpty()) {
+			mConnect = IConnectable.NO_CONNECT;
 		}
 		if (isEmpty()) {
 			invalidate();
@@ -154,11 +154,11 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		try {
 			if (!isUsed( area)) {
 				ISection sec = SectionLib.getForDmg( meta);
-				if (mConnet == IConnetable.NO_CONNECT) {
-					mConnet = sec.createConnect();
+				if (mConnect == IConnectable.NO_CONNECT) {
+					mConnect = sec.createConnect();
 				}
-				if (mConnet.isAllowed( sec)) {
-					mConnet.set( area);
+				if (mConnect.isAllowed( sec)) {
+					mConnect.set( area);
 				}
 				else {
 					return false;
@@ -180,9 +180,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				int meta = mArr[area.ordinal()];
 				mArr[area.ordinal()] = 0;
 				mArea &= ~area.mMask;
-				mConnet.delete( area);
-				if (mConnet.isEmpty()) {
-					mConnet = IConnetable.NO_CONNECT;
+				mConnect.delete( area);
+				if (mConnect.isEmpty()) {
+					mConnect = IConnectable.NO_CONNECT;
 				}
 //				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
 				return meta;
@@ -230,7 +230,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 			}
 		}
 		nbt.setByteArray( NBT_SECTIONS, arr);
-		mConnet.writeToNBT( nbt);
+		mConnect.writeToNBT( nbt);
 //		LogHelper.info( "writeToNBT: %s", nbt);
 	}
 

@@ -10,7 +10,7 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
-import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.IConnectable;
 import de.krakel.darkbeam.tile.TileStage;
 
 public abstract class ASectionWire extends ASection {
@@ -59,7 +59,7 @@ public abstract class ASectionWire extends ASection {
 
 	@Override
 	public boolean isValid( TileStage tile, AreaType area) {
-		IConnetable connet = tile.getConnet();
+		IConnectable connet = tile.getConnect();
 		switch (area) {
 			case DOWN:
 				return tile.isValid( VALID_D) && connet.isValid( VALID_DU);

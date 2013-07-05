@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.IDirection;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.IConnectable;
 import de.krakel.darkbeam.tile.TileStage;
 
 abstract class AWireRenderer extends ASectionRenderer {
@@ -37,9 +37,10 @@ abstract class AWireRenderer extends ASectionRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int meta, int x, int y, int z, TileStage tile) {
-		IConnetable connect = tile.getConnet();
+	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int x, int y, int z, TileStage tile) {
+		IConnectable connect = tile.getConnect();
 		boolean isConn = connect.isConnection( area);
+		int meta = tile.getMeta( area);
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;
 		float min = isConn ? minS : mCrossness;
@@ -153,7 +154,7 @@ abstract class AWireRenderer extends ASectionRenderer {
 
 	@Override
 	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
-		IConnetable connect = tile.getConnet();
+		IConnectable connect = tile.getConnect();
 		boolean isConn = connect.isConnection( area);
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;

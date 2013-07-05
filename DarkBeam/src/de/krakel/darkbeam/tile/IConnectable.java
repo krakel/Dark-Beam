@@ -1,6 +1,6 @@
 /**
  * Dark Beam
- * IConnetable.java
+ * IConnectable.java
  * 
  * @author krakel
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.ISection;
 
-public interface IConnetable {
-	public static final IConnetable NO_CONNECT = new NoConnect();
+public interface IConnectable {
+	public static final IConnectable NO_CONNECT = new NoConnect();
 
 	void delete( AreaType area);
 

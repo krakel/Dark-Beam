@@ -37,7 +37,8 @@ public class SectionHollowRenderer extends ASectionRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int meta, int x, int y, int z, TileStage tile) {
+	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int x, int y, int z, TileStage tile) {
+		int meta = tile.getMeta( area);
 		float min = 0.25F;
 		float max = 1F - min;
 		switch (area) {

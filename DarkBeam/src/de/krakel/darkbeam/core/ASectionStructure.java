@@ -10,7 +10,7 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
-import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.IConnectable;
 
 public abstract class ASectionStructure extends ASection {
 	ASectionStructure( int secID, String name, ASectionRenderer renderer) {
@@ -22,8 +22,8 @@ public abstract class ASectionStructure extends ASection {
 	}
 
 	@Override
-	public IConnetable createConnect() {
-		return IConnetable.NO_CONNECT;
+	public IConnectable createConnect() {
+		return IConnectable.NO_CONNECT;
 	}
 
 	@Override

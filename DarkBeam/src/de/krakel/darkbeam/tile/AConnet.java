@@ -14,9 +14,8 @@ import de.krakel.darkbeam.core.ASectionWire;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
-import de.krakel.darkbeam.core.SectionLib;
 
-abstract class AConnet implements IConnetable {
+abstract class AConnet implements IConnectable {
 	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
 	private static final int INVALID_NS = AreaType.toMask( AreaType.NORTH, AreaType.SOUTH);
 	private static final int INVALID_DU = AreaType.toMask( AreaType.DOWN, AreaType.UP);
@@ -36,7 +35,7 @@ abstract class AConnet implements IConnetable {
 		mWire = wire;
 	}
 
-	private boolean canConnect( IConnetable other) {
+	private boolean canConnect( IConnectable other) {
 		if (this == other) {
 			return true;
 		}
@@ -281,7 +280,7 @@ abstract class AConnet implements IConnetable {
 	private void refreshNeighbor( TileStage tile, AreaType side) {
 		AreaType[] sides = AreaType.sides( AreaType.anti( side));
 		for (AreaType sideB : sides) {
-			if (tile.isUsed( sideB) && canConnect( tile.getConnet())) {
+			if (tile.isUsed( sideB) && canConnect( tile.getConnect())) {
 				if (!isCompatible( tile.getSection( sideB))) {
 					mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
 				}
@@ -300,8 +299,7 @@ abstract class AConnet implements IConnetable {
 
 	private void refreshWire( TileStage tile) {
 		for (AreaType side : AreaType.sides()) {
-			int dmg = tile.getMeta( side);
-			ISection sec = SectionLib.getForDmg( dmg);
+			ISection sec = tile.getSection( side);
 			if (isAllowed( sec)) {
 				set( side);
 			}

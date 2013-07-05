@@ -10,7 +10,7 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.SectionStripRenderer;
-import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.IConnectable;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class SectionStrip extends ASectionStructure {
@@ -283,12 +283,12 @@ public class SectionStrip extends ASectionStructure {
 	}
 
 	private static boolean isValidForAxis( TileStage tile, AreaType sideA, AreaType sideB) {
-		IConnetable connet = tile.getConnet();
+		IConnectable connet = tile.getConnect();
 		return !connet.isWired( sideA) && !connet.isWired( sideB);
 	}
 
 	private static boolean isValidForStrip( TileStage tile, AreaType sideA, AreaType sideB) {
-		IConnetable connet = tile.getConnet();
+		IConnectable connet = tile.getConnect();
 		return (!tile.isUsed( sideA) || connet.isWired( sideA)) && (!tile.isUsed( sideB) || connet.isWired( sideB));
 	}
 

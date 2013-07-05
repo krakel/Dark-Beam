@@ -27,7 +27,8 @@ public class SectionCoverRenderer extends ASectionRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int meta, int x, int y, int z, TileStage tile) {
+	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int x, int y, int z, TileStage tile) {
+		int meta = tile.getMeta( area);
 		setSectionBounds( area, blk, tile);
 		renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 	}

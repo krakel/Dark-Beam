@@ -12,7 +12,7 @@ import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.client.renderer.SectionCableRenderer;
 import de.krakel.darkbeam.tile.CableConnect;
-import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.IConnectable;
 
 public class SectionCable extends ASectionWire {
 	SectionCable() {
@@ -20,7 +20,7 @@ public class SectionCable extends ASectionWire {
 	}
 
 	@Override
-	public IConnetable createConnect() {
+	public IConnectable createConnect() {
 		return new CableConnect( this);
 	}
 

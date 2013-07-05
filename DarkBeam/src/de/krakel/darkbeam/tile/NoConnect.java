@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.ISection;
 
-class NoConnect implements IConnetable {
+class NoConnect implements IConnectable {
 	NoConnect() {
 	}
 

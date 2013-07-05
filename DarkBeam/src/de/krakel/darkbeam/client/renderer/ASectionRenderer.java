@@ -67,7 +67,7 @@ public abstract class ASectionRenderer {
 
 	public abstract void renderItem( RenderBlocks rndrBlk, Block blk, int meta);
 
-	public abstract void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int meta, int x, int y, int z, TileStage tile);
+	public abstract void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int x, int y, int z, TileStage tile);
 
 	public abstract void setSectionBounds( AreaType area, Block blk, TileStage tile);
 }

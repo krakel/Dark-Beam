@@ -12,11 +12,11 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 
-import de.krakel.darkbeam.tile.IConnetable;
+import de.krakel.darkbeam.tile.IConnectable;
 import de.krakel.darkbeam.tile.TileStage;
 
 public interface ISection {
-	IConnetable createConnect();
+	IConnectable createConnect();
 
 	int getBlockID( int dmg);
 
@@ -42,7 +42,7 @@ public interface ISection {
 
 	void renderItem( RenderBlocks rndrBlk, Block blk, int dmg);
 
-	void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int dmg, int x, int y, int z, TileStage tile);
+	void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int x, int y, int z, TileStage tile);
 
 	void setSectionBounds( AreaType area, Block blk, TileStage tile);
 

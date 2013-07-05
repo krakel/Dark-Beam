@@ -53,8 +53,8 @@ abstract class ASection implements ISection {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int dmg, int x, int y, int z, TileStage tile) {
-		mRenderer.renderSide( rndrBlk, area, blk, dmg, x, y, z, tile);
+	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int x, int y, int z, TileStage tile) {
+		mRenderer.renderSide( rndrBlk, area, blk, x, y, z, tile);
 	}
 
 	@Override
