@@ -10,6 +10,7 @@ package de.krakel.darkbeam.core;
 import net.minecraft.util.MovingObjectPosition;
 
 import de.krakel.darkbeam.client.renderer.ASectionRenderer;
+import de.krakel.darkbeam.tile.IConnetable;
 import de.krakel.darkbeam.tile.TileStage;
 
 public abstract class ASectionWire extends ASection {
@@ -19,6 +20,9 @@ public abstract class ASectionWire extends ASection {
 	private static final int VALID_S = AreaType.toMask( AreaType.SOUTH, AreaType.NORTH_SOUTH);
 	private static final int VALID_W = AreaType.toMask( AreaType.WEST, AreaType.WEST_EAST);
 	private static final int VALID_E = AreaType.toMask( AreaType.EAST, AreaType.WEST_EAST);
+	private static final int VALID_DU = AreaType.toMask( AreaType.SIDES_DOWN_UP);
+	private static final int VALID_NS = AreaType.toMask( AreaType.SIDES_NORTH_SOUTH);
+	private static final int VALID_WE = AreaType.toMask( AreaType.SIDES_WEST_EAST);
 
 	protected ASectionWire( String name, ASectionRenderer renderer) {
 		super( name, renderer);
@@ -55,39 +59,23 @@ public abstract class ASectionWire extends ASection {
 
 	@Override
 	public boolean isValid( TileStage tile, AreaType area) {
+		IConnetable connet = tile.getConnet();
 		switch (area) {
 			case DOWN:
-				return tile.isValid( VALID_D)
-					&& (!tile.isWired() || tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH)
-						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
+				return tile.isValid( VALID_D) && connet.isValid( VALID_DU);
 			case UP:
-				return tile.isValid( VALID_U)
-					&& (!tile.isWired() || tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH)
-						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
+				return tile.isValid( VALID_U) && connet.isValid( VALID_DU);
 			case NORTH:
-				return tile.isValid( VALID_N)
-					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
-						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
+				return tile.isValid( VALID_N) && connet.isValid( VALID_NS);
 			case SOUTH:
-				return tile.isValid( VALID_S)
-					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
-						|| tile.isWired( AreaType.WEST) || tile.isWired( AreaType.EAST));
+				return tile.isValid( VALID_S) && connet.isValid( VALID_NS);
 			case WEST:
-				return tile.isValid( VALID_W)
-					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
-						|| tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH));
+				return tile.isValid( VALID_W) && connet.isValid( VALID_WE);
 			case EAST:
-				return tile.isValid( VALID_E)
-					&& (!tile.isWired() || tile.isWired( AreaType.DOWN) || tile.isWired( AreaType.UP)
-						|| tile.isWired( AreaType.NORTH) || tile.isWired( AreaType.SOUTH));
+				return tile.isValid( VALID_E) && connet.isValid( VALID_WE);
 			default:
 				return false;
 		}
-	}
-
-	@Override
-	public boolean isWire() {
-		return true;
 	}
 
 	@Override

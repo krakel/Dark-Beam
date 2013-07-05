@@ -12,7 +12,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumMovingObjectType;
@@ -31,7 +30,6 @@ import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.core.helper.LogHelper;
-import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class BlockStage extends Block {
@@ -139,7 +137,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingStrongPower( AreaType.redstoneToSide( relate));
+		return tile.getConnet().isProvidingStrongPower( AreaType.redstoneToSide( relate));
 	}
 
 	@Override
@@ -148,7 +146,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return 0;
 		}
-		return tile.isProvidingWeakPower( AreaType.redstoneToSide( relate));
+		return tile.getConnet().isProvidingWeakPower( AreaType.redstoneToSide( relate));
 	}
 
 	@Override
@@ -192,9 +190,7 @@ public class BlockStage extends Block {
 		}
 		int meta = tile.tryRemove( AreaType.toArea( pos.subHit));
 		if (meta >= 0) {
-			int count = tile.getCount( meta);
-			ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), count, meta);
-			DarkLib.dropItem( world, x, y, z, stk);
+			tile.dropItem( meta);
 			if (tile.isEmpty()) {
 				tile.invalidate();
 				world.setBlockToAir( x, y, z);

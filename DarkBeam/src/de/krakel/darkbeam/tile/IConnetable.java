@@ -17,11 +17,15 @@ public interface IConnetable {
 
 	void delete( AreaType area);
 
-	int getCount();
-
 	int getLevel();
 
 	boolean isAllowed( ISection sec);
+
+	boolean isConnected( AreaType edge);
+
+	boolean isConnection( AreaType area);
+
+	boolean isEdged( AreaType edge);
 
 	boolean isEmpty();
 
@@ -29,9 +33,17 @@ public interface IConnetable {
 
 	boolean isPowerd();
 
+	int isProvidingStrongPower( AreaType side);
+
+	int isProvidingWeakPower( AreaType side);
+
+	boolean isValid( int value);
+
 	boolean isWired( AreaType area);
 
 	void readFromNBT( NBTTagCompound nbt);
+
+	void refresh( TileStage tile);
 
 	void set( AreaType area);
 

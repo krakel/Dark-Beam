@@ -21,17 +21,27 @@ class NoConnect implements IConnetable {
 	}
 
 	@Override
-	public int getCount() {
-		return 0;
-	}
-
-	@Override
 	public int getLevel() {
 		return 0;
 	}
 
 	@Override
 	public boolean isAllowed( ISection sec) {
+		return false;
+	}
+
+	@Override
+	public boolean isConnected( AreaType edge) {
+		return false;
+	}
+
+	@Override
+	public boolean isConnection( AreaType area) {
+		return false;
+	}
+
+	@Override
+	public boolean isEdged( AreaType edge) {
 		return false;
 	}
 
@@ -51,12 +61,31 @@ class NoConnect implements IConnetable {
 	}
 
 	@Override
+	public int isProvidingStrongPower( AreaType side) {
+		return 0;
+	}
+
+	@Override
+	public int isProvidingWeakPower( AreaType side) {
+		return 0;
+	}
+
+	@Override
+	public boolean isValid( int value) {
+		return false;
+	}
+
+	@Override
 	public boolean isWired( AreaType area) {
 		return false;
 	}
 
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
+	}
+
+	@Override
+	public void refresh( TileStage tile) {
 	}
 
 	@Override

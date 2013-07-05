@@ -38,8 +38,6 @@ public interface ISection {
 
 	boolean isValid( TileStage tile, AreaType area);
 
-	boolean isWire();
-
 	void oppositeArea( MovingObjectPosition pos);
 
 	void renderItem( RenderBlocks rndrBlk, Block blk, int dmg);

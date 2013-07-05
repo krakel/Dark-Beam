@@ -51,13 +51,13 @@ public enum AreaType {
 	UNKNOWN( 0, 0, 0);
 	//@formatter:on
 	private static final AreaType[] EMPTY = {};
-	private static final AreaType[] SIDES_WEST_EAST = {
+	public static final AreaType[] SIDES_WEST_EAST = {
 		DOWN, UP, NORTH, SOUTH
 	};
-	private static final AreaType[] SIDES_NORTH_SOUTH = {
+	public static final AreaType[] SIDES_NORTH_SOUTH = {
 		DOWN, UP, WEST, EAST
 	};
-	private static final AreaType[] SIDES_DOWN_UP = {
+	public static final AreaType[] SIDES_DOWN_UP = {
 		NORTH, SOUTH, WEST, EAST
 	};
 	private static final AreaType[] REDSTONE = {
