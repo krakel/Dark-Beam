@@ -12,7 +12,7 @@ public class References {
 	public static final String MOD_NAME = "Dark Beam";
 	public static final String MOD_CHANNEL = "DarkBeam";
 	public static final String VERSION = "@VERSION@.@BUILD_NUMBER@";
-	public static final String DEPENDENCIES = "required-after:Forge@[7.8.0.684,)";
+	public static final String DEPENDENCIES = "required-after:Forge@[8.9.0.771,)";
 	public static final String FINGERPRINT = "@FINGERPRINT@";
 	//
 	public static final String CLASS_CLIENT_PROXY = "de.krakel.darkbeam.core.proxy.ClientProxy";
