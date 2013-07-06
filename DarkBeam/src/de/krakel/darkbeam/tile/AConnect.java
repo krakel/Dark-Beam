@@ -40,7 +40,7 @@ abstract class AConnect implements IConnectable {
 			return true;
 		}
 		int diff = getLevel() - other.getLevel();
-		return diff == 1 || diff == -1;
+		return diff == 1 || diff == 0 || diff == -1;
 	}
 
 	@Override
@@ -60,10 +60,6 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public boolean isAllowed( ISection sec) {
 		return mWire.equals( sec);
-	}
-
-	private boolean isCompatible( ISection sec) {
-		return sec.getLevel() >= mWire.getLevel();
 	}
 
 	@Override
@@ -184,9 +180,9 @@ abstract class AConnect implements IConnectable {
 			int x = tile.xCoord + edge.mDx;
 			int y = tile.yCoord + edge.mDy;
 			int z = tile.zCoord + edge.mDz;
-			TileStage tn = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-			if (tn != null) {
-				refreshAngled( tn, edge);
+			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
+			if (other != null) {
+				refreshAngled( other, edge);
 			}
 			else {
 				int id = tile.worldObj.getBlockId( x, y, z);
@@ -203,10 +199,10 @@ abstract class AConnect implements IConnectable {
 		}
 	}
 
-	private void refreshAngled( TileStage tile, AreaType edge) {
+	private void refreshAngled( TileStage other, AreaType edge) {
 		AreaType sideA = AreaType.anti( AreaType.sideA( edge));
-		if (tile.isUsed( sideA)) {
-			if (isCompatible( tile.getSection( sideA))) {
+		if (other.isUsed( sideA)) {
+			if (other.isAllowed( sideA)) {
 				mAngledConn |= edge.mMask;
 			}
 			else {
@@ -214,15 +210,15 @@ abstract class AConnect implements IConnectable {
 			}
 		}
 		AreaType sideB = AreaType.anti( AreaType.sideB( edge));
-		if (tile.isUsed( sideB)) {
-			if (isCompatible( tile.getSection( sideB))) {
+		if (other.isUsed( sideB)) {
+			if (other.isAllowed( sideB)) {
 				mAngledConn |= edge.mMask;
 			}
 			else {
 				mAngledBlock &= ~edge.mMask;
 			}
 		}
-		if (tile.isUsed( AreaType.anti( edge))) {
+		if (other.isUsed( AreaType.anti( edge))) {
 			mAngledBlock &= ~edge.mMask;
 		}
 	}
@@ -231,7 +227,7 @@ abstract class AConnect implements IConnectable {
 		int temp = 0;
 		for (AreaType side : AreaType.sides()) {
 			if (tile.isUsed( side)) {
-				if (isAllowed( tile.getSection( side))) {
+				if (tile.isAllowed( side)) {
 					int edges = AreaType.offEdges( side);
 					mInnerConn |= temp & edges;
 					temp |= edges;
@@ -253,9 +249,9 @@ abstract class AConnect implements IConnectable {
 			int x = tile.xCoord + side.mDx;
 			int y = tile.yCoord + side.mDy;
 			int z = tile.zCoord + side.mDz;
-			TileStage tn = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-			if (tn != null) {
-				refreshNeighbor( tn, side);
+			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
+			if (other != null) {
+				refreshNeighbor( other, side);
 			}
 			else if (!tile.isUsed( side)) {
 				int id = tile.worldObj.getBlockId( x, y, z);
@@ -277,22 +273,25 @@ abstract class AConnect implements IConnectable {
 		}
 	}
 
-	private void refreshNeighbor( TileStage tile, AreaType side) {
-		AreaType[] sides = AreaType.sides( AreaType.anti( side));
-		for (AreaType sideB : sides) {
-			if (tile.isUsed( sideB) && canConnect( tile.getConnect())) {
-				if (!isCompatible( tile.getSection( sideB))) {
+	private void refreshNeighbor( TileStage other, AreaType side) {
+		AreaType anti = AreaType.anti( side);
+		if (canConnect( other.getConnect())) {
+			AreaType[] sides = AreaType.sides( anti);
+			for (AreaType sideB : sides) {
+				if (other.isUsed( sideB)) {
+					if (other.isAllowed( sideB)) {
+						mNeighborConn |= AreaType.edge( side, sideB).mMask;
+					}
+					else {
+						mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
+					}
+				}
+				if (other.isUsed( AreaType.edge( anti, sideB))) {
 					mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
 				}
-				else if (tile.isUsed( sideB) && isCompatible( tile.getSection( sideB))) {
-					mNeighborConn |= AreaType.edge( side, sideB).mMask;
-				}
-			}
-			if (tile.isUsed( AreaType.edge( AreaType.anti( side), sideB))) {
-				mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
 			}
 		}
-		if (tile.isUsed( AreaType.anti( side))) {
+		if (other.isUsed( anti)) {
 			mNeighborBlock &= ~AreaType.offEdges( side);
 		}
 	}

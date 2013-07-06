@@ -74,6 +74,10 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return SectionLib.getForDmg( meta);
 	}
 
+	boolean isAllowed( AreaType area) {
+		return mConnect.isAllowed( getSection( area));
+	}
+
 	public boolean isEmpty() {
 		return mArea == 0;
 	}
