@@ -14,7 +14,7 @@ import de.krakel.darkbeam.client.renderer.SectionCoverRenderer;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class SectionLib {
-	private static final ISection UNKNOWN = new UnknownSection();
+	public static final ISection UNKNOWN = new UnknownSection();
 	private static ISection[] sData = new ISection[64];
 	private static Iterable<ISection> sIter = new MaskIterable();
 	public static ISection sRedwire;
@@ -26,7 +26,12 @@ public class SectionLib {
 
 	private static void add( ISection sec) {
 		try {
-			sData[sec.getID()] = sec;
+			if (sData[sec.getID()] == null) {
+				sData[sec.getID()] = sec;
+			}
+			else {
+				LogHelper.warning( "material already initialized");
+			}
 		}
 		catch (IndexOutOfBoundsException ex) {
 			LogHelper.severe( ex, "caught an exception during access section");
@@ -134,6 +139,21 @@ public class SectionLib {
 	static class UnknownSection extends ASectionCover {
 		UnknownSection() {
 			super( 255, "unknown", new SectionCoverRenderer( 1));
+		}
+
+		@Override
+		public IMaterial getForDmg( int dmg) {
+			return MaterialLib.UNKNOWN;
+		}
+
+		@Override
+		public int getID() {
+			return -1;
+		}
+
+		@Override
+		public int toDmg() {
+			return -1;
 		}
 	}
 }

@@ -10,6 +10,7 @@ package de.krakel.darkbeam.tile;
 import net.minecraft.nbt.NBTTagCompound;
 
 import de.krakel.darkbeam.core.AreaType;
+import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
 
 class NoConnect implements IConnectable {
@@ -26,7 +27,7 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isAllowed( ISection sec) {
+	public boolean isAllowed( ISection sec, IMaterial mat) {
 		return false;
 	}
 
@@ -41,7 +42,7 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isEdged( AreaType edge) {
+	public boolean isAngled( AreaType edge) {
 		return false;
 	}
 

@@ -14,7 +14,7 @@ import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class InsulateLib {
-	private static final Insulate UNKNOWN = new Insulate( 255, "unkown");
+	public static final Insulate UNKNOWN = new Insulate( 255, "unkown");
 	private static Insulate[] sData = new Insulate[32];
 	private static Iterable<Insulate> sIter = new InsuIterable();
 

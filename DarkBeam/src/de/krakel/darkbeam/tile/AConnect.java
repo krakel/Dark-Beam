@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import de.krakel.darkbeam.core.ASectionWire;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
 
 abstract class AConnect implements IConnectable {
@@ -21,7 +22,7 @@ abstract class AConnect implements IConnectable {
 	private static final int INVALID_DU = AreaType.toMask( AreaType.DOWN, AreaType.UP);
 	private static final String NBT_POWER = "pwr";
 	protected ASectionWire mWire;
-	protected int mArea;
+	private int mArea;
 	private int mPower;
 	private int mAngledConn;
 	private int mAngledBlock;
@@ -30,18 +31,11 @@ abstract class AConnect implements IConnectable {
 	private int mInnerConn;
 	private int mInnerBlock;
 
-//	private int mWireMeta;
 	protected AConnect( ASectionWire wire) {
 		mWire = wire;
 	}
 
-	private boolean canConnect( IConnectable other) {
-		if (this == other) {
-			return true;
-		}
-		int diff = getLevel() - other.getLevel();
-		return diff == 1 || diff == 0 || diff == -1;
-	}
+	protected abstract boolean canConnect( IConnectable other);
 
 	@Override
 	public void delete( AreaType area) {
@@ -58,8 +52,11 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isAllowed( ISection sec) {
-		return mWire.equals( sec);
+	public abstract boolean isAllowed( ISection sec, IMaterial mat);
+
+	@Override
+	public boolean isAngled( AreaType edge) {
+		return (mNeighborBlock & mAngledBlock & mAngledConn & edge.mMask) != 0;
 	}
 
 	@Override
@@ -71,11 +68,6 @@ abstract class AConnect implements IConnectable {
 	public boolean isConnection( AreaType area) {
 		int offs = AreaType.offEdges( area);
 		return (getConnections() & offs) != 0;
-	}
-
-	@Override
-	public boolean isEdged( AreaType edge) {
-		return (mNeighborBlock & mAngledBlock & mAngledConn & edge.mMask) != 0;
 	}
 
 	@Override
@@ -200,22 +192,24 @@ abstract class AConnect implements IConnectable {
 	}
 
 	private void refreshAngled( TileStage other, AreaType edge) {
-		AreaType sideA = AreaType.anti( AreaType.sideA( edge));
-		if (other.isUsed( sideA)) {
-			if (other.isAllowed( sideA)) {
-				mAngledConn |= edge.mMask;
+		if (canConnect( other.getConnect())) {
+			AreaType sideA = AreaType.anti( AreaType.sideA( edge));
+			if (other.isUsed( sideA)) {
+				if (other.isAllowed( sideA)) {
+					mAngledConn |= edge.mMask;
+				}
+				else {
+					mAngledBlock &= ~edge.mMask;
+				}
 			}
-			else {
-				mAngledBlock &= ~edge.mMask;
-			}
-		}
-		AreaType sideB = AreaType.anti( AreaType.sideB( edge));
-		if (other.isUsed( sideB)) {
-			if (other.isAllowed( sideB)) {
-				mAngledConn |= edge.mMask;
-			}
-			else {
-				mAngledBlock &= ~edge.mMask;
+			AreaType sideB = AreaType.anti( AreaType.sideB( edge));
+			if (other.isUsed( sideB)) {
+				if (other.isAllowed( sideB)) {
+					mAngledConn |= edge.mMask;
+				}
+				else {
+					mAngledBlock &= ~edge.mMask;
+				}
 			}
 		}
 		if (other.isUsed( AreaType.anti( edge))) {
@@ -227,13 +221,13 @@ abstract class AConnect implements IConnectable {
 		int temp = 0;
 		for (AreaType side : AreaType.sides()) {
 			if (tile.isUsed( side)) {
+				int edges = AreaType.offEdges( side);
 				if (tile.isAllowed( side)) {
-					int edges = AreaType.offEdges( side);
 					mInnerConn |= temp & edges;
 					temp |= edges;
 				}
 				else {
-					mInnerBlock &= ~AreaType.offEdges( side);
+					mInnerBlock &= ~edges;
 				}
 			}
 		}
@@ -276,8 +270,7 @@ abstract class AConnect implements IConnectable {
 	private void refreshNeighbor( TileStage other, AreaType side) {
 		AreaType anti = AreaType.anti( side);
 		if (canConnect( other.getConnect())) {
-			AreaType[] sides = AreaType.sides( anti);
-			for (AreaType sideB : sides) {
+			for (AreaType sideB : AreaType.sides( anti)) {
 				if (other.isUsed( sideB)) {
 					if (other.isAllowed( sideB)) {
 						mNeighborConn |= AreaType.edge( side, sideB).mMask;
@@ -299,7 +292,8 @@ abstract class AConnect implements IConnectable {
 	private void refreshWire( TileStage tile) {
 		for (AreaType side : AreaType.sides()) {
 			ISection sec = tile.getSection( side);
-			if (isAllowed( sec)) {
+			IMaterial mat = tile.getMaterial( side);
+			if (isAllowed( sec, mat)) {
 				set( side);
 			}
 		}

@@ -110,6 +110,10 @@ public class DarkLib {
 		return blk.collisionRayTrace( world, x, y, z, headVec, endVec);
 	}
 
+	public static int toDmg( ISection sec, IMaterial mat) {
+		return sec.toDmg() | mat.toDmg();
+	}
+
 	public static boolean validString( String value) {
 		return value != null && !"".equals( value);
 	}

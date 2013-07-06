@@ -20,23 +20,23 @@ public class SectionCable extends ASectionWire {
 	}
 
 	@Override
-	public IConnectable createConnect() {
+	public IConnectable createConnect( IMaterial mat) {
 		return new CableConnect( this);
 	}
 
 	@Override
-	public int getBlockID( int dmg) {
-		return Block.sandStone.blockID;
+	public IMaterial getForDmg( int dmg) {
+		return InsulateLib.UNKNOWN;
 	}
 
 	@Override
 	public Icon getIcon( int side, int dmg) {
-		return Block.sandStone.getIcon( side, 0); // TODO
+		return Block.wood.getIcon( side, 0); // TODO
 	}
 
 	@Override
 	public int getLevel() {
-		return 3;
+		return 12;
 	}
 
 	@Override

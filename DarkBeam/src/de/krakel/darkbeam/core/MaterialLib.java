@@ -16,7 +16,7 @@ import de.krakel.darkbeam.core.handler.LocalizationHandler;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 public class MaterialLib {
-	private static final Material UNKNOWN = new Material( 255, "unkown", Block.bedrock, 0);
+	public static final Material UNKNOWN = new Material( 255, "unkown", Block.bedrock, 0);
 	private static Material[] sData = new Material[256];
 	private static Iterable<Material> sIter = new MatIterable();
 

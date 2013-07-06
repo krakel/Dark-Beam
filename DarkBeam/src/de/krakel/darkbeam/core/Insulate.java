@@ -13,7 +13,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import de.krakel.darkbeam.core.handler.LocalizationHandler;
 
-public class Insulate {
+public class Insulate implements IMaterial {
 	private int mInsuID;
 	private String mName;
 
@@ -22,6 +22,7 @@ public class Insulate {
 		mName = name;
 	}
 
+	@Override
 	public void addStringLocalization( ISection sec, String lang) {
 		String key = getName( sec) + ".name";
 		String pattern = LocalizationHandler.getLocalization( "db.section." + sec.getName(), lang);
@@ -30,15 +31,28 @@ public class Insulate {
 		LanguageRegistry.instance().addStringLocalization( key, lang, translation);
 	}
 
+	@Override
 	public Icon getIcon( int side) {
 		return Block.cloth.getIcon( 0, mInsuID);
 	}
 
+	@Override
+	public int getID() {
+		return mInsuID;
+	}
+
+	@Override
 	public String getName( ISection sec) {
 		return "tile." + sec.getName() + "." + mName;
 	}
 
-	public int toDmg( ISection sec) {
-		return sec.toDmg() | mInsuID;
+	@Override
+	public boolean isIsolation() {
+		return true;
+	}
+
+	@Override
+	public int toDmg() {
+		return mInsuID;
 	}
 }

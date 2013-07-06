@@ -10,6 +10,7 @@ package de.krakel.darkbeam.tile;
 import net.minecraft.nbt.NBTTagCompound;
 
 import de.krakel.darkbeam.core.AreaType;
+import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
 
 public interface IConnectable {
@@ -19,13 +20,13 @@ public interface IConnectable {
 
 	int getLevel();
 
-	boolean isAllowed( ISection sec);
+	boolean isAllowed( ISection sec, IMaterial mat);
+
+	boolean isAngled( AreaType edge);
 
 	boolean isConnected( AreaType edge);
 
 	boolean isConnection( AreaType area);
-
-	boolean isEdged( AreaType edge);
 
 	boolean isEmpty();
 

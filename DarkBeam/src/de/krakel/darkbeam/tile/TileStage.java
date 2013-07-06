@@ -20,7 +20,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
+import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.SectionLib;
 import de.krakel.darkbeam.lib.BlockType;
 
@@ -28,7 +30,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private static final String NBT_AREAS = "as";
 	private static final String NBT_SECTIONS = "ss";
 	private int mArea;
-	private int[] mArr = new int[32];
+	private ISection[] mSec = new ISection[32];
+	private IMaterial[] mMat = new IMaterial[32];
 	private IConnectable mConnect = IConnectable.NO_CONNECT;
 	private boolean mNeedUpdate = true;
 
@@ -37,7 +40,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	public void dropItem( int meta) {
 		ISection sec = SectionLib.getForDmg( meta);
-		ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), getDropCount( sec), meta);
+		ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), getDropCount( sec, sec.getForDmg( meta)), meta);
 		DarkLib.dropItem( worldObj, xCoord, yCoord, zCoord, stk);
 	}
 
@@ -52,30 +55,44 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, nbt);
 	}
 
-	private int getDropCount( ISection sec) {
-		if (mConnect.isAllowed( sec) && mConnect.isInvalid()) {
+	private int getDropCount( ISection sec, IMaterial mat) {
+		if (mConnect.isAllowed( sec, mat) && mConnect.isInvalid()) {
 			mConnect = IConnectable.NO_CONNECT;
 			return 3;
 		}
 		return 1;
 	}
 
+	public IMaterial getMaterial( AreaType area) {
+		return getMaterial( area.ordinal());
+	}
+
+	private IMaterial getMaterial( int idx) {
+		IMaterial mat = mMat[idx];
+		return mat != null ? mat : MaterialLib.UNKNOWN;
+	}
+
 	public int getMeta( AreaType area) {
 		try {
-			return mArr[area.ordinal()];
+			int idx = area.ordinal();
+			return DarkLib.toDmg( getSection( idx), getMaterial( idx));
 		}
 		catch (IndexOutOfBoundsException ex) {
-			return 0;
 		}
+		return 0;
 	}
 
 	public ISection getSection( AreaType area) {
-		int meta = getMeta( area);
-		return SectionLib.getForDmg( meta);
+		return getSection( area.ordinal());
+	}
+
+	private ISection getSection( int idx) {
+		ISection sec = mSec[idx];
+		return sec != null ? sec : SectionLib.UNKNOWN;
 	}
 
 	boolean isAllowed( AreaType area) {
-		return mConnect.isAllowed( getSection( area));
+		return mConnect.isAllowed( getSection( area), getMaterial( area));
 	}
 
 	public boolean isEmpty() {
@@ -109,9 +126,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		int n = 0;
 		for (int a = areas, i = 0; a != 0; a >>>= 1, ++i) {
 			if ((a & 1) != 0) {
-				int mat = arr[n++] & 0xFF;
-				int sec = arr[n++] & 0xFF;
-				tryAdd( AreaType.toArea( i), sec << 8 | mat);
+				int matID = arr[n++] & 0xFF;
+				int segID = arr[n++] & 0xFF;
+				tryAdd( AreaType.toArea( i), segID, matID);
 			}
 		}
 		mConnect.readFromNBT( nbt);
@@ -140,10 +157,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				sb.append( ',');
 			}
 			if ((a & 1) != 0) {
-				int value = mArr[i];
-				sb.append( value >> 8 & 0xFF);
+				sb.append( getSection( i).getID() & 0xFF);
 				sb.append( '|');
-				sb.append( value & 0xFF);
+				sb.append( getMaterial( i).getID() & 0xFF);
 			}
 			else {
 				sb.append( "-|-");
@@ -155,19 +171,31 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public boolean tryAdd( AreaType area, int meta) {
+		ISection sec = SectionLib.getForDmg( meta);
+		IMaterial mat = sec.getForDmg( meta);
+		return tryAdd( area, sec, mat);
+	}
+
+	public boolean tryAdd( AreaType area, int secID, int matID) {
+		ISection sec = SectionLib.get( secID);
+		IMaterial mat = sec.getForDmg( matID);
+		return tryAdd( area, sec, mat);
+	}
+
+	private boolean tryAdd( AreaType area, ISection sec, IMaterial mat) {
 		try {
 			if (!isUsed( area)) {
-				ISection sec = SectionLib.getForDmg( meta);
 				if (mConnect == IConnectable.NO_CONNECT) {
-					mConnect = sec.createConnect();
+					mConnect = sec.createConnect( mat);
 				}
-				if (mConnect.isAllowed( sec)) {
+				if (mConnect.isAllowed( sec, mat)) {
 					mConnect.set( area);
 				}
 				else {
 					return false;
 				}
-				mArr[area.ordinal()] = meta;
+				mSec[area.ordinal()] = sec;
+				mMat[area.ordinal()] = mat;
 				mArea |= area.mMask;
 //				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
 				return true;
@@ -181,8 +209,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	public int tryRemove( AreaType area) {
 		try {
 			if (isUsed( area)) {
-				int meta = mArr[area.ordinal()];
-				mArr[area.ordinal()] = 0;
+				int meta = getMeta( area);
+				mSec[area.ordinal()] = null;
+				mMat[area.ordinal()] = null;
 				mArea &= ~area.mMask;
 				mConnect.delete( area);
 				if (mConnect.isEmpty()) {
@@ -228,9 +257,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		n = 0;
 		for (int a = mArea, i = 0; a != 0; a >>>= 1, ++i) {
 			if ((a & 1) != 0) {
-				int value = mArr[i];
-				arr[n++] = (byte) (value & 0xFF);
-				arr[n++] = (byte) (value >> 8 & 0xFF);
+				arr[n++] = (byte) (getMaterial( i).getID() & 0xFF);
+				arr[n++] = (byte) (getSection( i).getID() & 0xFF);
 			}
 		}
 		nbt.setByteArray( NBT_SECTIONS, arr);

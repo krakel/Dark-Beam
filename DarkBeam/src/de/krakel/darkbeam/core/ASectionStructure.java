@@ -22,14 +22,13 @@ public abstract class ASectionStructure extends ASection {
 	}
 
 	@Override
-	public IConnectable createConnect() {
+	public IConnectable createConnect( IMaterial mat) {
 		return IConnectable.NO_CONNECT;
 	}
 
 	@Override
-	public int getBlockID( int dmg) {
-		Material mat = MaterialLib.getForDmg( dmg);
-		return mat.getBlock().blockID;
+	public IMaterial getForDmg( int dmg) {
+		return MaterialLib.getForDmg( dmg);
 	}
 
 	@Override

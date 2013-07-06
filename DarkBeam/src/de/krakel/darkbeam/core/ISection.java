@@ -16,9 +16,9 @@ import de.krakel.darkbeam.tile.IConnectable;
 import de.krakel.darkbeam.tile.TileStage;
 
 public interface ISection {
-	IConnectable createConnect();
+	IConnectable createConnect( IMaterial mat);
 
-	int getBlockID( int dmg);
+	IMaterial getForDmg( int dmg);
 
 	Icon getIcon( int side, int dmg);
 

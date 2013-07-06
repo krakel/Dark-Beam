@@ -7,7 +7,6 @@
  */
 package de.krakel.darkbeam.core;
 
-import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 
 import de.krakel.darkbeam.client.renderer.SectionInsulatedRenderer;
@@ -20,13 +19,13 @@ public class SectionInsulated extends ASectionWire {
 	}
 
 	@Override
-	public IConnectable createConnect() {
-		return new WireConnect( this);
+	public IConnectable createConnect( IMaterial mat) {
+		return new WireConnect( this, mat);
 	}
 
 	@Override
-	public int getBlockID( int dmg) {
-		return Item.dyePowder.itemID;
+	public IMaterial getForDmg( int dmg) {
+		return InsulateLib.getForDmg( dmg);
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class SectionInsulated extends ASectionWire {
 
 	@Override
 	public int getLevel() {
-		return 2;
+		return 11;
 	}
 
 	@Override

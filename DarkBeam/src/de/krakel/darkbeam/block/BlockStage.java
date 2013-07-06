@@ -81,7 +81,7 @@ public class BlockStage extends Block {
 
 	@Override
 	public TileEntity createTileEntity( World world, int meta) {
-		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
+//		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
 		return new TileStage();
 	}
 

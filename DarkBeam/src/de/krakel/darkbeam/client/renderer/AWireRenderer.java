@@ -74,13 +74,13 @@ abstract class AWireRenderer extends ASectionRenderer {
 				maxX = connect.isConnected( AreaType.NORTH_EAST) ? 1F : max;
 				minY = connect.isConnected( AreaType.DOWN_NORTH) ? 0F : min;
 				maxY = connect.isConnected( AreaType.UP_NORTH) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_NORTH)) {
+				if (connect.isAngled( AreaType.DOWN_NORTH)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_NORTH)) {
+				if (connect.isAngled( AreaType.UP_NORTH)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.NORTH_EAST)) {
+				if (connect.isAngled( AreaType.NORTH_EAST)) {
 					maxX += mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 0F, maxX, maxS, mHigh);
@@ -93,13 +93,13 @@ abstract class AWireRenderer extends ASectionRenderer {
 				maxX = connect.isConnected( AreaType.SOUTH_EAST) ? 1F : max;
 				minY = connect.isConnected( AreaType.DOWN_SOUTH) ? 0F : min;
 				maxY = connect.isConnected( AreaType.UP_SOUTH) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_SOUTH)) {
+				if (connect.isAngled( AreaType.DOWN_SOUTH)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_SOUTH)) {
+				if (connect.isAngled( AreaType.UP_SOUTH)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.SOUTH_WEST)) {
+				if (connect.isAngled( AreaType.SOUTH_WEST)) {
 					minX -= mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 1F - mHigh, maxX, maxS, 1F);
@@ -112,13 +112,13 @@ abstract class AWireRenderer extends ASectionRenderer {
 				maxY = connect.isConnected( AreaType.UP_WEST) ? 1F : max;
 				minZ = connect.isConnected( AreaType.NORTH_WEST) ? 0F : min;
 				maxZ = connect.isConnected( AreaType.SOUTH_WEST) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_WEST)) {
+				if (connect.isAngled( AreaType.DOWN_WEST)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_WEST)) {
+				if (connect.isAngled( AreaType.UP_WEST)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.NORTH_WEST)) {
+				if (connect.isAngled( AreaType.NORTH_WEST)) {
 					minZ -= mHigh;
 				}
 				blk.setBlockBounds( 0F, minY, minS, mHigh, maxY, maxS);
@@ -131,13 +131,13 @@ abstract class AWireRenderer extends ASectionRenderer {
 				maxY = connect.isConnected( AreaType.UP_EAST) ? 1F : max;
 				minZ = connect.isConnected( AreaType.NORTH_EAST) ? 0F : min;
 				maxZ = connect.isConnected( AreaType.SOUTH_EAST) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_EAST)) {
+				if (connect.isAngled( AreaType.DOWN_EAST)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_EAST)) {
+				if (connect.isAngled( AreaType.UP_EAST)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.SOUTH_EAST)) {
+				if (connect.isAngled( AreaType.SOUTH_EAST)) {
 					maxZ += mHigh;
 				}
 				blk.setBlockBounds( 1F - mHigh, minY, minS, 1F, maxY, maxS);

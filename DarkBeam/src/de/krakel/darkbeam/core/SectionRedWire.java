@@ -20,13 +20,13 @@ public class SectionRedWire extends ASectionWire {
 	}
 
 	@Override
-	public IConnectable createConnect() {
-		return new WireConnect( this);
+	public IConnectable createConnect( IMaterial mat) {
+		return new WireConnect( this, mat);
 	}
 
 	@Override
-	public int getBlockID( int dmg) {
-		return Block.blockRedstone.blockID;
+	public IMaterial getForDmg( int dmg) {
+		return InsulateLib.UNKNOWN;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class SectionRedWire extends ASectionWire {
 
 	@Override
 	public int getLevel() {
-		return 1;
+		return 10;
 	}
 
 	@Override

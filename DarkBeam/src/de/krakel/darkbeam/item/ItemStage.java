@@ -149,13 +149,13 @@ public class ItemStage extends ItemBlock {
 		for (Material mat : MaterialLib.values()) {
 			for (ISection sec : SectionLib.values()) {
 				if (sec.isStructure()) {
-					lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, mat.toDmg( sec)));
+					lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, DarkLib.toDmg( sec, mat)));
 				}
 			}
 		}
 		lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, SectionLib.sRedwire.toDmg()));
 		for (Insulate insu : InsulateLib.values()) {
-			lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, insu.toDmg( SectionLib.sInsuwire)));
+			lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, DarkLib.toDmg( SectionLib.sInsuwire, insu)));
 		}
 		lst.add( new ItemStack( BlockType.STAGE.getBlock(), 1, SectionLib.sCable.toDmg()));
 //		if (tab == ModTabs.sSubTabSection) {
