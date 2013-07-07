@@ -20,6 +20,8 @@ public interface IConnectable {
 
 	int getLevel();
 
+	int getProvidingPower( AreaType side);
+
 	boolean isAllowed( ISection sec, IMaterial mat);
 
 	boolean isAngled( AreaType edge);
@@ -33,10 +35,6 @@ public interface IConnectable {
 	boolean isInvalid();
 
 	boolean isPowerd();
-
-	int isProvidingStrongPower( AreaType side);
-
-	int isProvidingWeakPower( AreaType side);
 
 	boolean isValid( int value);
 

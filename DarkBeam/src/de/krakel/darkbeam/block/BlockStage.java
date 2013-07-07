@@ -80,23 +80,36 @@ public class BlockStage extends Block {
 	}
 
 	@Override
+	public int colorMultiplier( IBlockAccess world, int x, int y, int z) {
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+		if (tile == null) {
+			return super.colorMultiplier( world, x, y, z);
+		}
+		if (tile.getConnect().isPowerd()) {
+			return 0xFFFFFF;
+		}
+//		return super.colorMultiplier( world, x, y, z);
+		return 0x000000;
+	}
+
+	@Override
 	public TileEntity createTileEntity( World world, int meta) {
-//		LogHelper.info( "createTileEntity: %b, %d", world.isRemote, meta);
+//		LogHelper.info( "createTileEntity: %s, %d", LogHelper.toString( world), meta);
 		return new TileStage();
 	}
 
+//	@Override
+//	@SideOnly( Side.CLIENT)
+//	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
+//		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+//		if (tile == null) {
+//			return super.getBlockTexture( world, x, y, z, side);
+//		}
+//		return super.getBlockTexture( world, x, y, z, side);
+//	}
+//
 	@Override
-	@SideOnly( Side.CLIENT)
-	public Icon getBlockTexture( IBlockAccess world, int x, int y, int z, int side) {
-		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
-		if (tile == null) {
-			return super.getBlockTexture( world, x, y, z, side);
-		}
-		return super.getBlockTexture( world, x, y, z, side);
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool( World par1World, int par2, int par3, int par4) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool( World world, int x, int y, int z) {
 		return null;
 	}
 
@@ -107,6 +120,15 @@ public class BlockStage extends Block {
 		return sec.getIcon( side, dmg);
 	}
 
+//	@Override
+//	public int getMixedBrightnessForBlock( IBlockAccess world, int x, int y, int z) {
+//		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+//		if (tile == null) {
+//			return super.getMixedBrightnessForBlock( world, x, y, z);
+//		}
+//		return 100;
+//	}
+//
 	@Override
 	public int getRenderType() {
 		return BlockStageRender.ID;
@@ -132,37 +154,32 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int relate) {
-		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
-		if (tile == null) {
-			return 0;
-		}
-		return tile.getConnect().isProvidingStrongPower( AreaType.redstoneToSide( relate));
+	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int side) {
+		return isProvidingWeakPower( world, x, y, z, side);
 	}
 
 	@Override
-	public int isProvidingWeakPower( IBlockAccess world, int x, int y, int z, int relate) {
+	public int isProvidingWeakPower( IBlockAccess world, int x, int y, int z, int side) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return 0;
 		}
-		return tile.getConnect().isProvidingWeakPower( AreaType.redstoneToSide( relate));
+		return tile.getConnect().getProvidingPower( AreaType.toArea( side).anti());
 	}
 
 	@Override
 	public void onBlockClicked( World world, int x, int y, int z, EntityPlayer player) {
-		LogHelper.info( "onBlockClicked: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
+		LogHelper.info( "onBlockClicked: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
 		super.onBlockClicked( world, x, y, z, player);
 	}
 
 	@Override
 	public void onNeighborBlockChange( World world, int x, int y, int z, int blockID) {
-		if (world.isRemote) {
-			return;
-		}
+		LogHelper.info( "onNeighborBlockChange: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {
 			tile.refresh();
+			tile.markForUpdate();
 		}
 		else {
 			world.setBlockToAir( x, y, z);
@@ -176,7 +193,7 @@ public class BlockStage extends Block {
 
 	@Override
 	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
-		LogHelper.info( "removeBlockByPlayer: %b, %s", world.isRemote, LogHelper.toString( x, y, z));
+		LogHelper.info( "removeBlockByPlayer: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
 		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {
 			return false;
@@ -196,9 +213,10 @@ public class BlockStage extends Block {
 				world.setBlockToAir( x, y, z);
 			}
 			else {
-				world.markBlockForUpdate( x, y, z);
-//				tile.updateEntity();
+				tile.refresh();
+				tile.markForUpdate();
 			}
+			tile.notifyAllChange();
 		}
 		return false;
 	}

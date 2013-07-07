@@ -10,8 +10,10 @@ package de.krakel.darkbeam.core.helper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.FMLLog;
 
@@ -128,6 +130,17 @@ public class LogHelper {
 			sb.append( "null");
 		}
 		return sb.toString();
+	}
+
+	public static String toString( TileEntity tile) {
+		return DarkLib.format( "tile=[%s, %s, %s]", toString( tile.worldObj), toString( tile.xCoord, tile.yCoord, tile.zCoord), tile);
+	}
+
+	public static String toString( World world) {
+		if (world == null) {
+			return "null";
+		}
+		return world.isRemote ? "Client" : "Server";
 	}
 
 	public static void warning( String msg, Object... data) {

@@ -24,6 +24,7 @@ import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.SectionLib;
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class TileStage extends TileEntity implements Iterable<AreaType> {
@@ -112,14 +113,30 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return new AreaIterator( mArea);
 	}
 
+	public void markForUpdate() {
+		LogHelper.info( "markForUpdate: %s", LogHelper.toString( this));
+		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
+		mNeedUpdate = true;
+	}
+
+	public void notifyAllChange() {
+		LogHelper.info( "notifyAllChange: %s", LogHelper.toString( this));
+		int blockID = BlockType.STAGE.getId();
+		AreaType.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, blockID);
+		AreaType.notifyEdgesChange( worldObj, xCoord, yCoord, zCoord, blockID);
+		AreaType.notifyNeighborChange2( worldObj, xCoord, yCoord, zCoord, blockID);
+	}
+
 	@Override
 	public void onDataPacket( INetworkManager net, Packet132TileEntityData paket) {
+		LogHelper.info( "onDataPacket");
 		readFromNBT( paket.customParam1);
+		mNeedUpdate = true;
 	}
 
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
-//		LogHelper.info( "readFromNBT: %s", nbt);
+		LogHelper.info( "readFromNBT: %s, %s", LogHelper.toString( worldObj), nbt);
 		super.readFromNBT( nbt);
 		int areas = nbt.getInteger( NBT_AREAS);
 		byte[] arr = nbt.getByteArray( NBT_SECTIONS);
@@ -135,6 +152,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public void refresh() {
+		LogHelper.info( "refresh: %s, %s", LogHelper.toString( this), mConnect);
 		mConnect.refresh( this);
 		if (mConnect.isEmpty()) {
 			mConnect = IConnectable.NO_CONNECT;
@@ -165,7 +183,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				sb.append( "-|-");
 			}
 		}
-//		sb.append( mConnect.toString());
+		sb.append( ", ");
+		sb.append( mConnect.toString());
 		sb.append( "]");
 		return sb.toString();
 	}
@@ -197,7 +216,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				mSec[area.ordinal()] = sec;
 				mMat[area.ordinal()] = mat;
 				mArea |= area.mMask;
-//				LogHelper.info( "tryAdd: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
+//				LogHelper.info( "tryAdd: %s, %s, %s", LogHelper.toString( worldObj), area.name(), toString());
 				return true;
 			}
 		}
@@ -217,7 +236,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				if (mConnect.isEmpty()) {
 					mConnect = IConnectable.NO_CONNECT;
 				}
-//				LogHelper.info( "tryRemove: %b, %s, %s", worldObj != null && worldObj.isRemote, area.name(), toString());
+//				LogHelper.info( "tryRemove: %s, %s, %s", LogHelper.toString( worldObj), area.name(), toString());
 				return meta;
 			}
 		}
@@ -226,19 +245,12 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return -1;
 	}
 
-	@SuppressWarnings( "unused")
-	private void updateAll() {
-		int blockID = BlockType.STAGE.getId();
-		AreaType.updateNeighbor( worldObj, xCoord, yCoord, zCoord, blockID);
-		AreaType.updateEdges( worldObj, xCoord, yCoord, zCoord, blockID);
-		AreaType.updateNeighbor2( worldObj, xCoord, yCoord, zCoord, blockID);
-	}
-
 	@Override
 	public void updateEntity() {
-		refresh();
 		if (mNeedUpdate && worldObj.isRemote) {
-			worldObj.markBlockForRenderUpdate( xCoord, yCoord, zCoord);
+			LogHelper.info( "updateEntity: %s", LogHelper.toString( this));
+			refresh();
+			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
 			mNeedUpdate = false;
 		}
 	}

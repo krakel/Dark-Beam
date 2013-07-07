@@ -259,6 +259,42 @@ public enum AreaType {
 		return ITERABBLE_EDGES;
 	}
 
+	public static void notifyCornersChange( World world, int x, int y, int z, int blockID) {
+		for (AreaType corner : corners()) {
+			int x1 = x + corner.mDx;
+			int y1 = y + corner.mDy;
+			int z1 = z + corner.mDz;
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void notifyEdgesChange( World world, int x, int y, int z, int blockID) {
+		for (AreaType edge : edges()) {
+			int x1 = x + edge.mDx;
+			int y1 = y + edge.mDy;
+			int z1 = z + edge.mDz;
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void notifyNeighborChange( World world, int x, int y, int z, int blockID) {
+		for (AreaType side : sides()) {
+			int x1 = x + side.mDx;
+			int y1 = y + side.mDy;
+			int z1 = z + side.mDz;
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void notifyNeighborChange2( World world, int x, int y, int z, int blockID) {
+		for (AreaType side : sides()) {
+			int x1 = x + (side.mDx << 1);
+			int y1 = y + (side.mDy << 1);
+			int z1 = z + (side.mDz << 1);
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
 	public static int offEdges( AreaType side) {
 		switch (side) {
 			case DOWN:
@@ -387,40 +423,8 @@ public enum AreaType {
 		return result;
 	}
 
-	public static void updateCorners( World world, int x, int y, int z, int blockID) {
-		for (AreaType corner : corners()) {
-			int x1 = x + corner.mDx;
-			int y1 = y + corner.mDy;
-			int z1 = z + corner.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void updateEdges( World world, int x, int y, int z, int blockID) {
-		for (AreaType edge : edges()) {
-			int x1 = x + edge.mDx;
-			int y1 = y + edge.mDy;
-			int z1 = z + edge.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void updateNeighbor( World world, int x, int y, int z, int blockID) {
-		for (AreaType side : sides()) {
-			int x1 = x + side.mDx;
-			int y1 = y + side.mDy;
-			int z1 = z + side.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void updateNeighbor2( World world, int x, int y, int z, int blockID) {
-		for (AreaType side : sides()) {
-			int x1 = x + (side.mDx << 1);
-			int y1 = y + (side.mDy << 1);
-			int z1 = z + (side.mDz << 1);
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
+	public AreaType anti() {
+		return anti( this);
 	}
 
 	private static final class AreaIterator implements Iterator<AreaType> {

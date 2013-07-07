@@ -148,12 +148,12 @@ public class SectionLib {
 
 		@Override
 		public int getID() {
-			return -1;
+			return 0;
 		}
 
 		@Override
 		public int toDmg() {
-			return -1;
+			return 0;
 		}
 	}
 }

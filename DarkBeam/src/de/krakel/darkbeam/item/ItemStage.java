@@ -76,36 +76,36 @@ public class ItemStage extends ItemBlock {
 	}
 
 	private static MovingObjectPosition toPlacePos( World world, MovingObjectPosition pos, ItemStack stk) {
-		LogHelper.info( "toPlacePos: %b, %s", world.isRemote, LogHelper.toString( pos));
+//		LogHelper.info( "toPlacePos: %s, %s", LogHelper.toString( world), LogHelper.toString( pos));
 		int dmg = stk.getItemDamage();
 		ISection sec = SectionLib.getForDmg( dmg);
 		sec.updateArea( pos);
 		if (world.canPlaceEntityOnSide( BlockType.STAGE.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
-			LogHelper.info( "toPlacePos0");
+//			LogHelper.info( "toPlacePos0");
 			return pos;
 		}
 		if (sec.isJoinable()) {
 			pos.sideHit ^= 1;
 			sec.updateArea( pos);
 			if (canSectionAdd( world, pos, sec)) {
-				LogHelper.info( "toPlacePos1");
+//				LogHelper.info( "toPlacePos1");
 				return pos;
 			}
 			pos.sideHit ^= 1;
 		}
 		sec.updateArea( pos);
 		if (canSectionAdd( world, pos, sec)) {
-			LogHelper.info( "toPlacePosB");
+//			LogHelper.info( "toPlacePosB");
 			return pos;
 		}
 		ItemStage.move( pos); // next block
 		sec.oppositeArea( pos);
 		if (world.canPlaceEntityOnSide( BlockType.STAGE.getId(), pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, null, stk)) {
-			LogHelper.info( "toPlacePosC");
+//			LogHelper.info( "toPlacePosC");
 			return pos;
 		}
 		if (canSectionAdd( world, pos, sec)) {
-			LogHelper.info( "toPlacePosD");
+//			LogHelper.info( "toPlacePosD");
 			return pos;
 		}
 		return null;
@@ -171,7 +171,10 @@ public class ItemStage extends ItemBlock {
 
 	@Override
 	public boolean onItemUse( ItemStack stk, EntityPlayer player, World world, int x, int y, int z, int dir, float dx, float dy, float dz) {
-//		LogHelper.info( "a: %b, %s", world.isRemote, LogHelper.toString( x, y, z, dir, dx, dy, dz, null));
+//		LogHelper.info( "onItemUse a: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z, dir, dx, dy, dz, null));
+		if (stk.stackSize == 0) {
+			return false;
+		}
 		if (player.isSneaking()) {
 			return false;
 		}
@@ -179,34 +182,38 @@ public class ItemStage extends ItemBlock {
 			return false;
 		}
 		int dmg = stk.getItemDamage();
-		if (SectionLib.isValidForMeta( dmg)) {
-			MovingObjectPosition hit = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
-			if (hit == null) {
-				return false;
-			}
-//			LogHelper.info( "b: %b, %s", world.isRemote, LogHelper.toString( pos));
-			if (hit.typeOfHit != EnumMovingObjectType.TILE) {
-				return false;
-			}
-			MovingObjectPosition pos = toPlacePos( world, hit, stk);
-			if (pos == null) {
-				return false;
-			}
-//			LogHelper.info( "c: %b, %s", world.isRemote, LogHelper.toString( hit));
-			if (world.canPlaceEntityOnSide( stk.itemID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, player, stk)) {
-				world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
-			}
-			TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
-			if (tile != null && tile.tryAdd( AreaType.toArea( pos.subHit), dmg)) {
-//				LogHelper.info( "e: %b, %s", world.isRemote, tile);
-				--stk.stackSize;
-				DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());
-				world.notifyBlocksOfNeighborChange( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());
-				world.markBlockForUpdate( pos.blockX, pos.blockY, pos.blockZ);
-				return true;
-			}
+		if (!SectionLib.isValidForMeta( dmg)) {
+			return false;
 		}
-		return false;
+		MovingObjectPosition hit = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
+		if (hit == null) {
+			return false;
+		}
+//		LogHelper.info( "onItemUse b: %s, %s", LogHelper.toString( world), LogHelper.toString( pos));
+		if (hit.typeOfHit != EnumMovingObjectType.TILE) {
+			return false;
+		}
+		MovingObjectPosition pos = toPlacePos( world, hit, stk);
+		if (pos == null) {
+			return false;
+		}
+		LogHelper.info( "onItemUse c: %s, %s", LogHelper.toString( world), LogHelper.toString( hit));
+		if (world.canPlaceEntityOnSide( stk.itemID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, player, stk)) {
+			world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
+		}
+		TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
+		if (tile == null || !tile.tryAdd( AreaType.toArea( pos.subHit), dmg)) {
+			return false;
+		}
+		LogHelper.info( "onItemUse d: %s, %s, %s", LogHelper.toString( world), LogHelper.toString( pos), tile);
+		DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());
+		--stk.stackSize;
+		tile.refresh();
+		tile.markForUpdate();
+		if (!world.isRemote) {
+			tile.notifyAllChange();
+		}
+		return true;
 	}
 
 	@Override

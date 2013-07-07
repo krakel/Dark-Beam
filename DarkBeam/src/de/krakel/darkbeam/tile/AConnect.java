@@ -15,6 +15,7 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
+import de.krakel.darkbeam.core.helper.LogHelper;
 
 abstract class AConnect implements IConnectable {
 	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
@@ -52,11 +53,22 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
+	public int getProvidingPower( AreaType side) {
+		int off = AreaType.offEdges( side);
+		int neighbor = mInnerBlock & mNeighborBlock & mNeighborConn;
+		if ((neighbor & off) != 0) {
+			return mPower;
+		}
+		return 0;
+	}
+
+	@Override
 	public abstract boolean isAllowed( ISection sec, IMaterial mat);
 
 	@Override
 	public boolean isAngled( AreaType edge) {
-		return (mNeighborBlock & mAngledBlock & mAngledConn & edge.mMask) != 0;
+		int angled = mNeighborBlock & mAngledBlock & mAngledConn;
+		return (angled & edge.mMask) != 0;
 	}
 
 	@Override
@@ -95,22 +107,6 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public int isProvidingStrongPower( AreaType side) {
-		if (isPowerd() && isWired( side)) {
-			return 15;
-		}
-		return 0;
-	}
-
-	@Override
-	public int isProvidingWeakPower( AreaType side) {
-		if (isPowerd() && isWired( side)) {
-			return 15;
-		}
-		return 0;
-	}
-
-	@Override
 	public boolean isValid( int value) {
 		return (mArea & value) != 0;
 	}
@@ -120,30 +116,46 @@ abstract class AConnect implements IConnectable {
 		return (mArea & area.mMask) != 0;
 	}
 
-	@SuppressWarnings( "static-method")
 	private void powerAngled( TileStage tile) {
 		for (AreaType edge : AreaType.edges()) {
 			int x = tile.xCoord + edge.mDx;
 			int y = tile.yCoord + edge.mDy;
 			int z = tile.zCoord + edge.mDz;
-			TileStage tn = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-			if (tn != null) {
+			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
+			if (other != null) {
+				powerAngled( other, edge);
 			}
 			else {
 			}
 		}
 	}
 
-	@SuppressWarnings( "static-method")
+	private void powerAngled( TileStage other, AreaType edge) {
+	}
+
 	private void powerNeighbor( TileStage tile) {
 		for (AreaType side : AreaType.sides()) {
 			int x = tile.xCoord + side.mDx;
 			int y = tile.yCoord + side.mDy;
 			int z = tile.zCoord + side.mDz;
-			TileStage tn = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-			if (tn != null) {
+			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
+			if (other != null) {
+				powerNeighbor( other, side);
 			}
-			else {
+			else if (tile.worldObj.getIndirectPowerLevelTo( x, y, z, side.ordinal()) > 0) {
+				mPower |= 15;
+			}
+			if (mPower >= 15) {
+				return;
+			}
+		}
+	}
+
+	private void powerNeighbor( TileStage other, AreaType side) {
+		if (canConnect( other.getConnect())) {
+			int neighbor = mInnerBlock & mNeighborBlock & mNeighborConn;
+			if ((neighbor & side.mMask) != 0 && other.getConnect().isPowerd()) {
+				mPower |= 15;
 			}
 		}
 	}
@@ -155,6 +167,7 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public void refresh( TileStage tile) {
+		int old = mPower;
 		reset();
 		refreshWire( tile);
 		if (isEmpty()) {
@@ -165,6 +178,11 @@ abstract class AConnect implements IConnectable {
 		refreshAngled( tile);
 		powerNeighbor( tile);
 		powerAngled( tile);
+		LogHelper.info( "refresh: %d -> %d", old, mPower);
+//		tile.worldObj.markBlockForRenderUpdate( tile.xCoord, tile.yCoord, tile.zCoord);
+		if (old != mPower) {
+//			tile.updateAll();
+		}
 	}
 
 	private void refreshAngled( TileStage tile) {
@@ -193,7 +211,7 @@ abstract class AConnect implements IConnectable {
 
 	private void refreshAngled( TileStage other, AreaType edge) {
 		if (canConnect( other.getConnect())) {
-			AreaType sideA = AreaType.anti( AreaType.sideA( edge));
+			AreaType sideA = AreaType.sideA( edge).anti();
 			if (other.isUsed( sideA)) {
 				if (other.isAllowed( sideA)) {
 					mAngledConn |= edge.mMask;
@@ -202,7 +220,7 @@ abstract class AConnect implements IConnectable {
 					mAngledBlock &= ~edge.mMask;
 				}
 			}
-			AreaType sideB = AreaType.anti( AreaType.sideB( edge));
+			AreaType sideB = AreaType.sideB( edge).anti();
 			if (other.isUsed( sideB)) {
 				if (other.isAllowed( sideB)) {
 					mAngledConn |= edge.mMask;
@@ -212,7 +230,7 @@ abstract class AConnect implements IConnectable {
 				}
 			}
 		}
-		if (other.isUsed( AreaType.anti( edge))) {
+		if (other.isUsed( edge.anti())) {
 			mAngledBlock &= ~edge.mMask;
 		}
 	}
@@ -268,7 +286,7 @@ abstract class AConnect implements IConnectable {
 	}
 
 	private void refreshNeighbor( TileStage other, AreaType side) {
-		AreaType anti = AreaType.anti( side);
+		AreaType anti = side.anti();
 		if (canConnect( other.getConnect())) {
 			for (AreaType sideB : AreaType.sides( anti)) {
 				if (other.isUsed( sideB)) {
@@ -306,6 +324,7 @@ abstract class AConnect implements IConnectable {
 		mNeighborBlock = -1;
 		mInnerConn = 0;
 		mInnerBlock = -1;
+		mPower = 0;
 	}
 
 	@Override
@@ -315,10 +334,7 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer( "AConnect[");
-		sb.append( mPower);
-		sb.append( "]");
-		return sb.toString();
+		return DarkLib.format( "AConnect=[%d, 0x%04X, 0x%04X]", mPower, mArea, getConnections());
 	}
 
 	@Override
