@@ -5,9 +5,9 @@
 	<property file="number.properties" />
 
 	<target name="clean">
-		<delete file="${dir.forge}\src\minecraft\mcmod.info" />
-		<delete dir="${dir.forge}\src\minecraft\de" />
-		<delete dir="${dir.forge}\reobf\minecraft" />
+		<delete file="${dir.forge}/src/minecraft/mcmod.info" />
+		<delete dir="${dir.forge}/src/minecraft/de" />
+		<delete dir="${dir.forge}/reobf/minecraft" />
 	</target>
 
 	<target name="number">
@@ -17,15 +17,15 @@
 	</target>
 
 	<target name="copy">
-		<copy todir="${dir.forge}\src\minecraft">
-			<fileset dir=".\src\" />
+		<copy todir="${dir.forge}/src/minecraft">
+			<fileset dir="./src/" />
 		</copy>
 	</target>
 
 	<target name="tokens">
-		<replace dir="${dir.forge}\src\minecraft" token="@VERSION@" value="${mod.version}" />
-		<replace dir="${dir.forge}\src\minecraft" token="@FINGERPRINT@" value="${mod.fingerprint}" />
-		<replace dir="${dir.forge}\src\minecraft" token="@BUILD_NUMBER@" value="${number.version}" />
+		<replace dir="${dir.forge}/src/minecraft" token="@VERSION@" value="${mod.version}" />
+		<replace dir="${dir.forge}/src/minecraft" token="@FINGERPRINT@" value="${mod.fingerprint}" />
+		<replace dir="${dir.forge}/src/minecraft" token="@BUILD_NUMBER@" value="${number.version}" />
 	</target>
 
 	<target name="recompile">
@@ -48,9 +48,9 @@
 
 	<target name="build.jar">
 		<jar destfile="${dst}">
-			<fileset dir="${dir.forge}\src\minecraft\" includes="mcmod.info" />
-			<fileset dir="${dir.forge}\reobf\minecraft" />
-			<fileset dir=".\resources" excludes="**/xcf/**" />
+			<fileset dir="${dir.forge}/src/minecraft/" includes="mcmod.info" />
+			<fileset dir="${dir.forge}/reobf/minecraft" includes="de/**" />
+			<fileset dir="./resources" excludes="**/xcf/**" />
 		</jar>
 	</target>
 
@@ -63,7 +63,7 @@
 		<antcall target="reobfuscate" />
 
 		<mkdir dir="${dir.release}" />
-		<property name="jarName" value="${dir.release}\DarkBeam-${minecraft.version}-${mod.version}.${number.version}.jar" />
+		<property name="jarName" value="${dir.release}/DarkBeam-${minecraft.version}-${mod.version}.${number.version}.jar" />
 
 		<antcall target="build.jar">
 			<param name="dst" value="${jarName}" />
@@ -81,7 +81,7 @@
 		<antcall target="reobfuscate" />
 
 		<mkdir dir="${dir.release}" />
-		<property name="jarName" value="${dir.release}\DarkBeam-${minecraft.version}-${mod.version}.${number.version}.jar" />
+		<property name="jarName" value="${dir.release}/DarkBeam-${minecraft.version}-${mod.version}.${number.version}.jar" />
 
 		<antcall target="build.jar">
 			<param name="dst" value="${jarName}" />
