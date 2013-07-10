@@ -45,7 +45,7 @@ public class SectionCable extends ASectionWire {
 	}
 
 	@Override
-	public boolean isRedwire() {
+	public boolean isWire() {
 		return false;
 	}
 }

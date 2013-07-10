@@ -49,12 +49,12 @@ public abstract class ASectionStructure extends ASection {
 	}
 
 	@Override
-	public boolean isRedwire() {
-		return false;
+	public boolean isStructure() {
+		return true;
 	}
 
 	@Override
-	public boolean isStructure() {
-		return true;
+	public boolean isWire() {
+		return false;
 	}
 }

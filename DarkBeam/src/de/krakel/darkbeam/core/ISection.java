@@ -32,11 +32,11 @@ public interface ISection {
 
 	boolean isJoinable();
 
-	boolean isRedwire();
-
 	boolean isStructure();
 
 	boolean isValid( TileStage tile, AreaType area);
+
+	boolean isWire();
 
 	void oppositeArea( MovingObjectPosition pos);
 

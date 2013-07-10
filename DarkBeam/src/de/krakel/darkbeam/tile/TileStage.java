@@ -116,7 +116,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	public void markForUpdate() {
 		LogHelper.info( "markForUpdate: %s", LogHelper.toString( this));
 		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
-		mNeedUpdate = true;
+//		mNeedUpdate = true;
 	}
 
 	public void notifyAllChange() {
@@ -162,6 +162,19 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		}
 	}
 
+	private boolean set( AreaType area, ISection sec, IMaterial mat) {
+		try {
+			mSec[area.ordinal()] = sec;
+			mMat[area.ordinal()] = mat;
+			mArea |= area.mMask;
+//			LogHelper.info( "tryAdd: %s, %s, %s", LogHelper.toString( worldObj), area.name(), toString());
+			return true;
+		}
+		catch (IndexOutOfBoundsException ex) {
+		}
+		return false;
+	}
+
 	public void setSectionBounds( AreaType area, Block blk) {
 		ISection sec = getSection( area);
 		sec.setSectionBounds( area, blk, this);
@@ -202,25 +215,18 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	private boolean tryAdd( AreaType area, ISection sec, IMaterial mat) {
-		try {
-			if (!isUsed( area)) {
-				if (mConnect == IConnectable.NO_CONNECT) {
-					mConnect = sec.createConnect( mat);
-				}
-				if (mConnect.isAllowed( sec, mat)) {
-					mConnect.set( area);
-				}
-				else {
-					return false;
-				}
-				mSec[area.ordinal()] = sec;
-				mMat[area.ordinal()] = mat;
-				mArea |= area.mMask;
-//				LogHelper.info( "tryAdd: %s, %s, %s", LogHelper.toString( worldObj), area.name(), toString());
-				return true;
-			}
+		if (isUsed( area)) {
+			return false;
 		}
-		catch (IndexOutOfBoundsException ex) {
+		if (sec.isStructure()) {
+			return set( area, sec, mat);
+		}
+		if (mConnect == IConnectable.NO_CONNECT) {
+			mConnect = sec.createConnect( mat);
+		}
+		if (mConnect.isAllowed( sec, mat)) {
+			mConnect.set( area);
+			return set( area, sec, mat);
 		}
 		return false;
 	}
@@ -249,8 +255,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	public void updateEntity() {
 		if (mNeedUpdate && worldObj.isRemote) {
 			LogHelper.info( "updateEntity: %s", LogHelper.toString( this));
-			refresh();
-			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
+//			refresh();
+//			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
 			mNeedUpdate = false;
 		}
 	}
