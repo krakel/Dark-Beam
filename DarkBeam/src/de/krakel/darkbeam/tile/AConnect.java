@@ -7,7 +7,6 @@
  */
 package de.krakel.darkbeam.tile;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 
 import de.krakel.darkbeam.core.ASectionWire;
@@ -169,10 +168,6 @@ abstract class AConnect implements IConnectable {
 	public void refresh( TileStage tile) {
 		int old = mPower;
 		reset();
-		refreshWire( tile);
-		if (isEmpty()) {
-			return;
-		}
 		refreshEdged( tile);
 		refreshSided( tile);
 		refreshInner( tile);
@@ -190,55 +185,49 @@ abstract class AConnect implements IConnectable {
 			int x = tile.xCoord + edge.mDx;
 			int y = tile.yCoord + edge.mDy;
 			int z = tile.zCoord + edge.mDz;
-			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-			if (other != null) {
-				refreshEdged( other, edge);
-			}
-			else {
-				int id = tile.worldObj.getBlockId( x, y, z);
-				if (DarkLib.canPowered( id)) {
+			int id = tile.worldObj.getBlockId( x, y, z);
+			if (id != 0) {
+				TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
+				if (other != null) {
+					if (canConnect( other.getConnect()) && !other.isUsed( edge.anti())) {
+						refreshEdged( other, edge);
+					}
+				}
+				else if (DarkLib.canPoweredEdged( id)) {
 					mEdgedConn |= edge.mMask;
 				}
-				else {
-					Block blk = Block.blocksList[id];
-					if (blk != null && blk.canProvidePower()) {
-						mEdgedConn |= edge.mMask;
-					}
+				else if (DarkLib.canProvidePowerEdged( id)) {
+					mEdgedConn |= edge.mMask;
 				}
 			}
 		}
 	}
 
 	private void refreshEdged( TileStage other, AreaType edge) {
-		int blocked = 0;
-		if (canConnect( other.getConnect())) {
-			AreaType sideA = AreaType.sideA( edge).anti();
-			if (other.isUsed( sideA)) {
-				if (other.isAllowed( sideA)) {
-					mEdgedConn |= edge.mMask;
-				}
-				else {
-					blocked |= edge.mMask;
-				}
+		int breaked = 0;
+		AreaType sideA = AreaType.sideA( edge.anti());
+		if (other.isUsed( sideA)) {
+			if (other.isAllowed( sideA)) {
+				mEdgedConn |= edge.mMask;
 			}
-			AreaType sideB = AreaType.sideB( edge).anti();
-			if (other.isUsed( sideB)) {
-				if (other.isAllowed( sideB)) {
-					mEdgedConn |= edge.mMask;
-				}
-				else {
-					blocked |= edge.mMask;
-				}
+			else {
+				breaked |= edge.mMask;
 			}
 		}
-		if (other.isUsed( edge.anti())) {
-			blocked |= edge.mMask;
+		AreaType sideB = AreaType.sideB( edge.anti());
+		if (other.isUsed( sideB)) {
+			if (other.isAllowed( sideB)) {
+				mEdgedConn |= edge.mMask;
+			}
+			else {
+				breaked |= edge.mMask;
+			}
 		}
-		mEdgedConn &= ~blocked;
+		mEdgedConn &= ~breaked;
 	}
 
 	private void refreshInner( TileStage tile) {
-		int blocked = 0;
+		int breaked = 0;
 		int temp = 0;
 		for (AreaType side : AreaType.sides()) {
 			if (tile.isUsed( side)) {
@@ -248,82 +237,69 @@ abstract class AConnect implements IConnectable {
 					temp |= edges;
 				}
 				else {
-					blocked |= edges;
+					breaked |= edges;
 				}
 			}
 		}
 		for (AreaType edge : AreaType.edges()) {
 			if (tile.isUsed( edge)) {
-				blocked |= edge.mMask;
+				breaked |= edge.mMask;
 			}
 		}
-		mInnerConn &= ~blocked;
-		mSidedConn &= ~blocked;
-		mEdgedConn &= ~blocked;
+		mInnerConn &= ~breaked;
+		mSidedConn &= ~breaked;
+		mEdgedConn &= ~breaked;
 	}
 
 	private void refreshSided( TileStage tile) {
+		int breaked = 0;
 		for (AreaType side : AreaType.sides()) {
 			int x = tile.xCoord + side.mDx;
 			int y = tile.yCoord + side.mDy;
 			int z = tile.zCoord + side.mDz;
-			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-			if (other != null) {
-				refreshSided( other, side);
-			}
-			else if (!tile.isUsed( side)) {
-				int id = tile.worldObj.getBlockId( x, y, z);
-				if (DarkLib.canPowered( id)) {
-					mSidedConn |= AreaType.offEdges( side);
-				}
-				else {
-					Block blk = Block.blocksList[id];
-					if (blk != null) {
-						if (blk.canProvidePower()) {
-							mSidedConn |= AreaType.offEdges( side);
-						}
-						else if (blk.blockMaterial.isOpaque() && blk.renderAsNormalBlock()) {
-							mEdgedConn &= ~AreaType.offEdges( side);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void refreshSided( TileStage other, AreaType side) {
-		int blocked = 0;
-		AreaType anti = side.anti();
-		if (canConnect( other.getConnect())) {
-			for (AreaType sideB : AreaType.sides( anti)) {
-				if (other.isUsed( sideB)) {
-					if (other.isAllowed( sideB)) {
-						mSidedConn |= AreaType.edge( side, sideB).mMask;
+			int id = tile.worldObj.getBlockId( x, y, z);
+			if (id != 0) {
+				TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
+				if (other != null) {
+					if (other.isUsed( side.anti())) {
+						breaked |= AreaType.offEdges( side);
 					}
 					else {
-						blocked |= AreaType.edge( side, sideB).mMask;
+						breaked |= refreshSided( other, side, canConnect( other.getConnect()));
 					}
 				}
-				if (other.isUsed( AreaType.edge( anti, sideB))) {
-					blocked |= AreaType.edge( side, sideB).mMask;
+				else if (DarkLib.canPowered( id)) {
+					mSidedConn |= AreaType.offEdges( side);
+				}
+				else if (DarkLib.canProvidePower( id)) {
+					mSidedConn |= AreaType.offEdges( side);
+				}
+				else if (DarkLib.canBreakPower( id)) {
+					breaked |= AreaType.offEdges( side);
 				}
 			}
 		}
-		if (other.isUsed( anti)) {
-			blocked |= AreaType.offEdges( side);
-		}
-		mSidedConn &= ~blocked;
-		mEdgedConn &= ~blocked;
+		mSidedConn &= ~breaked;
+		mEdgedConn &= ~breaked;
 	}
 
-	private void refreshWire( TileStage tile) {
-		for (AreaType side : AreaType.sides()) {
-			ISection sec = tile.getSection( side);
-			IMaterial mat = tile.getMaterial( side);
-			if (isAllowed( sec, mat)) {
-				set( side);
+	private int refreshSided( TileStage other, AreaType side, boolean connect) {
+		int breaked = 0;
+		AreaType anti = side.anti();
+		for (AreaType sideB : AreaType.sides( anti)) {
+			if (other.isUsed( AreaType.edge( anti, sideB))) {
+				breaked |= AreaType.edge( side, sideB).mMask;
+			}
+			else if (other.isUsed( sideB)) {
+				if (connect && other.isAllowed( sideB)) {
+					mSidedConn |= AreaType.edge( side, sideB).mMask;
+				}
+				else {
+					breaked |= AreaType.edge( side, sideB).mMask;
+				}
 			}
 		}
+		return breaked;
 	}
 
 	private void reset() {

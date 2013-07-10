@@ -153,12 +153,27 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	public void refresh() {
 		LogHelper.info( "refresh: %s, %s", LogHelper.toString( this), mConnect);
-		mConnect.refresh( this);
+//		refreshConnect();
 		if (mConnect.isEmpty()) {
 			mConnect = IConnectable.NO_CONNECT;
 		}
+		else {
+			mConnect.refresh( this);
+		}
 		if (isEmpty()) {
 			invalidate();
+		}
+	}
+
+	@SuppressWarnings( "unused")
+	private void refreshConnect() {
+		for (AreaType side : AreaType.sides()) {
+			if (isAllowed( side)) {
+				mConnect.set( side);
+			}
+			else {
+				mConnect.delete( side);
+			}
 		}
 	}
 

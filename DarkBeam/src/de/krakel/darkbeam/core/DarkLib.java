@@ -24,12 +24,44 @@ public class DarkLib {
 	private DarkLib() {
 	}
 
+	public static boolean canBreakPower( int id) {
+		Block blk = Block.blocksList[id];
+		return blk != null && blk.blockMaterial.isOpaque() && blk.renderAsNormalBlock();
+	}
+
 	public static boolean canPowered( int id) {
 		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
-			|| id == Block.stoneButton.blockID || id == Block.woodenButton.blockID || id == Block.lever.blockID
-			|| id == Block.torchRedstoneIdle.blockID || id == Block.torchRedstoneActive.blockID
-			|| id == Block.redstoneRepeaterIdle.blockID || id == Block.redstoneRepeaterActive.blockID
 			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
+	}
+
+	public static boolean canPoweredEdged( int id) {
+		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
+			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
+	}
+
+	// canProvidePower()
+	// BlockPressurePlate         -> pressurePlateStone, pressurePlatePlanks
+	// BlockPressurePlateWeighted -> pressurePlateGold, pressurePlateIron
+	// BlockButtonStone           -> stoneButton
+	// BlockButtonWood            -> woodenButton
+	// BlockChest                 -> chest, chestTrapped
+	// BlockDaylightDetector      -> daylightSensor
+	// BlockDetectorRail          -> railDetector
+	// BlockLever                 -> lever
+	// BlockPoweredOre            -> blockRedstone
+	// BlockComparator            -> redstoneComparatorActive, redstoneComparatorIdle
+	// BlockRedstoneRepeater      -> redstoneRepeaterActive, redstoneRepeaterIdle
+	// BlockRedstoneTorch         -> torchRedstoneActive, torchRedstoneIdle
+	// BlockRedstoneWire          -> redstoneWire
+	// BlockTripWireSource        -> tripWireSource
+	public static boolean canProvidePower( int id) {
+		Block blk = Block.blocksList[id];
+		return blk != null && blk.canProvidePower();
+	}
+
+	public static boolean canProvidePowerEdged( int id) {
+		Block blk = Block.blocksList[id];
+		return blk != null && blk.canProvidePower() && blk.renderAsNormalBlock();
 	}
 
 	public static <T> boolean different( T obj1, T obj2) {
