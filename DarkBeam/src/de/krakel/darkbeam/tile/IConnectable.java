@@ -24,11 +24,11 @@ public interface IConnectable {
 
 	boolean isAllowed( ISection sec, IMaterial mat);
 
-	boolean isAngled( AreaType edge);
-
 	boolean isConnected( AreaType edge);
 
 	boolean isConnection( AreaType area);
+
+	boolean isEdged( AreaType edge);
 
 	boolean isEmpty();
 

@@ -37,7 +37,7 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isAngled( AreaType edge) {
+	public boolean isEdged( AreaType edge) {
 		return false;
 	}
 

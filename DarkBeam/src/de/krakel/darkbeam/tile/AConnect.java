@@ -22,15 +22,15 @@ abstract class AConnect implements IConnectable {
 	private static final int INVALID_NS = AreaType.toMask( AreaType.NORTH, AreaType.SOUTH);
 	private static final int INVALID_DU = AreaType.toMask( AreaType.DOWN, AreaType.UP);
 	private static final String NBT_POWER = "pwr";
+	private static final String NBT_INNER = "ci";
+	private static final String NBT_SIDED = "cs";
+	private static final String NBT_EDGED = "ce";
 	protected ASectionWire mWire;
 	private int mArea;
 	private int mPower;
-	private int mAngledConn;
-	private int mAngledBlock;
-	private int mNeighborConn;
-	private int mNeighborBlock;
 	private int mInnerConn;
-	private int mInnerBlock;
+	private int mSidedConn;
+	private int mEdgedConn;
 
 	protected AConnect( ASectionWire wire) {
 		mWire = wire;
@@ -44,7 +44,7 @@ abstract class AConnect implements IConnectable {
 	}
 
 	private int getConnections() {
-		return mInnerBlock & (mInnerConn | mNeighborBlock & (mNeighborConn | mAngledBlock & mAngledConn));
+		return mInnerConn | mSidedConn | mEdgedConn;
 	}
 
 	@Override
@@ -55,8 +55,7 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public int getProvidingPower( AreaType side) {
 		int off = AreaType.offEdges( side);
-		int neighbor = mInnerBlock & mNeighborBlock & mNeighborConn;
-		if ((neighbor & off) != 0) {
+		if ((mSidedConn & off) != 0) {
 			return mPower;
 		}
 		return 0;
@@ -64,12 +63,6 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public abstract boolean isAllowed( ISection sec, IMaterial mat);
-
-	@Override
-	public boolean isAngled( AreaType edge) {
-		int angled = mNeighborBlock & mAngledBlock & mAngledConn;
-		return (angled & edge.mMask) != 0;
-	}
 
 	@Override
 	public boolean isConnected( AreaType edge) {
@@ -80,6 +73,11 @@ abstract class AConnect implements IConnectable {
 	public boolean isConnection( AreaType area) {
 		int offs = AreaType.offEdges( area);
 		return (getConnections() & offs) != 0;
+	}
+
+	@Override
+	public boolean isEdged( AreaType edge) {
+		return (mEdgedConn & edge.mMask) != 0;
 	}
 
 	@Override
@@ -153,8 +151,7 @@ abstract class AConnect implements IConnectable {
 
 	private void powerNeighbor( TileStage other, AreaType side) {
 		if (canConnect( other.getConnect())) {
-			int neighbor = mInnerBlock & mNeighborBlock & mNeighborConn;
-			if ((neighbor & side.mMask) != 0 && other.getConnect().isPowerd()) {
+			if ((mSidedConn & side.mMask) != 0 && other.getConnect().isPowerd()) {
 				mPower |= 15;
 			}
 		}
@@ -163,6 +160,9 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
 		mPower = nbt.getInteger( NBT_POWER);
+		mInnerConn = nbt.getInteger( NBT_INNER);
+		mSidedConn = nbt.getInteger( NBT_SIDED);
+		mEdgedConn = nbt.getInteger( NBT_EDGED);
 	}
 
 	@Override
@@ -173,11 +173,11 @@ abstract class AConnect implements IConnectable {
 		if (isEmpty()) {
 			return;
 		}
+		refreshEdged( tile);
+		refreshSided( tile);
 		refreshInner( tile);
-		refreshNeighbor( tile);
-		refreshAngled( tile);
-		powerNeighbor( tile);
 		powerAngled( tile);
+		powerNeighbor( tile);
 		LogHelper.info( "refresh: %d -> %d", old, mPower);
 //		tile.worldObj.markBlockForRenderUpdate( tile.xCoord, tile.yCoord, tile.zCoord);
 		if (old != mPower) {
@@ -185,57 +185,60 @@ abstract class AConnect implements IConnectable {
 		}
 	}
 
-	private void refreshAngled( TileStage tile) {
+	private void refreshEdged( TileStage tile) {
 		for (AreaType edge : AreaType.edges()) {
 			int x = tile.xCoord + edge.mDx;
 			int y = tile.yCoord + edge.mDy;
 			int z = tile.zCoord + edge.mDz;
 			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
 			if (other != null) {
-				refreshAngled( other, edge);
+				refreshEdged( other, edge);
 			}
 			else {
 				int id = tile.worldObj.getBlockId( x, y, z);
 				if (DarkLib.canPowered( id)) {
-					mAngledConn |= edge.mMask;
+					mEdgedConn |= edge.mMask;
 				}
 				else {
 					Block blk = Block.blocksList[id];
 					if (blk != null && blk.canProvidePower()) {
-						mAngledConn |= edge.mMask;
+						mEdgedConn |= edge.mMask;
 					}
 				}
 			}
 		}
 	}
 
-	private void refreshAngled( TileStage other, AreaType edge) {
+	private void refreshEdged( TileStage other, AreaType edge) {
+		int blocked = 0;
 		if (canConnect( other.getConnect())) {
 			AreaType sideA = AreaType.sideA( edge).anti();
 			if (other.isUsed( sideA)) {
 				if (other.isAllowed( sideA)) {
-					mAngledConn |= edge.mMask;
+					mEdgedConn |= edge.mMask;
 				}
 				else {
-					mAngledBlock &= ~edge.mMask;
+					blocked |= edge.mMask;
 				}
 			}
 			AreaType sideB = AreaType.sideB( edge).anti();
 			if (other.isUsed( sideB)) {
 				if (other.isAllowed( sideB)) {
-					mAngledConn |= edge.mMask;
+					mEdgedConn |= edge.mMask;
 				}
 				else {
-					mAngledBlock &= ~edge.mMask;
+					blocked |= edge.mMask;
 				}
 			}
 		}
 		if (other.isUsed( edge.anti())) {
-			mAngledBlock &= ~edge.mMask;
+			blocked |= edge.mMask;
 		}
+		mEdgedConn &= ~blocked;
 	}
 
 	private void refreshInner( TileStage tile) {
+		int blocked = 0;
 		int temp = 0;
 		for (AreaType side : AreaType.sides()) {
 			if (tile.isUsed( side)) {
@@ -245,39 +248,42 @@ abstract class AConnect implements IConnectable {
 					temp |= edges;
 				}
 				else {
-					mInnerBlock &= ~edges;
+					blocked |= edges;
 				}
 			}
 		}
 		for (AreaType edge : AreaType.edges()) {
 			if (tile.isUsed( edge)) {
-				mInnerBlock &= ~edge.mMask;
+				blocked |= edge.mMask;
 			}
 		}
+		mInnerConn &= ~blocked;
+		mSidedConn &= ~blocked;
+		mEdgedConn &= ~blocked;
 	}
 
-	private void refreshNeighbor( TileStage tile) {
+	private void refreshSided( TileStage tile) {
 		for (AreaType side : AreaType.sides()) {
 			int x = tile.xCoord + side.mDx;
 			int y = tile.yCoord + side.mDy;
 			int z = tile.zCoord + side.mDz;
 			TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
 			if (other != null) {
-				refreshNeighbor( other, side);
+				refreshSided( other, side);
 			}
 			else if (!tile.isUsed( side)) {
 				int id = tile.worldObj.getBlockId( x, y, z);
 				if (DarkLib.canPowered( id)) {
-					mNeighborConn |= AreaType.offEdges( side);
+					mSidedConn |= AreaType.offEdges( side);
 				}
 				else {
 					Block blk = Block.blocksList[id];
 					if (blk != null) {
 						if (blk.canProvidePower()) {
-							mNeighborConn |= AreaType.offEdges( side);
+							mSidedConn |= AreaType.offEdges( side);
 						}
 						else if (blk.blockMaterial.isOpaque() && blk.renderAsNormalBlock()) {
-							mAngledBlock &= ~AreaType.offEdges( side);
+							mEdgedConn &= ~AreaType.offEdges( side);
 						}
 					}
 				}
@@ -285,26 +291,29 @@ abstract class AConnect implements IConnectable {
 		}
 	}
 
-	private void refreshNeighbor( TileStage other, AreaType side) {
+	private void refreshSided( TileStage other, AreaType side) {
+		int blocked = 0;
 		AreaType anti = side.anti();
 		if (canConnect( other.getConnect())) {
 			for (AreaType sideB : AreaType.sides( anti)) {
 				if (other.isUsed( sideB)) {
 					if (other.isAllowed( sideB)) {
-						mNeighborConn |= AreaType.edge( side, sideB).mMask;
+						mSidedConn |= AreaType.edge( side, sideB).mMask;
 					}
 					else {
-						mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
+						blocked |= AreaType.edge( side, sideB).mMask;
 					}
 				}
 				if (other.isUsed( AreaType.edge( anti, sideB))) {
-					mNeighborBlock &= ~AreaType.edge( side, sideB).mMask;
+					blocked |= AreaType.edge( side, sideB).mMask;
 				}
 			}
 		}
 		if (other.isUsed( anti)) {
-			mNeighborBlock &= ~AreaType.offEdges( side);
+			blocked |= AreaType.offEdges( side);
 		}
+		mSidedConn &= ~blocked;
+		mEdgedConn &= ~blocked;
 	}
 
 	private void refreshWire( TileStage tile) {
@@ -318,12 +327,9 @@ abstract class AConnect implements IConnectable {
 	}
 
 	private void reset() {
-		mAngledConn = 0;
-		mAngledBlock = -1;
-		mNeighborConn = 0;
-		mNeighborBlock = -1;
+		mEdgedConn = 0;
+		mSidedConn = 0;
 		mInnerConn = 0;
-		mInnerBlock = -1;
 		mPower = 0;
 	}
 
@@ -340,5 +346,8 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public void writeToNBT( NBTTagCompound nbt) {
 		nbt.setInteger( NBT_POWER, mPower);
+		nbt.setInteger( NBT_INNER, mInnerConn);
+		nbt.setInteger( NBT_SIDED, mSidedConn);
+		nbt.setInteger( NBT_EDGED, mEdgedConn);
 	}
 }
