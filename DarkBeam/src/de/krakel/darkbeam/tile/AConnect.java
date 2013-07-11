@@ -14,7 +14,6 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
-import de.krakel.darkbeam.core.helper.LogHelper;
 
 abstract class AConnect implements IConnectable {
 	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
@@ -168,12 +167,12 @@ abstract class AConnect implements IConnectable {
 	public void refresh( TileStage tile) {
 		int old = mPower;
 		reset();
-		refreshEdge( tile);
+//		refreshEdge( tile);
 		refreshSide( tile);
 		refreshInner( tile);
-		powerEdge( tile);
-		powerSide( tile);
-		LogHelper.info( "refresh: %d -> %d", old, mPower);
+//		powerEdge( tile);
+//		powerSide( tile);
+//		LogHelper.info( "refresh: %d -> %d", old, mPower);
 //		tile.worldObj.markBlockForRenderUpdate( tile.xCoord, tile.yCoord, tile.zCoord);
 		if (old != mPower) {
 //			tile.updateAll();
@@ -316,7 +315,7 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public String toString() {
-		return DarkLib.format( "AConnect=[%d, 0x%04X, 0x%04X]", mPower, mArea, getConnections());
+		return DarkLib.format( "AConnect=[pwr=%d,a=0x%04X,ic=0x%04X,sc=0x%04X,ec=0x%04X]", mPower, mArea, mInnerConn, mSidedConn, mEdgedConn);
 	}
 
 	@Override

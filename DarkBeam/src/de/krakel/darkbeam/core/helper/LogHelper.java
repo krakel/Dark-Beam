@@ -102,7 +102,7 @@ public class LogHelper {
 
 	public static String toString( int x, int y, int z, int dir, double dx, double dy, double dz, EnumMovingObjectType type) {
 		ForgeDirection orient = ForgeDirection.getOrientation( dir);
-		return DarkLib.format( "obj=[dir=%s, %s, %s, type=%s]", orient.name(), toString( x, y, z), toString( dx, dy, dz), type);
+		return DarkLib.format( "obj=[dir=%s,%s,%s,type=%s]", orient.name(), toString( x, y, z), toString( dx, dy, dz), type);
 	}
 
 	public static String toString( MovingObjectPosition pos) {
@@ -118,7 +118,7 @@ public class LogHelper {
 			sb.append( '[');
 			for (int i = 0; i < arr.length; ++i) {
 				if (i > 0) {
-					sb.append( ", ");
+					sb.append( ",");
 				}
 				sb.append( '"');
 				sb.append( arr[i].toString());
@@ -133,7 +133,7 @@ public class LogHelper {
 	}
 
 	public static String toString( TileEntity tile) {
-		return DarkLib.format( "tile=[%s, %s, %s]", toString( tile.worldObj), toString( tile.xCoord, tile.yCoord, tile.zCoord), tile);
+		return DarkLib.format( "tile=[%s,%s,%s]", toString( tile.worldObj), toString( tile.xCoord, tile.yCoord, tile.zCoord), tile);
 	}
 
 	public static String toString( World world) {
