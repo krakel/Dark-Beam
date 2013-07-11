@@ -10,8 +10,6 @@ package de.krakel.darkbeam.core;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import net.minecraft.world.World;
-
 public enum AreaType {
 	//@formatter:off
 	DOWN( 0, -1, 0), 
@@ -20,7 +18,7 @@ public enum AreaType {
 	SOUTH( 0, 0, 1), 
 	WEST( -1, 0, 0), 
 	EAST( 1, 0, 0),
-	//
+	// edges
 	DOWN_NORTH( 0, -1, -1),
 	DOWN_SOUTH( 0, -1, 1),
 	DOWN_WEST( -1, -1, 0),
@@ -33,7 +31,7 @@ public enum AreaType {
 	NORTH_EAST( 1, 0, -1),
 	SOUTH_WEST( -1, 0, 1),
 	SOUTH_EAST( 1, 0, 1),
-	//
+	// corner
 	DOWN_NORTH_WEST( -1, -1, -1),
 	DOWN_NORTH_EAST( 1, -1, -1),
 	DOWN_SOUTH_WEST( -1, -1, 1),
@@ -42,7 +40,7 @@ public enum AreaType {
 	UP_NORTH_EAST( 1, 1, -1),
 	UP_SOUTH_WEST( -1, 1, 1),
 	UP_SOUTH_EAST( 1, 1, 1),
-	//
+	// axis
 	DOWN_UP( 0, -1, 0),
 	NORTH_SOUTH( 0, 0, -1),
 	WEST_EAST( -1, 0, 0),
@@ -51,34 +49,28 @@ public enum AreaType {
 	UNKNOWN( 0, 0, 0);
 	//@formatter:on
 	private static final AreaType[] EMPTY = {};
-	public static final AreaType[] SIDES_WEST_EAST = {
-		DOWN, UP, NORTH, SOUTH
+	public static final AreaType[] SIDES_DOWN_UP = {
+		NORTH, SOUTH, WEST, EAST
 	};
 	public static final AreaType[] SIDES_NORTH_SOUTH = {
 		DOWN, UP, WEST, EAST
 	};
-	public static final AreaType[] SIDES_DOWN_UP = {
-		NORTH, SOUTH, WEST, EAST
+	public static final AreaType[] SIDES_WEST_EAST = {
+		DOWN, UP, NORTH, SOUTH
 	};
 	private static final AreaType[] REDSTONE = {
 		UP, NORTH, EAST, SOUTH, WEST
 	};
-	private static final int EDGE_OFFSETS_OF_EAST = toMask( DOWN_EAST, UP_EAST, NORTH_EAST, SOUTH_EAST);
-	private static final int EDGE_OFFSETS_OF_WEST = toMask( DOWN_WEST, UP_WEST, NORTH_WEST, SOUTH_WEST);
-	private static final int EDGE_OFFSETS_OF_SOUTH = toMask( DOWN_SOUTH, UP_SOUTH, SOUTH_WEST, SOUTH_EAST);
-	private static final int EDGE_OFFSETS_OF_NORTH = toMask( DOWN_NORTH, UP_NORTH, NORTH_WEST, NORTH_EAST);
-	private static final int EDGE_OFFSETS_OF_UP = toMask( UP_NORTH, UP_SOUTH, UP_WEST, UP_EAST);
 	private static final int EDGE_OFFSETS_OF_DOWN = toMask( DOWN_NORTH, DOWN_SOUTH, DOWN_WEST, DOWN_EAST);
-	private static final Iterable<AreaType> ITERABLE_AXIS = new Iterable<AreaType>() {
+	private static final int EDGE_OFFSETS_OF_UP = toMask( UP_NORTH, UP_SOUTH, UP_WEST, UP_EAST);
+	private static final int EDGE_OFFSETS_OF_NORTH = toMask( DOWN_NORTH, UP_NORTH, NORTH_WEST, NORTH_EAST);
+	private static final int EDGE_OFFSETS_OF_SOUTH = toMask( DOWN_SOUTH, UP_SOUTH, SOUTH_WEST, SOUTH_EAST);
+	private static final int EDGE_OFFSETS_OF_WEST = toMask( DOWN_WEST, UP_WEST, NORTH_WEST, SOUTH_WEST);
+	private static final int EDGE_OFFSETS_OF_EAST = toMask( DOWN_EAST, UP_EAST, NORTH_EAST, SOUTH_EAST);
+	private static final Iterable<AreaType> ITERABLE_SIDES = new Iterable<AreaType>() {
 		@Override
 		public Iterator<AreaType> iterator() {
-			return new AreaIterator( DOWN_UP, WEST_EAST);
-		}
-	};
-	private static final Iterable<AreaType> ITERABLE_CORNERS = new Iterable<AreaType>() {
-		@Override
-		public Iterator<AreaType> iterator() {
-			return new AreaIterator( DOWN_NORTH_WEST, UP_SOUTH_EAST);
+			return new AreaIterator( DOWN, EAST);
 		}
 	};
 	private static final Iterable<AreaType> ITERABBLE_EDGES = new Iterable<AreaType>() {
@@ -87,10 +79,16 @@ public enum AreaType {
 			return new AreaIterator( DOWN_NORTH, SOUTH_EAST);
 		}
 	};
-	private static final Iterable<AreaType> ITERABLE_SIDES = new Iterable<AreaType>() {
+	private static final Iterable<AreaType> ITERABLE_CORNERS = new Iterable<AreaType>() {
 		@Override
 		public Iterator<AreaType> iterator() {
-			return new AreaIterator( DOWN, EAST);
+			return new AreaIterator( DOWN_NORTH_WEST, UP_SOUTH_EAST);
+		}
+	};
+	private static final Iterable<AreaType> ITERABLE_AXIS = new Iterable<AreaType>() {
+		@Override
+		public Iterator<AreaType> iterator() {
+			return new AreaIterator( DOWN_UP, WEST_EAST);
 		}
 	};
 	public final int mMask;
@@ -103,8 +101,67 @@ public enum AreaType {
 		mDz = dz;
 	}
 
-	public static AreaType anti( AreaType area) {
-		switch (area) {
+	public static int redstoneFromSide( AreaType side) {
+		switch (side) {
+			case UP:
+				return -1;
+			case NORTH:
+				return 0;
+			case EAST:
+				return 1;
+			case SOUTH:
+				return 2;
+			case WEST:
+				return 3;
+			default:
+				return -1;
+		}
+	}
+
+	public static AreaType redstoneToSide( int side) {
+		try {
+			return REDSTONE[side + 1];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return UNKNOWN;
+		}
+	}
+
+	public static AreaType toArea( int side) {
+		try {
+			return AreaType.values()[side];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return UNKNOWN;
+		}
+	}
+
+	public static int toMask( AreaType... areas) {
+		int result = 0;
+		for (AreaType at : areas) {
+			result |= at.mMask;
+		}
+		return result;
+	}
+
+	public static Iterable<AreaType> valuesAxis() {
+		return ITERABLE_AXIS;
+	}
+
+	public static Iterable<AreaType> valuesCorner() {
+		return ITERABLE_CORNERS;
+	}
+
+	public static Iterable<AreaType> valuesEdge() {
+		return ITERABBLE_EDGES;
+	}
+
+	public static Iterable<AreaType> valuesSide() {
+		return ITERABLE_SIDES;
+	}
+
+	public AreaType anti() {
+		switch (this) {
 			case DOWN:
 				return UP;
 			case UP:
@@ -162,16 +219,8 @@ public enum AreaType {
 		}
 	}
 
-	public static Iterable<AreaType> axis() {
-		return ITERABLE_AXIS;
-	}
-
-	public static Iterable<AreaType> corners() {
-		return ITERABLE_CORNERS;
-	}
-
-	public static AreaType edge( AreaType sideA, AreaType sideB) {
-		switch (sideA) {
+	public AreaType edge( AreaType sideB) {
+		switch (this) {
 			case DOWN:
 				switch (sideB) {
 					case NORTH:
@@ -255,48 +304,8 @@ public enum AreaType {
 		}
 	}
 
-	public static Iterable<AreaType> edges() {
-		return ITERABBLE_EDGES;
-	}
-
-	public static void notifyCornersChange( World world, int x, int y, int z, int blockID) {
-		for (AreaType corner : corners()) {
-			int x1 = x + corner.mDx;
-			int y1 = y + corner.mDy;
-			int z1 = z + corner.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void notifyEdgesChange( World world, int x, int y, int z, int blockID) {
-		for (AreaType edge : edges()) {
-			int x1 = x + edge.mDx;
-			int y1 = y + edge.mDy;
-			int z1 = z + edge.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void notifyNeighborChange( World world, int x, int y, int z, int blockID) {
-		for (AreaType side : sides()) {
-			int x1 = x + side.mDx;
-			int y1 = y + side.mDy;
-			int z1 = z + side.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void notifyNeighborChange2( World world, int x, int y, int z, int blockID) {
-		for (AreaType side : sides()) {
-			int x1 = x + (side.mDx << 1);
-			int y1 = y + (side.mDy << 1);
-			int z1 = z + (side.mDz << 1);
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static int offEdges( AreaType side) {
-		switch (side) {
+	public int offEdges() {
+		switch (this) {
 			case DOWN:
 				return EDGE_OFFSETS_OF_DOWN;
 			case UP:
@@ -314,34 +323,8 @@ public enum AreaType {
 		}
 	}
 
-	public static int redstoneFromSide( AreaType side) {
-		switch (side) {
-			case UP:
-				return -1;
-			case NORTH:
-				return 0;
-			case EAST:
-				return 1;
-			case SOUTH:
-				return 2;
-			case WEST:
-				return 3;
-			default:
-				return -1;
-		}
-	}
-
-	public static AreaType redstoneToSide( int side) {
-		try {
-			return REDSTONE[side + 1];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return UNKNOWN;
-		}
-	}
-
-	public static AreaType sideA( AreaType edge) {
-		switch (edge) {
+	public AreaType sideA() {
+		switch (this) {
 			case DOWN_NORTH:
 			case DOWN_SOUTH:
 			case DOWN_WEST:
@@ -363,8 +346,8 @@ public enum AreaType {
 		}
 	}
 
-	public static AreaType sideB( AreaType edge) {
-		switch (edge) {
+	public AreaType sideB() {
+		switch (this) {
 			case DOWN_WEST:
 			case UP_WEST:
 			case NORTH_WEST:
@@ -386,12 +369,8 @@ public enum AreaType {
 		}
 	}
 
-	public static Iterable<AreaType> sides() {
-		return ITERABLE_SIDES;
-	}
-
-	public static AreaType[] sides( AreaType side) {
-		switch (side) {
+	public AreaType[] sides() {
+		switch (this) {
 			case DOWN:
 			case UP:
 				return SIDES_DOWN_UP;
@@ -404,27 +383,6 @@ public enum AreaType {
 			default:
 				return EMPTY;
 		}
-	}
-
-	public static AreaType toArea( int side) {
-		try {
-			return AreaType.values()[side];
-		}
-		catch (IndexOutOfBoundsException ex) {
-			return UNKNOWN;
-		}
-	}
-
-	public static int toMask( AreaType... areas) {
-		int result = 0;
-		for (AreaType at : areas) {
-			result |= at.mMask;
-		}
-		return result;
-	}
-
-	public AreaType anti() {
-		return anti( this);
 	}
 
 	private static final class AreaIterator implements Iterator<AreaType> {

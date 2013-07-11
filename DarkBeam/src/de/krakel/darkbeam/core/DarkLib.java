@@ -122,6 +122,42 @@ public class DarkLib {
 		return null;
 	}
 
+	public static void notifyCornersChange( World world, int x, int y, int z, int blockID) {
+		for (AreaType corner : AreaType.valuesCorner()) {
+			int x1 = x + corner.mDx;
+			int y1 = y + corner.mDy;
+			int z1 = z + corner.mDz;
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void notifyEdgesChange( World world, int x, int y, int z, int blockID) {
+		for (AreaType edge : AreaType.valuesEdge()) {
+			int x1 = x + edge.mDx;
+			int y1 = y + edge.mDy;
+			int z1 = z + edge.mDz;
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void notifyNeighborChange( World world, int x, int y, int z, int blockID) {
+		for (AreaType side : AreaType.valuesSide()) {
+			int x1 = x + side.mDx;
+			int y1 = y + side.mDy;
+			int z1 = z + side.mDz;
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
+	public static void notifyNeighborChange2( World world, int x, int y, int z, int blockID) {
+		for (AreaType side : AreaType.valuesSide()) {
+			int x1 = x + (side.mDx << 1);
+			int y1 = y + (side.mDy << 1);
+			int z1 = z + (side.mDz << 1);
+			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
+		}
+	}
+
 	public static void placeNoise( World world, int x, int y, int z, int id) {
 		Block blk = Block.blocksList[id];
 		if (blk != null) {

@@ -122,9 +122,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	public void notifyAllChange() {
 		LogHelper.info( "notifyAllChange: %s", LogHelper.toString( this));
 		int blockID = BlockType.STAGE.getId();
-		AreaType.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, blockID);
-		AreaType.notifyEdgesChange( worldObj, xCoord, yCoord, zCoord, blockID);
-		AreaType.notifyNeighborChange2( worldObj, xCoord, yCoord, zCoord, blockID);
+		DarkLib.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, blockID);
+		DarkLib.notifyEdgesChange( worldObj, xCoord, yCoord, zCoord, blockID);
+		DarkLib.notifyNeighborChange2( worldObj, xCoord, yCoord, zCoord, blockID);
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	@SuppressWarnings( "unused")
 	private void refreshConnect() {
-		for (AreaType side : AreaType.sides()) {
+		for (AreaType side : AreaType.valuesSide()) {
 			if (isAllowed( side)) {
 				mConnect.set( side);
 			}
