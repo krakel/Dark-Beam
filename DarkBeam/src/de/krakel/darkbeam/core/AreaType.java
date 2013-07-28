@@ -49,6 +49,39 @@ public enum AreaType {
 	UNKNOWN( 0, 0, 0);
 	//@formatter:on
 	private static final AreaType[] EMPTY = {};
+	private static final AreaType[] ANTI_SIDE = {
+		UP, // DOWN
+		DOWN, // UP
+		SOUTH, // NORTH
+		NORTH, // SOUTH
+		EAST, // WEST
+		WEST, // EAST
+		UP_SOUTH, // DOWN_NORTH
+		UP_NORTH, // DOWN_SOUTH
+		UP_EAST, // DOWN_WEST
+		UP_WEST, // DOWN_EAST
+		DOWN_SOUTH, // UP_NORTH
+		DOWN_NORTH, // UP_SOUTH
+		DOWN_EAST, // UP_WEST
+		DOWN_WEST, // UP_EAST
+		SOUTH_EAST, // NORTH_WEST
+		SOUTH_WEST, // NORTH_EAST
+		NORTH_EAST, // SOUTH_WEST
+		NORTH_WEST, // SOUTH_EAST
+		UP_SOUTH_EAST, // DOWN_NORTH_WEST
+		UP_SOUTH_WEST, // DOWN_NORTH_EAST
+		UP_NORTH_EAST, // DOWN_SOUTH_WEST
+		UP_NORTH_WEST, // DOWN_SOUTH_EAST
+		DOWN_SOUTH_EAST, // UP_NORTH_WEST
+		DOWN_SOUTH_WEST, // UP_NORTH_EAST
+		DOWN_NORTH_EAST, // UP_SOUTH_WEST
+		DOWN_NORTH_WEST, // UP_SOUTH_EAST
+		UNKNOWN, // DOWN_UP
+		UNKNOWN, // NORTH_SOUTH
+		UNKNOWN, // WEST_EAST
+		UNKNOWN, // CENTER
+		UNKNOWN
+	};
 	public static final AreaType[] SIDES_DOWN_UP = {
 		NORTH, SOUTH, WEST, EAST
 	};
@@ -58,8 +91,83 @@ public enum AreaType {
 	public static final AreaType[] SIDES_WEST_EAST = {
 		DOWN, UP, NORTH, SOUTH
 	};
-	private static final AreaType[] REDSTONE = {
+	private static final AreaType[][] SIDES_OF_SIDE = {
+		SIDES_DOWN_UP, // DOWN
+		SIDES_DOWN_UP, // UP
+		SIDES_NORTH_SOUTH, // NORTH
+		SIDES_NORTH_SOUTH, // SOUTH
+		SIDES_WEST_EAST, // WEST
+		SIDES_WEST_EAST, // EAST
+		EMPTY
+	};
+	private static final AreaType[][] EDGE_OF_SIDES = {
+		{
+			UNKNOWN, UNKNOWN, DOWN_NORTH, DOWN_SOUTH, DOWN_WEST, DOWN_EAST
+		}, // DOWN
+		{
+			UNKNOWN, UNKNOWN, UP_NORTH, UP_SOUTH, UP_WEST, UP_EAST
+		}, // UP
+		{
+			DOWN_NORTH, UP_NORTH, UNKNOWN, UNKNOWN, NORTH_WEST, NORTH_EAST
+		}, // NORTH
+		{
+			DOWN_SOUTH, UP_SOUTH, UNKNOWN, UNKNOWN, SOUTH_WEST, SOUTH_EAST
+		}, // SOUTH
+		{
+			DOWN_WEST, UP_WEST, NORTH_WEST, SOUTH_WEST, UNKNOWN, UNKNOWN
+		}, // WEST
+		{
+			DOWN_EAST, UP_EAST, NORTH_EAST, SOUTH_EAST, UNKNOWN, UNKNOWN
+		}, // EAST
+		EMPTY
+	};
+	private static final AreaType[] SIDE_A = {
+		UNKNOWN, // DOWN
+		UNKNOWN, // UP
+		UNKNOWN, // NORTH
+		UNKNOWN, // SOUTH
+		UNKNOWN, // WEST
+		UNKNOWN, // EAST
+		DOWN, // DOWN_NORTH
+		DOWN, // DOWN_SOUTH
+		DOWN, // DOWN_WEST
+		DOWN, // DOWN_EAST
+		UP, // UP_NORTH
+		UP, // UP_SOUTH
+		UP, // UP_WEST
+		UP, // UP_EAST
+		NORTH, // NORTH_WEST
+		NORTH, // NORTH_EAST
+		SOUTH, // SOUTH_WEST
+		SOUTH, // SOUTH_EAST
+		UNKNOWN
+	};
+	private static final AreaType[] SIDE_B = {
+		UNKNOWN, // DOWN
+		UNKNOWN, // UP
+		UNKNOWN, // NORTH
+		UNKNOWN, // SOUTH
+		UNKNOWN, // WEST
+		UNKNOWN, // EAST
+		SOUTH, // DOWN_NORTH
+		NORTH, // DOWN_SOUTH
+		WEST, // DOWN_WEST
+		EAST, // DOWN_EAST
+		SOUTH, // UP_NORTH
+		NORTH, // UP_SOUTH
+		WEST, // UP_WEST
+		EAST, // UP_EAST
+		WEST, // NORTH_WEST
+		EAST, // NORTH_EAST
+		WEST, // SOUTH_WEST
+		EAST, // SOUTH_EAST
+		UNKNOWN
+	};
+	private static final AreaType[] REDSTONE_TO = {
 		UP, NORTH, EAST, SOUTH, WEST
+	};
+	private static final int[] REDSTONE_FROM = {
+		-1, -1, 0, 2, 3, 1, -1
 	};
 	private static final int EDGE_OFFSETS_OF_DOWN = toMask( DOWN_NORTH, DOWN_SOUTH, DOWN_WEST, DOWN_EAST);
 	private static final int EDGE_OFFSETS_OF_UP = toMask( UP_NORTH, UP_SOUTH, UP_WEST, UP_EAST);
@@ -67,6 +175,15 @@ public enum AreaType {
 	private static final int EDGE_OFFSETS_OF_SOUTH = toMask( DOWN_SOUTH, UP_SOUTH, SOUTH_WEST, SOUTH_EAST);
 	private static final int EDGE_OFFSETS_OF_WEST = toMask( DOWN_WEST, UP_WEST, NORTH_WEST, SOUTH_WEST);
 	private static final int EDGE_OFFSETS_OF_EAST = toMask( DOWN_EAST, UP_EAST, NORTH_EAST, SOUTH_EAST);
+	private static final int[] EDGE_OFFSETS = {
+		EDGE_OFFSETS_OF_DOWN, // DOWN
+		EDGE_OFFSETS_OF_UP, // UP
+		EDGE_OFFSETS_OF_NORTH, // NORTH
+		EDGE_OFFSETS_OF_SOUTH, // SOUTH
+		EDGE_OFFSETS_OF_WEST, // WEST
+		EDGE_OFFSETS_OF_EAST, // EAST
+		0
+	};
 	private static final Iterable<AreaType> ITERABLE_SIDES = new Iterable<AreaType>() {
 		@Override
 		public Iterator<AreaType> iterator() {
@@ -101,26 +218,9 @@ public enum AreaType {
 		mDz = dz;
 	}
 
-	public static int redstoneFromSide( AreaType side) {
-		switch (side) {
-			case UP:
-				return -1;
-			case NORTH:
-				return 0;
-			case EAST:
-				return 1;
-			case SOUTH:
-				return 2;
-			case WEST:
-				return 3;
-			default:
-				return -1;
-		}
-	}
-
 	public static AreaType redstoneToSide( int side) {
 		try {
-			return REDSTONE[side + 1];
+			return REDSTONE_TO[side + 1];
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return UNKNOWN;
@@ -161,227 +261,65 @@ public enum AreaType {
 	}
 
 	public AreaType anti() {
-		switch (this) {
-			case DOWN:
-				return UP;
-			case UP:
-				return DOWN;
-			case NORTH:
-				return SOUTH;
-			case SOUTH:
-				return NORTH;
-			case WEST:
-				return EAST;
-			case EAST:
-				return WEST;
-			case DOWN_NORTH:
-				return UP_SOUTH;
-			case DOWN_SOUTH:
-				return UP_NORTH;
-			case DOWN_WEST:
-				return UP_EAST;
-			case DOWN_EAST:
-				return UP_WEST;
-			case UP_NORTH:
-				return DOWN_SOUTH;
-			case UP_SOUTH:
-				return DOWN_NORTH;
-			case UP_WEST:
-				return DOWN_EAST;
-			case UP_EAST:
-				return DOWN_WEST;
-			case NORTH_WEST:
-				return SOUTH_EAST;
-			case NORTH_EAST:
-				return SOUTH_WEST;
-			case SOUTH_WEST:
-				return NORTH_EAST;
-			case SOUTH_EAST:
-				return NORTH_WEST;
-			case DOWN_NORTH_WEST:
-				return UP_SOUTH_EAST;
-			case DOWN_NORTH_EAST:
-				return UP_SOUTH_WEST;
-			case DOWN_SOUTH_WEST:
-				return UP_NORTH_EAST;
-			case DOWN_SOUTH_EAST:
-				return UP_NORTH_WEST;
-			case UP_NORTH_WEST:
-				return DOWN_SOUTH_EAST;
-			case UP_NORTH_EAST:
-				return DOWN_SOUTH_WEST;
-			case UP_SOUTH_WEST:
-				return DOWN_NORTH_EAST;
-			case UP_SOUTH_EAST:
-				return DOWN_NORTH_WEST;
-			default:
-				return UNKNOWN;
+		try {
+			return ANTI_SIDE[ordinal()];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return UNKNOWN;
 		}
 	}
 
 	public AreaType edge( AreaType sideB) {
-		switch (this) {
-			case DOWN:
-				switch (sideB) {
-					case NORTH:
-						return DOWN_NORTH;
-					case SOUTH:
-						return DOWN_SOUTH;
-					case WEST:
-						return DOWN_WEST;
-					case EAST:
-						return DOWN_EAST;
-					default:
-						return UNKNOWN;
-				}
-			case UP:
-				switch (sideB) {
-					case NORTH:
-						return UP_NORTH;
-					case SOUTH:
-						return UP_SOUTH;
-					case WEST:
-						return UP_WEST;
-					case EAST:
-						return UP_EAST;
-					default:
-						return UNKNOWN;
-				}
-			case NORTH:
-				switch (sideB) {
-					case DOWN:
-						return DOWN_NORTH;
-					case UP:
-						return UP_NORTH;
-					case WEST:
-						return NORTH_WEST;
-					case EAST:
-						return NORTH_EAST;
-					default:
-						return UNKNOWN;
-				}
-			case SOUTH:
-				switch (sideB) {
-					case DOWN:
-						return DOWN_SOUTH;
-					case UP:
-						return UP_SOUTH;
-					case WEST:
-						return SOUTH_WEST;
-					case EAST:
-						return SOUTH_EAST;
-					default:
-						return UNKNOWN;
-				}
-			case WEST:
-				switch (sideB) {
-					case DOWN:
-						return DOWN_WEST;
-					case UP:
-						return UP_WEST;
-					case NORTH:
-						return NORTH_WEST;
-					case SOUTH:
-						return SOUTH_WEST;
-					default:
-						return UNKNOWN;
-				}
-			case EAST:
-				switch (sideB) {
-					case DOWN:
-						return DOWN_EAST;
-					case UP:
-						return UP_EAST;
-					case NORTH:
-						return NORTH_EAST;
-					case SOUTH:
-						return SOUTH_EAST;
-					default:
-						return UNKNOWN;
-				}
-			default:
-				return UNKNOWN;
+		try {
+			return EDGE_OF_SIDES[ordinal()][sideB.ordinal()];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return UNKNOWN;
 		}
 	}
 
 	public int offEdges() {
-		switch (this) {
-			case DOWN:
-				return EDGE_OFFSETS_OF_DOWN;
-			case UP:
-				return EDGE_OFFSETS_OF_UP;
-			case NORTH:
-				return EDGE_OFFSETS_OF_NORTH;
-			case SOUTH:
-				return EDGE_OFFSETS_OF_SOUTH;
-			case WEST:
-				return EDGE_OFFSETS_OF_WEST;
-			case EAST:
-				return EDGE_OFFSETS_OF_EAST;
-			default:
-				return 0;
+		try {
+			return EDGE_OFFSETS[ordinal()];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return 0;
+		}
+	}
+
+	public int redstone() {
+		try {
+			return REDSTONE_FROM[ordinal()];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return -1;
 		}
 	}
 
 	public AreaType sideA() {
-		switch (this) {
-			case DOWN_NORTH:
-			case DOWN_SOUTH:
-			case DOWN_WEST:
-			case DOWN_EAST:
-				return DOWN;
-			case UP_NORTH:
-			case UP_SOUTH:
-			case UP_WEST:
-			case UP_EAST:
-				return UP;
-			case NORTH_WEST:
-			case NORTH_EAST:
-				return NORTH;
-			case SOUTH_WEST:
-			case SOUTH_EAST:
-				return SOUTH;
-			default:
-				return UNKNOWN;
+		try {
+			return SIDE_A[ordinal()];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return UNKNOWN;
 		}
 	}
 
 	public AreaType sideB() {
-		switch (this) {
-			case DOWN_WEST:
-			case UP_WEST:
-			case NORTH_WEST:
-			case SOUTH_WEST:
-				return WEST;
-			case DOWN_EAST:
-			case UP_EAST:
-			case NORTH_EAST:
-			case SOUTH_EAST:
-				return EAST;
-			case DOWN_NORTH:
-			case UP_NORTH:
-				return NORTH;
-			case DOWN_SOUTH:
-			case UP_SOUTH:
-				return SOUTH;
-			default:
-				return UNKNOWN;
+		try {
+			return SIDE_B[ordinal()];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return UNKNOWN;
 		}
 	}
 
 	public AreaType[] sides() {
-		switch (this) {
-			case DOWN:
-			case UP:
-				return SIDES_DOWN_UP;
-			case NORTH:
-			case SOUTH:
-				return SIDES_NORTH_SOUTH;
-			case WEST:
-			case EAST:
-				return SIDES_WEST_EAST;
-			default:
-				return EMPTY;
+		try {
+			return SIDES_OF_SIDE[ordinal()];
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return EMPTY;
 		}
 	}
 

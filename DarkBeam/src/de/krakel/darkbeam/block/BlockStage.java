@@ -29,7 +29,6 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
-import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class BlockStage extends Block {
@@ -154,28 +153,32 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int side) {
-		return isProvidingWeakPower( world, x, y, z, side);
-	}
-
-	@Override
-	public int isProvidingWeakPower( IBlockAccess world, int x, int y, int z, int side) {
+	public int isProvidingStrongPower( IBlockAccess world, int x, int y, int z, int antiSide) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile == null) {
 			return 0;
 		}
-		return tile.getConnect().getProvidingPower( AreaType.toArea( side).anti());
+		return tile.getConnect().getProvidingStrongPower( AreaType.toArea( antiSide).anti());
+	}
+
+	@Override
+	public int isProvidingWeakPower( IBlockAccess world, int x, int y, int z, int antiSide) {
+		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
+		if (tile == null) {
+			return 0;
+		}
+		return tile.getConnect().getProvidingWeakPower( AreaType.toArea( antiSide).anti());
 	}
 
 	@Override
 	public void onBlockClicked( World world, int x, int y, int z, EntityPlayer player) {
-		LogHelper.info( "onBlockClicked: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
+//		LogHelper.info( "onBlockClicked: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
 		super.onBlockClicked( world, x, y, z, player);
 	}
 
 	@Override
 	public void onNeighborBlockChange( World world, int x, int y, int z, int blockID) {
-		LogHelper.info( "onNeighborBlockChange: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
+//		LogHelper.info( "onNeighborBlockChange: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {
 			tile.refresh();
@@ -193,7 +196,7 @@ public class BlockStage extends Block {
 
 	@Override
 	public boolean removeBlockByPlayer( World world, EntityPlayer player, int x, int y, int z) {
-		LogHelper.info( "removeBlockByPlayer: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
+//		LogHelper.info( "removeBlockByPlayer: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
 		MovingObjectPosition pos = DarkLib.retraceBlock( world, player, x, y, z);
 		if (pos == null) {
 			return false;

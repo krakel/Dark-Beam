@@ -27,17 +27,17 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public int getProvidingPower( AreaType side) {
+	public int getProvidingStrongPower( AreaType side) {
+		return 0;
+	}
+
+	@Override
+	public int getProvidingWeakPower( AreaType side) {
 		return 0;
 	}
 
 	@Override
 	public boolean isAllowed( ISection sec, IMaterial mat) {
-		return false;
-	}
-
-	@Override
-	public boolean isEdged( AreaType edge) {
 		return false;
 	}
 
@@ -48,6 +48,11 @@ class NoConnect implements IConnectable {
 
 	@Override
 	public boolean isConnection( AreaType area) {
+		return false;
+	}
+
+	@Override
+	public boolean isEdged( AreaType edge) {
 		return false;
 	}
 

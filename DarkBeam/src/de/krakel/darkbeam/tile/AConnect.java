@@ -52,7 +52,16 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public int getProvidingPower( AreaType side) {
+	public int getProvidingStrongPower( AreaType side) {
+		int off = side.offEdges();
+		if ((mSidedConn & off) != 0) {
+			return mPower;
+		}
+		return 0;
+	}
+
+	@Override
+	public int getProvidingWeakPower( AreaType side) {
 		int off = side.offEdges();
 		if ((mSidedConn & off) != 0) {
 			return mPower;

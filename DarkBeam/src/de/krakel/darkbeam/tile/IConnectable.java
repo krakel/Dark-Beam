@@ -20,7 +20,9 @@ public interface IConnectable {
 
 	int getLevel();
 
-	int getProvidingPower( AreaType side);
+	int getProvidingStrongPower( AreaType side);
+
+	int getProvidingWeakPower( AreaType side);
 
 	boolean isAllowed( ISection sec, IMaterial mat);
 

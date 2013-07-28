@@ -17,7 +17,6 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
-import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class BlockStageRender implements ISimpleBlockRenderingHandler {
@@ -39,7 +38,7 @@ public class BlockStageRender implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock( IBlockAccess world, int x, int y, int z, Block blk, int modelID, RenderBlocks rndrBlk) {
-		LogHelper.info( "renderWorldBlock: %s", LogHelper.toString( x, y, z));
+//		LogHelper.info( "renderWorldBlock: %s", LogHelper.toString( x, y, z));
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {
 			for (AreaType area : tile) {
