@@ -139,7 +139,6 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
-		LogHelper.info( "readFromNBT: %s, %s", LogHelper.toString( worldObj), nbt);
 		super.readFromNBT( nbt);
 		int areas = nbt.getInteger( NBT_AREAS);
 		byte[] arr = nbt.getByteArray( NBT_SECTIONS);
@@ -152,10 +151,10 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 			}
 		}
 		mConnect.readFromNBT( nbt);
+		LogHelper.info( "readFromNBT: %s", LogHelper.toString( this));
 	}
 
 	public void refresh() {
-		LogHelper.info( "refresh: %s, %s", LogHelper.toString( this), mConnect);
 //		refreshConnect();
 		if (mConnect.isEmpty()) {
 			mConnect = IConnectable.NO_CONNECT;
@@ -163,8 +162,12 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		else {
 			mConnect.refresh( this);
 		}
+		LogHelper.info( "refresh: %s", LogHelper.toString( this));
 		if (isEmpty()) {
 			invalidate();
+		}
+		else {
+			worldObj.updateTileEntityChunkAndDoNothing( xCoord, yCoord, zCoord, this);
 		}
 	}
 
@@ -201,20 +204,23 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer( "TileSection[");
-		for (int a = mArea, i = 0; a != 0; a >>>= 1, ++i) {
-			if (i > 0) {
+		boolean found = false;
+		for (int bit = 0x8000, i = 0; bit != 0; bit >>>= 1, ++i) {
+			if (found) {
 				sb.append( ',');
 			}
-			if ((a & 1) != 0) {
+			int b = mArea & bit;
+			if (b != 0) {
+				found = true;
 				sb.append( getSection( i).getID() & 0xFF);
 				sb.append( '|');
 				sb.append( getMaterial( i).getID() & 0xFF);
 			}
-			else {
+			else if (found) {
 				sb.append( "-|-");
 			}
 		}
-		sb.append( ", ");
+		sb.append( ",");
 		sb.append( mConnect.toString());
 		sb.append( "]");
 		return sb.toString();
