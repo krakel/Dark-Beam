@@ -213,7 +213,8 @@ abstract class AConnect implements IConnectable {
 
 	private void refreshEdge( TileStage other, AreaType edge) {
 		int breaked = 0;
-		AreaType sideA = edge.anti().sideA();
+		AreaType anti = edge.anti();
+		AreaType sideA = anti.sideA();
 		if (other.isUsed( sideA)) {
 			if (other.isAllowed( sideA)) {
 				mEdgedConn |= edge.mMask;
@@ -222,7 +223,7 @@ abstract class AConnect implements IConnectable {
 				breaked |= edge.mMask;
 			}
 		}
-		AreaType sideB = edge.anti().sideB();
+		AreaType sideB = anti.sideB();
 		if (other.isUsed( sideB)) {
 			if (other.isAllowed( sideB)) {
 				mEdgedConn |= edge.mMask;
@@ -282,13 +283,13 @@ abstract class AConnect implements IConnectable {
 				else if (DarkLib.canProvidePower( id)) {
 					mSidedConn |= side.offEdges();
 				}
-				else if (DarkLib.canBreakPower( id)) {
+				else if (DarkLib.canBreakPower( id) && !isWired( side)) {
 					mEdgedConn &= ~side.offEdges();
 				}
 			}
 		}
 		mSidedConn &= ~breaked;
-//		mEdgedConn &= ~breaked;
+		mEdgedConn &= ~breaked;
 	}
 
 	private int refreshSide( TileStage other, AreaType side, boolean connect) {
