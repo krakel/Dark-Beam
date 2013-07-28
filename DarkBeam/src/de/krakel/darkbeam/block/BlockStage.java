@@ -216,7 +216,7 @@ public class BlockStage extends Block {
 				tile.refresh();
 				tile.markForUpdate();
 			}
-			tile.notifyAllChange();
+			tile.notifyAllNeighbor();
 		}
 		return false;
 	}

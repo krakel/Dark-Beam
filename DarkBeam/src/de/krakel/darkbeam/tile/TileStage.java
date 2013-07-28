@@ -34,9 +34,13 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private ISection[] mSec = new ISection[32];
 	private IMaterial[] mMat = new IMaterial[32];
 	private IConnectable mConnect = IConnectable.NO_CONNECT;
-	private boolean mNeedUpdate = true;
 
 	public TileStage() {
+	}
+
+	@Override
+	public boolean canUpdate() {
+		return false;
 	}
 
 	public void dropItem( int meta) {
@@ -114,13 +118,12 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	public void markForUpdate() {
-		LogHelper.info( "markForUpdate: %s", LogHelper.toString( this));
+//		LogHelper.info( "markForUpdate: %s", LogHelper.toString( this));
 		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
-//		mNeedUpdate = true;
 	}
 
-	public void notifyAllChange() {
-		LogHelper.info( "notifyAllChange: %s", LogHelper.toString( this));
+	public void notifyAllNeighbor() {
+//		LogHelper.info( "notifyAllChange: %s", LogHelper.toString( this));
 		int blockID = BlockType.STAGE.getId();
 		DarkLib.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, blockID);
 		DarkLib.notifyEdgesChange( worldObj, xCoord, yCoord, zCoord, blockID);
@@ -129,9 +132,9 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	@Override
 	public void onDataPacket( INetworkManager net, Packet132TileEntityData paket) {
-		LogHelper.info( "onDataPacket");
+//		LogHelper.info( "onDataPacket");
 		readFromNBT( paket.customParam1);
-		mNeedUpdate = true;
+		markForUpdate();
 	}
 
 	@Override
@@ -264,16 +267,6 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		catch (IndexOutOfBoundsException ex) {
 		}
 		return -1;
-	}
-
-	@Override
-	public void updateEntity() {
-		if (mNeedUpdate && worldObj.isRemote) {
-			LogHelper.info( "updateEntity: %s", LogHelper.toString( this));
-//			refresh();
-//			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
-			mNeedUpdate = false;
-		}
 	}
 
 	@Override

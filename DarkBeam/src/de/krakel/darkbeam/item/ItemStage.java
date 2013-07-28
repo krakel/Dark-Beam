@@ -30,7 +30,6 @@ import de.krakel.darkbeam.core.InsulateLib;
 import de.krakel.darkbeam.core.Material;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.SectionLib;
-import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.creativetab.ModTabs;
 import de.krakel.darkbeam.lib.BlockType;
 import de.krakel.darkbeam.tile.TileStage;
@@ -181,6 +180,9 @@ public class ItemStage extends ItemBlock {
 		if (!player.canPlayerEdit( x, y, z, dir, stk)) {
 			return false;
 		}
+		if (world.isRemote) {
+			return true;
+		}
 		int dmg = stk.getItemDamage();
 		if (!SectionLib.isValidForMeta( dmg)) {
 			return false;
@@ -197,7 +199,7 @@ public class ItemStage extends ItemBlock {
 		if (pos == null) {
 			return false;
 		}
-		LogHelper.info( "onItemUse c: %s, %s", LogHelper.toString( world), LogHelper.toString( hit));
+//		LogHelper.info( "onItemUse c: %s, %s", LogHelper.toString( world), LogHelper.toString( hit));
 		if (world.canPlaceEntityOnSide( stk.itemID, pos.blockX, pos.blockY, pos.blockZ, false, pos.sideHit, player, stk)) {
 			world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
 		}
@@ -205,14 +207,12 @@ public class ItemStage extends ItemBlock {
 		if (tile == null || !tile.tryAdd( AreaType.toArea( pos.subHit), dmg)) {
 			return false;
 		}
-		LogHelper.info( "onItemUse d: %s, %s, %s", LogHelper.toString( world), LogHelper.toString( pos), tile);
+//		LogHelper.info( "onItemUse d: %s, %s, %s", LogHelper.toString( world), LogHelper.toString( pos), tile);
 		DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());
 		--stk.stackSize;
 		tile.refresh();
 		tile.markForUpdate();
-		if (!world.isRemote) {
-			tile.notifyAllChange();
-		}
+		tile.notifyAllNeighbor();
 		return true;
 	}
 
