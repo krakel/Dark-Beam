@@ -183,8 +183,7 @@ public class ItemStage extends ItemBlock {
 		if (world.isRemote) {
 			return true;
 		}
-		int dmg = stk.getItemDamage();
-		if (!SectionLib.isValidForMeta( dmg)) {
+		if (!SectionLib.isValidForMeta( stk.getItemDamage())) {
 			return false;
 		}
 		MovingObjectPosition hit = DarkLib.retraceBlock( world, player, x, y, z); // hit position view beam
@@ -204,16 +203,10 @@ public class ItemStage extends ItemBlock {
 			world.setBlock( pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId(), 0, 2);
 		}
 		TileStage tile = DarkLib.getTileEntity( world, pos.blockX, pos.blockY, pos.blockZ, TileStage.class);
-		if (tile == null || !tile.tryAdd( AreaType.toArea( pos.subHit), dmg)) {
-			return false;
+		if (tile != null) {
+			return tile.onItemUse( AreaType.toArea( pos.subHit), stk);
 		}
-//		LogHelper.info( "onItemUse d: %s, %s, %s", LogHelper.toString( world), LogHelper.toString( pos), tile);
-		DarkLib.placeNoise( world, pos.blockX, pos.blockY, pos.blockZ, BlockType.STAGE.getId());
-		--stk.stackSize;
-		tile.refresh();
-		tile.markForUpdate();
-		tile.notifyAllNeighbor();
-		return true;
+		return false;
 	}
 
 	@Override

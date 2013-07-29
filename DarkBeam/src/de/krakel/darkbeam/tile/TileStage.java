@@ -24,7 +24,6 @@ import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.SectionLib;
-import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class TileStage extends TileEntity implements Iterable<AreaType> {
@@ -43,7 +42,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return false;
 	}
 
-	public void dropItem( int meta) {
+	private void dropItem( int meta) {
 		ISection sec = SectionLib.getForDmg( meta);
 		ItemStack stk = new ItemStack( BlockType.STAGE.getBlock(), getDropCount( sec, sec.getForDmg( meta)), meta);
 		DarkLib.dropItem( worldObj, xCoord, yCoord, zCoord, stk);
@@ -61,7 +60,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	}
 
 	private int getDropCount( ISection sec, IMaterial mat) {
-		if (mConnect.isAllowed( sec, mat) && mConnect.isInvalid()) {
+		if (mConnect.isAllowed( sec, mat) && mConnect.isIllegal()) {
 			mConnect = IConnectable.NO_CONNECT;
 			return 3;
 		}
@@ -117,12 +116,12 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return new AreaIterator( mArea);
 	}
 
-	public void markForUpdate() {
+	private void markForUpdate() {
 //		LogHelper.info( "markForUpdate: %s", LogHelper.toString( this));
 		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord);
 	}
 
-	public void notifyAllNeighbor() {
+	private void notifyAllNeighbor() {
 //		LogHelper.info( "notifyAllChange: %s", LogHelper.toString( this));
 		int blockID = BlockType.STAGE.getId();
 		DarkLib.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, blockID);
@@ -135,6 +134,31 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 //		LogHelper.info( "onDataPacket");
 		readFromNBT( paket.customParam1);
 		markForUpdate();
+	}
+
+	public boolean onItemUse( AreaType area, ItemStack stk) {
+		if (tryAdd( area, stk.getItemDamage())) {
+//			LogHelper.info( "onItemUse: %s", LogHelper.toString( this));
+			DarkLib.placeNoise( worldObj, xCoord, yCoord, zCoord, BlockType.STAGE.getId());
+			--stk.stackSize;
+			refresh();
+			notifyAllNeighbor();
+			return true;
+		}
+		return false;
+	}
+
+	public void onNeighborBlockChange( int blkID) {
+		refresh();
+	}
+
+	public void onRemove( AreaType area) {
+		int meta = tryRemove( area);
+		if (meta >= 0) {
+			dropItem( meta);
+			refresh();
+			notifyAllNeighbor();
+		}
 	}
 
 	@Override
@@ -151,35 +175,24 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 			}
 		}
 		mConnect.readFromNBT( nbt);
-		LogHelper.info( "readFromNBT: %s", LogHelper.toString( this));
+//		LogHelper.info( "readFromNBT: %s", LogHelper.toString( this));
 	}
 
-	public void refresh() {
-//		refreshConnect();
-		if (mConnect.isEmpty()) {
-			mConnect = IConnectable.NO_CONNECT;
-		}
-		else {
-			mConnect.refresh( this);
-		}
-		LogHelper.info( "refresh: %s", LogHelper.toString( this));
+	private void refresh() {
 		if (isEmpty()) {
-			invalidate();
+			worldObj.setBlockToAir( xCoord, yCoord, zCoord);
 		}
 		else {
-			worldObj.updateTileEntityChunkAndDoNothing( xCoord, yCoord, zCoord, this);
-		}
-	}
-
-	@SuppressWarnings( "unused")
-	private void refreshConnect() {
-		for (AreaType side : AreaType.valuesSide()) {
-			if (isAllowed( side)) {
-				mConnect.set( side);
+			if (mConnect.isEmpty()) {
+				mConnect = IConnectable.NO_CONNECT;
 			}
 			else {
-				mConnect.delete( side);
+				mConnect.refresh( this);
 			}
+			mConnect.power( this);
+//			LogHelper.info( "refresh: %s", LogHelper.toString( this));
+			worldObj.updateTileEntityChunkAndDoNothing( xCoord, yCoord, zCoord, this);
+			markForUpdate();
 		}
 	}
 
@@ -226,13 +239,13 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return sb.toString();
 	}
 
-	public boolean tryAdd( AreaType area, int meta) {
+	private boolean tryAdd( AreaType area, int meta) {
 		ISection sec = SectionLib.getForDmg( meta);
 		IMaterial mat = sec.getForDmg( meta);
 		return tryAdd( area, sec, mat);
 	}
 
-	public boolean tryAdd( AreaType area, int secID, int matID) {
+	private boolean tryAdd( AreaType area, int secID, int matID) {
 		ISection sec = SectionLib.get( secID);
 		IMaterial mat = sec.getForDmg( matID);
 		return tryAdd( area, sec, mat);
@@ -255,7 +268,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return false;
 	}
 
-	public int tryRemove( AreaType area) {
+	private int tryRemove( AreaType area) {
 		try {
 			if (isUsed( area)) {
 				int meta = getMeta( area);

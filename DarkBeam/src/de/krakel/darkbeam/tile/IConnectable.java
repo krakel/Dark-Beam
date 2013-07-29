@@ -34,13 +34,15 @@ public interface IConnectable {
 
 	boolean isEmpty();
 
-	boolean isInvalid();
+	boolean isIllegal();
 
 	boolean isPowerd();
 
 	boolean isValid( int value);
 
 	boolean isWired( AreaType area);
+
+	void power( TileStage tile);
 
 	void readFromNBT( NBTTagCompound nbt);
 

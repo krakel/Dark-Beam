@@ -93,7 +93,7 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isInvalid() {
+	public boolean isIllegal() {
 		if (mArea == INVALID_DU) {
 			return true;
 		}
@@ -119,6 +119,18 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public boolean isWired( AreaType area) {
 		return (mArea & area.mMask) != 0;
+	}
+
+	@Override
+	public void power( TileStage tile) {
+		int old = mPower;
+		powerEdge( tile);
+		powerSide( tile);
+//		LogHelper.info( "refresh: %d -> %d", old, mPower);
+//		tile.worldObj.markBlockForRenderUpdate( tile.xCoord, tile.yCoord, tile.zCoord);
+		if (old != mPower) {
+//			tile.updateAll();
+		}
 	}
 
 	private void powerEdge( TileStage tile) {
@@ -174,18 +186,10 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public void refresh( TileStage tile) {
-		int old = mPower;
 		reset();
 		refreshEdge( tile);
 		refreshSide( tile);
 		refreshInner( tile);
-		powerEdge( tile);
-		powerSide( tile);
-//		LogHelper.info( "refresh: %d -> %d", old, mPower);
-//		tile.worldObj.markBlockForRenderUpdate( tile.xCoord, tile.yCoord, tile.zCoord);
-		if (old != mPower) {
-//			tile.updateAll();
-		}
 	}
 
 	private void refreshEdge( TileStage tile) {

@@ -62,7 +62,7 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isInvalid() {
+	public boolean isIllegal() {
 		return false;
 	}
 
@@ -79,6 +79,10 @@ class NoConnect implements IConnectable {
 	@Override
 	public boolean isWired( AreaType area) {
 		return false;
+	}
+
+	@Override
+	public void power( TileStage tile) {
 	}
 
 	@Override

@@ -177,12 +177,11 @@ public class BlockStage extends Block {
 	}
 
 	@Override
-	public void onNeighborBlockChange( World world, int x, int y, int z, int blockID) {
+	public void onNeighborBlockChange( World world, int x, int y, int z, int blkID) {
 //		LogHelper.info( "onNeighborBlockChange: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {
-			tile.refresh();
-			tile.markForUpdate();
+			tile.onNeighborBlockChange( blkID);
 		}
 		else {
 			world.setBlockToAir( x, y, z);
@@ -205,21 +204,8 @@ public class BlockStage extends Block {
 			return false;
 		}
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
-		if (tile == null) {
-			return false;
-		}
-		int meta = tile.tryRemove( AreaType.toArea( pos.subHit));
-		if (meta >= 0) {
-			tile.dropItem( meta);
-			if (tile.isEmpty()) {
-				tile.invalidate();
-				world.setBlockToAir( x, y, z);
-			}
-			else {
-				tile.refresh();
-				tile.markForUpdate();
-			}
-			tile.notifyAllNeighbor();
+		if (tile != null) {
+			tile.onRemove( AreaType.toArea( pos.subHit));
 		}
 		return false;
 	}
