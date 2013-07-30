@@ -113,6 +113,7 @@ abstract class AConnect implements IConnectable {
 		return mPower > 0;
 	}
 
+	@Override
 	public boolean isSided( int value) {
 		return (mSidedConn & value) != 0;
 	}
