@@ -18,6 +18,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import de.krakel.darkbeam.lib.BlockType;
+
 public class DarkLib {
 	public static final double BOX_BORDER_HEIGHT = 1D / 512D;
 
@@ -30,12 +32,8 @@ public class DarkLib {
 	}
 
 	public static boolean canPowered( int id) {
-		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
-			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
-	}
-
-	public static boolean canPoweredEdged( int id) {
-		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
+		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID
+			|| id == Block.pistonMoving.blockID || id == Block.dispenser.blockID
 			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
 	}
 
@@ -120,6 +118,16 @@ public class DarkLib {
 			return (T) tile;
 		}
 		return null;
+	}
+
+	public static boolean isWireBlock( int id) {
+		if (id == Block.redstoneWire.blockID) {
+			return true;
+		}
+		if (id == BlockType.STAGE.getId()) {
+			return true;
+		}
+		return false;
 	}
 
 	public static void notifyCornersChange( World world, int x, int y, int z, int blockID) {

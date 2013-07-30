@@ -132,15 +132,16 @@ abstract class AConnect implements IConnectable {
 	public void power( TileStage tile) {
 		int old = mPower;
 		mPower = 0;
-		powerEdge( tile);
 		powerSide( tile);
+		powerEdge( tile);
 		LogHelper.info( "refresh: %d -> %d", old, mPower);
 		if (old != mPower) {
-//			tile.updateAll();
+			tile.updateAll();
 		}
 	}
 
 	private void powerEdge( TileStage tile) {
+//		LogHelper.info( "powerEdge: %s", tile.toString());
 		for (AreaType edge : AreaType.valuesEdge()) {
 			if (isEdged( edge)) {
 				int x = tile.xCoord + edge.mDx;
@@ -151,17 +152,18 @@ abstract class AConnect implements IConnectable {
 					mPower = MathHelper.clamp_int( powerEdge( other, edge), mPower, MAX_STRENGTH);
 				}
 				else {
-					mPower = MathHelper.clamp_int( powerEdgeBlock( tile.worldObj, x, y, z, edge), mPower, MAX_STRENGTH);
+					if (isWired( edge.sideA())) {
+						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideA().ordinal()), mPower, MAX_STRENGTH);
+					}
+					if (isWired( edge.sideB())) {
+						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideB().ordinal()), mPower, MAX_STRENGTH);
+					}
 				}
 			}
 		}
 	}
 
 	private int powerEdge( TileStage other, AreaType edge) {
-		return 0;
-	}
-
-	private int powerEdgeBlock( World world, int x, int y, int z, AreaType edge) {
 		return 0;
 	}
 
@@ -204,7 +206,7 @@ abstract class AConnect implements IConnectable {
 
 	private int powerSideStrong( World world, int x, int y, int z, int side) {
 		int id = world.getBlockId( x, y, z);
-		if (id == Block.redstoneWire.blockID) {
+		if (DarkLib.isWireBlock( id)) {
 			return 0;
 		}
 		Block blk = Block.blocksList[id];
@@ -216,7 +218,7 @@ abstract class AConnect implements IConnectable {
 
 	private int powerSideWeak( World world, int x, int y, int z, int side) {
 		int id = world.getBlockId( x, y, z);
-		if (id == Block.redstoneWire.blockID) {
+		if (DarkLib.isWireBlock( id)) {
 			return 0;
 		}
 		Block blk = Block.blocksList[id];
@@ -258,10 +260,10 @@ abstract class AConnect implements IConnectable {
 						refreshEdge( other, edge);
 					}
 				}
-				else if (DarkLib.canPoweredEdged( id)) {
+				else if (DarkLib.canPowered( id)) {
 					mEdgedConn |= edge.mMask;
 				}
-				else if (DarkLib.canProvidePowerEdged( id)) {
+				else if (DarkLib.canProvidePower( id)) {
 					mEdgedConn |= edge.mMask;
 				}
 			}
@@ -372,7 +374,7 @@ abstract class AConnect implements IConnectable {
 		mEdgedConn = 0;
 		mSidedConn = 0;
 		mInnerConn = 0;
-		mPower = 0;
+//		mPower = 0;
 	}
 
 	@Override

@@ -288,6 +288,13 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		return -1;
 	}
 
+	public void updateAll() {
+		int id = BlockType.STAGE.getId();
+		DarkLib.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, id);
+		DarkLib.notifyEdgesChange( worldObj, xCoord, yCoord, zCoord, id);
+		DarkLib.notifyNeighborChange2( worldObj, xCoord, yCoord, zCoord, id);
+	}
+
 	@Override
 	public void writeToNBT( NBTTagCompound nbt) {
 		super.writeToNBT( nbt);
