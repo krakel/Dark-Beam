@@ -30,12 +30,8 @@ public class DarkLib {
 	}
 
 	public static boolean canPowered( int id) {
-		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
-			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
-	}
-
-	public static boolean canPoweredEdged( int id) {
-		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID || id == Block.dispenser.blockID
+		return id == Block.pistonBase.blockID || id == Block.pistonStickyBase.blockID
+			|| id == Block.pistonMoving.blockID || id == Block.dispenser.blockID
 			|| id == Block.redstoneLampIdle.blockID || id == Block.redstoneLampActive.blockID;
 	}
 
