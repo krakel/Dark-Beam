@@ -20,7 +20,6 @@ import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.helper.LogHelper;
 
 abstract class AConnect implements IConnectable {
-	private int MAX_STRENGTH = 255;
 	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
 	private static final int INVALID_NS = AreaType.toMask( AreaType.NORTH, AreaType.SOUTH);
 	private static final int INVALID_DU = AreaType.toMask( AreaType.DOWN, AreaType.UP);
@@ -114,7 +113,7 @@ abstract class AConnect implements IConnectable {
 		return mPower > 0;
 	}
 
-	private boolean isSided( int value) {
+	public boolean isSided( int value) {
 		return (mSidedConn & value) != 0;
 	}
 
@@ -149,14 +148,14 @@ abstract class AConnect implements IConnectable {
 				int z = tile.zCoord + edge.mDz;
 				TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
 				if (other != null) {
-					mPower = MathHelper.clamp_int( powerEdge( other, edge), mPower, MAX_STRENGTH);
+					mPower = MathHelper.clamp_int( powerEdge( other, edge), mPower, PowerSearch.MAX_STRENGTH);
 				}
 				else {
 					if (isWired( edge.sideA())) {
-						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideA().ordinal()), mPower, MAX_STRENGTH);
+						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideA().ordinal()), mPower, PowerSearch.MAX_STRENGTH);
 					}
 					if (isWired( edge.sideB())) {
-						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideB().ordinal()), mPower, MAX_STRENGTH);
+						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideB().ordinal()), mPower, PowerSearch.MAX_STRENGTH);
 					}
 				}
 			}
@@ -177,10 +176,10 @@ abstract class AConnect implements IConnectable {
 				int z = tile.zCoord + side.mDz;
 				TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
 				if (other != null) {
-					mPower = MathHelper.clamp_int( powerSide( other, side), mPower, MAX_STRENGTH);
+					mPower = MathHelper.clamp_int( powerSide( other, side), mPower, PowerSearch.MAX_STRENGTH);
 				}
 				else {
-					mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, side.ordinal()), mPower, MAX_STRENGTH);
+					mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, side.ordinal()), mPower, PowerSearch.MAX_STRENGTH);
 				}
 			}
 		}

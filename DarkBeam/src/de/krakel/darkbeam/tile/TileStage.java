@@ -190,6 +190,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				mConnect.refresh( this);
 			}
 			mConnect.power( this);
+//			PowerSearch.update( worldObj, xCoord, yCoord, zCoord);
 //			LogHelper.info( "refresh: %s", LogHelper.toString( this));
 			worldObj.updateTileEntityChunkAndDoNothing( xCoord, yCoord, zCoord, this);
 			markForUpdate();

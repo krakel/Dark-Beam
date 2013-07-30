@@ -38,6 +38,8 @@ public interface IConnectable {
 
 	boolean isPowerd();
 
+	boolean isSided( int value);
+
 	boolean isValid( int value);
 
 	boolean isWired( AreaType area);

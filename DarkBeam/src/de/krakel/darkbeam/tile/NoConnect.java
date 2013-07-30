@@ -72,6 +72,11 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
+	public boolean isSided( int value) {
+		return false;
+	}
+
+	@Override
 	public boolean isValid( int value) {
 		return false;
 	}
