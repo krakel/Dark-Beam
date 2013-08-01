@@ -8,6 +8,8 @@
 package de.krakel.darkbeam.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.IMaterial;
@@ -42,22 +44,17 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
+	public int indirectPower( World world, ChunkPosition pos) {
+		return 0;
+	}
+
+	@Override
 	public boolean isAllowed( ISection sec, IMaterial mat) {
 		return false;
 	}
 
 	@Override
-	public boolean isConnected( AreaType edge) {
-		return false;
-	}
-
-	@Override
-	public boolean isConnection( AreaType area) {
-		return false;
-	}
-
-	@Override
-	public boolean isEdged( AreaType edge) {
+	public boolean isConnected( AreaType side) {
 		return false;
 	}
 
@@ -77,12 +74,22 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isSided( int value) {
+	public boolean isValid( int value) {
 		return false;
 	}
 
 	@Override
-	public boolean isValid( int value) {
+	public boolean isValidEdge( AreaType edge) {
+		return false;
+	}
+
+	@Override
+	public boolean isValidEdgeCon( AreaType edge) {
+		return false;
+	}
+
+	@Override
+	public boolean isValidSideCon( AreaType side) {
 		return false;
 	}
 
@@ -108,12 +115,12 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public void setPower( int power) {
+	public String toString() {
+		return "NoConnect=[]";
 	}
 
 	@Override
-	public String toString() {
-		return "NoConnect=[]";
+	public void updatePower( World world, ChunkPosition pos) {
 	}
 
 	@Override

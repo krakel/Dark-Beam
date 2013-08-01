@@ -8,6 +8,8 @@
 package de.krakel.darkbeam.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 
 import de.krakel.darkbeam.core.ASectionWire;
 import de.krakel.darkbeam.core.AreaType;
@@ -26,9 +28,9 @@ abstract class AConnect implements IConnectable {
 	protected ASectionWire mWire;
 	private int mArea;
 	private int mPower;
-	private int mInnerConn;
-	private int mSidedConn;
-	private int mEdgedConn;
+	private int mInnerEdge;
+	private int mSidedEdge;
+	private int mEdgedEdge;
 
 	protected AConnect( ASectionWire wire) {
 		mWire = wire;
@@ -39,10 +41,6 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public void delete( AreaType area) {
 		mArea &= ~area.mMask;
-	}
-
-	private int getConnections() {
-		return mInnerConn | mSidedConn | mEdgedConn;
 	}
 
 	@Override
@@ -57,7 +55,7 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public int getProvidingStrongPower( AreaType side) {
-		if (isSided( side.offEdges())) {
+		if (isValidSideCon( side)) {
 			return mPower;
 		}
 		return 0;
@@ -65,29 +63,27 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public int getProvidingWeakPower( AreaType side) {
-		if (isSided( side.offEdges())) {
+		if (isValidSideCon( side)) {
 			return mPower;
 		}
 		return 0;
+	}
+
+	private int getValidEdges() {
+		return mInnerEdge | mSidedEdge | mEdgedEdge;
+	}
+
+	@Override
+	public int indirectPower( World world, ChunkPosition pos) {
+		return PowerSearch.indirectPower( this, world, pos);
 	}
 
 	@Override
 	public abstract boolean isAllowed( ISection sec, IMaterial mat);
 
 	@Override
-	public boolean isConnected( AreaType edge) {
-		return (getConnections() & edge.mMask) != 0;
-	}
-
-	@Override
-	public boolean isConnection( AreaType area) {
-		int offs = area.offEdges();
-		return (getConnections() & offs) != 0;
-	}
-
-	@Override
-	public boolean isEdged( AreaType edge) {
-		return (mEdgedConn & edge.mMask) != 0;
+	public boolean isConnected( AreaType side) {
+		return (getValidEdges() & side.offEdges()) != 0;
 	}
 
 	@Override
@@ -115,13 +111,23 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public boolean isSided( int value) {
-		return (mSidedConn & value) != 0;
+	public boolean isValid( int value) {
+		return (mArea & value) != 0;
 	}
 
 	@Override
-	public boolean isValid( int value) {
-		return (mArea & value) != 0;
+	public boolean isValidEdge( AreaType edge) {
+		return (getValidEdges() & edge.mMask) != 0;
+	}
+
+	@Override
+	public boolean isValidEdgeCon( AreaType edge) {
+		return (mEdgedEdge & edge.mMask) != 0;
+	}
+
+	@Override
+	public boolean isValidSideCon( AreaType side) {
+		return (mSidedEdge & side.offEdges()) != 0 && !isWired( side);
 	}
 
 	@Override
@@ -137,9 +143,9 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
 		mPower = nbt.getInteger( NBT_POWER);
-		mInnerConn = nbt.getInteger( NBT_INNER);
-		mSidedConn = nbt.getInteger( NBT_SIDED);
-		mEdgedConn = nbt.getInteger( NBT_EDGED);
+		mInnerEdge = nbt.getInteger( NBT_INNER);
+		mSidedEdge = nbt.getInteger( NBT_SIDED);
+		mEdgedEdge = nbt.getInteger( NBT_EDGED);
 	}
 
 	@Override
@@ -164,10 +170,10 @@ abstract class AConnect implements IConnectable {
 					}
 				}
 				else if (DarkLib.canPowered( id)) {
-					mEdgedConn |= edge.mMask;
+					mEdgedEdge |= edge.mMask;
 				}
 				else if (DarkLib.canProvidePower( id)) {
-					mEdgedConn |= edge.mMask;
+					mEdgedEdge |= edge.mMask;
 				}
 			}
 		}
@@ -177,24 +183,24 @@ abstract class AConnect implements IConnectable {
 		int breaked = 0;
 		AreaType anti = edge.anti();
 		AreaType sideA = anti.sideA();
+		AreaType sideB = anti.sideB();
 		if (other.isUsed( sideA)) {
 			if (other.isAllowed( sideA)) {
-				mEdgedConn |= edge.mMask;
+				mEdgedEdge |= edge.mMask;
 			}
 			else {
 				breaked |= edge.mMask;
 			}
 		}
-		AreaType sideB = anti.sideB();
 		if (other.isUsed( sideB)) {
 			if (other.isAllowed( sideB)) {
-				mEdgedConn |= edge.mMask;
+				mEdgedEdge |= edge.mMask;
 			}
 			else {
 				breaked |= edge.mMask;
 			}
 		}
-		mEdgedConn &= ~breaked;
+		mEdgedEdge &= ~breaked;
 	}
 
 	private void refreshInner( TileStage tile) {
@@ -204,7 +210,7 @@ abstract class AConnect implements IConnectable {
 			if (tile.isUsed( side)) {
 				int edges = side.offEdges();
 				if (tile.isAllowed( side)) {
-					mInnerConn |= temp & edges;
+					mInnerEdge |= temp & edges;
 					temp |= edges;
 				}
 				else {
@@ -217,9 +223,9 @@ abstract class AConnect implements IConnectable {
 				breaked |= edge.mMask;
 			}
 		}
-		mInnerConn &= ~breaked;
-		mSidedConn &= ~breaked;
-		mEdgedConn &= ~breaked;
+		mInnerEdge &= ~breaked;
+		mSidedEdge &= ~breaked;
+		mEdgedEdge &= ~breaked;
 	}
 
 	private void refreshSide( TileStage tile) {
@@ -240,33 +246,33 @@ abstract class AConnect implements IConnectable {
 					}
 				}
 				else if (DarkLib.canPowered( id)) {
-					mSidedConn |= side.offEdges();
+					mSidedEdge |= side.offEdges();
 				}
 				else if (DarkLib.canProvidePower( id)) {
-					mSidedConn |= side.offEdges();
+					mSidedEdge |= side.offEdges();
 				}
 				else if (DarkLib.canBreakPower( id) && !isWired( side)) {
-					mEdgedConn &= ~side.offEdges();
+					mEdgedEdge &= ~side.offEdges();
 				}
 			}
 		}
-		mSidedConn &= ~breaked;
-		mEdgedConn &= ~breaked;
+		mSidedEdge &= ~breaked;
+		mEdgedEdge &= ~breaked;
 	}
 
 	private int refreshSide( TileStage other, AreaType side, boolean connect) {
 		int breaked = 0;
 		AreaType anti = side.anti();
-		for (AreaType sideB : anti.sides()) {
-			if (other.isUsed( anti.edge( sideB))) {
-				breaked |= side.edge( sideB).mMask;
+		for (AreaType border : anti.sides()) {
+			if (other.isUsed( anti.edge( border))) {
+				breaked |= side.edge( border).mMask;
 			}
-			else if (other.isUsed( sideB)) {
-				if (connect && other.isAllowed( sideB)) {
-					mSidedConn |= side.edge( sideB).mMask;
+			else if (other.isUsed( border)) {
+				if (connect && other.isAllowed( border)) {
+					mSidedEdge |= side.edge( border).mMask;
 				}
 				else {
-					breaked |= side.edge( sideB).mMask;
+					breaked |= side.edge( border).mMask;
 				}
 			}
 		}
@@ -274,9 +280,9 @@ abstract class AConnect implements IConnectable {
 	}
 
 	private void reset() {
-		mEdgedConn = 0;
-		mSidedConn = 0;
-		mInnerConn = 0;
+		mEdgedEdge = 0;
+		mSidedEdge = 0;
+		mInnerEdge = 0;
 //		mPower = 0;
 	}
 
@@ -286,20 +292,20 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public void setPower( int power) {
-		mPower = power;
+	public String toString() {
+		return DarkLib.format( "AConnect=[%d, 0x%04X, 0x%04X, 0x%04X, 0x%04X]", mPower, mArea, mInnerEdge, mSidedEdge, mEdgedEdge);
 	}
 
 	@Override
-	public String toString() {
-		return DarkLib.format( "AConnect=[%d, 0x%04X, 0x%04X, 0x%04X, 0x%04X]", mPower, mArea, mInnerConn, mSidedConn, mEdgedConn);
+	public void updatePower( World world, ChunkPosition pos) {
+		mPower = PowerSearch.updatePower( this, world, pos);
 	}
 
 	@Override
 	public void writeToNBT( NBTTagCompound nbt) {
 		nbt.setInteger( NBT_POWER, mPower);
-		nbt.setInteger( NBT_INNER, mInnerConn);
-		nbt.setInteger( NBT_SIDED, mSidedConn);
-		nbt.setInteger( NBT_EDGED, mEdgedConn);
+		nbt.setInteger( NBT_INNER, mInnerEdge);
+		nbt.setInteger( NBT_SIDED, mSidedEdge);
+		nbt.setInteger( NBT_EDGED, mEdgedEdge);
 	}
 }

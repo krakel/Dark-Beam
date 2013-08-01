@@ -37,10 +37,10 @@ abstract class AWireRenderer extends ASectionRenderer {
 	}
 
 	@Override
-	public void renderSide( RenderBlocks rndrBlk, AreaType area, Block blk, int x, int y, int z, TileStage tile) {
+	public void renderSide( RenderBlocks rndrBlk, AreaType side, Block blk, int x, int y, int z, TileStage tile) {
 		IConnectable connect = tile.getConnect();
-		boolean isConn = connect.isConnection( area);
-		int meta = tile.getMeta( area);
+		boolean isConn = connect.isConnected( side);
+		int meta = tile.getMeta( side);
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;
 		float min = isConn ? minS : mCrossness;
@@ -48,39 +48,39 @@ abstract class AWireRenderer extends ASectionRenderer {
 		float minX, maxX;
 		float minY, maxY;
 		float minZ, maxZ;
-		switch (area) {
+		switch (side) {
 			case DOWN:
-				minX = connect.isConnected( AreaType.DOWN_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.DOWN_EAST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.DOWN_NORTH) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.DOWN_SOUTH) ? 1F : max;
+				minX = connect.isValidEdge( AreaType.DOWN_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.DOWN_EAST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.DOWN_NORTH) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.DOWN_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 0F, minS, maxX, mHigh, maxS);
 				renderStandard( rndrBlk, blk, IDirection.DIR_DOWN, meta, x, y, z);
 				blk.setBlockBounds( minS, 0F, minZ, maxS, mHigh, maxZ);
 				renderStandard( rndrBlk, blk, IDirection.DIR_DOWN, meta, x, y, z);
 				break;
 			case UP:
-				minX = connect.isConnected( AreaType.UP_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.UP_EAST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.UP_NORTH) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.UP_SOUTH) ? 1F : max;
+				minX = connect.isValidEdge( AreaType.UP_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.UP_EAST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.UP_NORTH) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.UP_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 1F - mHigh, minS, maxX, 1F, maxS);
 				renderStandard( rndrBlk, blk, IDirection.DIR_UP, meta, x, y, z);
 				blk.setBlockBounds( minS, 1F - mHigh, minZ, maxS, 1F, maxZ);
 				renderStandard( rndrBlk, blk, IDirection.DIR_UP, meta, x, y, z);
 				break;
 			case NORTH:
-				minX = connect.isConnected( AreaType.NORTH_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.NORTH_EAST) ? 1F : max;
-				minY = connect.isConnected( AreaType.DOWN_NORTH) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_NORTH) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_NORTH)) {
+				minX = connect.isValidEdge( AreaType.NORTH_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.NORTH_EAST) ? 1F : max;
+				minY = connect.isValidEdge( AreaType.DOWN_NORTH) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_NORTH) ? 1F : max;
+				if (connect.isValidEdgeCon( AreaType.DOWN_NORTH)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_NORTH)) {
+				if (connect.isValidEdgeCon( AreaType.UP_NORTH)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.NORTH_EAST)) {
+				if (connect.isValidEdgeCon( AreaType.NORTH_EAST)) {
 					maxX += mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 0F, maxX, maxS, mHigh);
@@ -89,17 +89,17 @@ abstract class AWireRenderer extends ASectionRenderer {
 				renderStandard( rndrBlk, blk, IDirection.DIR_NORTH, meta, x, y, z);
 				break;
 			case SOUTH:
-				minX = connect.isConnected( AreaType.SOUTH_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.SOUTH_EAST) ? 1F : max;
-				minY = connect.isConnected( AreaType.DOWN_SOUTH) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_SOUTH) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_SOUTH)) {
+				minX = connect.isValidEdge( AreaType.SOUTH_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.SOUTH_EAST) ? 1F : max;
+				minY = connect.isValidEdge( AreaType.DOWN_SOUTH) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_SOUTH) ? 1F : max;
+				if (connect.isValidEdgeCon( AreaType.DOWN_SOUTH)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_SOUTH)) {
+				if (connect.isValidEdgeCon( AreaType.UP_SOUTH)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.SOUTH_WEST)) {
+				if (connect.isValidEdgeCon( AreaType.SOUTH_WEST)) {
 					minX -= mHigh;
 				}
 				blk.setBlockBounds( minX, minS, 1F - mHigh, maxX, maxS, 1F);
@@ -108,17 +108,17 @@ abstract class AWireRenderer extends ASectionRenderer {
 				renderStandard( rndrBlk, blk, IDirection.DIR_SOUTH, meta, x, y, z);
 				break;
 			case WEST:
-				minY = connect.isConnected( AreaType.DOWN_WEST) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_WEST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.NORTH_WEST) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.SOUTH_WEST) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_WEST)) {
+				minY = connect.isValidEdge( AreaType.DOWN_WEST) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_WEST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.NORTH_WEST) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.SOUTH_WEST) ? 1F : max;
+				if (connect.isValidEdgeCon( AreaType.DOWN_WEST)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_WEST)) {
+				if (connect.isValidEdgeCon( AreaType.UP_WEST)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.NORTH_WEST)) {
+				if (connect.isValidEdgeCon( AreaType.NORTH_WEST)) {
 					minZ -= mHigh;
 				}
 				blk.setBlockBounds( 0F, minY, minS, mHigh, maxY, maxS);
@@ -127,17 +127,17 @@ abstract class AWireRenderer extends ASectionRenderer {
 				renderStandard( rndrBlk, blk, IDirection.DIR_WEST, meta, x, y, z);
 				break;
 			case EAST:
-				minY = connect.isConnected( AreaType.DOWN_EAST) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_EAST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.NORTH_EAST) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.SOUTH_EAST) ? 1F : max;
-				if (connect.isEdged( AreaType.DOWN_EAST)) {
+				minY = connect.isValidEdge( AreaType.DOWN_EAST) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_EAST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.NORTH_EAST) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.SOUTH_EAST) ? 1F : max;
+				if (connect.isValidEdgeCon( AreaType.DOWN_EAST)) {
 					minY -= mHigh;
 				}
-				if (connect.isEdged( AreaType.UP_EAST)) {
+				if (connect.isValidEdgeCon( AreaType.UP_EAST)) {
 					maxY += mHigh;
 				}
-				if (connect.isEdged( AreaType.SOUTH_EAST)) {
+				if (connect.isValidEdgeCon( AreaType.SOUTH_EAST)) {
 					maxZ += mHigh;
 				}
 				blk.setBlockBounds( 1F - mHigh, minY, minS, 1F, maxY, maxS);
@@ -153,9 +153,9 @@ abstract class AWireRenderer extends ASectionRenderer {
 	}
 
 	@Override
-	public void setSectionBounds( AreaType area, Block blk, TileStage tile) {
+	public void setSectionBounds( AreaType side, Block blk, TileStage tile) {
 		IConnectable connect = tile.getConnect();
-		boolean isConn = connect.isConnection( area);
+		boolean isConn = connect.isConnected( side);
 		float minS = 0.5F - mThickness;
 		float maxS = 0.5F + mThickness;
 		float min = isConn ? minS : mCrossness;
@@ -163,57 +163,57 @@ abstract class AWireRenderer extends ASectionRenderer {
 		float minX, maxX;
 		float minY, maxY;
 		float minZ, maxZ;
-		switch (area) {
+		switch (side) {
 			case DOWN:
-				minX = connect.isConnected( AreaType.DOWN_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.DOWN_EAST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.DOWN_NORTH) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.DOWN_SOUTH) ? 1F : max;
+				minX = connect.isValidEdge( AreaType.DOWN_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.DOWN_EAST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.DOWN_NORTH) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.DOWN_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 0F, minZ, maxX, mHigh, maxZ);
 //				blk.setBlockBounds( 0F, 0F, 0F, 1F, mHigh, 1F);
 				break;
 			case UP:
-				minX = connect.isConnected( AreaType.UP_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.UP_EAST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.UP_NORTH) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.UP_SOUTH) ? 1F : max;
+				minX = connect.isValidEdge( AreaType.UP_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.UP_EAST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.UP_NORTH) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.UP_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, 1F - mHigh, minZ, maxX, 1F, maxZ);
 //				blk.setBlockBounds( 0F, 1F - mHigh, 0F, 1F, 1F, 1F);
 				break;
 			case NORTH:
-				minX = connect.isConnected( AreaType.NORTH_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.NORTH_EAST) ? 1F : max;
-				minY = connect.isConnected( AreaType.DOWN_NORTH) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_NORTH) ? 1F : max;
+				minX = connect.isValidEdge( AreaType.NORTH_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.NORTH_EAST) ? 1F : max;
+				minY = connect.isValidEdge( AreaType.DOWN_NORTH) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_NORTH) ? 1F : max;
 				blk.setBlockBounds( minX, minY, 0F, maxX, maxY, mHigh);
 //				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, mHigh);
 				break;
 			case SOUTH:
-				minX = connect.isConnected( AreaType.SOUTH_WEST) ? 0F : min;
-				maxX = connect.isConnected( AreaType.SOUTH_EAST) ? 1F : max;
-				minY = connect.isConnected( AreaType.DOWN_SOUTH) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_SOUTH) ? 1F : max;
+				minX = connect.isValidEdge( AreaType.SOUTH_WEST) ? 0F : min;
+				maxX = connect.isValidEdge( AreaType.SOUTH_EAST) ? 1F : max;
+				minY = connect.isValidEdge( AreaType.DOWN_SOUTH) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_SOUTH) ? 1F : max;
 				blk.setBlockBounds( minX, minY, 1F - mHigh, maxX, maxY, 1F);
 //				blk.setBlockBounds( 0F, 0F, 1F - mHigh, 1F, 1F, 1F);
 				break;
 			case WEST:
-				minY = connect.isConnected( AreaType.DOWN_WEST) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_WEST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.NORTH_WEST) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.SOUTH_WEST) ? 1F : max;
+				minY = connect.isValidEdge( AreaType.DOWN_WEST) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_WEST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.NORTH_WEST) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.SOUTH_WEST) ? 1F : max;
 				blk.setBlockBounds( 0F, minY, minZ, mHigh, maxY, maxZ);
 //				blk.setBlockBounds( 0F, 0F, 0F, mHigh, 1F, 1F);
 				break;
 			case EAST:
-				minY = connect.isConnected( AreaType.DOWN_EAST) ? 0F : min;
-				maxY = connect.isConnected( AreaType.UP_EAST) ? 1F : max;
-				minZ = connect.isConnected( AreaType.NORTH_EAST) ? 0F : min;
-				maxZ = connect.isConnected( AreaType.SOUTH_EAST) ? 1F : max;
+				minY = connect.isValidEdge( AreaType.DOWN_EAST) ? 0F : min;
+				maxY = connect.isValidEdge( AreaType.UP_EAST) ? 1F : max;
+				minZ = connect.isValidEdge( AreaType.NORTH_EAST) ? 0F : min;
+				maxZ = connect.isValidEdge( AreaType.SOUTH_EAST) ? 1F : max;
 				blk.setBlockBounds( 1F - mHigh, minY, minZ, 1F, maxY, maxZ);
 //				blk.setBlockBounds( 1F - mHigh, 0F, 0F, 1F, 1F, 1F);
 				break;
 			default:
-				LogHelper.warning( "unknown area %d", area);
+				LogHelper.warning( "unknown area %d", side);
 				blk.setBlockBounds( 0F, 0F, 0F, 1F, 1F, 1F);
 				break;
 		}

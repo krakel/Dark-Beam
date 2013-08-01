@@ -35,62 +35,61 @@ public class PowerSearch {
 		}
 	}
 
-	private static void addSearchBlocks( int xCoord, int yCoord, int zCoord, IConnectable con) {
+	private static void addSearchBlocks( ChunkPosition pos, IConnectable con) {
 		for (AreaType side : AreaType.valuesSide()) {
-			if (con.isSided( side.offEdges())) {
-				int x = xCoord + side.mDx;
-				int y = yCoord + side.mDy;
-				int z = zCoord + side.mDz;
+			if (con.isValidSideCon( side)) {
+				int x = pos.x + side.mDx;
+				int y = pos.y + side.mDy;
+				int z = pos.z + side.mDz;
 				addPosition( new ChunkPosition( x, y, z));
 			}
 		}
 		for (AreaType edge : AreaType.valuesEdge()) {
-			if (con.isEdged( edge)) {
-				int x = xCoord + edge.mDx;
-				int y = yCoord + edge.mDy;
-				int z = zCoord + edge.mDz;
+			if (con.isValidEdgeCon( edge)) {
+				int x = pos.x + edge.mDx;
+				int y = pos.y + edge.mDy;
+				int z = pos.z + edge.mDz;
 				addPosition( new ChunkPosition( x, y, z));
 			}
 		}
 	}
 
-	private static void addUpdateBlock( int xCoord, int yCoord, int zCoord) {
+	private static void addUpdateBlock( ChunkPosition pos) {
 		for (AreaType area : AreaType.valuesSphere()) {
-			int x = xCoord + area.mDx;
-			int y = yCoord + area.mDy;
-			int z = zCoord + area.mDz;
+			int x = pos.x + area.mDx;
+			int y = pos.y + area.mDy;
+			int z = pos.z + area.mDz;
 			sUpdates.add( new ChunkPosition( x, y, z));
 		}
 		for (AreaType side : AreaType.valuesSide()) {
-			int x = xCoord + (side.mDx << 1);
-			int y = yCoord + (side.mDy << 1);
-			int z = zCoord + (side.mDz << 1);
+			int x = pos.x + (side.mDx << 1);
+			int y = pos.y + (side.mDy << 1);
+			int z = pos.z + (side.mDz << 1);
 			sUpdates.add( new ChunkPosition( x, y, z));
 		}
 	}
 
-	private static int cableEdge( TileStage tile, int cable) {
-		IConnectable con = tile.getConnect();
+	private static int cableEdge( IConnectable con, World world, ChunkPosition pos, int cable) {
 		for (AreaType edge : AreaType.valuesEdge()) {
-			if (con.isEdged( edge)) {
-				int x = tile.xCoord + edge.mDx;
-				int y = tile.yCoord + edge.mDy;
-				int z = tile.zCoord + edge.mDz;
+			if (con.isValidEdgeCon( edge)) {
+				int x = pos.x + edge.mDx;
+				int y = pos.y + edge.mDy;
+				int z = pos.z + edge.mDz;
 				if (con.isWired( edge.sideA())) {
-					cable = Math.max( cablePower( tile.worldObj, x, y, z, edge.sideA().ordinal()), cable);
+					cable = Math.max( cablePower( world, x, y, z, edge.sideA().ordinal()), cable);
 				}
 				if (con.isWired( edge.sideB())) {
-					cable = Math.max( cablePower( tile.worldObj, x, y, z, edge.sideB().ordinal()), cable);
+					cable = Math.max( cablePower( world, x, y, z, edge.sideB().ordinal()), cable);
 				}
 			}
 		}
 		return cable;
 	}
 
-	private static int cablePower( TileStage tile) {
+	private static int cablePower( IConnectable con, World world, ChunkPosition pos) {
 		int cable = -1;
-		cable = cableSide( tile, cable);
-		cable = cableEdge( tile, cable);
+		cable = cableSide( con, world, pos, cable);
+		cable = cableEdge( con, world, pos, cable);
 		return cable;
 	}
 
@@ -102,15 +101,14 @@ public class PowerSearch {
 		return 0;
 	}
 
-	private static int cableSide( TileStage tile, int cable) {
-		IConnectable con = tile.getConnect();
+	private static int cableSide( IConnectable con, World world, ChunkPosition pos, int cable) {
 		for (AreaType side : AreaType.valuesSide()) {
-			if (con.isSided( side.offEdges())) {
+			if (con.isValidSideCon( side)) {
 //				LogHelper.info( "powerSide: %s, %s", side.name(), toString());
-				int x = tile.xCoord + side.mDx;
-				int y = tile.yCoord + side.mDy;
-				int z = tile.zCoord + side.mDz;
-				cable = Math.max( cableSideValue( tile.worldObj, x, y, z, side.ordinal()), cable);
+				int x = pos.x + side.mDx;
+				int y = pos.y + side.mDy;
+				int z = pos.z + side.mDz;
+				cable = Math.max( cableSideValue( world, x, y, z, side.ordinal()), cable);
 			}
 		}
 		return cable;
@@ -129,42 +127,38 @@ public class PowerSearch {
 	}
 
 	@SuppressWarnings( "unused")
-	private static int indirectEdge( TileStage tile, int indirect) {
-//		LogHelper.info( "powerEdge: %s", tile.toString());
-		IConnectable con = tile.getConnect();
+	private static int indirectEdge( IConnectable con, World world, ChunkPosition pos, int indirect) {
 		for (AreaType edge : AreaType.valuesEdge()) {
-			if (con.isEdged( edge)) {
-				int x = tile.xCoord + edge.mDx;
-				int y = tile.yCoord + edge.mDy;
-				int z = tile.zCoord + edge.mDz;
+			if (con.isValidEdgeCon( edge)) {
+				int x = pos.x + edge.mDx;
+				int y = pos.y + edge.mDy;
+				int z = pos.z + edge.mDz;
 				if (con.isWired( edge.sideA())) {
-					indirect = Math.max( indirectSideWeak( tile.worldObj, x, y, z, edge.sideA().ordinal()), indirect);
+					indirect = Math.max( indirectSideWeak( world, x, y, z, edge.sideA().ordinal()), indirect);
 				}
 				if (con.isWired( edge.sideB())) {
-					indirect = Math.max( indirectSideWeak( tile.worldObj, x, y, z, edge.sideB().ordinal()), indirect);
+					indirect = Math.max( indirectSideWeak( world, x, y, z, edge.sideB().ordinal()), indirect);
 				}
 			}
 		}
 		return indirect;
 	}
 
-	private static int indirectPower( TileStage tile) {
+	public static int indirectPower( IConnectable con, World world, ChunkPosition pos) {
 		int indirect = 0;
-		indirect = indirectSide( tile, indirect);
-//		indirect = indirectEdge( tile, indirect);
+		indirect = indirectSide( con, world, pos, indirect);
+//		indirect = indirectEdge( con, world, pos, indirect);
 		return indirect;
 	}
 
-	private static int indirectSide( TileStage tile, int indirect) {
-//		LogHelper.info( "powerSide: %s", tile.toString());
-		IConnectable con = tile.getConnect();
+	private static int indirectSide( IConnectable con, World world, ChunkPosition pos, int indirect) {
 		for (AreaType side : AreaType.valuesSide()) {
-			if (con.isSided( side.offEdges())) {
+			if (con.isValidSideCon( side)) {
 //				LogHelper.info( "powerSide: %s, %s", side.name(), toString());
-				int x = tile.xCoord + side.mDx;
-				int y = tile.yCoord + side.mDy;
-				int z = tile.zCoord + side.mDz;
-				indirect = Math.max( indirectSideWeak( tile.worldObj, x, y, z, side.ordinal()), indirect);
+				int x = pos.x + side.mDx;
+				int y = pos.y + side.mDy;
+				int z = pos.z + side.mDz;
+				indirect = Math.max( indirectSideWeak( world, x, y, z, side.ordinal()), indirect);
 			}
 		}
 		return indirect;
@@ -230,7 +224,7 @@ public class PowerSearch {
 			sSearchCheck.remove( pos);
 			TileStage tile = DarkLib.getTileEntity( world, pos.x, pos.y, pos.z, TileStage.class);
 			if (tile != null) {
-				updatePower( tile);
+				tile.getConnect().updatePower( world, pos);
 			}
 		}
 		sSearchCheck.clear();
@@ -244,33 +238,30 @@ public class PowerSearch {
 		}
 	}
 
-	private static void updatePower( TileStage tile) {
-		IConnectable con = tile.getConnect();
+	public static int updatePower( IConnectable con, World world, ChunkPosition pos) {
 		int power = con.getPower();
-		int cable = cablePower( tile);
-		int indirect = indirectPower( tile);
+		int cable = cablePower( con, world, pos);
+		int indirect = con.indirectPower( world, pos);
 		if (power == 0 && cable == 0 && indirect == 0) {
-			con.setPower( power);
+			return power;
 		}
-		else if (power == cable - 1 && cable > indirect) {
-			con.setPower( power);
+		if (power == cable - 1 && cable > indirect) {
+			return power;
 		}
-		else if (power == indirect && cable <= indirect) {
-			con.setPower( power);
+		if (power == indirect && cable <= indirect) {
+			return power;
+		}
+		if (cable > indirect || cable > power) {
+			power = Math.max( 0, cable - 1);
+		}
+		else if (indirect >= power) {
+			power = indirect;
 		}
 		else {
-			if (cable > indirect || cable > power) {
-				power = Math.max( 0, cable - 1);
-			}
-			else if (indirect >= power) {
-				power = indirect;
-			}
-			else {
-				power = 0;
-			}
-			addUpdateBlock( tile.xCoord, tile.yCoord, tile.zCoord);
-			addSearchBlocks( tile.xCoord, tile.yCoord, tile.zCoord, con);
-			con.setPower( power);
+			power = 0;
 		}
+		addUpdateBlock( pos);
+		addSearchBlocks( pos, con);
+		return power;
 	}
 }

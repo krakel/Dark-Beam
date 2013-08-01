@@ -8,6 +8,8 @@
 package de.krakel.darkbeam.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.IMaterial;
@@ -26,13 +28,11 @@ public interface IConnectable {
 
 	int getProvidingWeakPower( AreaType side);
 
+	int indirectPower( World world, ChunkPosition pos);
+
 	boolean isAllowed( ISection sec, IMaterial mat);
 
-	boolean isConnected( AreaType edge);
-
-	boolean isConnection( AreaType area);
-
-	boolean isEdged( AreaType edge);
+	boolean isConnected( AreaType side);
 
 	boolean isEmpty();
 
@@ -40,9 +40,13 @@ public interface IConnectable {
 
 	boolean isPowerd();
 
-	boolean isSided( int value);
-
 	boolean isValid( int value);
+
+	boolean isValidEdge( AreaType edge);
+
+	boolean isValidEdgeCon( AreaType edge);
+
+	boolean isValidSideCon( AreaType side);
 
 	boolean isWired( AreaType area);
 
@@ -54,7 +58,7 @@ public interface IConnectable {
 
 	void set( AreaType area);
 
-	void setPower( int power);
+	void updatePower( World world, ChunkPosition pos);
 
 	void writeToNBT( NBTTagCompound nbt);
 }
