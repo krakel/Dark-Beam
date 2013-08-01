@@ -208,6 +208,18 @@ public enum AreaType {
 			return new AreaIterator( DOWN_UP, WEST_EAST);
 		}
 	};
+	private static final Iterable<AreaType> ITERABLE_CUBE = new Iterable<AreaType>() {
+		@Override
+		public Iterator<AreaType> iterator() {
+			return new AreaIterator( DOWN, SOUTH_EAST);
+		}
+	};
+	private static final Iterable<AreaType> ITERABLE_SPHERE = new Iterable<AreaType>() {
+		@Override
+		public Iterator<AreaType> iterator() {
+			return new AreaIterator( DOWN, UP_SOUTH_EAST);
+		}
+	};
 	public final int mMask;
 	public final int mDx, mDy, mDz;
 
@@ -252,12 +264,20 @@ public enum AreaType {
 		return ITERABLE_CORNERS;
 	}
 
+	public static Iterable<AreaType> valuesCube() {
+		return ITERABLE_CUBE;
+	}
+
 	public static Iterable<AreaType> valuesEdge() {
 		return ITERABBLE_EDGES;
 	}
 
 	public static Iterable<AreaType> valuesSide() {
 		return ITERABLE_SIDES;
+	}
+
+	public static Iterable<AreaType> valuesSphere() {
+		return ITERABLE_SPHERE;
 	}
 
 	public AreaType anti() {

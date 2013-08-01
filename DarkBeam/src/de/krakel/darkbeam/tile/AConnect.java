@@ -7,17 +7,13 @@
  */
 package de.krakel.darkbeam.tile;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
 import de.krakel.darkbeam.core.ASectionWire;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
-import de.krakel.darkbeam.core.helper.LogHelper;
 
 abstract class AConnect implements IConnectable {
 	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
@@ -52,6 +48,11 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public int getLevel() {
 		return mWire.getLevel();
+	}
+
+	@Override
+	public int getPower() {
+		return mPower;
 	}
 
 	@Override
@@ -130,105 +131,7 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public void power( TileStage tile) {
-		int old = mPower;
-		mPower = 0;
-		powerSide( tile);
-		powerEdge( tile);
-		LogHelper.info( "refresh: %d -> %d", old, mPower);
-		if (old != mPower) {
-			tile.updateAll();
-		}
-	}
-
-	private void powerEdge( TileStage tile) {
-//		LogHelper.info( "powerEdge: %s", tile.toString());
-		for (AreaType edge : AreaType.valuesEdge()) {
-			if (isEdged( edge)) {
-				int x = tile.xCoord + edge.mDx;
-				int y = tile.yCoord + edge.mDy;
-				int z = tile.zCoord + edge.mDz;
-				TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-				if (other != null) {
-					mPower = MathHelper.clamp_int( powerEdge( other, edge), mPower, PowerSearch.MAX_STRENGTH);
-				}
-				else {
-					if (isWired( edge.sideA())) {
-						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideA().ordinal()), mPower, PowerSearch.MAX_STRENGTH);
-					}
-					if (isWired( edge.sideB())) {
-						mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, edge.sideB().ordinal()), mPower, PowerSearch.MAX_STRENGTH);
-					}
-				}
-			}
-		}
-	}
-
-	private int powerEdge( TileStage other, AreaType edge) {
-		return 0;
-	}
-
-	private void powerSide( TileStage tile) {
-//		LogHelper.info( "powerSide: %s", tile.toString());
-		for (AreaType side : AreaType.valuesSide()) {
-			if (isSided( side.offEdges())) {
-//				LogHelper.info( "powerSide: %s, %s", side.name(), toString());
-				int x = tile.xCoord + side.mDx;
-				int y = tile.yCoord + side.mDy;
-				int z = tile.zCoord + side.mDz;
-				TileStage other = DarkLib.getTileEntity( tile.worldObj, x, y, z, TileStage.class);
-				if (other != null) {
-					mPower = MathHelper.clamp_int( powerSide( other, side), mPower, PowerSearch.MAX_STRENGTH);
-				}
-				else {
-					mPower = MathHelper.clamp_int( powerSideWeak( tile.worldObj, x, y, z, side.ordinal()), mPower, PowerSearch.MAX_STRENGTH);
-				}
-			}
-		}
-	}
-
-	private int powerSide( TileStage other, AreaType side) {
-		return 0;
-	}
-
-	private int powerSideInput( World world, int x, int y, int z) {
-		int pwr = 0;
-		for (AreaType side : AreaType.valuesSide()) {
-			int x1 = x + side.mDx;
-			int y1 = y + side.mDy;
-			int z1 = z + side.mDz;
-			pwr = Math.max( pwr, powerSideStrong( world, x1, y1, z1, side.ordinal()));
-			if (pwr >= 15) {
-				break;
-			}
-		}
-		return pwr;
-	}
-
-	private int powerSideStrong( World world, int x, int y, int z, int side) {
-		int id = world.getBlockId( x, y, z);
-		if (DarkLib.isWireBlock( id)) {
-			return 0;
-		}
-		Block blk = Block.blocksList[id];
-		if (blk == null) {
-			return 0;
-		}
-		return blk.isProvidingStrongPower( world, x, y, z, side);
-	}
-
-	private int powerSideWeak( World world, int x, int y, int z, int side) {
-		int id = world.getBlockId( x, y, z);
-		if (DarkLib.isWireBlock( id)) {
-			return 0;
-		}
-		Block blk = Block.blocksList[id];
-		if (blk == null) {
-			return 0;
-		}
-		if (blk.isBlockNormalCube( world, x, y, z)) {
-			return powerSideInput( world, x, y, z);
-		}
-		return blk.isProvidingWeakPower( world, x, y, z, side);
+		PowerSearch.update( tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
 	}
 
 	@Override
@@ -380,6 +283,11 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public void set( AreaType area) {
 		mArea |= area.mMask;
+	}
+
+	@Override
+	public void setPower( int power) {
+		mPower = power;
 	}
 
 	@Override

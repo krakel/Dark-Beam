@@ -130,26 +130,8 @@ public class DarkLib {
 		return false;
 	}
 
-	public static void notifyCornersChange( World world, int x, int y, int z, int blockID) {
-		for (AreaType corner : AreaType.valuesCorner()) {
-			int x1 = x + corner.mDx;
-			int y1 = y + corner.mDy;
-			int z1 = z + corner.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void notifyEdgesChange( World world, int x, int y, int z, int blockID) {
-		for (AreaType edge : AreaType.valuesEdge()) {
-			int x1 = x + edge.mDx;
-			int y1 = y + edge.mDy;
-			int z1 = z + edge.mDz;
-			world.notifyBlockOfNeighborChange( x1, y1, z1, blockID);
-		}
-	}
-
-	public static void notifyNeighborChange( World world, int x, int y, int z, int blockID) {
-		for (AreaType side : AreaType.valuesSide()) {
+	public static void notifyCubeChange( World world, int x, int y, int z, int blockID) {
+		for (AreaType side : AreaType.valuesCube()) {
 			int x1 = x + side.mDx;
 			int y1 = y + side.mDy;
 			int z1 = z + side.mDz;

@@ -27,6 +27,11 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
+	public int getPower() {
+		return 0;
+	}
+
+	@Override
 	public int getProvidingStrongPower( AreaType side) {
 		return 0;
 	}
@@ -100,6 +105,10 @@ class NoConnect implements IConnectable {
 
 	@Override
 	public void set( AreaType area) {
+	}
+
+	@Override
+	public void setPower( int power) {
 	}
 
 	@Override

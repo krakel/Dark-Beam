@@ -124,8 +124,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 	private void notifyAllNeighbor() {
 //		LogHelper.info( "notifyAllChange: %s", LogHelper.toString( this));
 		int blockID = BlockType.STAGE.getId();
-		DarkLib.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, blockID);
-		DarkLib.notifyEdgesChange( worldObj, xCoord, yCoord, zCoord, blockID);
+		DarkLib.notifyCubeChange( worldObj, xCoord, yCoord, zCoord, blockID);
 		DarkLib.notifyNeighborChange2( worldObj, xCoord, yCoord, zCoord, blockID);
 	}
 
@@ -190,7 +189,6 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				mConnect.refresh( this);
 			}
 			mConnect.power( this);
-//			PowerSearch.update( worldObj, xCoord, yCoord, zCoord);
 //			LogHelper.info( "refresh: %s", LogHelper.toString( this));
 			worldObj.updateTileEntityChunkAndDoNothing( xCoord, yCoord, zCoord, this);
 			markForUpdate();
@@ -291,8 +289,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 
 	public void updateAll() {
 		int id = BlockType.STAGE.getId();
-		DarkLib.notifyNeighborChange( worldObj, xCoord, yCoord, zCoord, id);
-		DarkLib.notifyEdgesChange( worldObj, xCoord, yCoord, zCoord, id);
+		DarkLib.notifyCubeChange( worldObj, xCoord, yCoord, zCoord, id);
 		DarkLib.notifyNeighborChange2( worldObj, xCoord, yCoord, zCoord, id);
 	}
 

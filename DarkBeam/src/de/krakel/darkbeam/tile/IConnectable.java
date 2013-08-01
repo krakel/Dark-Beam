@@ -20,6 +20,8 @@ public interface IConnectable {
 
 	int getLevel();
 
+	int getPower();
+
 	int getProvidingStrongPower( AreaType side);
 
 	int getProvidingWeakPower( AreaType side);
@@ -51,6 +53,8 @@ public interface IConnectable {
 	void refresh( TileStage tile);
 
 	void set( AreaType area);
+
+	void setPower( int power);
 
 	void writeToNBT( NBTTagCompound nbt);
 }
