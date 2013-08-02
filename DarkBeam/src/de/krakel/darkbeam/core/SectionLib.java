@@ -138,7 +138,7 @@ public class SectionLib {
 
 	static class UnknownSection extends ASectionCover {
 		UnknownSection() {
-			super( -1, "unknown", new SectionCoverRenderer( 1));
+			super( 255, "unknown", new SectionCoverRenderer( 1));
 		}
 
 		@Override

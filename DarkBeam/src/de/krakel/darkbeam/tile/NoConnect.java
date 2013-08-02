@@ -21,11 +21,16 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
+	public int colorMultiplier() {
+		return 0;
+	}
+
+	@Override
 	public void delete( AreaType area) {
 	}
 
 	@Override
-	public int getPower() {
+	public int getPower(IMaterial insu) {
 		return 0;
 	}
 
@@ -66,11 +71,6 @@ class NoConnect implements IConnectable {
 
 	@Override
 	public boolean isIllegal() {
-		return false;
-	}
-
-	@Override
-	public boolean isPowerd() {
 		return false;
 	}
 

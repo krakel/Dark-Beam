@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
+import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class PowerSearch {
@@ -69,52 +70,52 @@ public class PowerSearch {
 		}
 	}
 
-	private static int cableEdge( IConnectable con, World world, ChunkPosition pos, int cable) {
+	private static int cableEdge( IConnectable con, World world, ChunkPosition pos, int cable, IMaterial insu) {
 		for (AreaType edge : AreaType.valuesEdge()) {
 			if (con.isValidEdgeCon( edge)) {
 				int x = pos.x + edge.mDx;
 				int y = pos.y + edge.mDy;
 				int z = pos.z + edge.mDz;
 				if (con.isWired( edge.sideA())) {
-					cable = Math.max( cablePower( world, x, y, z, edge.sideA().ordinal()), cable);
+					cable = Math.max( cablePower( world, x, y, z, edge.sideA().ordinal(), insu), cable);
 				}
 				if (con.isWired( edge.sideB())) {
-					cable = Math.max( cablePower( world, x, y, z, edge.sideB().ordinal()), cable);
+					cable = Math.max( cablePower( world, x, y, z, edge.sideB().ordinal(), insu), cable);
 				}
 			}
 		}
 		return cable;
 	}
 
-	private static int cablePower( IConnectable con, World world, ChunkPosition pos) {
+	private static int cablePower( IConnectable con, World world, ChunkPosition pos, IMaterial insu) {
 		int cable = -1;
-		cable = cableSide( con, world, pos, cable);
-		cable = cableEdge( con, world, pos, cable);
+		cable = cableSide( con, world, pos, cable, insu);
+		cable = cableEdge( con, world, pos, cable, insu);
 		return cable;
 	}
 
-	private static int cablePower( World world, int x, int y, int z, int side) {
+	private static int cablePower( World world, int x, int y, int z, int side, IMaterial insu) {
 		TileStage tile = DarkLib.getTileEntity( world, x, y, z, TileStage.class);
 		if (tile != null) {
-			return tile.getConnect().getPower();
+			return tile.getConnect().getPower( insu);
 		}
 		return 0;
 	}
 
-	private static int cableSide( IConnectable con, World world, ChunkPosition pos, int cable) {
+	private static int cableSide( IConnectable con, World world, ChunkPosition pos, int cable, IMaterial insu) {
 		for (AreaType side : AreaType.valuesSide()) {
 			if (con.isValidSideCon( side)) {
 //				LogHelper.info( "powerSide: %s, %s", side.name(), toString());
 				int x = pos.x + side.mDx;
 				int y = pos.y + side.mDy;
 				int z = pos.z + side.mDz;
-				cable = Math.max( cableSideValue( world, x, y, z, side.ordinal()), cable);
+				cable = Math.max( cableSideValue( world, x, y, z, side.ordinal(), insu), cable);
 			}
 		}
 		return cable;
 	}
 
-	private static int cableSideValue( World world, int x, int y, int z, int side) {
+	private static int cableSideValue( World world, int x, int y, int z, int side, IMaterial insu) {
 		int id = world.getBlockId( x, y, z);
 		if (id == 0) {
 			return -1;
@@ -123,7 +124,7 @@ public class PowerSearch {
 			int meta = world.getBlockMetadata( x, y, z);
 			return meta > 0 ? meta : -1;
 		}
-		return cablePower( world, x, y, z, side);
+		return cablePower( world, x, y, z, side, insu);
 	}
 
 	@SuppressWarnings( "unused")
@@ -238,9 +239,9 @@ public class PowerSearch {
 		}
 	}
 
-	public static int updatePower( IConnectable con, World world, ChunkPosition pos) {
-		int power = con.getPower();
-		int cable = cablePower( con, world, pos);
+	public static int updatePower( IConnectable con, World world, ChunkPosition pos, IMaterial insu) {
+		int power = con.getPower( insu);
+		int cable = cablePower( con, world, pos, insu);
 		int indirect = con.indirectPower( world, pos);
 		if (power == 0 && cable == 0 && indirect == 0) {
 			return power;

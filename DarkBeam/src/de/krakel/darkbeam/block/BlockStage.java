@@ -84,11 +84,7 @@ public class BlockStage extends Block {
 		if (tile == null) {
 			return super.colorMultiplier( world, x, y, z);
 		}
-		if (tile.getConnect().isPowerd()) {
-			return 0xFFFFFF;
-		}
-//		return super.colorMultiplier( world, x, y, z);
-		return 0x000000;
+		return tile.getConnect().colorMultiplier();
 	}
 
 	@Override

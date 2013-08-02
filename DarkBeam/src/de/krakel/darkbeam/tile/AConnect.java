@@ -8,8 +8,6 @@
 package de.krakel.darkbeam.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
 
 import de.krakel.darkbeam.core.ASectionWire;
 import de.krakel.darkbeam.core.AreaType;
@@ -21,16 +19,14 @@ abstract class AConnect implements IConnectable {
 	private static final int INVALID_WE = AreaType.toMask( AreaType.WEST, AreaType.EAST);
 	private static final int INVALID_NS = AreaType.toMask( AreaType.NORTH, AreaType.SOUTH);
 	private static final int INVALID_DU = AreaType.toMask( AreaType.DOWN, AreaType.UP);
-	private static final String NBT_POWER = "pwr";
 	private static final String NBT_INNER = "ci";
 	private static final String NBT_SIDED = "cs";
 	private static final String NBT_EDGED = "ce";
 	protected ASectionWire mWire;
-	private int mArea;
-	private int mPower;
-	private int mInnerEdge;
-	private int mSidedEdge;
-	private int mEdgedEdge;
+	protected int mArea;
+	protected int mInnerEdge;
+	protected int mSidedEdge;
+	protected int mEdgedEdge;
 
 	protected AConnect( ASectionWire wire) {
 		mWire = wire;
@@ -43,27 +39,6 @@ abstract class AConnect implements IConnectable {
 		mArea &= ~area.mMask;
 	}
 
-	@Override
-	public int getPower() {
-		return mPower;
-	}
-
-	@Override
-	public int getProvidingStrongPower( AreaType side) {
-		if (isValidSideCon( side)) {
-			return mPower;
-		}
-		return 0;
-	}
-
-	@Override
-	public int getProvidingWeakPower( AreaType side) {
-		if (isValidSideCon( side)) {
-			return mPower;
-		}
-		return 0;
-	}
-
 	private int getValidEdges() {
 		return mInnerEdge | mSidedEdge | mEdgedEdge;
 	}
@@ -71,11 +46,6 @@ abstract class AConnect implements IConnectable {
 	@Override
 	public ISection getWire() {
 		return mWire;
-	}
-
-	@Override
-	public int indirectPower( World world, ChunkPosition pos) {
-		return PowerSearch.indirectPower( this, world, pos);
 	}
 
 	@Override
@@ -103,11 +73,6 @@ abstract class AConnect implements IConnectable {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public boolean isPowerd() {
-		return mPower > 0;
 	}
 
 	@Override
@@ -142,7 +107,6 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public void readFromNBT( NBTTagCompound nbt) {
-		mPower = nbt.getInteger( NBT_POWER);
 		mInnerEdge = nbt.getInteger( NBT_INNER);
 		mSidedEdge = nbt.getInteger( NBT_SIDED);
 		mEdgedEdge = nbt.getInteger( NBT_EDGED);
@@ -283,7 +247,6 @@ abstract class AConnect implements IConnectable {
 		mEdgedEdge = 0;
 		mSidedEdge = 0;
 		mInnerEdge = 0;
-//		mPower = 0;
 	}
 
 	@Override
@@ -292,18 +255,7 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public String toString() {
-		return DarkLib.format( "AConnect=[%d, 0x%04X, 0x%04X, 0x%04X, 0x%04X]", mPower, mArea, mInnerEdge, mSidedEdge, mEdgedEdge);
-	}
-
-	@Override
-	public void updatePower( World world, ChunkPosition pos) {
-		mPower = PowerSearch.updatePower( this, world, pos);
-	}
-
-	@Override
 	public void writeToNBT( NBTTagCompound nbt) {
-		nbt.setInteger( NBT_POWER, mPower);
 		nbt.setInteger( NBT_INNER, mInnerEdge);
 		nbt.setInteger( NBT_SIDED, mSidedEdge);
 		nbt.setInteger( NBT_EDGED, mEdgedEdge);

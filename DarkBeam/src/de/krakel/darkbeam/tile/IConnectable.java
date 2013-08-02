@@ -18,9 +18,11 @@ import de.krakel.darkbeam.core.ISection;
 public interface IConnectable {
 	public static final IConnectable NO_CONNECT = new NoConnect();
 
+	int colorMultiplier();
+
 	void delete( AreaType area);
 
-	int getPower();
+	int getPower( IMaterial insu);
 
 	int getProvidingStrongPower( AreaType side);
 
@@ -37,8 +39,6 @@ public interface IConnectable {
 	boolean isEmpty();
 
 	boolean isIllegal();
-
-	boolean isPowerd();
 
 	boolean isValid( int value);
 

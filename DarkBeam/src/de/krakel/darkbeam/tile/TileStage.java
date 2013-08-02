@@ -166,7 +166,8 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 		int areas = nbt.getInteger( NBT_AREAS);
 		byte[] arr = nbt.getByteArray( NBT_SECTIONS);
 		int n = 0;
-		for (int a = areas, i = 0; a != 0; a >>>= 1, ++i) {
+		int max = arr.length - 1;
+		for (int a = areas, i = 0; a != 0 && n < max; a >>>= 1, ++i) {
 			if ((a & 1) != 0) {
 				int matID = arr[n++] & 0xFF;
 				int segID = arr[n++] & 0xFF;
