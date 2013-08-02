@@ -19,8 +19,7 @@ import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.lib.BlockType;
 
-public class PowerSearch {
-	public static final int MAX_STRENGTH = 255;
+class PowerSearch {
 	private static LinkedList<ChunkPosition> sSearch = new LinkedList<ChunkPosition>();
 	private static HashSet<ChunkPosition> sSearchCheck = new HashSet<ChunkPosition>();
 	private static HashSet<ChunkPosition> sUpdates = new HashSet<ChunkPosition>();
@@ -36,7 +35,7 @@ public class PowerSearch {
 		}
 	}
 
-	private static void addSearchBlocks( ChunkPosition pos, IConnectable con) {
+	static void addSearchBlocks( ChunkPosition pos, IConnectable con) {
 		for (AreaType side : AreaType.valuesSide()) {
 			if (con.isValidSideCon( side)) {
 				int x = pos.x + side.mDx;
@@ -55,7 +54,7 @@ public class PowerSearch {
 		}
 	}
 
-	private static void addUpdateBlock( ChunkPosition pos) {
+	static void addUpdateBlock( ChunkPosition pos) {
 		for (AreaType area : AreaType.valuesSphere()) {
 			int x = pos.x + area.mDx;
 			int y = pos.y + area.mDy;
@@ -87,7 +86,7 @@ public class PowerSearch {
 		return cable;
 	}
 
-	private static int cablePower( IConnectable con, World world, ChunkPosition pos, IMaterial insu) {
+	static int cablePower( IConnectable con, World world, ChunkPosition pos, IMaterial insu) {
 		int cable = -1;
 		cable = cableSide( con, world, pos, cable, insu);
 		cable = cableEdge( con, world, pos, cable, insu);
@@ -127,85 +126,6 @@ public class PowerSearch {
 		return cablePower( world, x, y, z, side, insu);
 	}
 
-	@SuppressWarnings( "unused")
-	private static int indirectEdge( IConnectable con, World world, ChunkPosition pos, int indirect) {
-		for (AreaType edge : AreaType.valuesEdge()) {
-			if (con.isValidEdgeCon( edge)) {
-				int x = pos.x + edge.mDx;
-				int y = pos.y + edge.mDy;
-				int z = pos.z + edge.mDz;
-				if (con.isWired( edge.sideA())) {
-					indirect = Math.max( indirectSideWeak( world, x, y, z, edge.sideA().ordinal()), indirect);
-				}
-				if (con.isWired( edge.sideB())) {
-					indirect = Math.max( indirectSideWeak( world, x, y, z, edge.sideB().ordinal()), indirect);
-				}
-			}
-		}
-		return indirect;
-	}
-
-	public static int indirectPower( IConnectable con, World world, ChunkPosition pos) {
-		int indirect = 0;
-		indirect = indirectSide( con, world, pos, indirect);
-//		indirect = indirectEdge( con, world, pos, indirect);
-		return indirect;
-	}
-
-	private static int indirectSide( IConnectable con, World world, ChunkPosition pos, int indirect) {
-		for (AreaType side : AreaType.valuesSide()) {
-			if (con.isValidSideCon( side)) {
-//				LogHelper.info( "powerSide: %s, %s", side.name(), toString());
-				int x = pos.x + side.mDx;
-				int y = pos.y + side.mDy;
-				int z = pos.z + side.mDz;
-				indirect = Math.max( indirectSideWeak( world, x, y, z, side.ordinal()), indirect);
-			}
-		}
-		return indirect;
-	}
-
-	private static int indirectSideStrong( World world, int x, int y, int z, int side) {
-		int id = world.getBlockId( x, y, z);
-		if (DarkLib.isWireBlock( id)) {
-			return 0;
-		}
-		Block blk = Block.blocksList[id];
-		if (blk == null) {
-			return 0;
-		}
-		return blk.isProvidingStrongPower( world, x, y, z, side);
-	}
-
-	private static int indirectSideWeak( World world, int x, int y, int z, int side) {
-		int id = world.getBlockId( x, y, z);
-		if (DarkLib.isWireBlock( id)) {
-			return 0;
-		}
-		Block blk = Block.blocksList[id];
-		if (blk == null) {
-			return 0;
-		}
-		if (blk.isBlockNormalCube( world, x, y, z)) {
-			return indirectWeak( world, x, y, z);
-		}
-		return blk.isProvidingWeakPower( world, x, y, z, side);
-	}
-
-	private static int indirectWeak( World world, int x, int y, int z) {
-		int pwr = 0;
-		for (AreaType side : AreaType.valuesSide()) {
-			int x1 = x + side.mDx;
-			int y1 = y + side.mDy;
-			int z1 = z + side.mDz;
-			pwr = Math.max( pwr, indirectSideStrong( world, x1, y1, z1, side.ordinal()));
-			if (pwr >= 15) {
-				break;
-			}
-		}
-		return pwr;
-	}
-
 	private static void notifyBlock( World world, int x, int y, int z, int blkID) {
 		int id = world.getBlockId( x, y, z);
 		Block blk = Block.blocksList[id];
@@ -214,18 +134,18 @@ public class PowerSearch {
 		}
 	}
 
-	public static void update( World world, int x, int y, int z) {
-		addPosition( new ChunkPosition( x, y, z));
+	public static void update( World world, ChunkPosition pos) {
+		addPosition( pos);
 		if (sSearching) {
 			return;
 		}
 		sSearching = true;
 		while (!sSearch.isEmpty()) {
-			ChunkPosition pos = sSearch.removeFirst();
-			sSearchCheck.remove( pos);
-			TileStage tile = DarkLib.getTileEntity( world, pos.x, pos.y, pos.z, TileStage.class);
+			ChunkPosition akt = sSearch.removeFirst();
+			sSearchCheck.remove( akt);
+			TileStage tile = DarkLib.getTileEntity( world, akt.x, akt.y, akt.z, TileStage.class);
 			if (tile != null) {
-				tile.getConnect().updatePower( world, pos);
+				tile.getConnect().updatePower( world, akt);
 			}
 		}
 		sSearchCheck.clear();
@@ -233,36 +153,9 @@ public class PowerSearch {
 		HashSet<ChunkPosition> updates = sUpdates;
 		sUpdates = new HashSet<ChunkPosition>();
 		int id = BlockType.STAGE.getId();
-		for (ChunkPosition pos : updates) {
-			notifyBlock( world, pos.x, pos.y, pos.z, id);
-			world.markBlockForUpdate( pos.x, pos.y, pos.z);
+		for (ChunkPosition akt : updates) {
+			notifyBlock( world, akt.x, akt.y, akt.z, id);
+			world.markBlockForUpdate( akt.x, akt.y, akt.z);
 		}
-	}
-
-	public static int updatePower( IConnectable con, World world, ChunkPosition pos, IMaterial insu) {
-		int power = con.getPower( insu);
-		int cable = cablePower( con, world, pos, insu);
-		int indirect = con.indirectPower( world, pos);
-		if (power == 0 && cable == 0 && indirect == 0) {
-			return power;
-		}
-		if (power == cable - 1 && cable > indirect) {
-			return power;
-		}
-		if (power == indirect && cable <= indirect) {
-			return power;
-		}
-		if (cable > indirect || cable > power) {
-			power = Math.max( 0, cable - 1);
-		}
-		else if (indirect >= power) {
-			power = indirect;
-		}
-		else {
-			power = 0;
-		}
-		addUpdateBlock( pos);
-		addSearchBlocks( pos, con);
-		return power;
 	}
 }

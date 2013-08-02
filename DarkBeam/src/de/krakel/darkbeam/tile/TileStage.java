@@ -24,6 +24,7 @@ import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.MaterialLib;
 import de.krakel.darkbeam.core.SectionLib;
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.lib.BlockType;
 
 public class TileStage extends TileEntity implements Iterable<AreaType> {
@@ -190,7 +191,7 @@ public class TileStage extends TileEntity implements Iterable<AreaType> {
 				mConnect.refresh( this);
 			}
 			mConnect.power( this);
-//			LogHelper.info( "refresh: %s", LogHelper.toString( this));
+			LogHelper.info( "refresh: %s", LogHelper.toString( this));
 			worldObj.updateTileEntityChunkAndDoNothing( xCoord, yCoord, zCoord, this);
 			markForUpdate();
 		}

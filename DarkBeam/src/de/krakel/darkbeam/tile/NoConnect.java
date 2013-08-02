@@ -30,7 +30,7 @@ class NoConnect implements IConnectable {
 	}
 
 	@Override
-	public int getPower(IMaterial insu) {
+	public int getPower( IMaterial insu) {
 		return 0;
 	}
 
@@ -47,11 +47,6 @@ class NoConnect implements IConnectable {
 	@Override
 	public ISection getWire() {
 		return SectionLib.UNKNOWN;
-	}
-
-	@Override
-	public int indirectPower( World world, ChunkPosition pos) {
-		return 0;
 	}
 
 	@Override

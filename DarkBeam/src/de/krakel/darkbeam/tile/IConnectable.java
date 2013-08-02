@@ -30,8 +30,6 @@ public interface IConnectable {
 
 	ISection getWire();
 
-	int indirectPower( World world, ChunkPosition pos);
-
 	boolean isAllowed( ISection sec, IMaterial mat);
 
 	boolean isConnected( AreaType side);

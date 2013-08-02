@@ -60,11 +60,6 @@ public class CableConnect extends AConnect {
 	}
 
 	@Override
-	public int indirectPower( World world, ChunkPosition pos) {
-		return 0;
-	}
-
-	@Override
 	public boolean isAllowed( ISection sec, IMaterial mat) {
 		return mWire.equals( sec);
 	}
@@ -86,8 +81,28 @@ public class CableConnect extends AConnect {
 
 	@Override
 	public void updatePower( World world, ChunkPosition pos) {
+		boolean update = false;
 		for (int i = 0; i < mPower.length; ++i) {
-			mPower[i] = PowerSearch.updatePower( this, world, pos, InsulateLib.get( i));
+			IMaterial insu = InsulateLib.get( i);
+			int power = mPower[i];
+			int cable = PowerSearch.cablePower( this, world, pos, insu);
+			if (needPowerChange( power, cable, 0)) {
+				if (cable > 0 || cable > power) {
+					power = Math.max( 0, cable - 1);
+				}
+				else if (power < 0) {
+					power = 0;
+				}
+				else {
+					power = 0;
+				}
+				mPower[i] = power;
+				update = true;
+			}
+		}
+		if (update) {
+			PowerSearch.addUpdateBlock( pos);
+			PowerSearch.addSearchBlocks( pos, this);
 		}
 	}
 

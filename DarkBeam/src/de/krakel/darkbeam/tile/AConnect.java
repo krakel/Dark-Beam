@@ -8,6 +8,7 @@
 package de.krakel.darkbeam.tile;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkPosition;
 
 import de.krakel.darkbeam.core.ASectionWire;
 import de.krakel.darkbeam.core.AreaType;
@@ -30,6 +31,19 @@ abstract class AConnect implements IConnectable {
 
 	protected AConnect( ASectionWire wire) {
 		mWire = wire;
+	}
+
+	protected static boolean needPowerChange( int power, int cable, int indirect) {
+		if (power == 0 && cable == 0 && indirect == 0) {
+			return false;
+		}
+		if (power == cable - 1 && cable > indirect) {
+			return false;
+		}
+		if (power == indirect && cable <= indirect) {
+			return false;
+		}
+		return true;
 	}
 
 	protected abstract boolean canConnect( IConnectable other);
@@ -102,7 +116,8 @@ abstract class AConnect implements IConnectable {
 
 	@Override
 	public void power( TileStage tile) {
-		PowerSearch.update( tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+		ChunkPosition pos = new ChunkPosition( tile.xCoord, tile.yCoord, tile.zCoord);
+		PowerSearch.update( tile.worldObj, pos);
 	}
 
 	@Override

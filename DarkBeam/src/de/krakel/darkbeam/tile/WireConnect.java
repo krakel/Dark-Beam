@@ -7,6 +7,7 @@
  */
 package de.krakel.darkbeam.tile;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
@@ -74,12 +75,88 @@ public class WireConnect extends AConnect {
 		return 0;
 	}
 
-	@Override
-	public int indirectPower( World world, ChunkPosition pos) {
+	private int indirectEdge( World world, ChunkPosition pos, int indirect) {
+		for (AreaType edge : AreaType.valuesEdge()) {
+			if (isValidEdgeCon( edge)) {
+				int x = pos.x + edge.mDx;
+				int y = pos.y + edge.mDy;
+				int z = pos.z + edge.mDz;
+				if (isWired( edge.sideA())) {
+					indirect = Math.max( indirectSideWeak( world, x, y, z, edge.sideA().ordinal()), indirect);
+				}
+				if (isWired( edge.sideB())) {
+					indirect = Math.max( indirectSideWeak( world, x, y, z, edge.sideB().ordinal()), indirect);
+				}
+			}
+		}
+		return indirect;
+	}
+
+	private int indirectPower( World world, ChunkPosition pos) {
 		if (InsulateLib.UNKNOWN == mInsu) {
-			return PowerSearch.indirectPower( this, world, pos);
+			int indirect = 0;
+			indirect = indirectSide( world, pos, indirect);
+			indirect = indirectEdge( world, pos, indirect);
+			return indirect;
 		}
 		return 0;
+	}
+
+	private int indirectSide( World world, ChunkPosition pos, int indirect) {
+		for (AreaType side : AreaType.valuesSide()) {
+			if (isValidSideCon( side)) {
+//				LogHelper.info( "powerSide: %s, %s", side.name(), toString());
+				int x = pos.x + side.mDx;
+				int y = pos.y + side.mDy;
+				int z = pos.z + side.mDz;
+				indirect = Math.max( indirectSideWeak( world, x, y, z, side.ordinal()), indirect);
+				if (indirect >= 15) {
+					break;
+				}
+			}
+		}
+		return indirect;
+	}
+
+	private int indirectSideStrong( World world, int x, int y, int z, int side) {
+		int id = world.getBlockId( x, y, z);
+		if (DarkLib.isWireBlock( id)) {
+			return 0;
+		}
+		Block blk = Block.blocksList[id];
+		if (blk == null) {
+			return 0;
+		}
+		return blk.isProvidingStrongPower( world, x, y, z, side);
+	}
+
+	private int indirectSideWeak( World world, int x, int y, int z, int side) {
+		int id = world.getBlockId( x, y, z);
+		if (DarkLib.isWireBlock( id)) {
+			return 0;
+		}
+		Block blk = Block.blocksList[id];
+		if (blk == null) {
+			return 0;
+		}
+		if (blk.isBlockNormalCube( world, x, y, z)) {
+			return indirectWeak( world, x, y, z);
+		}
+		return blk.isProvidingWeakPower( world, x, y, z, side);
+	}
+
+	private int indirectWeak( World world, int x0, int y0, int z0) {
+		int pwr = 0;
+		for (AreaType side : AreaType.valuesSide()) {
+			int x = x0 + side.mDx;
+			int y = y0 + side.mDy;
+			int z = z0 + side.mDz;
+			pwr = Math.max( pwr, indirectSideStrong( world, x, y, z, side.ordinal()));
+			if (pwr >= 15) {
+				break;
+			}
+		}
+		return pwr;
 	}
 
 	@Override
@@ -100,7 +177,23 @@ public class WireConnect extends AConnect {
 
 	@Override
 	public void updatePower( World world, ChunkPosition pos) {
-		mPower = PowerSearch.updatePower( this, world, pos, mInsu);
+		int power = mPower;
+		int cable = PowerSearch.cablePower( this, world, pos, mInsu);
+		int indirect = indirectPower( world, pos);
+		if (needPowerChange( power, cable, indirect)) {
+			if (cable > indirect || cable > power) {
+				power = Math.max( 0, cable - 1);
+			}
+			else if (power <= indirect) {
+				power = indirect;
+			}
+			else {
+				power = 0;
+			}
+			mPower = power;
+			PowerSearch.addUpdateBlock( pos);
+			PowerSearch.addSearchBlocks( pos, this);
+		}
 	}
 
 	@Override

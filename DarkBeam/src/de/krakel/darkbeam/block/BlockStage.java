@@ -29,6 +29,7 @@ import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.DarkLib;
 import de.krakel.darkbeam.core.ISection;
 import de.krakel.darkbeam.core.SectionLib;
+import de.krakel.darkbeam.core.helper.LogHelper;
 import de.krakel.darkbeam.tile.TileStage;
 
 public class BlockStage extends Block {
@@ -36,6 +37,12 @@ public class BlockStage extends Block {
 		super( id, DarkBeam.MAT_DARK);
 		setHardness( 0.1F);
 		disableStats();
+	}
+
+	@Override
+	public void breakBlock( World world, int x, int y, int z, int blkID, int meta) {
+		LogHelper.info( "breakBlock: %s, %s", LogHelper.toString( world), LogHelper.toString( x, y, z));
+		super.breakBlock( world, x, y, z, blkID, meta);
 	}
 
 	@Override
