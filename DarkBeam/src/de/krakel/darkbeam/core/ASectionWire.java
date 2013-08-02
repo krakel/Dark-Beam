@@ -47,6 +47,8 @@ public abstract class ASectionWire extends ASection {
 		}
 	}
 
+	public abstract boolean canDock( ISection other);
+
 	@Override
 	public boolean isJoinable() {
 		return true;

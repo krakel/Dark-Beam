@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import de.krakel.darkbeam.core.AreaType;
 import de.krakel.darkbeam.core.IMaterial;
 import de.krakel.darkbeam.core.ISection;
+import de.krakel.darkbeam.core.SectionLib;
 
 class NoConnect implements IConnectable {
 	NoConnect() {
@@ -21,11 +22,6 @@ class NoConnect implements IConnectable {
 
 	@Override
 	public void delete( AreaType area) {
-	}
-
-	@Override
-	public int getLevel() {
-		return 0;
 	}
 
 	@Override
@@ -41,6 +37,11 @@ class NoConnect implements IConnectable {
 	@Override
 	public int getProvidingWeakPower( AreaType side) {
 		return 0;
+	}
+
+	@Override
+	public ISection getWire() {
+		return SectionLib.UNKNOWN;
 	}
 
 	@Override

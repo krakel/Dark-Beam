@@ -19,6 +19,18 @@ public class SectionInsulated extends ASectionWire {
 	}
 
 	@Override
+	public boolean canDock( ISection other) {
+		int id = other.getID();
+		if (id == SectionLib.sRedwire.getID()) {
+			return true;
+		}
+		if (id == SectionLib.sCable.getID()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public IConnectable createConnect( IMaterial mat) {
 		return new WireConnect( this, mat);
 	}
@@ -32,11 +44,6 @@ public class SectionInsulated extends ASectionWire {
 	public Icon getIcon( int side, int dmg) {
 		Insulate insu = InsulateLib.getForDmg( dmg);
 		return insu.getIcon( side);
-	}
-
-	@Override
-	public int getLevel() {
-		return 11;
 	}
 
 	@Override

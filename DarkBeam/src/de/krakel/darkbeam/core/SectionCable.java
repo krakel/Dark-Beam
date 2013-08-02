@@ -20,6 +20,11 @@ public class SectionCable extends ASectionWire {
 	}
 
 	@Override
+	public boolean canDock( ISection other) {
+		return other.getID() == SectionLib.sInsuwire.getID();
+	}
+
+	@Override
 	public IConnectable createConnect( IMaterial mat) {
 		return new CableConnect( this);
 	}
@@ -32,11 +37,6 @@ public class SectionCable extends ASectionWire {
 	@Override
 	public Icon getIcon( int side, int dmg) {
 		return Block.wood.getIcon( side, 0); // TODO
-	}
-
-	@Override
-	public int getLevel() {
-		return 12;
 	}
 
 	@Override

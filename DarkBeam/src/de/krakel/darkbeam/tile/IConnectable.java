@@ -20,13 +20,13 @@ public interface IConnectable {
 
 	void delete( AreaType area);
 
-	int getLevel();
-
 	int getPower();
 
 	int getProvidingStrongPower( AreaType side);
 
 	int getProvidingWeakPower( AreaType side);
+
+	ISection getWire();
 
 	int indirectPower( World world, ChunkPosition pos);
 

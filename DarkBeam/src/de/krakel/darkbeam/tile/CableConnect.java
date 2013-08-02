@@ -22,7 +22,7 @@ public class CableConnect extends AConnect {
 		if (other.isAllowed( mWire, InsulateLib.UNKNOWN)) {
 			return true;
 		}
-		return Math.abs( getLevel() - other.getLevel()) == 1;
+		return mWire.canDock( other.getWire());
 	}
 
 	@Override

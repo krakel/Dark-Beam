@@ -20,6 +20,11 @@ public class SectionRedWire extends ASectionWire {
 	}
 
 	@Override
+	public boolean canDock( ISection other) {
+		return other.getID() == SectionLib.sInsuwire.getID();
+	}
+
+	@Override
 	public IConnectable createConnect( IMaterial mat) {
 		return new WireConnect( this, mat);
 	}
@@ -32,11 +37,6 @@ public class SectionRedWire extends ASectionWire {
 	@Override
 	public Icon getIcon( int side, int dmg) {
 		return Block.blockRedstone.getIcon( side, 0);
-	}
-
-	@Override
-	public int getLevel() {
-		return 10;
 	}
 
 	@Override

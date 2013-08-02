@@ -44,11 +44,6 @@ abstract class AConnect implements IConnectable {
 	}
 
 	@Override
-	public int getLevel() {
-		return mWire.getLevel();
-	}
-
-	@Override
 	public int getPower() {
 		return mPower;
 	}
@@ -71,6 +66,11 @@ abstract class AConnect implements IConnectable {
 
 	private int getValidEdges() {
 		return mInnerEdge | mSidedEdge | mEdgedEdge;
+	}
+
+	@Override
+	public ISection getWire() {
+		return mWire;
 	}
 
 	@Override
